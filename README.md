@@ -1,16 +1,18 @@
-# sti_startnow
+# STI StartNow
+### Enrollment Application
 
-A new Flutter project.
+The STI StartNow is a modern, mobile-based platform designed to streamline the enrollment process for students and administrators. It offers a user-friendly interface while leveraging AI to enhance efficiency, security  , and accessibility. This project aims to address common enrollment pain points—such as long queues, repetitive questions, and paperwork—by introducing intelligent automation, ensuring a seamless experience for both students and staff.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+#### Developers:
 
-A few resources to get you started if this is your first Flutter project:
+**Leader**: 
+- Wyona Gwen Soriano
+**Co-Leader**: 
+- Paul Jaden Caligagan
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+**Members**:
+- Aurick William Lorenzo
+- Julius Linel Patio
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
