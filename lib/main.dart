@@ -12,12 +12,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text("STI StartNow"),
-        ),
-        body: Center(
-          child: Text("Aigooooo")
-        ),
+        backgroundColor: Colors.pink,
+        appBar: AppBar(title: const Text("STI StartNow")),
+        body: Center(child: Text("Aigooooo")),
       ),
     );
   }
