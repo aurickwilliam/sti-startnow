@@ -8,6 +8,7 @@ The STI StartNow is a modern, mobile-based platform designed to streamline the e
 
 **Leader**: 
 - Wyona Gwen Soriano
+
 **Co-Leader**: 
 - Paul Jaden Caligagan
 
