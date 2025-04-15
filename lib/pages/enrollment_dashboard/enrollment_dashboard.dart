@@ -4,6 +4,8 @@ import 'package:sti_startnow/pages/enrollment_dashboard/components/drawer_tile.d
 import 'package:sti_startnow/pages/enrollment_dashboard/components/enrollment_image_tile.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/components/enrollment_schedule.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/components/enrollment_tile.dart';
+import 'package:sti_startnow/pages/enrollment_dashboard/requirement_page.dart';
+import 'package:sti_startnow/pages/enrollment_dashboard/tuition_fee_advising_page.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class EnrollmentDashboard extends StatelessWidget {
@@ -131,7 +133,15 @@ class EnrollmentDashboard extends StatelessWidget {
                 // Requirement Box
                 EnrollmentTile(
                   title: "Requirement for \nEnrollee", 
-                  imgPath: "assets/img/enrollment_dashboard/requirement_img.png"
+                  imgPath: "assets/img/enrollment_dashboard/requirement_img.png",
+                  onTap: () {
+                    Navigator.push(
+                      context, 
+                      MaterialPageRoute(
+                        builder: (context) => RequirementPage()
+                      )
+                    );
+                  },
                 ),
 
                 const SizedBox(height: 15,),
@@ -139,7 +149,15 @@ class EnrollmentDashboard extends StatelessWidget {
                 // Tuition Fee Advising Box
                 EnrollmentTile(
                   title: "Tuition Fee \nAdvising", 
-                  imgPath: "assets/img/enrollment_dashboard/tuition.png"
+                  imgPath: "assets/img/enrollment_dashboard/tuition.png",
+                  onTap: () {
+                    Navigator.push(
+                      context, 
+                      MaterialPageRoute(
+                        builder: (context) => TuitionFeeAdvisingPage()
+                      )
+                    );
+                  },
                 ),
 
                 const SizedBox(height: 15,),
