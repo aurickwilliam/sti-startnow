@@ -1,0 +1,13 @@
+flutter_native_splash:
+  android: true
+  ios: true
+  web: false
+
+  color: "#0B5793"
+  image: "assets/start_now_logo.png"
+  branding: "assets/start_now_branding.png"
+
+  android_12:
+    color: "#0B5793"
+    image: "assets/start_now_logo.png"
+    branding: "assets/start_now_branding.png"
