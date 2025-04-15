@@ -1,22 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sti_startnow/pages/enrollment_dashboard/components/drawer_tile.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/components/enrollment_image_tile.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/components/enrollment_schedule.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/components/enrollment_tile.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
-class EnrollmentDashboard extends StatefulWidget {
+class EnrollmentDashboard extends StatelessWidget {
   const EnrollmentDashboard({super.key});
 
-  @override
-  State<EnrollmentDashboard> createState() => _EnrollmentDashboardState();
-}
-
-class _EnrollmentDashboardState extends State<EnrollmentDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
+      endDrawer: Drawer(
+        backgroundColor: AppTheme.colors.white,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 50, right: 20),
+          child: ListView(
+            children: [
+              DrawerTile(
+                title: "Misson & Vision",
+                icon: Icons.key,
+              ),
+
+              const SizedBox(height: 20,),
+
+              DrawerTile(
+                title: "About",
+                icon: Icons.emoji_objects_outlined,
+              ),
+
+              const SizedBox(height: 20,),
+
+              DrawerTile(
+                title: "FAQs",
+                icon: Icons.help_outline,
+              ),
+
+              const SizedBox(height: 20,),
+            ],
+          ),
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -24,31 +50,38 @@ class _EnrollmentDashboardState extends State<EnrollmentDashboard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: double.infinity,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                
-                      // Greetings at the Top
-                      Text(
-                        "Welcome Future STIer's",
-                        style: GoogleFonts.roboto(
-                          color: AppTheme.colors.primary,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
+                Builder(
+                  builder: (context) {
+                    return Container(
+                      width: double.infinity,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                    
+                          // Greetings at the Top
+                          Text(
+                            "Welcome Future STIer's",
+                            style: GoogleFonts.roboto(
+                              color: AppTheme.colors.primary,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                    
+                          // Hamburger Menu for the Drawer
+                          IconButton(
+                            onPressed: () {
+                              Scaffold.of(context).openEndDrawer();
+                            }, 
+                            icon: Icon(Icons.menu),
+                            iconSize: 35,
+                            color: AppTheme.colors.primary,
+                          ),
+                        ],
                       ),
-                
-                      // Hamburger Menu for the Drawer
-                      Icon(
-                        Icons.menu,
-                        color: AppTheme.colors.primary,
-                        size: 35,
-                      ),
-                    ],
-                  ),
+                    );
+                  }
                 ),
             
                 // Enrollment Schedule Title
