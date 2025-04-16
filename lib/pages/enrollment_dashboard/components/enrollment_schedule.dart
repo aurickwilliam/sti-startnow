@@ -2,8 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
-class EnrollmentSchedule extends StatelessWidget {
+class EnrollmentSchedule extends StatefulWidget {
   const EnrollmentSchedule({super.key});
+
+  @override
+  State<EnrollmentSchedule> createState() => _EnrollmentScheduleState();
+}
+
+class _EnrollmentScheduleState extends State<EnrollmentSchedule> {
+
+  bool isRegular = true;
+  bool isIrregular = false;
+  
+  String regularFrom = "mm/dd/yy";
+  String regularTo = "mm/dd/yy";
+
+  String irregularFrom = "00/11/22";
+  String irregularTo = "00/11/22";
+
+  void changeToRegular(){
+    setState(() {
+      isRegular = true;
+      isIrregular = false;
+    });
+  }
+
+  void changeToIrregular(){
+    setState(() {
+      isRegular = false;
+      isIrregular = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,17 +54,23 @@ class EnrollmentSchedule extends StatelessWidget {
           
           // Buttons for switching from regular to irregular
           Padding(
-            padding: const EdgeInsets.only(left: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             child: Row(
               children: [
             
                 // Regular
                 TextButton(
-                  onPressed: () {}, 
+                  onPressed: changeToRegular, 
+                  style: TextButton.styleFrom(
+                    backgroundColor: isRegular ? AppTheme.colors.primary : null,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
                   child: Text(
                     "Regular",
                     style: GoogleFonts.roboto(
-                      color: AppTheme.colors.primary,
+                      color: isRegular ? AppTheme.colors.white : AppTheme.colors.primary,
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),
@@ -44,11 +79,17 @@ class EnrollmentSchedule extends StatelessWidget {
             
                 // Irregular
                 TextButton(
-                  onPressed: () {}, 
+                  onPressed: changeToIrregular, 
+                  style: TextButton.styleFrom(
+                    backgroundColor: isIrregular ? AppTheme.colors.primary : null,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
                   child: Text(
                     "Irregular",
                     style: GoogleFonts.roboto(
-                      color: AppTheme.colors.primary,
+                      color: isIrregular ? AppTheme.colors.white : AppTheme.colors.primary,
                       fontSize: 16,
                       fontWeight: FontWeight.w500
                     ),
@@ -79,7 +120,7 @@ class EnrollmentSchedule extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "mm/dd/yy",
+                      isRegular ? regularFrom : irregularFrom,
                       style: GoogleFonts.roboto(
                         color: AppTheme.colors.black,
                         fontSize: 16,
@@ -101,7 +142,7 @@ class EnrollmentSchedule extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "mm/dd/yy",
+                      isRegular ? regularTo : irregularTo,
                       style: GoogleFonts.roboto(
                         color: AppTheme.colors.black,
                         fontSize: 16,

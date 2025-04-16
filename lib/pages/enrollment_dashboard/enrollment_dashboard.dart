@@ -1,22 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sti_startnow/pages/enrollment_dashboard/components/drawer_tile.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/components/enrollment_image_tile.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/components/enrollment_schedule.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/components/enrollment_tile.dart';
+import 'package:sti_startnow/pages/enrollment_dashboard/course_offer_list_page.dart';
+import 'package:sti_startnow/pages/enrollment_dashboard/requirement_page.dart';
+import 'package:sti_startnow/pages/enrollment_dashboard/tuition_fee_advising_page.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
-class EnrollmentDashboard extends StatefulWidget {
+class EnrollmentDashboard extends StatelessWidget {
   const EnrollmentDashboard({super.key});
 
-  @override
-  State<EnrollmentDashboard> createState() => _EnrollmentDashboardState();
-}
-
-class _EnrollmentDashboardState extends State<EnrollmentDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
+      endDrawer: Drawer(
+        backgroundColor: AppTheme.colors.white,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 50, right: 20),
+          child: ListView(
+            children: [
+              DrawerTile(
+                title: "Misson & Vision",
+                icon: Icons.key,
+              ),
+
+              const SizedBox(height: 20,),
+
+              DrawerTile(
+                title: "About",
+                icon: Icons.emoji_objects_outlined,
+              ),
+
+              const SizedBox(height: 20,),
+
+              DrawerTile(
+                title: "FAQs",
+                icon: Icons.help_outline,
+              ),
+
+              const SizedBox(height: 20,),
+            ],
+          ),
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -24,31 +53,38 @@ class _EnrollmentDashboardState extends State<EnrollmentDashboard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: double.infinity,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                
-                      // Greetings at the Top
-                      Text(
-                        "Welcome Future STIer's",
-                        style: GoogleFonts.roboto(
-                          color: AppTheme.colors.primary,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
+                Builder(
+                  builder: (context) {
+                    return Container(
+                      width: double.infinity,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                    
+                          // Greetings at the Top
+                          Text(
+                            "Welcome Future STIer's",
+                            style: GoogleFonts.roboto(
+                              color: AppTheme.colors.primary,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                    
+                          // Hamburger Menu for the Drawer
+                          IconButton(
+                            onPressed: () {
+                              Scaffold.of(context).openEndDrawer();
+                            }, 
+                            icon: Icon(Icons.menu),
+                            iconSize: 35,
+                            color: AppTheme.colors.primary,
+                          ),
+                        ],
                       ),
-                
-                      // Hamburger Menu for the Drawer
-                      Icon(
-                        Icons.menu,
-                        color: AppTheme.colors.primary,
-                        size: 35,
-                      ),
-                    ],
-                  ),
+                    );
+                  }
                 ),
             
                 // Enrollment Schedule Title
@@ -98,7 +134,15 @@ class _EnrollmentDashboardState extends State<EnrollmentDashboard> {
                 // Requirement Box
                 EnrollmentTile(
                   title: "Requirement for \nEnrollee", 
-                  imgPath: "assets/img/enrollment_dashboard/requirement_img.png"
+                  imgPath: "assets/img/enrollment_dashboard/requirement_img.png",
+                  onTap: () {
+                    Navigator.push(
+                      context, 
+                      MaterialPageRoute(
+                        builder: (context) => RequirementPage()
+                      )
+                    );
+                  },
                 ),
 
                 const SizedBox(height: 15,),
@@ -106,7 +150,15 @@ class _EnrollmentDashboardState extends State<EnrollmentDashboard> {
                 // Tuition Fee Advising Box
                 EnrollmentTile(
                   title: "Tuition Fee \nAdvising", 
-                  imgPath: "assets/img/enrollment_dashboard/tuition.png"
+                  imgPath: "assets/img/enrollment_dashboard/tuition.png",
+                  onTap: () {
+                    Navigator.push(
+                      context, 
+                      MaterialPageRoute(
+                        builder: (context) => TuitionFeeAdvisingPage()
+                      )
+                    );
+                  },
                 ),
 
                 const SizedBox(height: 15,),
@@ -114,6 +166,10 @@ class _EnrollmentDashboardState extends State<EnrollmentDashboard> {
                 EnrollmentImageTile(
                   title: "Course Offering\nSY2025 - 2026",
                   imgPath: "assets/img/enrollment_dashboard/courses_cover_photo.jpg",
+                  onTap: () {
+                    Navigator.push(context, 
+                    MaterialPageRoute(builder: (context) => CourseOfferListPage()));
+                  },
                 ),
 
                 const SizedBox(height: 15,),
@@ -121,6 +177,10 @@ class _EnrollmentDashboardState extends State<EnrollmentDashboard> {
                 EnrollmentImageTile(
                   title: "Course\nRecommendation: \nA.I.",
                   imgPath: "assets/img/enrollment_dashboard/one_sti_crop.jpg",
+                  onTap: () {
+                    // Navigator.push(context, 
+                    // MaterialPageRoute(builder: (context) => ));
+                  },
                 ),
 
                 const SizedBox(height: 30,),
