@@ -4,6 +4,7 @@ import 'package:sti_startnow/pages/enrollment_dashboard/components/drawer_tile.d
 import 'package:sti_startnow/pages/enrollment_dashboard/components/enrollment_image_tile.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/components/enrollment_schedule.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/components/enrollment_tile.dart';
+import 'package:sti_startnow/pages/enrollment_dashboard/course_offer_list_page.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/requirement_page.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/tuition_fee_advising_page.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
@@ -165,6 +166,10 @@ class EnrollmentDashboard extends StatelessWidget {
                 EnrollmentImageTile(
                   title: "Course Offering\nSY2025 - 2026",
                   imgPath: "assets/img/enrollment_dashboard/courses_cover_photo.jpg",
+                  onTap: () {
+                    Navigator.push(context, 
+                    MaterialPageRoute(builder: (context) => CourseOfferListPage()));
+                  },
                 ),
 
                 const SizedBox(height: 15,),
@@ -172,6 +177,10 @@ class EnrollmentDashboard extends StatelessWidget {
                 EnrollmentImageTile(
                   title: "Course\nRecommendation: \nA.I.",
                   imgPath: "assets/img/enrollment_dashboard/one_sti_crop.jpg",
+                  onTap: () {
+                    // Navigator.push(context, 
+                    // MaterialPageRoute(builder: (context) => ));
+                  },
                 ),
 
                 const SizedBox(height: 30,),

@@ -7,30 +7,25 @@ import 'package:sti_startnow/theme/app_theme.dart';
 
 class TuitionFeeAdvisingPage extends StatelessWidget {
 
-  final List<String> courses = [
-    "Bachelor of Science in Computer Science",
-    "Bachelor of Science in Information Technology",
-    "Bachelor of Science in Computer Engineering",
-    "Bachelor of Science in Business Administration",
-    "Bachelor of Science in Accounting Information System",
-    "Bachelor of Science in Accountancy",
-    "Bachelor of Science in Hospitality Management",
-    "Bachelor of Arts in Communication",
-    "Bachelor of Multimedia Arts",
-    "Bachelor of Science Tourism Management"
-  ];
+  final List<List> courses = [
+    ["Bachelor of Science in Computer Science", "assets/img/enrollment_dashboard/courses_img/technology.jpg"],
 
-  final List<String> courseImgPath = [
-    "assets/img/enrollment_dashboard/courses_img/technology.jpg",
-    "assets/img/enrollment_dashboard/courses_img/it.jpg",
-    "assets/img/enrollment_dashboard/courses_img/math.jpg",
-    "assets/img/enrollment_dashboard/courses_img/literature.jpg",
-    "assets/img/enrollment_dashboard/courses_img/technology.jpg",
-    "assets/img/enrollment_dashboard/courses_img/math.jpg",
-    "assets/img/enrollment_dashboard/courses_img/cooking.jpg",
-    "assets/img/enrollment_dashboard/courses_img/communication.jpg",
-    "assets/img/enrollment_dashboard/courses_img/multimedia.jpg",
-    "assets/img/enrollment_dashboard/courses_img/tourism.jpg",
+    ["Bachelor of Science in Information Technology","assets/img/enrollment_dashboard/courses_img/it.jpg"],
+
+    ["Bachelor of Science in Computer Engineering","assets/img/enrollment_dashboard/courses_img/math.jpg"],
+
+    ["Bachelor of Science in Business Administration", "assets/img/enrollment_dashboard/courses_img/literature.jpg"],
+
+    ["Bachelor of Science in Accounting Information System", "assets/img/enrollment_dashboard/courses_img/technology.jpg"],
+
+    ["Bachelor of Science in Accountancy", "assets/img/enrollment_dashboard/courses_img/math.jpg"],
+
+    ["Bachelor of Science in Hospitality Management", "assets/img/enrollment_dashboard/courses_img/cooking.jpg"],
+
+    ["Bachelor of Arts in Communication", "assets/img/enrollment_dashboard/courses_img/communication.jpg"],
+
+    ["Bachelor of Multimedia Arts", "assets/img/enrollment_dashboard/courses_img/multimedia.jpg"],
+    ["Bachelor of Science Tourism Management", "assets/img/enrollment_dashboard/courses_img/tourism.jpg"]
   ];  
 
 
@@ -70,8 +65,8 @@ class TuitionFeeAdvisingPage extends StatelessWidget {
                   itemCount: courses.length,
                   itemBuilder: (context, index) {
                     return CourseTile(
-                      courseName: courses[index],
-                      imgPath: courseImgPath[index],
+                      courseName: courses[index][0],
+                      imgPath: courses[index][1],
                       onTap: () {
                         Navigator.push(
                           context, 
