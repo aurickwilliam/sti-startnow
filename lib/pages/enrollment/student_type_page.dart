@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sti_startnow/pages/enrollment/components/bottom_button.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/enrollment/components/multiple_choice_card.dart';
+import 'package:sti_startnow/pages/enrollment/student_status_page.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class StudentTypePage extends StatefulWidget {
@@ -34,6 +36,7 @@ class _StudentTypePageState extends State<StudentTypePage> {
               step2: false,
               step3: false,
               step4: false,
+              title: "Student Type",
             ),
             Expanded(
               child: Padding(
@@ -62,23 +65,11 @@ class _StudentTypePageState extends State<StudentTypePage> {
                       ],
                     ),
                       
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppTheme.colors.primary,
-                        foregroundColor: AppTheme.colors.white,
-                        minimumSize: Size(double.infinity, 46),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6)
-                        )
-                      ),
-                      onPressed: () {}, 
-                      child: Text(
-                        "Next",
-                        style: GoogleFonts.roboto(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      )
+                    BottomButton(
+                      onPressed: () {
+                        Navigator.push(context, 
+                        MaterialPageRoute(builder: (context) => StudentStatusPage()));
+                      }
                     )
                   ],
                 ),

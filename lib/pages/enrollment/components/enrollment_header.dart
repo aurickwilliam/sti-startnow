@@ -8,6 +8,7 @@ class EnrollmentHeader extends StatelessWidget {
   final bool step2;
   final bool step3;
   final bool step4;
+  final String title;
 
   const EnrollmentHeader({
     super.key,
@@ -15,6 +16,7 @@ class EnrollmentHeader extends StatelessWidget {
     required this.step2,
     required this.step3,
     required this.step4,
+    required this.title,
   });
 
   @override
@@ -44,7 +46,7 @@ class EnrollmentHeader extends StatelessWidget {
             ),
 
             Text(
-              "Student Type",
+              title,
               style: GoogleFonts.roboto(
                 color: AppTheme.colors.white,
                 fontSize: 32,
