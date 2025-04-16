@@ -28,3 +28,4 @@ flutter:
   assets:
     - "assets/img/"
     - "assets/img/enrollment_dashboard/"
+    - "assets/img/enrollment_dashboard/courses_img/"
