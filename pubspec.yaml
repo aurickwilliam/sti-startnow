@@ -27,6 +27,7 @@ flutter:
   uses-material-design: true
   assets:
     - "assets/img/"
+    - "assets/img/enrollment/"
     - "assets/img/enrollment_dashboard/"
     - "assets/img/enrollment_dashboard/courses_img/"
     - "assets/img/enrollment_dashboard/courses_img/specific/"

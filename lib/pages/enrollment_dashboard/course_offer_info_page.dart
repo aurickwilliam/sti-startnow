@@ -44,7 +44,7 @@ class CourseOfferInfoPage extends StatelessWidget {
                   width: double.infinity,
                   height: 200,
                   decoration: BoxDecoration(
-                    color: Colors.deepPurple,
+                    color: AppTheme.colors.white,
                     borderRadius: BorderRadius.circular(15),
                     image: DecorationImage(
                       image: AssetImage(imgPath),
