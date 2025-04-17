@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/pages/enrollment/components/bottom_button.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/enrollment/components/multiple_choice_card.dart';
-import 'package:sti_startnow/pages/enrollment/regular/student_portal_page.dart';
+import 'package:sti_startnow/pages/enrollment/student_portal_page.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class StudentStatusPage extends StatefulWidget {
@@ -94,7 +94,8 @@ class _StudentStatusPageState extends State<StudentStatusPage> {
                       onPressed: () {
                         Navigator.push(context, 
                         MaterialPageRoute(builder: (context) => StudentPortalPage()));
-                      }
+                      },
+                      text: "Next",
                     )
                   ],
                 ),

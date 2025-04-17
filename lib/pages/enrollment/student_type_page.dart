@@ -69,7 +69,8 @@ class _StudentTypePageState extends State<StudentTypePage> {
                       onPressed: () {
                         Navigator.push(context, 
                         MaterialPageRoute(builder: (context) => StudentStatusPage()));
-                      }
+                      },
+                      text: "Next",
                     )
                   ],
                 ),
