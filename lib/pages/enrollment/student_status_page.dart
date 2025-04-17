@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sti_startnow/pages/enrollment/components/bottom_button.dart';
+import 'package:sti_startnow/pages/components/bottom_button.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/enrollment/components/multiple_choice_card.dart';
+import 'package:sti_startnow/pages/enrollment/irregular/checklist_page.dart';
 import 'package:sti_startnow/pages/enrollment/student_portal_page.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
@@ -27,15 +28,20 @@ class _StudentStatusPageState extends State<StudentStatusPage> {
   // Refactor kapag nandyan na ung DB
   // Remove the prop drilling
   void handleNavigation(){
-    if (selectedStatus != ""){
-      Navigator.push(context, 
-      MaterialPageRoute(builder: (context) => 
-      StudentPortalPage(studentStatus: selectedStatus)));
+    Widget destination = SizedBox.shrink();
+
+    if (selectedStatus == ""){
+      print("Select a Status");
     }
-    else {
-      // Error message if haven't selected any status
-      print("Select a Status!");
+
+    if (selectedStatus == statusStudent[0]){
+      destination = StudentPortalPage(studentStatus: selectedStatus);
     }
+    else if (selectedStatus == statusStudent[1]){
+      destination = ChecklistPage(studentStatus: selectedStatus,);
+    }
+
+    Navigator.push(context, MaterialPageRoute(builder: (context) => destination));
   }
 
   @override

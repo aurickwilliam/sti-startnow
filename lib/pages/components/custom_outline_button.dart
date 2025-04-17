@@ -5,11 +5,13 @@ import 'package:sti_startnow/theme/app_theme.dart';
 class CustomOutlineButton extends StatelessWidget {
   final String text;
   final Function()? onPressed;
+  final bool isFullWidth;
 
   const CustomOutlineButton({
     super.key,
     required this.text,
     required this.onPressed,
+    this.isFullWidth = true,
   });
 
   @override
@@ -19,7 +21,7 @@ class CustomOutlineButton extends StatelessWidget {
       style: OutlinedButton.styleFrom(
         foregroundColor: AppTheme.colors.gold,
         backgroundColor: AppTheme.colors.white,
-        minimumSize: Size(double.infinity, 46),
+        minimumSize: Size(isFullWidth ? double.infinity : 150, 46),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(6),
         ),

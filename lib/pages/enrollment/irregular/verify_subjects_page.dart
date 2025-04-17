@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sti_startnow/pages/components/custom_dropdown_menu.dart';
-import 'package:sti_startnow/pages/enrollment/completed_page.dart';
+import 'package:provider/provider.dart';
 import 'package:sti_startnow/pages/components/bottom_button.dart';
+import 'package:sti_startnow/pages/components/custom_outline_button.dart';
+import 'package:sti_startnow/pages/enrollment/completed_page.dart';
 import 'package:sti_startnow/pages/enrollment/components/custom_data_table.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
+import 'package:sti_startnow/providers/subject_list_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
-class SelectSectionPage extends StatelessWidget {
-  SelectSectionPage({super.key});
-
-  // Temporary values for list of section
-  final List<String> listSection = ["CS401", "CS402", "CS403", "CS404"];
-
+class VerifySubjectsPage extends StatelessWidget {
+  VerifySubjectsPage({super.key});
 
   // Values for the Column
   final List<String> columnNames = [
@@ -23,9 +21,6 @@ class SelectSectionPage extends StatelessWidget {
     "Day",
     "Room"
   ];
-
-  // Temporary value for total units
-  final double totalUnits = 23.0;
 
   // Temporay values for the Data Table
   final List<List> dataTableValues = [
@@ -43,54 +38,29 @@ class SelectSectionPage extends StatelessWidget {
     ["COSC1001", "P.E./PATHFIT 4: Team Sports", "3.00", "1:00PM - 3:00PM", "TH", "COURT"],
   ];
 
-  final TextEditingController sectionController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
+    final subjectListProvider = Provider.of<SubjectListProvider>(context);
+    final totalUnits = subjectListProvider.getTotalUnitsSelectedSubjects();
+
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
         child: Column(
           children: [
             EnrollmentHeader(
-              step1: true,
-              step2: true,
-              step3: true,
-              step4: false,
-              title: "Enrollment",
+              step1: true, 
+              step2: true, 
+              step3: true, 
+              step4: false, 
+              title: "Enrollment"
             ),
 
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 10,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 15),
                 child: ListView(
                   children: [
-                    Text(
-                      "Select a Section",
-                      style: GoogleFonts.roboto(
-                        color: AppTheme.colors.primary,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    CustomDropdownMenu(
-                      listChoices: listSection,
-                      controller: sectionController,
-                      label: "Available Sections:",
-                      hint: "Select a section",
-                      initialValue: "",
-                      isRequired: false,
-                      isEnable: true,
-                    ),
-
-                    const SizedBox(height: 30,),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -125,17 +95,31 @@ class SelectSectionPage extends StatelessWidget {
 
                     const SizedBox(height: 50,),
 
-                    BottomButton(
-                      onPressed: () {
-                        Navigator.push(context, 
-                        MaterialPageRoute(builder: (context) => CompletedPage()));
-                      }, 
-                      text: "Submit"
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        CustomOutlineButton(
+                          text: "Back", 
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          isFullWidth: false,
+                        ),
+
+                        BottomButton(
+                          onPressed: () {
+                            Navigator.push(context, 
+                            MaterialPageRoute(builder: (context) => CompletedPage()));
+                          }, 
+                          text: "Submit",
+                          isFullWidth: false,
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
-            ),
+            )
           ],
         ),
       ),

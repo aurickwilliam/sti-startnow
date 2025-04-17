@@ -5,11 +5,13 @@ import 'package:sti_startnow/theme/app_theme.dart';
 class BottomButton extends StatelessWidget {
   final Function()? onPressed;
   final String text;
+  final bool isFullWidth;
 
   const BottomButton({
     super.key,
     required this.onPressed,
     required this.text,
+    this.isFullWidth = true,
   });
 
   @override
@@ -18,7 +20,7 @@ class BottomButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         backgroundColor: AppTheme.colors.primary,
         foregroundColor: AppTheme.colors.white,
-        minimumSize: Size(double.infinity, 46),
+        minimumSize: Size(isFullWidth ? double.infinity : 150, 46),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(6)
         )

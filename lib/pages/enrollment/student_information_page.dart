@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/pages/components/custom_dropdown_menu.dart';
 import 'package:sti_startnow/pages/components/number_input.dart';
-import 'package:sti_startnow/pages/enrollment/components/bottom_button.dart';
+import 'package:sti_startnow/pages/components/bottom_button.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
+import 'package:sti_startnow/pages/enrollment/irregular/select_year_level_page.dart';
 import 'package:sti_startnow/pages/enrollment/regular/select_section_page.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
@@ -77,6 +78,25 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
     "Low Down",
     "Low Monthly"
   ];
+
+  // Temporary
+  // Remove Prop drilling
+  void handleNavigation(){
+    Widget destination = SizedBox.shrink();
+
+    if (widget.studentStatus == ""){
+      print("Select a Status");
+    }
+
+    if (widget.studentStatus == "Regular"){
+      destination = SelectSectionPage();
+    }
+    else if (widget.studentStatus == "Irregular"){
+      destination = SelectYearLevelPage();
+    }
+
+    Navigator.push(context, MaterialPageRoute(builder: (context) => destination));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -246,8 +266,7 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
 
                     BottomButton(
                       onPressed: () {
-                        Navigator.push(context, 
-                        MaterialPageRoute(builder: (context) => SelectSectionPage()));
+                        handleNavigation();
                       }, 
                       text: "Submit"
                     )
