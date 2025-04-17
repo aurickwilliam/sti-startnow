@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sti_startnow/pages/components/custom_dropdown_menu.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/components/tuition_type_card.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
@@ -38,10 +39,34 @@ class _TuitionFeeCoursePageState extends State<TuitionFeeCoursePage> {
     "4Y2",
   ];
 
-  String? selectedItem = yearLevelList.first;
+  TextEditingController yearLevelController = TextEditingController();
+
+  @override
+  void initState(){
+    super.initState();
+
+    yearLevelController.addListener(handleYearLevelChange);
+  }
+
+  // Method when the user changes the dropdown
+  // So it can change the card below
+  void handleYearLevelChange(){
+    print(yearLevelController.text);
+  }
+
+  @override
+  void dispose(){
+    yearLevelController.removeListener(handleYearLevelChange);
+    yearLevelController.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
+
+    yearLevelController.text = yearLevelList.first;
+
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
@@ -76,50 +101,14 @@ class _TuitionFeeCoursePageState extends State<TuitionFeeCoursePage> {
                 const SizedBox(height: 10,),
 
                 // Dropdown of Year Level 
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Year Level:",
-                      style: GoogleFonts.roboto(
-                        color: AppTheme.colors.black,
-                        fontSize: 14,
-                      ),
-                    ),
-
-                    const SizedBox(height: 5,),
-
-                    DropdownMenu(
-                      width: double.infinity,
-                      enableSearch: false,
-                      hintText: "Select a Year Level",
-                      trailingIcon: Icon(Icons.unfold_more),
-                      textStyle: GoogleFonts.roboto(
-                        color: AppTheme.colors.black,
-                        fontSize: 16,
-                      ),
-                      inputDecorationTheme: InputDecorationTheme(
-                        fillColor: AppTheme.colors.black,
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(width: 3, color: AppTheme.colors.black),
-                          borderRadius: BorderRadius.circular(6)
-                        ),
-                        focusColor: AppTheme.colors.primary,
-                      ),
-                    
-                      initialSelection: yearLevelList.first,
-                      dropdownMenuEntries: yearLevelList.map((item) => DropdownMenuEntry(
-                        value: item, 
-                        label: item,
-                        
-                      )).toList(),
-                      onSelected: (value) {
-                        setState(() {
-                          selectedItem = value;
-                        });
-                      },
-                    ),
-                  ],
+                CustomDropdownMenu(
+                  listChoices: yearLevelList, 
+                  controller: yearLevelController,
+                  label: "Year Level:",
+                  hint: "Select a Year Level",
+                  initialValue: yearLevelList.first,
+                  isRequired: false,
+                  isEnable: true,
                 ),
 
                 const SizedBox(height: 20,),

@@ -24,6 +24,20 @@ class _StudentStatusPageState extends State<StudentStatusPage> {
     });
   }
 
+  // Refactor kapag nandyan na ung DB
+  // Remove the prop drilling
+  void handleNavigation(){
+    if (selectedStatus != ""){
+      Navigator.push(context, 
+      MaterialPageRoute(builder: (context) => 
+      StudentPortalPage(studentStatus: selectedStatus)));
+    }
+    else {
+      // Error message if haven't selected any status
+      print("Select a Status!");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,8 +106,7 @@ class _StudentStatusPageState extends State<StudentStatusPage> {
 
                     BottomButton(
                       onPressed: () {
-                        Navigator.push(context, 
-                        MaterialPageRoute(builder: (context) => StudentPortalPage()));
+                        handleNavigation();
                       },
                       text: "Next",
                     )

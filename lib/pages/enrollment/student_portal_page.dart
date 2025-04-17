@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:sti_startnow/pages/enrollment/components/bottom_button.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
-import 'package:sti_startnow/pages/enrollment/components/number_input.dart';
-import 'package:sti_startnow/pages/enrollment/components/password_input.dart';
+import 'package:sti_startnow/pages/components/number_input.dart';
+import 'package:sti_startnow/pages/components/password_input.dart';
 import 'package:sti_startnow/pages/enrollment/payment_receipt_page.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class StudentPortalPage extends StatefulWidget {
-  const StudentPortalPage({super.key});
+  final String studentStatus;
+
+  const StudentPortalPage({
+    super.key,
+    required this.studentStatus,
+  });
 
   @override
   State<StudentPortalPage> createState() => _StudentPortalPageState();
@@ -45,7 +50,8 @@ class _StudentPortalPageState extends State<StudentPortalPage> {
                           controller: studentNumberController, 
                           label: "Student Number:", 
                           hint: "02000XXXXXX", 
-                          isRequired: true
+                          isRequired: true,
+                          isEnable: true,
                         ),
                     
                         const SizedBox(height: 10,),
@@ -54,7 +60,8 @@ class _StudentPortalPageState extends State<StudentPortalPage> {
                           controller: accessCodeController, 
                           label: "Access Code:", 
                           hint: "Enter Access Code", 
-                          isRequired: true
+                          isRequired: true,
+                          isEnable: true,
                         ),
                       ],
                     ),
@@ -62,7 +69,8 @@ class _StudentPortalPageState extends State<StudentPortalPage> {
                     BottomButton(
                       onPressed: () {
                         Navigator.push(context, 
-                        MaterialPageRoute(builder: (context) => PaymentReceiptPage()));
+                        MaterialPageRoute(builder: (context) => 
+                        PaymentReceiptPage(studentStatus: widget.studentStatus,)));
                       },
                       text: "Submit",
                     )

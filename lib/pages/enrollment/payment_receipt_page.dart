@@ -6,10 +6,15 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sti_startnow/pages/enrollment/components/bottom_button.dart';
 import 'package:sti_startnow/pages/enrollment/components/custom_outline_button.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
+import 'package:sti_startnow/pages/enrollment/student_information_page.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class PaymentReceiptPage extends StatefulWidget {
-  const PaymentReceiptPage({super.key});
+  final String studentStatus;
+  const PaymentReceiptPage({
+    super.key,
+    required this.studentStatus,
+  });
 
   @override
   State<PaymentReceiptPage> createState() => _PaymentReceiptPageState();
@@ -90,7 +95,9 @@ class _PaymentReceiptPageState extends State<PaymentReceiptPage> {
 
                     BottomButton(
                       onPressed: () {
-
+                        Navigator.push(context, 
+                        MaterialPageRoute(builder: (context) => 
+                        StudentInformationPage(studentStatus: widget.studentStatus)));
                       }, 
                       text: "Submit"
                     )

@@ -3,11 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
-class NumberInput extends StatelessWidget {
-  final controller;
+class NumberInput extends StatefulWidget {
+  final TextEditingController controller;
   final String label;
   final String hint;
   final bool isRequired;
+  final bool isEnable;
 
   const NumberInput({
     super.key,
@@ -15,7 +16,34 @@ class NumberInput extends StatelessWidget {
     required this.label,
     required this.hint,
     required this.isRequired,
+    required this.isEnable,
   });
+
+  @override
+  State<NumberInput> createState() => _NumberInputState();
+}
+
+class _NumberInputState extends State<NumberInput> {
+  FocusNode focusNode = FocusNode();
+  bool isFocused = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Change the isFocused variable when the user focus on the textfield
+    focusNode.addListener(() {
+      setState(() {
+        isFocused = focusNode.hasFocus;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    focusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +59,10 @@ class NumberInput extends StatelessWidget {
             ),
             children: [
               TextSpan(
-                text: label
+                text: widget.label
               ),
               TextSpan(
-                text: isRequired ? "*" : "",
+                text: widget.isRequired ? "*" : "",
                 style: GoogleFonts.roboto(
                   color: AppTheme.colors.red
                 )
@@ -50,7 +78,9 @@ class NumberInput extends StatelessWidget {
           keyboardType: TextInputType.number,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
 
-          controller: controller,
+          focusNode: focusNode,
+          enabled: widget.isEnable,
+          controller: widget.controller,
           decoration: InputDecoration(
             border: OutlineInputBorder(),
             focusedBorder: OutlineInputBorder(
@@ -69,13 +99,13 @@ class NumberInput extends StatelessWidget {
               borderRadius: BorderRadius.circular(10)
             ),
 
-            hintText: hint,
-            suffixIcon: IconButton(
+            hintText: widget.hint,
+            suffixIcon: isFocused ? IconButton(
               onPressed: () {
-                controller.clear();
+                widget.controller.clear();
               },
               icon: Icon(Icons.clear),
-            )
+            ) : null,
           ),
           style: GoogleFonts.roboto(
             color: AppTheme.colors.black,

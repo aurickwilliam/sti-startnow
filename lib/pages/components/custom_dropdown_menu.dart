@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
-
-class TextInput extends StatelessWidget {
-  final controller;
-  final String label;
+class CustomDropdownMenu extends StatelessWidget {
+  final List<String> listChoices;
+  final TextEditingController controller;
   final String hint;
+  final String label;
+  final String initialValue;
   final bool isRequired;
+  final bool isEnable;
 
-  const TextInput({
+  const CustomDropdownMenu({
     super.key,
+    required this.listChoices,
     required this.controller,
     required this.label,
     required this.hint,
+    required this.initialValue,
     required this.isRequired,
+    required this.isEnable,
   });
 
   @override
@@ -44,12 +48,25 @@ class TextInput extends StatelessWidget {
           )
         ),
 
-        const SizedBox(height: 10,),
+        const SizedBox(height: 5,),
 
-        TextField(
+        DropdownMenu(
+          width: double.infinity,
           controller: controller,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
+          enableSearch: false,
+          hintText: hint,
+          trailingIcon: Icon(Icons.unfold_more),
+          textStyle: GoogleFonts.roboto(
+            color: AppTheme.colors.black,
+            fontSize: 16,
+          ),
+          inputDecorationTheme: InputDecorationTheme(
+            fillColor: AppTheme.colors.black,
+            border: OutlineInputBorder(
+              borderSide: BorderSide(width: 3, color: AppTheme.colors.black),
+              borderRadius: BorderRadius.circular(6)
+            ),
+
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
                 color: AppTheme.colors.primary, 
@@ -66,19 +83,15 @@ class TextInput extends StatelessWidget {
               borderRadius: BorderRadius.circular(10)
             ),
 
-            hintText: hint,
-            suffixIcon: IconButton(
-              onPressed: () {
-                controller.clear();
-              },
-              icon: Icon(Icons.clear),
-            )
           ),
-          style: GoogleFonts.roboto(
-            color: AppTheme.colors.black,
-            fontSize: 16
-          ),
-        )
+        
+          initialSelection: initialValue,
+          dropdownMenuEntries: listChoices.map((item) => DropdownMenuEntry(
+            value: item, 
+            label: item,
+            
+          )).toList(),
+        ),
       ],
     );
   }
