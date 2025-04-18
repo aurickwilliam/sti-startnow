@@ -5,11 +5,13 @@ import 'package:sti_startnow/theme/app_theme.dart';
 class PageAppBar extends StatelessWidget {
 
   final String title;
+  final bool hasBackButton;
   final Function()? onPressed;
 
   const PageAppBar({
     super.key,
     required this.title,
+    this.hasBackButton = true,
     required this.onPressed,
   });
 
@@ -21,18 +23,19 @@ class PageAppBar extends StatelessWidget {
         children: [
           Row(
             children: [
-              IconButton(
+              hasBackButton ? IconButton(
                 onPressed: onPressed, 
                 icon: Icon(Icons.arrow_circle_left),
                 iconSize: 35,
                 color: AppTheme.colors.primary,
-              ),
+              ) : SizedBox.shrink(), 
 
               Text(
                 title,
+                softWrap: true,
                 style: GoogleFonts.roboto(
                   color: AppTheme.colors.primary,
-                  fontSize: 32,
+                  fontSize: 28,
                   fontWeight: FontWeight.bold,
                 ),
               )
