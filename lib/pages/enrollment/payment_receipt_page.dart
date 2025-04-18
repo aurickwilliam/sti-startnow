@@ -26,6 +26,16 @@ class _PaymentReceiptPageState extends State<PaymentReceiptPage> {
   File? selectedImage;
   File? selectedImageName;
 
+  // Asynchronous Function to access the gallery and return an image
+  Future pickImageFromGallery() async{
+    final returnedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      selectedImage = File(returnedImage!.path);
+      selectedImageName = File(returnedImage.name);
+    });
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,15 +119,5 @@ class _PaymentReceiptPageState extends State<PaymentReceiptPage> {
         )
       ),
     );
-  }
-
-  // Asynchronous Function to access the gallery and return an image
-  Future pickImageFromGallery() async{
-    final returnedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      selectedImage = File(returnedImage!.path);
-      selectedImageName = File(returnedImage.name);
-    });
   }
 }
