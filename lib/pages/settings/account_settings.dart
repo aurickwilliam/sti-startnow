@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:sti_startnow/pages/components/option_box.dart';
+import 'package:sti_startnow/pages/components/option_tile.dart';
+import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/settings/change_email.dart';
 import 'package:sti_startnow/pages/settings/change_password.dart';
-import 'package:sti_startnow/pages/settings/components/settings_box.dart';
-import 'package:sti_startnow/pages/settings/components/settings_box_item.dart';
-import 'package:sti_startnow/pages/settings/components/settings_header.dart';
 import 'package:sti_startnow/pages/settings/settings.dart';
+import 'package:sti_startnow/theme/app_theme.dart';
 
 class AccountSettings extends StatelessWidget {
   const AccountSettings({super.key});
@@ -12,61 +14,63 @@ class AccountSettings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFFFFF),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Settings header
-            SettingsHeader(
-              header: "Settings",
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Settings()),
-                );
-              },
-            ),
-            const SizedBox(height: 8),
-
-            // Sub header
-            Padding(
-              padding: const EdgeInsets.only(left: 16.0),
-              child: Text(
-                "Account Settings",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+      backgroundColor: AppTheme.colors.white,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Settings header
+              PageAppBar(
+                title: "Settings",
+                onPressed: () {
+                  Navigator.push(context, 
+                  MaterialPageRoute(builder: (context) => Settings()));
+                },
               ),
-            ),
-            const SizedBox(height: 6),
 
-            // Settings box
-            SettingsBox(
-              children: [
-                SettingsBoxItem(
-                  icon: Icons.lock_outline,
-                  title: "Change Password",
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ChangePassword()),
-                    );
-                  },
+              const SizedBox(height: 20),
+        
+              // Sub header
+              Text(
+                "Account Settings",
+                style: GoogleFonts.roboto(
+                  fontWeight: FontWeight.w500, 
+                  fontSize: 16
                 ),
-                SettingsBoxItem(
-                  icon: Icons.email_outlined,
-                  title: "Change Email",
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ChangeEmail()),
-                    );
-                  },
-                  isLastItem: true, // Refer to settings_box_item.dart
-                ),
-              ],
-            ),
-          ],
+              ),
+              const SizedBox(height: 10),
+        
+              // Settings box
+              OptionBox(
+                children: [
+                  OptionTile(
+                    text: "Change Password", 
+                    icon: Icons.lock_outline, 
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ChangePassword()),
+                      );
+                    }
+                  ),
+
+                  OptionTile(
+                    text: "Change Email", 
+                    icon: Icons.email_outlined, 
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ChangeEmail()),
+                      );
+                    },
+                    isLastItem: true,
+                  ),
+                ]
+              )
+            ],
+          ),
         ),
       ),
     );

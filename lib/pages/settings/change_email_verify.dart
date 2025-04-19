@@ -1,84 +1,95 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:sti_startnow/pages/components/bottom_button.dart';
+import 'package:sti_startnow/pages/components/number_input.dart';
+import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/settings/account_settings.dart';
-import 'package:sti_startnow/pages/settings/components/settings_button.dart';
-import 'package:sti_startnow/pages/settings/components/settings_field.dart';
-import 'package:sti_startnow/pages/settings/components/settings_header.dart';
+import 'package:sti_startnow/theme/app_theme.dart';
 
 class ChangeEmailVerify extends StatelessWidget {
-  const ChangeEmailVerify({super.key});
+  ChangeEmailVerify({super.key});
+
+  final TextEditingController codeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFFFFF),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // Header, instructions, and verify email
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Change email header
-                SettingsHeader(header: "Change Email"),
-                const SizedBox(height: 32),
+      backgroundColor: AppTheme.colors.white,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Header, instructions, and verify email
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Change email header
+                  PageAppBar(
+                    title: "Change Email"
+                  ),
 
-                // Instructions header
-                Padding(
-                  padding: const EdgeInsets.only(left: 16.0),
-                  child: Text(
+                  const SizedBox(height: 20),
+        
+                  // Instructions header
+                  Text(
                     "Verify New Email",
-                    style: TextStyle(
-                      color: Color(0xFF0B5793),
+                    style: GoogleFonts.roboto(
+                      color: AppTheme.colors.primary,
                       fontWeight: FontWeight.bold,
                       fontSize: 24,
                     ),
                   ),
-                ),
-                const SizedBox(height: 4),
 
-                // Instructions
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text(
+                  const SizedBox(height: 4),
+        
+                  // Instructions
+                  Text(
                     "Enter the 6-Digit Code that will be sent to your new email for verification.",
-                  ),
-                ),
-                const SizedBox(height: 32),
-
-                // Verification code field
-                SettingsField(header: "Verification Code", hintText: "XXXXXX"),
-                const SizedBox(height: 4),
-
-                // Resend code
-                Padding(
-                  padding: const EdgeInsets.only(left: 16.0),
-                  child: Text(
-                    "Resend Code",
-                    style: TextStyle(
-                      color: Color(0xFF0B5793),
-                      decoration: TextDecoration.underline,
+                    style: GoogleFonts.roboto(
+                      color: AppTheme.colors.black,
+                      fontSize: 14,
                     ),
                   ),
-                ),
-              ],
-            ),
 
-            // Submit button
-            Padding(
-              padding: const EdgeInsets.only(bottom: 32.0),
-              child: SettingsButton(
-                buttonText: "Submit",
+                  const SizedBox(height: 30),
+        
+                  // Verification code field
+                  NumberInput(
+                    controller: codeController, 
+                    label: "Verification Code:", 
+                    hint: "XXXXXX", 
+                    isRequired: false, 
+                    isEnable: true
+                  ),
+
+                  const SizedBox(height: 10),
+        
+                  // Resend code
+                  Text(
+                    "Resend Code",
+                    style: GoogleFonts.roboto(
+                      color: AppTheme.colors.primary,
+                      decoration: TextDecoration.underline,
+                      fontWeight: FontWeight.w500
+                    ),
+                  ),
+                ],
+              ),
+        
+              // Submit button
+              BottomButton(
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => AccountSettings()),
                   );
-                },
-              ),
-            ),
-          ],
+                }, 
+                text: "Submit"
+              )
+            ],
+          ),
         ),
       ),
     );

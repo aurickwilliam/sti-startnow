@@ -1,59 +1,70 @@
 import 'package:flutter/material.dart';
+import 'package:sti_startnow/pages/components/bottom_button.dart';
+import 'package:sti_startnow/pages/components/page_app_bar.dart';
+import 'package:sti_startnow/pages/components/password_input.dart';
 import 'package:sti_startnow/pages/settings/account_settings.dart';
-import 'package:sti_startnow/pages/settings/components/settings_button.dart';
-import 'package:sti_startnow/pages/settings/components/settings_field.dart';
-import 'package:sti_startnow/pages/settings/components/settings_header.dart';
+import 'package:sti_startnow/theme/app_theme.dart';
 
 class ChangePasswordNew extends StatelessWidget {
-  const ChangePasswordNew({super.key});
+  ChangePasswordNew({super.key});
+
+  final TextEditingController newPasswordController = TextEditingController();
+  final TextEditingController reTypePasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFFFFF),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // Header and text fields
-            Column(
-              children: [
-                // Change password header
-                SettingsHeader(header: "Change Password"),
-                const SizedBox(height: 32),
+      backgroundColor: AppTheme.colors.white,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Header and text fields
+              Column(
+                children: [
+                  // Change password header
+                  PageAppBar(
+                    title: "Change Password"
+                  ),
 
-                // New password field
-                SettingsField(
-                  header: "Enter New Password",
-                  hintText: "Enter New Password",
-                  isPassword: true,
-                ),
-                const SizedBox(height: 12),
+                  const SizedBox(height: 20),
+        
+                  // New password field
+                  PasswordInput(
+                    controller: newPasswordController, 
+                    label: "Enter New Password:", 
+                    hint: "Enter New Password", 
+                    isRequired: false, 
+                    isEnable: true
+                  ),
 
-                // Re-type new password
-                SettingsField(
-                  header: "Re-Type New Password",
-                  hintText: "Re-Type New Password",
-                  isPassword: true,
-                ),
-              ],
-            ),
-
-            // Change pass button
-            Padding(
-              padding: const EdgeInsets.only(bottom: 32.0),
-              child: SettingsButton(
-                buttonText: "Change Password",
+                  const SizedBox(height: 15),
+        
+                  // Re-type new password
+                  PasswordInput(
+                    controller: reTypePasswordController, 
+                    label: "Re-Type New Password", 
+                    hint: "Re-Type New Password", 
+                    isRequired: false, 
+                    isEnable: true
+                  )
+                ],
+              ),
+        
+              // Change pass button
+              BottomButton(
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => AccountSettings()),
                   );
-                },
-              ),
-            ),
-          ],
+                }, 
+                text: "Change Password"
+              )
+            ],
+          ),
         ),
       ),
     );

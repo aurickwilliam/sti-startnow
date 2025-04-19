@@ -1,51 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:sti_startnow/pages/components/bottom_button.dart';
+import 'package:sti_startnow/pages/components/page_app_bar.dart';
+import 'package:sti_startnow/pages/components/password_input.dart';
 import 'package:sti_startnow/pages/settings/change_email_new.dart';
-import 'package:sti_startnow/pages/settings/components/settings_button.dart';
-import 'package:sti_startnow/pages/settings/components/settings_field.dart';
-import 'package:sti_startnow/pages/settings/components/settings_header.dart';
+import 'package:sti_startnow/theme/app_theme.dart';
 
 class ChangeEmail extends StatelessWidget {
-  const ChangeEmail({super.key});
+  ChangeEmail({super.key});
+
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFFFFF),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // Header and text field
-            Column(
-              children: [
-                // Change email header
-                SettingsHeader(header: "Change Email"),
-                const SizedBox(height: 32),
+      backgroundColor: AppTheme.colors.white,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Header and text field
+              Column(
+                children: [
+                  // Change email header
+                  PageAppBar(
+                    title: "Change Email"
+                  ),
 
-                // Enter password field
-                SettingsField(
-                  header: "Enter Password",
-                  hintText: "Enter Password",
-                  isPassword: true,
-                ),
-              ],
-            ),
-
-            // Submit button
-            Padding(
-              padding: const EdgeInsets.only(bottom: 32.0),
-              child: SettingsButton(
-                buttonText: "Submit",
+                  const SizedBox(height: 20),
+        
+                  // Enter password field
+                  PasswordInput(
+                    controller: passwordController, 
+                    label: "Enter Password:", 
+                    hint: "Enter Password", 
+                    isRequired: false, 
+                    isEnable: true
+                  )
+                ],
+              ),
+        
+              // Submit button
+              BottomButton(
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => ChangeEmailNew()),
                   );
-                },
-              ),
-            ),
-          ],
+                }, 
+                text: "Submit"
+              )
+            ],
+          ),
         ),
       ),
     );

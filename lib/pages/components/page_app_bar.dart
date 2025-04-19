@@ -12,7 +12,7 @@ class PageAppBar extends StatelessWidget {
     super.key,
     required this.title,
     this.hasBackButton = true,
-    required this.onPressed,
+    this.onPressed,
   });
 
   @override
@@ -24,7 +24,7 @@ class PageAppBar extends StatelessWidget {
           Row(
             children: [
               hasBackButton ? IconButton(
-                onPressed: onPressed, 
+                onPressed: onPressed ?? () { Navigator.pop(context); }, 
                 icon: Icon(Icons.arrow_circle_left),
                 iconSize: 35,
                 color: AppTheme.colors.primary,
