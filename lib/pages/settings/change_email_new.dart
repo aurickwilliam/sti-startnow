@@ -1,41 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:sti_startnow/pages/components/bottom_button.dart';
+import 'package:sti_startnow/pages/components/page_app_bar.dart';
+import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/pages/settings/change_email_verify.dart';
-import 'package:sti_startnow/pages/settings/components/settings_button.dart';
-import 'package:sti_startnow/pages/settings/components/settings_field.dart';
-import 'package:sti_startnow/pages/settings/components/settings_header.dart';
+import 'package:sti_startnow/theme/app_theme.dart';
 
 class ChangeEmailNew extends StatelessWidget {
-  const ChangeEmailNew({super.key});
+  ChangeEmailNew({super.key});
+
+  final TextEditingController newEmailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFFFFF),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // Header and text field
-            Column(
-              children: [
-                // Change email header
-                SettingsHeader(header: "Change Email"),
-                const SizedBox(height: 32),
+      backgroundColor: AppTheme.colors.white,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Header and text field
+              Column(
+                children: [
+                  // Change email header
+                  PageAppBar(
+                    title: "Change Email"
+                  ),
 
-                // New email field
-                SettingsField(
-                  header: "Enter New Email",
-                  hintText: "Enter New Email",
-                ),
-              ],
-            ),
-
-            // Submit button
-            Padding(
-              padding: const EdgeInsets.only(bottom: 32.0),
-              child: SettingsButton(
-                buttonText: "Submit",
+                  const SizedBox(height: 20),
+        
+                  // New email field
+                  TextInput(
+                    controller: newEmailController, 
+                    label: "Enter New Email:", 
+                    hint: "Enter New Email", 
+                    isRequired: false, 
+                    isEnable: true
+                  )
+                ],
+              ),
+        
+              // Submit button
+              BottomButton(
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -43,10 +50,11 @@ class ChangeEmailNew extends StatelessWidget {
                       builder: (context) => ChangeEmailVerify(),
                     ),
                   );
-                },
-              ),
-            ),
-          ],
+                }, 
+                text: "Submit"
+              )
+            ],
+          ),
         ),
       ),
     );

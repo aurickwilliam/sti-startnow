@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:sti_startnow/pages/admin_dashboard/components/option_box.dart';
-import 'package:sti_startnow/pages/admin_dashboard/components/option_tile.dart';
+import 'package:sti_startnow/pages/components/option_box.dart';
+import 'package:sti_startnow/pages/components/option_tile.dart';
 import 'package:sti_startnow/pages/admin_dashboard/enrollee_list_page.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/providers/enrollee_list_provider.dart';
