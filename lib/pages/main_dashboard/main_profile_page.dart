@@ -13,6 +13,8 @@ class MainProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    // Change nalang pag may DB na
+    // if balance > 0 = false
     final bool isTORVerified = true;
 
     return Scaffold(
