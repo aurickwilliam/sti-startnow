@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
-class FullscreenReceiptPage extends StatelessWidget {
+class FullscreenImagePage extends StatelessWidget {
   final String imgPath;
 
-  const FullscreenReceiptPage({
+  const FullscreenImagePage({
     super.key,
     required this.imgPath,
   });
@@ -22,7 +22,7 @@ class FullscreenReceiptPage extends StatelessWidget {
             child: Image.asset(
               imgPath,
               fit: BoxFit.contain,
-            ),
+            )
           ),
         ),
       ),

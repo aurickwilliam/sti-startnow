@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/admin_dashboard/admin_dashboard.dart';
+import 'package:sti_startnow/pages/components/fullscreen_image_page.dart';
 import 'package:sti_startnow/pages/components/option_box.dart';
 import 'package:sti_startnow/pages/components/option_tile.dart';
 import 'package:sti_startnow/pages/admin_dashboard/components/receipt_container.dart';
-import 'package:sti_startnow/pages/admin_dashboard/fullscreen_receipt_page.dart';
 import 'package:sti_startnow/pages/components/bottom_button.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
@@ -208,7 +208,7 @@ class _EnrolleeInformationPageState extends State<EnrolleeInformationPage> {
                   onTap: () {
                     Navigator.push(context, 
                     MaterialPageRoute(builder: (context) => 
-                    FullscreenReceiptPage(imgPath: widget.student.receiptImg)));
+                    FullscreenImagePage(imgPath: widget.student.receiptImg)));
                   },
                   child: ReceiptContainer(
                     imgPath: widget.student.receiptImg

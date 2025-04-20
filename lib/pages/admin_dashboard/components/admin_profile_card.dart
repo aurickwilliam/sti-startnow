@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sti_startnow/pages/admin_dashboard/components/profile_edit_page.dart';
+import 'package:sti_startnow/pages/admin_dashboard/admin_profile_edit_page.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
-class ProfileCard extends StatelessWidget {
+class AdminProfileCard extends StatelessWidget {
   final String name;
   final String studentNo;
   final String profileImg;
   final String coverImg;
 
-  const ProfileCard({
+  const AdminProfileCard({
     super.key,
     required this.name,
     required this.studentNo,
@@ -122,7 +122,7 @@ class ProfileCard extends StatelessWidget {
               onPressed: () {
                 Navigator.push(context, 
                 MaterialPageRoute(builder: (context) => 
-                ProfileEditPage(
+                AdminProfileEditPage(
                   profileImg: profileImg,
                   coverImg: coverImg,
                 )));

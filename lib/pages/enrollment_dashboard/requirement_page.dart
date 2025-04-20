@@ -125,10 +125,10 @@ class RequirementPage extends StatelessWidget {
                     children: [
                       BulletList(
                         strings: [
-                          "Five (5) copies of the Student\'s Personal History Statement (PHS) containing his/her left and right thumb-prints and a 2” x 2” photograph on plain white background taken not more than six months prior to submission, among others",
-                          "Transcript of Records/Scholastic Records duly authenticated by the Philippine Foreign Service Post (PFSP) located in the student-applicant\'s country of origin or legal residence",
+                          "Five (5) copies of the Student's Personal History Statement (PHS) containing his/her left and right thumb-prints and a 2” x 2” photograph on plain white background taken not more than six months prior to submission, among others",
+                          "Transcript of Records/Scholastic Records duly authenticated by the Philippine Foreign Service Post (PFSP) located in the student-applicant's country of origin or legal residence",
                           "Notarized Affidavit of Support including bank statements or notarized grant for institutional scholars",
-                          "Photocopy of the student\'s passport showing date and place of birth and birth certificate or its equivalent duly authenticated by the PFSP",
+                          "Photocopy of the student's passport showing date and place of birth and birth certificate or its equivalent duly authenticated by the PFSP",
                         ]
                       ),
 
@@ -149,7 +149,7 @@ class RequirementPage extends StatelessWidget {
                           "Aliens with valid working permits under Section 9(d), 9(g) and 47(a) (2) of the Philippine Immigration Act of 1940, as amended",
                           "Personnel of foreign diplomatic and consular missions residing in the Philippines and their dependents",
                           "Personnel of duly accredited international organizations residing in the Philippines and their dependents",
-                          "Holders of Special Investor\'s Resident Visa (SIRV) and Special Retiree\'s Resident Visa (SRRV)",
+                          "Holders of Special Investor's Resident Visa (SIRV) and Special Retiree's Resident Visa (SRRV)",
                           "Foreign students coming to the Philippines with 47(a)(2) visas issued pursuant to existing laws, e.g. PD 2021"
                         ]
                       ),

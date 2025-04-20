@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sti_startnow/pages/admin_dashboard/components/information_tile.dart';
-import 'package:sti_startnow/pages/admin_dashboard/components/profile_card.dart';
-import 'package:sti_startnow/pages/admin_dashboard/components/profile_information_card.dart';
+import 'package:sti_startnow/pages/components/information_tile.dart';
+import 'package:sti_startnow/pages/admin_dashboard/components/admin_profile_card.dart';
+import 'package:sti_startnow/pages/admin_dashboard/components/admin_profile_information_card.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class AdminProfilePage extends StatelessWidget {
@@ -17,7 +17,7 @@ class AdminProfilePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ProfileCard(
+              AdminProfileCard(
                 name: "John Doe",
                 studentNo: "02000123456",
                 profileImg: "assets/img/def_profile.jpg",
@@ -26,7 +26,7 @@ class AdminProfilePage extends StatelessWidget {
 
               const SizedBox(height: 20,),
 
-              ProfileInformationCard(
+              AdminProfileInformationCard(
                 children: [
                   InformationTile(
                     label: "Department:",
