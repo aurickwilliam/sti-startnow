@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sti_startnow/pages/admin_dashboard/admin_dashboard.dart';
+import 'package:sti_startnow/pages/main_dashboard/main_dashboard.dart';
 import 'package:sti_startnow/providers/enrollee_list_provider.dart';
 import 'package:sti_startnow/providers/subject_list_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: AppTheme.define(),
-        home: AdminDashboard(),
+        home: MainDashboard(),
       ),
     );
   }

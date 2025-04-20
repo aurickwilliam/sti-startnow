@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
-class ProfileInformationCard extends StatelessWidget {
+class AdminProfileInformationCard extends StatelessWidget {
   final List<Widget> children;
 
-  const ProfileInformationCard({
+  const AdminProfileInformationCard({
     super.key,
     required this.children,
   });

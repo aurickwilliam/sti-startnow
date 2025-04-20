@@ -8,21 +8,21 @@ import 'package:sti_startnow/pages/components/bottom_button.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
-class ProfileEditPage extends StatefulWidget {
+class AdminProfileEditPage extends StatefulWidget {
   final String profileImg;
   final String coverImg;
 
-  const ProfileEditPage({
+  const AdminProfileEditPage({
     super.key,
     required this.profileImg,
     required this.coverImg,
   });
 
   @override
-  State<ProfileEditPage> createState() => _ProfileEditPageState();
+  State<AdminProfileEditPage> createState() => _AdminProfileEditPageState();
 }
 
-class _ProfileEditPageState extends State<ProfileEditPage> {
+class _AdminProfileEditPageState extends State<AdminProfileEditPage> {
 
   File? newProfilePhoto;
   File? newCoverPhoto;
