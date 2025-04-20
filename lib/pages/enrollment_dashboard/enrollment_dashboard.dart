@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sti_startnow/pages/drawer/about_page.dart';
+import 'package:sti_startnow/pages/drawer/mission_vision_page.dart';
 import 'package:sti_startnow/pages/enrollment/student_type_page.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/components/drawer_tile.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/components/enrollment_image_tile.dart';
@@ -8,6 +10,7 @@ import 'package:sti_startnow/pages/enrollment_dashboard/components/enrollment_ti
 import 'package:sti_startnow/pages/enrollment_dashboard/course_offer_list_page.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/requirement_page.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/tuition_fee_advising_page.dart';
+import 'package:sti_startnow/pages/sign_in/sign_in_student_page.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class EnrollmentDashboard extends StatelessWidget {
@@ -26,6 +29,10 @@ class EnrollmentDashboard extends StatelessWidget {
               DrawerTile(
                 title: "Misson & Vision",
                 icon: Icons.key,
+                onTap: () {
+                  Navigator.push(context, 
+                  MaterialPageRoute(builder: (context) => MissionVisionPage()));
+                },
               ),
 
               const SizedBox(height: 20,),
@@ -33,13 +40,21 @@ class EnrollmentDashboard extends StatelessWidget {
               DrawerTile(
                 title: "About",
                 icon: Icons.emoji_objects_outlined,
+                onTap: () {
+                  Navigator.push(context, 
+                  MaterialPageRoute(builder: (context) => AboutPage()));
+                },
               ),
 
               const SizedBox(height: 20,),
 
               DrawerTile(
-                title: "FAQs",
-                icon: Icons.help_outline,
+                title: "Sign In",
+                icon: Icons.login_rounded,
+                onTap: () {
+                  Navigator.push(context, 
+                  MaterialPageRoute(builder: (context) => SignInStudentPage()));
+                },
               ),
 
               const SizedBox(height: 20,),
