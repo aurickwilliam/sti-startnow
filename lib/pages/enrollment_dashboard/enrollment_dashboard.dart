@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sti_startnow/pages/drawer/mission_vision_page.dart';
 import 'package:sti_startnow/pages/enrollment/student_type_page.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/components/drawer_tile.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/components/enrollment_image_tile.dart';
@@ -26,6 +27,10 @@ class EnrollmentDashboard extends StatelessWidget {
               DrawerTile(
                 title: "Misson & Vision",
                 icon: Icons.key,
+                onTap: () {
+                  Navigator.push(context, 
+                  MaterialPageRoute(builder: (context) => MissionVisionPage()));
+                },
               ),
 
               const SizedBox(height: 20,),
@@ -33,6 +38,10 @@ class EnrollmentDashboard extends StatelessWidget {
               DrawerTile(
                 title: "About",
                 icon: Icons.emoji_objects_outlined,
+                onTap: () {
+                  Navigator.push(context, 
+                  MaterialPageRoute(builder: (context) => MissionVisionPage()));
+                },
               ),
 
               const SizedBox(height: 20,),
@@ -40,6 +49,10 @@ class EnrollmentDashboard extends StatelessWidget {
               DrawerTile(
                 title: "FAQs",
                 icon: Icons.help_outline,
+                onTap: () {
+                  Navigator.push(context, 
+                  MaterialPageRoute(builder: (context) => MissionVisionPage()));
+                },
               ),
 
               const SizedBox(height: 20,),
