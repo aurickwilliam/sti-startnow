@@ -1,5 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:sti_startnow/theme/app_theme.dart';
 
 class SignInOption extends StatelessWidget {
   final String header;
@@ -17,18 +19,24 @@ class SignInOption extends StatelessWidget {
   Widget build(BuildContext context) {
     return RichText(
       text: TextSpan(
-        style: TextStyle(color: Color(0xFF393939)),
+        style: GoogleFonts.roboto(
+          color: AppTheme.colors.black,
+        ),
         children: [
           TextSpan(
             text: "$header\n",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            style: GoogleFonts.roboto(
+              fontWeight: FontWeight.bold, 
+              fontSize: 16
+            ),
           ),
           TextSpan(
             text: linkText,
             recognizer: TapGestureRecognizer()..onTap = onTap,
-            style: TextStyle(
-              color: Color(0xFF0B5793),
+            style: GoogleFonts.roboto(
+              color: AppTheme.colors.primary,
               decoration: TextDecoration.underline,
+              fontWeight: FontWeight.w500
             ),
           ),
         ],
