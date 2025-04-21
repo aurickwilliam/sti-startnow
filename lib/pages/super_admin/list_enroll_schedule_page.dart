@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sti_startnow/pages/components/custom_data_table.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/components/search_box.dart';
+import 'package:sti_startnow/pages/super_admin/components/list_data_table.dart';
+import 'package:sti_startnow/pages/super_admin/edit_enroll_sched_row_page.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class ListEnrollSchedulePage extends StatefulWidget {
@@ -53,9 +54,13 @@ class _ListEnrollSchedulePageState extends State<ListEnrollSchedulePage> {
 
                 const SizedBox(height: 20,),
 
-                CustomDataTable(
+                ListDataTable(
                   columnNames: columnNames, 
-                  dataTableValues: values
+                  dataTableValues: values,
+                  handleNavigation: (item) {
+                    Navigator.push(context, 
+                    MaterialPageRoute(builder: (context) => EditEnrollSchedRowPage(rowValues: item)));
+                  },
                 )
               ],
             ),

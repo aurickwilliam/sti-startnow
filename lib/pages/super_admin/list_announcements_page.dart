@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sti_startnow/pages/components/custom_data_table.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/components/search_box.dart';
+import 'package:sti_startnow/pages/super_admin/components/list_data_table.dart';
+import 'package:sti_startnow/pages/super_admin/edit_announcement_row_page.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class ListAnnouncementsPage extends StatefulWidget {
@@ -19,13 +20,12 @@ class _ListAnnouncementsPageState extends State<ListAnnouncementsPage> {
     "#",
     "Title",
     "Date",
-    "Description",
   ];
 
   // Temporary Values for the table
   List<List> values = [
-    ["1", "No Uniform, No Entry", "mm/dd/yy", "..."],
-    ["2", "P200 to retake Exam", "mm/dd/yy", "..."],
+    ["1", "No Uniform, No Entry", "mm/dd/yy"],
+    ["2", "P200 to retake Exam", "mm/dd/yy"],
   ];
 
   @override
@@ -52,9 +52,13 @@ class _ListAnnouncementsPageState extends State<ListAnnouncementsPage> {
 
                 const SizedBox(height: 20,),
 
-                CustomDataTable(
+                ListDataTable(
                   columnNames: columnNames, 
-                  dataTableValues: values
+                  dataTableValues: values,
+                  handleNavigation: (item) {
+                    Navigator.push(context, 
+                    MaterialPageRoute(builder: (context) => EditAnnouncementRowPage(rowValues: item)));
+                  },
                 )
               ],
             ),

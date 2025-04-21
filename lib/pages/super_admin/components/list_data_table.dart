@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
-class CustomDataTable extends StatelessWidget {
+class ListDataTable extends StatelessWidget {
   final List<List> dataTableValues;
   final List<String> columnNames;
+  final Function(List item) handleNavigation;
 
-  const CustomDataTable({
+  const ListDataTable({
     super.key,
     required this.columnNames,
     required this.dataTableValues,
+    required this.handleNavigation,
   });
 
   @override
@@ -17,7 +19,7 @@ class CustomDataTable extends StatelessWidget {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: DataTable(
-          
+          showCheckboxColumn: false,
           // Specify the columns
           columns: columnNames.map((item) {
             return DataColumn(
@@ -36,6 +38,12 @@ class CustomDataTable extends StatelessWidget {
                   Text(value)
                 );
               }).toList(),
+
+              onSelectChanged: (selected) {
+                if (selected!) {
+                  handleNavigation(item);
+                }
+              },
             );
           }).toList(),
         ),

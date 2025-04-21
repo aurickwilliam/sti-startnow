@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sti_startnow/pages/components/custom_data_table.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/components/search_box.dart';
+import 'package:sti_startnow/pages/super_admin/components/list_data_table.dart';
+import 'package:sti_startnow/pages/super_admin/edit_subject_row_page.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class ListSubjectsPage extends StatefulWidget {
@@ -22,14 +23,13 @@ class _ListSubjectsPageState extends State<ListSubjectsPage> {
     "Units",
     "Year",
     "Department",
-    "Description",
   ];
 
   // Temporary Values for the table
   List<List> values = [
-    ["1", "Information Management", "COSC1001", "3.00", "2nd Year", "Information Technology", "..."],
-    ["2", "Fundamental of Mobile Programming", "COSC1001", "3.00", "2nd Year", "Information Technology", "..."],
-    ["3", "Computer Programming 3", "COSC1001", "3.00", "2nd Year", "Information Technology", "..."],
+    ["1", "Information Management", "COSC1001", "3.00", "2nd Year", "Information Technology"],
+    ["2", "Fundamental of Mobile Programming", "COSC1001", "3.00", "2nd Year", "Information Technology"],
+    ["3", "Computer Programming 3", "COSC1001", "3.00", "2nd Year", "Information Technology"],
   ];
 
   @override
@@ -56,9 +56,13 @@ class _ListSubjectsPageState extends State<ListSubjectsPage> {
 
                 const SizedBox(height: 20,),
 
-                CustomDataTable(
+                ListDataTable(
                   columnNames: columnNames, 
-                  dataTableValues: values
+                  dataTableValues: values,
+                  handleNavigation: (item) {
+                    Navigator.push(context, 
+                    MaterialPageRoute(builder: (context) => EditSubjectRowPage(rowValues: item)));
+                  },
                 )
               ],
             ),
