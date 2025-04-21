@@ -1,31 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/components/search_box.dart';
+import 'package:sti_startnow/pages/super_admin/add_pages/add_student_page.dart';
 import 'package:sti_startnow/pages/super_admin/components/list_data_table.dart';
-import 'package:sti_startnow/pages/super_admin/edit_announcement_row_page.dart';
+import 'package:sti_startnow/pages/super_admin/edit_pages/edit_student_row_page.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
-class ListAnnouncementsPage extends StatefulWidget {
-  const ListAnnouncementsPage({super.key});
+class ListStudentsPage extends StatefulWidget {
+  const ListStudentsPage({super.key});
 
   @override
-  State<ListAnnouncementsPage> createState() => _ListAnnouncementsPageState();
+  State<ListStudentsPage> createState() => _ListStudentsPageState();
 }
 
-class _ListAnnouncementsPageState extends State<ListAnnouncementsPage> {
+class _ListStudentsPageState extends State<ListStudentsPage> {
   final TextEditingController searchController = TextEditingController();
 
   // Column values
   List<String> columnNames = [
     "#",
-    "Title",
-    "Date",
+    "First Name",
+    "Last Name",
+    "Student No.",
+    "Program",
+    "Email Address",
   ];
 
   // Temporary Values for the table
   List<List> values = [
-    ["1", "No Uniform, No Entry", "mm/dd/yy"],
-    ["2", "P200 to retake Exam", "mm/dd/yy"],
+    ["1", "John", "Doe", "02000123456", "BSCS", "doe@gmail.com"],
+    ["2", "Kai", "Cenat", "02000123456", "BSIT", "doe@gmail.com"],
+    ["3", "Duke", "Dennis", "02000123456", "BSCPE", "doe@gmail.com"],
   ];
 
   @override
@@ -39,7 +44,7 @@ class _ListAnnouncementsPageState extends State<ListAnnouncementsPage> {
             child: Column(
               children: [
                 PageAppBar(
-                  title: "Announcements"
+                  title: "List of Students"
                 ),
 
                 const SizedBox(height: 10,),
@@ -57,7 +62,7 @@ class _ListAnnouncementsPageState extends State<ListAnnouncementsPage> {
                   dataTableValues: values,
                   handleNavigation: (item) {
                     Navigator.push(context, 
-                    MaterialPageRoute(builder: (context) => EditAnnouncementRowPage(rowValues: item)));
+                    MaterialPageRoute(builder: (context) => EditStudentRowPage(rowValues: item)));
                   },
                 )
               ],
@@ -68,7 +73,10 @@ class _ListAnnouncementsPageState extends State<ListAnnouncementsPage> {
 
        // FAB
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context, 
+          MaterialPageRoute(builder: (context) => AddStudentPage()));
+        },
         backgroundColor: AppTheme.colors.white,
         foregroundColor: AppTheme.colors.primary,
         child: const Icon(

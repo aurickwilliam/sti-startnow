@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/pages/super_admin/components/option_button.dart';
-import 'package:sti_startnow/pages/super_admin/list_announcements_page.dart';
-import 'package:sti_startnow/pages/super_admin/list_enroll_schedule_page.dart';
-import 'package:sti_startnow/pages/super_admin/list_instructors_page.dart';
-import 'package:sti_startnow/pages/super_admin/list_programs_page.dart';
-import 'package:sti_startnow/pages/super_admin/list_students_page.dart';
-import 'package:sti_startnow/pages/super_admin/list_subjects_page.dart';
+import 'package:sti_startnow/pages/super_admin/list_pages/list_announcements_page.dart';
+import 'package:sti_startnow/pages/super_admin/list_pages/list_enroll_schedule_page.dart';
+import 'package:sti_startnow/pages/super_admin/list_pages/list_instructors_page.dart';
+import 'package:sti_startnow/pages/super_admin/list_pages/list_programs_page.dart';
+import 'package:sti_startnow/pages/super_admin/list_pages/list_students_page.dart';
+import 'package:sti_startnow/pages/super_admin/list_pages/list_subjects_page.dart';
 import 'package:sti_startnow/pages/super_admin/super_admin_profile_page.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 

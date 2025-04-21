@@ -1,34 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/components/search_box.dart';
+import 'package:sti_startnow/pages/super_admin/add_pages/add_instructor_page.dart';
 import 'package:sti_startnow/pages/super_admin/components/list_data_table.dart';
-import 'package:sti_startnow/pages/super_admin/edit_program_row_page.dart';
+import 'package:sti_startnow/pages/super_admin/edit_pages/edit_instructor_row_page.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
-class ListProgramsPage extends StatefulWidget {
-  const ListProgramsPage({super.key});
+class ListInstructorsPage extends StatefulWidget {
+  const ListInstructorsPage({super.key});
 
   @override
-  State<ListProgramsPage> createState() => _ListProgramsPageState();
+  State<ListInstructorsPage> createState() => _ListInstructorsPageState();
 }
 
-class _ListProgramsPageState extends State<ListProgramsPage> {
+class _ListInstructorsPageState extends State<ListInstructorsPage> {
   final TextEditingController searchController = TextEditingController();
 
   // Column values
   List<String> columnNames = [
     "#",
-    "Name",
-    "Acronym",
+    "First Name",
+    "Last Name",
     "Department",
-    "Description",
+    "Email Address",
   ];
 
   // Temporary Values for the table
   List<List> values = [
-    ["1", "Bachelor of Science in Computer Science", "BSCS", "Information Technology", "..."],
-    ["2", "Bachelor of Science in Information Technology", "BSIT", "Information Technology", "..."],
-    ["3", "Bachelor of Science in Computer Engineering", "BSCPE", "Information Technology", "..."],
+    ["1", "John", "Doe", "Business Management", "doe@gmail.com"],
+    ["2", "Kai", "Cenat", "Information Technology", "doe@gmail.com"],
+    ["3", "Duke", "Dennis", "Tourism Management", "doe@gmail.com"],
   ];
 
   @override
@@ -42,7 +43,7 @@ class _ListProgramsPageState extends State<ListProgramsPage> {
             child: Column(
               children: [
                 PageAppBar(
-                  title: "Programs"
+                  title: "List of Instructors"
                 ),
 
                 const SizedBox(height: 10,),
@@ -50,7 +51,7 @@ class _ListProgramsPageState extends State<ListProgramsPage> {
                 SearchBox(
                   controller: searchController, 
                   label: "Search:", 
-                  hint: "Enter a program name"
+                  hint: "Enter a name"
                 ),
 
                 const SizedBox(height: 20,),
@@ -60,7 +61,7 @@ class _ListProgramsPageState extends State<ListProgramsPage> {
                   dataTableValues: values,
                   handleNavigation: (item) {
                     Navigator.push(context, 
-                    MaterialPageRoute(builder: (context) => EditProgramRowPage(rowValues: item)));
+                    MaterialPageRoute(builder: (context) => EditInstructorRowPage(rowValues: item)));
                   },
                 )
               ],
@@ -71,7 +72,10 @@ class _ListProgramsPageState extends State<ListProgramsPage> {
 
        // FAB
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context, 
+          MaterialPageRoute(builder: (context) => AddInstructorPage()));
+        },
         backgroundColor: AppTheme.colors.white,
         foregroundColor: AppTheme.colors.primary,
         child: const Icon(
@@ -79,7 +83,6 @@ class _ListProgramsPageState extends State<ListProgramsPage> {
           size: 30,
         ),
       ),
-      
     );
   }
 }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/components/search_box.dart';
+import 'package:sti_startnow/pages/super_admin/add_pages/add_subject_page.dart';
 import 'package:sti_startnow/pages/super_admin/components/list_data_table.dart';
-import 'package:sti_startnow/pages/super_admin/edit_subject_row_page.dart';
+import 'package:sti_startnow/pages/super_admin/edit_pages/edit_subject_row_page.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class ListSubjectsPage extends StatefulWidget {
@@ -72,7 +73,10 @@ class _ListSubjectsPageState extends State<ListSubjectsPage> {
 
       // FAB
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context, 
+          MaterialPageRoute(builder: (context) => AddSubjectPage()));
+        },
         backgroundColor: AppTheme.colors.white,
         foregroundColor: AppTheme.colors.primary,
         child: const Icon(
