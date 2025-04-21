@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sti_startnow/pages/chatbot/chatbot.dart';
 import 'package:sti_startnow/pages/drawer/about_page.dart';
 import 'package:sti_startnow/pages/drawer/mission_vision_page.dart';
 import 'package:sti_startnow/pages/enrollment/student_type_page.dart';
@@ -62,6 +63,19 @@ class EnrollmentDashboard extends StatelessWidget {
           ),
         ),
       ),
+
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(context, 
+          MaterialPageRoute(builder: (context) => Chatbot()));
+        },
+        backgroundColor: AppTheme.colors.gold,
+        child: Icon(
+          Icons.lightbulb,
+          color: AppTheme.colors.white,
+        ),
+      ),
+
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
