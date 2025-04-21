@@ -7,13 +7,34 @@ import 'package:sti_startnow/pages/enrollment_dashboard/enrollment_dashboard.dar
 import 'package:sti_startnow/pages/sign_in/components/sign_in_box.dart';
 import 'package:sti_startnow/pages/sign_in/components/sign_in_option.dart';
 import 'package:sti_startnow/pages/sign_in/sign_in_student_page.dart';
+import 'package:sti_startnow/pages/super_admin/super_admin_dashboard.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
-class SignInAdminPage extends StatelessWidget {
-  SignInAdminPage({super.key});
+class SignInAdminPage extends StatefulWidget {
+  const SignInAdminPage({super.key});
 
+  @override
+  State<SignInAdminPage> createState() => _SignInAdminPageState();
+}
+
+class _SignInAdminPageState extends State<SignInAdminPage> {
   final TextEditingController emailController = TextEditingController();
+
   final TextEditingController passwordController = TextEditingController();
+
+  void handleAdminNavigation(){
+    String email = emailController.text;
+    String password = passwordController.text;
+
+    Widget destination = AdminDashboard();
+
+    if (email == "MIS" && password == "admin123") {
+      destination = SuperAdminDashboard();
+    }
+
+    Navigator.push(context, 
+    MaterialPageRoute(builder: (context) => destination));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,8 +103,7 @@ class SignInAdminPage extends StatelessWidget {
                     // Sign in button
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.push(context, 
-                        MaterialPageRoute(builder: (context) => AdminDashboard()));
+                        handleAdminNavigation();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppTheme.colors.primary,

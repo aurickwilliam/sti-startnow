@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sti_startnow/pages/sign_in/sign_in_admin_page.dart';
 import 'package:sti_startnow/pages/super_admin/components/option_button.dart';
 import 'package:sti_startnow/pages/super_admin/list_pages/list_announcements_page.dart';
 import 'package:sti_startnow/pages/super_admin/list_pages/list_enroll_schedule_page.dart';
@@ -34,16 +35,32 @@ class SuperAdminDashboard extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  IconButton(
-                    onPressed: () {
-                      Navigator.push(context, 
-                      MaterialPageRoute(builder: (context) => SuperAdminProfilePage()));
-                    },
-                    icon: Icon(
-                      Icons.account_circle_outlined,
-                      color: AppTheme.colors.gold,
-                      size: 30,
-                    ),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          Navigator.push(context, 
+                          MaterialPageRoute(builder: (context) => SuperAdminProfilePage()));
+                        },
+                        icon: Icon(
+                          Icons.account_circle_outlined,
+                          color: AppTheme.colors.gold,
+                          size: 30,
+                        ),
+                      ),
+
+                      IconButton(
+                        onPressed: () {
+                          Navigator.push(context, 
+                          MaterialPageRoute(builder: (context) => SignInAdminPage()));
+                        },
+                        icon: Icon(
+                          Icons.logout,
+                          color: AppTheme.colors.gold,
+                          size: 30,
+                        ),
+                      ),
+                    ],
                   )
                 ],
               ),
