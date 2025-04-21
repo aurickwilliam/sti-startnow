@@ -61,6 +61,17 @@ class _ListAnnouncementsPageState extends State<ListAnnouncementsPage> {
           ),
         )
       ),
+
+       // FAB
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: AppTheme.colors.white,
+        foregroundColor: AppTheme.colors.primary,
+        child: const Icon(
+          Icons.add,
+          size: 30,
+        ),
+      ),
     );
   }
 }

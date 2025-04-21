@@ -17,6 +17,7 @@ class CustomDataTable extends StatelessWidget {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: DataTable(
+          showCheckboxColumn: false,
           // Specify the columns
           columns: columnNames.map((item) {
             return DataColumn(
@@ -35,6 +36,12 @@ class CustomDataTable extends StatelessWidget {
                   Text(value)
                 );
               }).toList(),
+
+              onSelectChanged: (isSelected) {
+                if (isSelected!) {
+                  debugPrint(item[1]);
+                }
+              },
             );
           }).toList(),
         ),

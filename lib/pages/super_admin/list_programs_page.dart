@@ -63,6 +63,18 @@ class _ListProgramsPageState extends State<ListProgramsPage> {
           ),
         )
       ),
+
+       // FAB
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: AppTheme.colors.white,
+        foregroundColor: AppTheme.colors.primary,
+        child: const Icon(
+          Icons.add,
+          size: 30,
+        ),
+      ),
+      
     );
   }
 }
