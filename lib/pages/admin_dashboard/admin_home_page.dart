@@ -69,7 +69,7 @@ class AdminHomePage extends StatelessWidget {
                         ),
                       ),
 
-                      const SizedBox(height: 20,),
+                      const SizedBox(height: 10,),
                             
                       // Content
                       Expanded(

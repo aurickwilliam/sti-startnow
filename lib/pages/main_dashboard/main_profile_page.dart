@@ -15,7 +15,7 @@ class MainProfilePage extends StatelessWidget {
 
     // Change nalang pag may DB na
     // if balance > 0 = false
-    final bool isTORVerified = true;
+    // final bool isTORVerified = true;
 
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
@@ -83,8 +83,10 @@ class MainProfilePage extends StatelessWidget {
                         const SizedBox(width: 10,),
           
                         Icon(
-                          isTORVerified ? Icons.check_circle_rounded : Icons.cancel,
-                          color: isTORVerified ? AppTheme.colors.green : AppTheme.colors.red,
+                          // isTORVerified ? Icons.check_circle_rounded : Icons.cancel,
+                          Icons.check_circle_rounded,
+                          // color: isTORVerified ? AppTheme.colors.green : AppTheme.colors.red,
+                          color: AppTheme.colors.green,
                         )
                       ],
                     ),
