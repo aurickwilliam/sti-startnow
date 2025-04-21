@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sti_startnow/pages/components/bottom_button.dart';
 import 'package:sti_startnow/pages/components/custom_outline_button.dart';
 import 'package:sti_startnow/pages/enrollment/completed_page.dart';
-import 'package:sti_startnow/pages/enrollment/components/custom_data_table.dart';
+import 'package:sti_startnow/pages/components/custom_data_table.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/providers/subject_list_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';

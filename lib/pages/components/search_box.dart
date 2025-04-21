@@ -2,28 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
-
-class TextInput extends StatefulWidget {
+class SearchBox extends StatefulWidget {
   final TextEditingController controller;
   final String label;
   final String hint;
-  final bool isRequired;
   final bool isEnable;
 
-  const TextInput({
+  const SearchBox({
     super.key,
     required this.controller,
     required this.label,
-    this.hint = "",
-    this.isRequired = false,
+    required this.hint,
     this.isEnable = true,
   });
 
   @override
-  State<TextInput> createState() => _TextInputState();
+  State<SearchBox> createState() => _SearchBoxState();
 }
 
-class _TextInputState extends State<TextInput> {
+class _SearchBoxState extends State<SearchBox> {
   FocusNode focusNode = FocusNode();
   bool isFocused = false;
 
@@ -61,12 +58,6 @@ class _TextInputState extends State<TextInput> {
               TextSpan(
                 text: widget.label
               ),
-              TextSpan(
-                text: widget.isRequired ? "*" : "",
-                style: GoogleFonts.roboto(
-                  color: AppTheme.colors.red
-                )
-              )
             ]
           )
         ),
@@ -77,7 +68,6 @@ class _TextInputState extends State<TextInput> {
           focusNode: focusNode,
           enabled: widget.isEnable,
           controller: widget.controller,
-          
           decoration: InputDecoration(
             border: OutlineInputBorder(),
             focusedBorder: OutlineInputBorder(
@@ -111,6 +101,11 @@ class _TextInputState extends State<TextInput> {
               },
               icon: Icon(Icons.clear),
             ) : null,
+
+            prefixIcon: Icon(
+              Icons.search_rounded,
+              color: isFocused ? AppTheme.colors.primary : AppTheme.colors.gray,
+            )
           ),
           style: GoogleFonts.roboto(
             color: AppTheme.colors.black,

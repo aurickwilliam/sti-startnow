@@ -14,9 +14,9 @@ class NumberInput extends StatefulWidget {
     super.key,
     required this.controller,
     required this.label,
-    required this.hint,
-    required this.isRequired,
-    required this.isEnable,
+    this.hint = "",
+    this.isRequired = false,
+    this.isEnable = true,
   });
 
   @override

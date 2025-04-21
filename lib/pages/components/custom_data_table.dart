@@ -17,6 +17,7 @@ class CustomDataTable extends StatelessWidget {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: DataTable(
+          
           // Specify the columns
           columns: columnNames.map((item) {
             return DataColumn(
