@@ -4,7 +4,7 @@ import 'package:sti_startnow/pages/chatbot/chatbot.dart';
 import 'package:sti_startnow/pages/drawer/about_page.dart';
 import 'package:sti_startnow/pages/drawer/mission_vision_page.dart';
 import 'package:sti_startnow/pages/enrollment/student_type_page.dart';
-import 'package:sti_startnow/pages/enrollment_dashboard/components/drawer_tile.dart';
+import 'package:sti_startnow/pages/components/drawer_tile.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/components/enrollment_image_tile.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/components/enrollment_schedule.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/components/enrollment_tile.dart';
