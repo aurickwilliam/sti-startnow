@@ -4,6 +4,7 @@ import 'package:sti_startnow/pages/components/back_next_button.dart';
 import 'package:sti_startnow/pages/components/number_input.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
+import 'package:sti_startnow/pages/enrollment/new_student/contact_details_page.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class PermananetAddressPage extends StatefulWidget {
@@ -143,7 +144,10 @@ class _PermanentAddressPageState extends State<PermananetAddressPage> {
                     const SizedBox(height: 50,),
 
                     BackNextButton(
-                      nextPressed: () {}
+                      nextPressed: () {
+                        Navigator.push(context, 
+                        MaterialPageRoute(builder: (context) => ContactDetailsPage()));
+                      }
                     )
                   ],
                 ),

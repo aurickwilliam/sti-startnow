@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/pages/components/bottom_button.dart';
 import 'package:sti_startnow/pages/components/custom_dropdown_menu.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
+import 'package:sti_startnow/pages/enrollment/new_student/student_info_page.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class CurrentTermPage extends StatefulWidget {
@@ -164,7 +165,10 @@ class _CurrentTermPageState extends State<CurrentTermPage> {
                     ),
         
                     BottomButton(
-                      onPressed: () {}, 
+                      onPressed: () {
+                        Navigator.push(context, 
+                        MaterialPageRoute(builder: (context) => StudentInfoPage()));
+                      }, 
                       text: "Next"
                     ),
                   ],

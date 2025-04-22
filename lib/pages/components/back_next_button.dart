@@ -31,7 +31,7 @@ class BackNextButton extends StatelessWidget {
             onPressed: () {
               nextPressed();
             }, 
-            text: "Submit",
+            text: "Next",
           ),
         ),
       ],

@@ -4,6 +4,7 @@ import 'package:sti_startnow/pages/components/back_next_button.dart';
 import 'package:sti_startnow/pages/components/number_input.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
+import 'package:sti_startnow/pages/enrollment/new_student/last_school_page.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class ContactDetailsPage extends StatefulWidget {
@@ -98,7 +99,12 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
                       ],
                     ),
 
-                    BackNextButton(nextPressed: () {})
+                    BackNextButton(
+                      nextPressed: () {
+                        Navigator.push(context, 
+                        MaterialPageRoute(builder: (context) => LastSchoolPage()));
+                      }
+                    )
                   ],
                 ),
               ),

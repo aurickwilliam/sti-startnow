@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/pages/components/bottom_button.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
+import 'package:sti_startnow/pages/enrollment/new_student/current_term_page.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class PreferredProgramPage extends StatefulWidget {
@@ -117,7 +118,8 @@ class _PreferredProgramPageState extends State<PreferredProgramPage> {
 
                     BottomButton(
                       onPressed: () {
-                        
+                        Navigator.push(context, 
+                        MaterialPageRoute(builder: (context) => CurrentTermPage()));
                       }, 
                       text: "Next"
                     )

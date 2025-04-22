@@ -4,6 +4,7 @@ import 'package:sti_startnow/pages/components/back_next_button.dart';
 import 'package:sti_startnow/pages/components/custom_dropdown_menu.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
+import 'package:sti_startnow/pages/enrollment/new_student/current_address_page.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class StudentInfoPage extends StatefulWidget {
@@ -205,7 +206,10 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
                     const SizedBox(height: 50,),
 
                     BackNextButton(
-                      nextPressed: () {},
+                      nextPressed: () {
+                        Navigator.push(context, 
+                        MaterialPageRoute(builder: (context) => CurrentAddressPage()));
+                      },
                     )
                   ],
                 ),
