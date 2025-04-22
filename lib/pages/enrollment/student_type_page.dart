@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/pages/components/bottom_button.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/enrollment/components/multiple_choice_card.dart';
+import 'package:sti_startnow/pages/enrollment/new_student/preferred_program_page.dart';
 import 'package:sti_startnow/pages/enrollment/student_status_page.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
@@ -21,6 +22,25 @@ class _StudentTypePageState extends State<StudentTypePage> {
     setState(() {
       selectedItem = item;
     });
+  }
+
+  // Handle navigation
+  void handleNavigation(){
+   Widget destination = SizedBox.shrink();
+
+   if (selectedItem == ""){
+    debugPrint("Select Type of Student");
+   }
+   
+   if (selectedItem == typeStudent[0]){
+    destination = PreferredProgramPage();
+   }
+   else if (selectedItem == typeStudent[1]){
+    destination = StudentStatusPage();
+   }
+
+   Navigator.push(context, 
+   MaterialPageRoute(builder: (context) => destination));
   }
 
   @override
@@ -67,8 +87,7 @@ class _StudentTypePageState extends State<StudentTypePage> {
                       
                     BottomButton(
                       onPressed: () {
-                        Navigator.push(context, 
-                        MaterialPageRoute(builder: (context) => StudentStatusPage()));
+                        handleNavigation();
                       },
                       text: "Next",
                     )

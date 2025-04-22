@@ -23,7 +23,7 @@ class Page1 extends StatelessWidget {
                   padding: const EdgeInsets.all(30),
                   child: Center(
                     child: Image.asset(
-                      "assets/img/start_now_logo.png",
+                      "assets/img/sti_start_now_logo.png",
                       fit: BoxFit.contain,
                     ),
                   ),

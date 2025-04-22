@@ -3,11 +3,9 @@ flutter_native_splash:
   ios: true
   web: false
 
-  color: "#0B5793"
-  image: "assets/img/start_now_logo.png"
-  branding: "assets/img/start_now_branding.png"
+  color: "#FFFFFF"
+  image: "assets/img/sti_start_now_logo.png"
 
   android_12:
-    color: "#0B5793"
-    image: "assets/img/start_now_logo.png"
-    branding: "assets/img/start_now_branding.png"
+    color: "#FFFFFF"
+    image: "assets/img/sti_start_now_logo.png"
