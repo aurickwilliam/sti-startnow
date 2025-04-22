@@ -30,6 +30,7 @@ flutter:
   uses-material-design: true
   assets:
     - "assets/img/"
+    - "assets/img/welcome_img/"
     - "assets/img/sign_in/"
     - "assets/img/navigation_icon/"
     - "assets/img/enrollment/"
