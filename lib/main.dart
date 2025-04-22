@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sti_startnow/pages/enrollment/new_student/preferred_program_page.dart';
+import 'package:sti_startnow/pages/enrollment/new_student/validate_details_page.dart';
 import 'package:sti_startnow/pages/sign_in/sign_in_student_page.dart';
 import 'package:sti_startnow/providers/enrollee_list_provider.dart';
 import 'package:sti_startnow/providers/subject_list_provider.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: AppTheme.define(),
-        home: PreferredProgramPage(),
+        home: ValidateDetailsPage(),
       ),
     );
   }
