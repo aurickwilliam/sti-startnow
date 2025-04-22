@@ -1,12 +1,36 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sti_startnow/pages/components/bottom_button.dart';
 import 'package:sti_startnow/pages/components/custom_outline_button.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
+import 'package:sti_startnow/pages/main_dashboard/main_dashboard.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
-class ReservationFeePage extends StatelessWidget {
+class ReservationFeePage extends StatefulWidget {
   const ReservationFeePage({super.key});
+
+  @override
+  State<ReservationFeePage> createState() => _ReservationFeePageState();
+}
+
+class _ReservationFeePageState extends State<ReservationFeePage> {
+
+  File? reservationImg;
+  File? reservationImgName;
+
+  // Asynchronous Function to access the gallery and return an image
+  // Reservation Photo
+  Future pickReservationPhotoFromGallery() async{
+    final returnedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      reservationImg = File(returnedImage!.path);
+      reservationImgName = File(returnedImage.name);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +56,7 @@ class ReservationFeePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         RichText(
                           text: TextSpan(
@@ -65,13 +90,28 @@ class ReservationFeePage extends StatelessWidget {
                                   
                         CustomOutlineButton(
                           text: "Attach a Photo",
-                          onPressed: () {},
+                          onPressed: () {
+                            pickReservationPhotoFromGallery();
+                          },
+                        ),
+
+                        const SizedBox(height: 10,),
+
+                        Text(
+                          reservationImg == null ? "No selected Image" : "$reservationImgName",
+                          style: GoogleFonts.roboto(
+                            color: AppTheme.colors.black,
+                            fontSize: 14,
+                          ),
                         )
                       ],
                     ),
 
                     BottomButton(
-                      onPressed: () {}, 
+                      onPressed: () {
+                        Navigator.push(context, 
+                        MaterialPageRoute(builder: (context) => MainDashboard()));
+                      }, 
                       text: "Submit Application"
                     )
                   ],
