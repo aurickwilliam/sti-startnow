@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sti_startnow/pages/components/option_box.dart';
 import 'package:sti_startnow/pages/components/option_tile.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
+import 'package:sti_startnow/pages/main_dashboard/main_dashboard.dart';
 import 'package:sti_startnow/pages/settings/account_settings.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
@@ -18,7 +19,13 @@ class Settings extends StatelessWidget {
           child: Column(
             children: [
               // Settings header
-              PageAppBar(title: "Settings"),
+              PageAppBar(
+                title: "Settings",
+                onPressed: () {
+                  Navigator.push(context, 
+                  MaterialPageRoute(builder: (context) => MainDashboard()));
+                },
+              ),
               
               const SizedBox(height: 20),
 

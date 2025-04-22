@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sti_startnow/pages/main_dashboard/main_courses_page.dart';
+import 'package:sti_startnow/pages/main_dashboard/main_subjects_page.dart';
 import 'package:sti_startnow/pages/main_dashboard/main_home_page.dart';
 import 'package:sti_startnow/pages/main_dashboard/main_profile_page.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
@@ -22,7 +22,7 @@ class _MainDashboardState extends State<MainDashboard> {
 
   final List<Widget> listOfDestination = [
     MainHomePage(),
-    MainCoursesPage(),
+    MainSubjectsPage(),
     MainProfilePage(),
   ];
 
