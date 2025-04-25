@@ -71,7 +71,7 @@ class Page3 extends StatelessWidget {
                           "Simple, fast, and hassle-free enrollment.",
                           style: GoogleFonts.roboto(
                             color: AppTheme.colors.black,
-                            fontSize: 36,
+                            fontSize: 32,
                             fontWeight: FontWeight.bold
                           ),
                           textAlign: TextAlign.center,

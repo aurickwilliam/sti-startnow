@@ -70,6 +70,9 @@ class EnrollmentDashboard extends StatelessWidget {
           MaterialPageRoute(builder: (context) => Chatbot()));
         },
         backgroundColor: AppTheme.colors.gold,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(999)
+        ),
         child: Icon(
           Icons.lightbulb,
           color: AppTheme.colors.white,

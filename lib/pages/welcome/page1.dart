@@ -70,7 +70,7 @@ class Page1 extends StatelessWidget {
                           "Welcome to\nSTI StartNow!",
                           style: GoogleFonts.roboto(
                             color: AppTheme.colors.black,
-                            fontSize: 36,
+                            fontSize: 32,
                             fontWeight: FontWeight.bold
                           ),
                           textAlign: TextAlign.center,

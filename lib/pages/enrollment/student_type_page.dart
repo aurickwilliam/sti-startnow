@@ -78,7 +78,7 @@ class _StudentTypePageState extends State<StudentTypePage> {
                           question: "What type of student are you?",
                           choices: typeStudent,
                           selectedItem: selectedItem,
-                          onChanged: handleSelectedItem,
+                          onChanged: handleSelectedItem, 
                         ),
               
                         const SizedBox(height: 20,)

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:sti_startnow/pages/components/bottom_button.dart';
-import 'package:sti_startnow/pages/components/custom_outline_button.dart';
+import 'package:sti_startnow/pages/components/back_next_button.dart';
 import 'package:sti_startnow/pages/enrollment/completed_page.dart';
 import 'package:sti_startnow/pages/components/custom_data_table.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
@@ -95,27 +94,12 @@ class VerifySubjectsPage extends StatelessWidget {
 
                     const SizedBox(height: 50,),
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        CustomOutlineButton(
-                          text: "Back", 
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          isFullWidth: false,
-                        ),
-
-                        BottomButton(
-                          onPressed: () {
-                            Navigator.push(context, 
-                            MaterialPageRoute(builder: (context) => CompletedPage()));
-                          }, 
-                          text: "Submit",
-                          isFullWidth: false,
-                        ),
-                      ],
-                    ),
+                    BackNextButton(
+                      nextPressed: () {
+                        Navigator.push(context, 
+                        MaterialPageRoute(builder: (context) => CompletedPage()));
+                      }
+                    )
                   ],
                 ),
               ),

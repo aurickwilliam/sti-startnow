@@ -60,37 +60,30 @@ class MultipleChoiceCard extends StatelessWidget {
                   color: AppTheme.colors.white,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: ListTile(
-                      selected: isSelected,
-                    
-                      // Title or Text
+                    child: RadioListTile(
+                      value: item, 
+                      groupValue: selectedItem, 
+                      onChanged: (value) {
+                        onChanged(value.toString());
+                      },
+
                       title: Text(
                         item,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: isSelected ? AppTheme.colors.gold :  AppTheme.colors.black,
+                        style: GoogleFonts.roboto(
+                          color: AppTheme.colors.black,
+                          fontSize: 16
                         ),
                       ),
-                    
-                      // Radio Button
-                      leading: Radio(
-                        value: item, 
-                        groupValue: selectedItem, 
-                        onChanged: (value){
-                          onChanged(item);
-                        },
-                        activeColor: isSelected ? AppTheme.colors.gold : AppTheme.colors.gray,
-                      ),
-                    
+
+                      activeColor: AppTheme.colors.gold,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(15),
                         side: BorderSide(
                           color: isSelected ? AppTheme.colors.gold : AppTheme.colors.gray,
-                          width: 3,
+                          width: 2.0
                         )
                       ),
-                    ),
+                    )
                   ),
                 );
               }).toList(),

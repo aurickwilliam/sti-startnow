@@ -75,7 +75,7 @@ class RegisterPage extends StatelessWidget {
                               "Register now and secure your spot.",
                               style: GoogleFonts.roboto(
                                 color: AppTheme.colors.black,
-                                fontSize: 36,
+                                fontSize: 32,
                                 fontWeight: FontWeight.bold
                               ),
                               textAlign: TextAlign.center,
@@ -122,6 +122,7 @@ class RegisterPage extends StatelessWidget {
                                 "For Existing Students",
                                 style: GoogleFonts.roboto(
                                   color: AppTheme.colors.black,
+                                  fontSize: 12
                                 ),
                               )
                             ],
@@ -145,6 +146,7 @@ class RegisterPage extends StatelessWidget {
                                 "For New Students",
                                 style: GoogleFonts.roboto(
                                   color: AppTheme.colors.black,
+                                  fontSize: 12
                                 ),
                               )
                             ],

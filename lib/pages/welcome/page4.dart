@@ -71,7 +71,7 @@ class Page4 extends StatelessWidget {
                           "Manage your student profile effortlessly.",
                           style: GoogleFonts.roboto(
                             color: AppTheme.colors.black,
-                            fontSize: 36,
+                            fontSize: 32,
                             fontWeight: FontWeight.bold
                           ),
                           textAlign: TextAlign.center,
