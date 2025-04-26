@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/pages/components/custom_outline_button.dart';
 import 'package:sti_startnow/pages/components/bottom_button.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
-import 'package:sti_startnow/pages/enrollment_dashboard/enrollment_dashboard.dart';
+import 'package:sti_startnow/pages/main_dashboard/main_dashboard.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class CompletedPage extends StatelessWidget {
@@ -53,7 +53,7 @@ class CompletedPage extends StatelessWidget {
                     BottomButton(
                       onPressed: () {
                         Navigator.push(context, 
-                        MaterialPageRoute(builder: (context) => EnrollmentDashboard()));
+                        MaterialPageRoute(builder: (context) => MainDashboard()));
                       }, 
                       text: "Next"
                     )

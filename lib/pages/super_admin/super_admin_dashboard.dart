@@ -81,7 +81,7 @@ class SuperAdminDashboard extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 24),
                   child: GridView.count(
                     mainAxisSpacing: 20,
-                    crossAxisCount: 4,
+                    crossAxisCount: 3,
                     children: [
                       OptionButton(
                         icon: Icons.person,

@@ -25,19 +25,19 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            EnrollmentHeader(
-              step1: true, 
-              step2: true, 
-              step3: false, 
-              step4: false, 
-              title: "Personal Information"
-            ),
-
-            Expanded(
-              child: Padding(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              EnrollmentHeader(
+                step1: true, 
+                step2: true, 
+                step3: false, 
+                step4: false, 
+                title: "Personal Information"
+              ),
+          
+              Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -99,6 +99,8 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
                       ],
                     ),
 
+                    const SizedBox(height: 20,),
+              
                     BackNextButton(
                       nextPressed: () {
                         Navigator.push(context, 
@@ -107,9 +109,9 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
                     )
                   ],
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         )
       ),
     );

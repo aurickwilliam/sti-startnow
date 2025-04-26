@@ -38,11 +38,11 @@ class _MainSubjectsPageState extends State<MainSubjectsPage> {
 
   // TEMPORARY DATA for the List of subjects
   final List<List> currentList = [
-    ["Information Management", "COSC1001", "Lorenze Christopher Afan", "assets/img/enrollment_dashboard/courses_img/technology.jpg"],
-    ["Fundamanetals of Mobile Programming", "COSC1001", "Lorenze Christopher Afan", "assets/img/enrollment_dashboard/courses_img/technology.jpg"],
-    ["Design and Analysis of Algorithm", "COSC1001", "Lorenze Christopher Afan", "assets/img/enrollment_dashboard/courses_img/it.jpg"],
-    ["Information Management", "COSC1001", "Lorenze Christopher Afan", "assets/img/enrollment_dashboard/courses_img/technology.jpg"],
-    ["Information Management", "COSC1001", "Lorenze Christopher Afan", "assets/img/enrollment_dashboard/courses_img/technology.jpg"],
+    ["Information Management", "COSC1001", "Lorenz Christopher Afan", "assets/img/enrollment_dashboard/courses_img/technology.jpg"],
+    ["Fundamanetals of Mobile Programming", "COSC1001", "Lorenz Christopher Afan", "assets/img/enrollment_dashboard/courses_img/technology.jpg"],
+    ["Design and Analysis of Algorithm", "COSC1001", "Lorenz Christopher Afan", "assets/img/enrollment_dashboard/courses_img/it.jpg"],
+    ["Information Management", "COSC1001", "Lorenz Christopher Afan", "assets/img/enrollment_dashboard/courses_img/technology.jpg"],
+    ["Information Management", "COSC1001", "Lorenz Christopher Afan", "assets/img/enrollment_dashboard/courses_img/technology.jpg"],
   ];
 
   final List<List> completedList = [
