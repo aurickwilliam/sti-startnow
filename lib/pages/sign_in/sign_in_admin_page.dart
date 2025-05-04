@@ -39,7 +39,7 @@ class _SignInAdminPageState extends State<SignInAdminPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.colors.white,      
+      backgroundColor: AppTheme.colors.bgWhite,      
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -159,6 +159,8 @@ class _SignInAdminPageState extends State<SignInAdminPage> {
                   ],
                 ),
               ),
+
+              const SizedBox(height: 50,),
             ],
           ),
         ),

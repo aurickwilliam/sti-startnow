@@ -18,7 +18,7 @@ class SignInStudentPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.colors.white,      
+      backgroundColor: AppTheme.colors.bgWhite,      
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -142,6 +142,8 @@ class SignInStudentPage extends StatelessWidget {
                   ],
                 ),
               ),
+
+              const SizedBox(height: 50,),
             ],
           ),
         ),
