@@ -36,60 +36,71 @@ class _AdminDashboardState extends State<AdminDashboard> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      bottomNavigationBar: NavigationBar(
-        destinations: [
-          NavigationDestination(
-            selectedIcon: Image.asset(
-              "assets/img/navigation_icon/home_filled.png",
-              scale: 18,
-              color: AppTheme.colors.primary,
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              color: AppTheme.colors.gray,
+              width: 1.0
+            )
+          )
+        ),
+        child: NavigationBar(
+          destinations: [
+            NavigationDestination(
+              selectedIcon: Image.asset(
+                "assets/img/navigation_icon/home_filled.png",
+                scale: 18,
+                color: AppTheme.colors.primary,
+              ),
+              icon: Image.asset(
+                "assets/img/navigation_icon/home_outlined.png",
+                scale: 18,
+                color: AppTheme.colors.primary,
+              ),
+              label: "Home"
             ),
-            icon: Image.asset(
-              "assets/img/navigation_icon/home_outlined.png",
-              scale: 18,
-              color: AppTheme.colors.primary,
+        
+            NavigationDestination(
+              selectedIcon: Image.asset(
+                "assets/img/navigation_icon/school_filled.png",
+                scale: 18,
+                color: AppTheme.colors.primary,
+              ),
+              icon: Image.asset(
+                "assets/img/navigation_icon/school_outlined.png",
+                scale: 18,
+                color: AppTheme.colors.primary,
+              ),
+              label: "Courses"
             ),
-            label: "Home"
-          ),
-
-          NavigationDestination(
-            selectedIcon: Image.asset(
-              "assets/img/navigation_icon/school_filled.png",
-              scale: 18,
-              color: AppTheme.colors.primary,
+        
+            NavigationDestination(
+              selectedIcon: Image.asset(
+                "assets/img/navigation_icon/user_filled.png",
+                scale: 18,
+                color: AppTheme.colors.primary,
+              ),
+              icon: Image.asset(
+                "assets/img/navigation_icon/user_outlined.png",
+                scale: 18,
+                color: AppTheme.colors.primary,
+              ),
+              label: "Profile"
             ),
-            icon: Image.asset(
-              "assets/img/navigation_icon/school_outlined.png",
-              scale: 18,
-              color: AppTheme.colors.primary,
-            ),
-            label: "Courses"
-          ),
-
-          NavigationDestination(
-            selectedIcon: Image.asset(
-              "assets/img/navigation_icon/user_filled.png",
-              scale: 18,
-              color: AppTheme.colors.primary,
-            ),
-            icon: Image.asset(
-              "assets/img/navigation_icon/user_outlined.png",
-              scale: 18,
-              color: AppTheme.colors.primary,
-            ),
-            label: "Profile"
-          ),
-        ],
-
-        selectedIndex: currentPageIndex,
-        onDestinationSelected: (int index) {
-          setState(() {
-            currentPageIndex = index;
-          });
-        },
-        labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-        backgroundColor: AppTheme.colors.white,
-        indicatorColor: Colors.transparent,
+          ],
+        
+          selectedIndex: currentPageIndex,
+          onDestinationSelected: (int index) {
+            setState(() {
+              currentPageIndex = index;
+            });
+          },
+          labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+          backgroundColor: AppTheme.colors.white,
+          indicatorColor: Colors.transparent,
+          height: 40,
+        ),
       ),
 
       body: listOfPages[currentPageIndex],

@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+
 import 'package:sti_startnow/pages/welcome/page1.dart';
 import 'package:sti_startnow/providers/enrollee_list_provider.dart';
 import 'package:sti_startnow/providers/subject_list_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 void main() {
+  // Restrict/Disable Landscape mode
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  
   runApp(
     const MyApp()
   );
