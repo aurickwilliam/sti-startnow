@@ -28,87 +28,98 @@ class _ChatbotState extends State<Chatbot> {
 
       // Content
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Column(
-            children: [
-              PageAppBar(
-                title: "ChatBot"
-              ),
+        child: Column(
+          children: [
 
-              const SizedBox(height: 20,),
-
-              Expanded(
-                child: ListView.builder(
-                  itemCount: messages.length,
-                  itemBuilder: (context, index) {
-                    
-                    // if empty pa ung messages
-                    // for future backend
-                    if (messages.isEmpty){
-                      return Center(
-                        child: Text("Chat Now!"),
-                      );
-                    }
-
-                    // Return a chat bubble
-                    return ChatBubble(
-                      message: messages[index][0], 
-                      isUser: messages[index][1]
-                    );
-                  }
-                )
-              ),
-
-              // Chat Box and Send Button
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: messageController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        
-                        // If Focused
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: AppTheme.colors.primary, 
-                            width: 2.0,
-                          ),
-                          borderRadius: BorderRadius.circular(10)
-                        ),
-
-                        // Not Focused
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: AppTheme.colors.gray,
-                            width: 2.0,
-                          ),
-                          borderRadius: BorderRadius.circular(10)
-                        ),
-
-                        hintText: "Say Hello.."
-                      ),
-
-                      // Text style
-                      style: GoogleFonts.roboto(
-                        color: AppTheme.colors.black,
-                      ),
+            PageAppBar(
+              title: "ChatBot"
+            ),
+            
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 10
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 10,),
+                            
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: messages.length,
+                        itemBuilder: (context, index) {
+                          
+                          // if empty pa ung messages
+                          // for future backend
+                          if (messages.isEmpty){
+                            return Center(
+                              child: Text("Chat Now!"),
+                            );
+                          }
+                            
+                          // Return a chat bubble
+                          return ChatBubble(
+                            message: messages[index][0], 
+                            isUser: messages[index][1]
+                          );
+                        }
+                      )
                     ),
-                  ),
-
-                  IconButton(
-                    onPressed: () {}, 
-                    icon: Icon(
-                      Icons.send_rounded,
-                      color: AppTheme.colors.primary,
-                      size: 30,
+                            
+                    // Chat Box and Send Button
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: messageController,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              
+                              // If Focused
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: AppTheme.colors.primary, 
+                                  width: 2.0,
+                                ),
+                                borderRadius: BorderRadius.circular(10)
+                              ),
+                            
+                              // Not Focused
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: AppTheme.colors.gray,
+                                  width: 2.0,
+                                ),
+                                borderRadius: BorderRadius.circular(10)
+                              ),
+                            
+                              hintText: "Say Hello.."
+                            ),
+                            
+                            // Text style
+                            style: GoogleFonts.roboto(
+                              color: AppTheme.colors.black,
+                            ),
+                          ),
+                        ),
+                            
+                        IconButton(
+                          onPressed: () {}, 
+                          icon: Icon(
+                            Icons.send_rounded,
+                            color: AppTheme.colors.primary,
+                            size: 30,
+                          ),
+                        )
+                      ],
                     ),
-                  )
-                ],
-              )
-            ],
-          ),
+                  ],
+                ),
+              ),
+            )
+          ],
         )
       ),
     );

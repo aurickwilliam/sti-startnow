@@ -19,6 +19,10 @@ class EnrollmentDashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // Boolean if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape ? true : false;
+
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       endDrawer: Drawer(
@@ -82,7 +86,10 @@ class EnrollmentDashboard extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 15),
+            padding: EdgeInsets.symmetric(
+              horizontal: isLandscape ? 200 : 24, 
+              vertical: 15
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

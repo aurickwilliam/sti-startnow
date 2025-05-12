@@ -22,92 +22,104 @@ class CourseOfferInfoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // if is in Landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape ? true : false;
+
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                PageAppBar(
-                  title: "Course Offer", 
-                  onPressed: () {
-                    Navigator.pop(context);
-                  }
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              PageAppBar(
+                title: "Course Offer", 
+                onPressed: () {
+                  Navigator.pop(context);
+                }
+              ),
+          
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: isLandscape ? 200 : 24,
+                  vertical: 10,
                 ),
-
-                const SizedBox(height: 10,),
-
-                Container(
-                  width: double.infinity,
-                  height: 200,
-                  decoration: BoxDecoration(
-                    color: AppTheme.colors.white,
-                    borderRadius: BorderRadius.circular(15),
-                    image: DecorationImage(
-                      image: AssetImage(imgPath),
-                      fit: BoxFit.cover
-                    )
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 10,),
+                              
+                    Container(
+                      width: double.infinity,
+                      height: 200,
+                      decoration: BoxDecoration(
+                        color: AppTheme.colors.white,
+                        borderRadius: BorderRadius.circular(15),
+                        image: DecorationImage(
+                          image: AssetImage(imgPath),
+                          fit: BoxFit.cover
+                        )
+                      ),
+                    ),
+                              
+                    const SizedBox(height: 10,),
+                              
+                    Text(
+                      courseName,
+                      style: GoogleFonts.roboto(
+                        color: AppTheme.colors.primary,
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                              
+                    const SizedBox(height: 10,),
+                              
+                    Text(
+                      courseDescription,
+                      style: GoogleFonts.roboto(
+                        color: AppTheme.colors.black,
+                        fontSize: 14,
+                      ),
+                      softWrap: true,
+                      textAlign: TextAlign.start,
+                    ),
+                              
+                    const SizedBox(height: 20,),
+                              
+                    Text(
+                      "Skills to Learn:",
+                      style: GoogleFonts.roboto(
+                        color: AppTheme.colors.primary,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                              
+                    BulletList(
+                      strings: skillToLearn
+                    ),
+                              
+                    const SizedBox(height: 10,),
+                              
+                    Text(
+                      "Career Oppotunities:",
+                      style: GoogleFonts.roboto(
+                        color: AppTheme.colors.primary,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                              
+                    BulletList(
+                      strings: careerOppotunities
+                    ),
+                  ],
                 ),
-
-                const SizedBox(height: 10,),
-
-                Text(
-                  courseName,
-                  style: GoogleFonts.roboto(
-                    color: AppTheme.colors.primary,
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-
-                const SizedBox(height: 10,),
-
-                Text(
-                  courseDescription,
-                  style: GoogleFonts.roboto(
-                    color: AppTheme.colors.black,
-                    fontSize: 14,
-                  ),
-                  softWrap: true,
-                  textAlign: TextAlign.start,
-                ),
-
-                const SizedBox(height: 20,),
-
-                Text(
-                  "Skills to Learn:",
-                  style: GoogleFonts.roboto(
-                    color: AppTheme.colors.gold,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-
-                BulletList(
-                  strings: skillToLearn
-                ),
-
-                const SizedBox(height: 10,),
-
-                Text(
-                  "Career Oppotunities:",
-                  style: GoogleFonts.roboto(
-                    color: AppTheme.colors.gold,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-
-                BulletList(
-                  strings: careerOppotunities
-                ),
-
-              ],
-            ),
+              ),
+          
+            ],
           ),
         )
       ),
