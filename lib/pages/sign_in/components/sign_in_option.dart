@@ -36,7 +36,8 @@ class SignInOption extends StatelessWidget {
             style: GoogleFonts.roboto(
               color: AppTheme.colors.primary,
               decoration: TextDecoration.underline,
-              fontWeight: FontWeight.w500
+              fontWeight: FontWeight.w500,
+              fontSize: 17,
             ),
           ),
         ],

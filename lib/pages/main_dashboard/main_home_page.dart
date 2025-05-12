@@ -16,6 +16,10 @@ class MainHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape ? true : false;
+
     return Scaffold(
       backgroundColor: AppTheme.colors.primary,
 
@@ -23,7 +27,7 @@ class MainHomePage extends StatelessWidget {
       endDrawer: Drawer(
         backgroundColor: AppTheme.colors.white,
         child: Padding(
-          padding: const EdgeInsets.only(top: 50, right: 20),
+          padding: const EdgeInsets.only(top: 30, right: 20),
           child: ListView(
             children: [
               DrawerTile(
@@ -131,7 +135,10 @@ class MainHomePage extends StatelessWidget {
                           ),
 
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 25),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: isLandscape ? 200 : 24,
+                              vertical: 25
+                            ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

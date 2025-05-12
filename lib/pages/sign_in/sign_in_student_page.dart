@@ -17,6 +17,10 @@ class SignInStudentPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape ? true : false;
+
     return Scaffold(
       backgroundColor: AppTheme.colors.bgWhite,      
       body: SafeArea(
@@ -37,113 +41,112 @@ class SignInStudentPage extends StatelessWidget {
                 ),
               ),
         
-              // Welcome message
               Padding(
-                padding: const EdgeInsets.only(left: 24.0, top: 8),
-                child: Text(
-                  "Welcome Back\nSTIer's!",
-                  style: GoogleFonts.roboto(
-                    color: AppTheme.colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 32,
-                  ),
+                padding: EdgeInsets.symmetric(
+                  horizontal: isLandscape ? 200 : 24,
+                  vertical: 10,
                 ),
-              ),
-        
-              const SizedBox(height: 24),
-        
-              // Sign in box
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: SignInBox(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Email text field
-                    TextInput(
-                      controller: emailController, 
-                      label: "Email Address/Student No.:", 
-                      hint: "Email Address or Student No.", 
-                      isRequired: true, 
-                      isEnable: true
+                    // Welcome message
+                    Text(
+                      "Welcome Back\nSTIer's!",
+                      style: GoogleFonts.roboto(
+                        color: AppTheme.colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 32,
+                      ),
                     ),
-                
+                            
+                    const SizedBox(height: 24),
+                            
+                    // Sign in box
+                    SignInBox(
+                      children: [
+                        // Email text field
+                        TextInput(
+                          controller: emailController, 
+                          label: "Email Address/Student No.:", 
+                          hint: "Email Address or Student No.", 
+                          isRequired: true, 
+                          isEnable: true
+                        ),
+                    
+                        const SizedBox(height: 16),
+                          
+                        // Password text field
+                        PasswordInput(
+                          controller: passwordController, 
+                          label: "Password:", 
+                          hint: "Password", 
+                          isRequired: true, 
+                          isEnable: true
+                        ),
+                        
+                        const SizedBox(height: 16),
+                          
+                        // Sign in button
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(context, 
+                            MaterialPageRoute(builder: (context) => MainDashboard()));
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppTheme.colors.primary,
+                            minimumSize: Size(double.infinity, 46),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: Text(
+                            "Sign In",
+                            style: GoogleFonts.roboto(
+                              color: AppTheme.colors.white, 
+                              fontSize: 16
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                            
+                    // Divider
+                    Divider(),
+                            
                     const SizedBox(height: 16),
-                      
-                    // Password text field
-                    PasswordInput(
-                      controller: passwordController, 
-                      label: "Password:", 
-                      hint: "Password", 
-                      isRequired: true, 
-                      isEnable: true
+                            
+                    // Other pages
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SignInOption(
+                          header: "New Student?",
+                          linkText: "Enroll now",
+                          onTap: () {
+                            Navigator.push(context, 
+                            MaterialPageRoute(builder: (context) => EnrollmentDashboard()));
+                          },
+                        ),
+                        SignInOption(
+                          header: "A faculty member?",
+                          linkText: "Admin Sign In",
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SignInAdminPage(),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
                     ),
                     
-                    const SizedBox(height: 16),
-                      
-                    // Sign in button
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(context, 
-                        MaterialPageRoute(builder: (context) => MainDashboard()));
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppTheme.colors.primary,
-                        minimumSize: Size(double.infinity, 46),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: Text(
-                        "Sign In",
-                        style: GoogleFonts.roboto(
-                          color: AppTheme.colors.white, 
-                          fontSize: 16
-                        ),
-                      ),
-                    ),
+                    const SizedBox(height: 50,),
                   ],
                 ),
               ),
-              const SizedBox(height: 24),
-        
-              // Divider
-              Divider(
-                indent: 24,
-                endIndent: 24,
-              ),
-        
-              const SizedBox(height: 16),
-        
-              // Other pages
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SignInOption(
-                      header: "New Student?",
-                      linkText: "Enroll now",
-                      onTap: () {
-                        Navigator.push(context, 
-                        MaterialPageRoute(builder: (context) => EnrollmentDashboard()));
-                      },
-                    ),
-                    SignInOption(
-                      header: "A faculty member?",
-                      linkText: "Admin Sign In",
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SignInAdminPage(),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 50,),
             ],
           ),
         ),
