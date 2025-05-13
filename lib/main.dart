@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sti_startnow/pages/enrollment/student_type_page.dart';
 
 import 'package:sti_startnow/pages/welcome/page1.dart';
 import 'package:sti_startnow/pages/welcome/register_page.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: AppTheme.define(),
-        home: RegisterPage(),
+        home: StudentTypePage(),
       ),
     );
   }

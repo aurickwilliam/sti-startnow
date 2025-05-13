@@ -26,6 +26,10 @@ class _PermanentAddressPageState extends State<PermananetAddressPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
@@ -41,7 +45,10 @@ class _PermanentAddressPageState extends State<PermananetAddressPage> {
               ),
 
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                padding: EdgeInsets.symmetric(
+                  horizontal: isLandscape ? 200 : 24, 
+                  vertical: 10
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
