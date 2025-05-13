@@ -49,12 +49,16 @@ class _MainProfileEditPageState extends State<MainProfileEditPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape ? true : false;
+
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+        child: SingleChildScrollView(
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               PageAppBar(
                 title: "Profile Edit", 
@@ -62,107 +66,112 @@ class _MainProfileEditPageState extends State<MainProfileEditPage> {
                   Navigator.pop(context);
                 }
               ),
-
-              const SizedBox(height: 10,),
-
-              Expanded(
+          
+          
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: isLandscape ? 200 : 24,
+                  vertical: 10,
+                ),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 100,
-                            height: 100,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: AppTheme.colors.primary,
-                                width: 2.0
-                              ),
-                              image: DecorationImage(
-                                image: newProfilePhoto != null ? FileImage(newProfilePhoto!) : AssetImage(widget.profileImg),
-                                fit: BoxFit.cover
-                              )
-                            ),
-                          ),
-                          
-                          const SizedBox(height: 10,),
-                      
-                          FilledButton.icon(
-                            onPressed: () {
-                              pickNewProfileFromGallery();
-                            }, 
-                            label: Text(
-                              "Change Profile Photo",
-                              style: GoogleFonts.roboto(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500
-                              ),
-                            ),
-                            icon: Icon(
-                              Icons.edit
-                            ),
-                            style: FilledButton.styleFrom(
-                              foregroundColor: AppTheme.colors.white,
-                              backgroundColor: AppTheme.colors.primary,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)
-                              )
-                            ),
-                          ),
-                      
-                          const SizedBox(height: 30,),
-                      
-                          Container(
-                            width: double.infinity,
-                            height: 175,
-                            decoration: BoxDecoration(
-                              color: AppTheme.colors.white,
-                              borderRadius: BorderRadius.circular(15),
-                              border: Border.all(
-                                color: AppTheme.colors.primary,
-                                width: 2.0,
-                              ),
-                              image: DecorationImage(
-                                image: newCoverPhoto != null ? FileImage(newCoverPhoto!) : AssetImage(widget.coverImg),
-                                fit: BoxFit.cover
-                              )
-                            ),
-                          ),
-                      
-                          const SizedBox(height: 10,),
-                      
-                          FilledButton.icon(
-                            onPressed: () {
-                              pickNewCoverFromGallery();
-                            }, 
-                            label: Text(
-                              "Change Cover Photo",
-                              style: GoogleFonts.roboto(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500
-                              ),
-                            ),
-                            icon: Icon(
-                              Icons.edit
-                            ),
-                            style: FilledButton.styleFrom(
-                              foregroundColor: AppTheme.colors.white,
-                              backgroundColor: AppTheme.colors.primary,
-                              minimumSize: Size(double.infinity, 46) ,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)
-                              )
-                            ),
-                          ),
-                      
-                        ],
+                    Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: AppTheme.colors.primary,
+                          width: 2.0
+                        ),
+                        image: DecorationImage(
+                          image: newProfilePhoto != null ? FileImage(newProfilePhoto!) : AssetImage(widget.profileImg),
+                          fit: BoxFit.cover
+                        )
                       ),
                     ),
-                
+                    
+                    const SizedBox(height: 10,),
+                                    
+                    OutlinedButton.icon(
+                      onPressed: () {
+                        pickNewProfileFromGallery();
+                      }, 
+                      label: Text(
+                        "Change Profile Photo",
+                        style: GoogleFonts.roboto(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500
+                        ),
+                      ),
+                      icon: Icon(
+                        Icons.edit
+                      ),
+                      style: FilledButton.styleFrom(
+                        foregroundColor: AppTheme.colors.primary,
+                        backgroundColor: AppTheme.colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)
+                        ),
+                        side: BorderSide(
+                          color: AppTheme.colors.primary,
+                          width: 2.0
+                        )
+                      ),
+                    ),
+                                    
+                    const SizedBox(height: 30,),
+                                    
+                    Container(
+                      width: double.infinity,
+                      height: 175,
+                      decoration: BoxDecoration(
+                        color: AppTheme.colors.white,
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(
+                          color: AppTheme.colors.primary,
+                          width: 2.0,
+                        ),
+                        image: DecorationImage(
+                          image: newCoverPhoto != null ? FileImage(newCoverPhoto!) : AssetImage(widget.coverImg),
+                          fit: BoxFit.cover
+                        )
+                      ),
+                    ),
+                                    
+                    const SizedBox(height: 10,),
+                                    
+                    OutlinedButton.icon(
+                      onPressed: () {
+                        pickNewCoverFromGallery();
+                      }, 
+                      label: Text(
+                        "Change Cover Photo",
+                        style: GoogleFonts.roboto(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500
+                        ),
+                      ),
+                      icon: Icon(
+                        Icons.edit
+                      ),
+                      style: FilledButton.styleFrom(
+                        foregroundColor: AppTheme.colors.primary,
+                        backgroundColor: AppTheme.colors.white,
+                        minimumSize: Size(double.infinity, 46) ,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)
+                        ),
+                        side: BorderSide(
+                          color: AppTheme.colors.primary,
+                          width: 2.0
+                        )
+                      ),
+                    ),
+
+                    const SizedBox(height: 50,),
+
                     BottomButton(
                       onPressed: () {
                         Navigator.push(context, 
@@ -171,6 +180,7 @@ class _MainProfileEditPageState extends State<MainProfileEditPage> {
                       }, 
                       text: "Save"
                     )
+                
                   ],
                 ),
               )

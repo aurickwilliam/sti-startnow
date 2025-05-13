@@ -61,18 +61,22 @@ class _MainSubjectsPageState extends State<MainSubjectsPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape ? true : false;
+
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-          child: Column(
-            children: [
-              
-              // App Bar
-              Column(
-                children: [
-                  Row(
+        child: Column(
+          children: [
+            
+            // App Bar
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Icon(
@@ -93,25 +97,30 @@ class _MainSubjectsPageState extends State<MainSubjectsPage> {
                       )
                     ],
                   ),
-                      
-                  Divider(
-                    height: 10,
-                    thickness: 3,
-                  )
-                ],
+                ),
+                    
+                Divider(
+                  height: 10,
+                  thickness: 3,
+                )
+              ],
+            ),
+                
+            const SizedBox(height: 10,),
+                
+            // Categories button
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: isLandscape ? 200 : 24, 
               ),
-        
-              const SizedBox(height: 10,),
-        
-              // Categories button
-              Row(
+              child: Row(
                 children: [
                   CategoryButton(
                     text: "Current",
                     onPressed: handleCurrentChange,
                     isSelected: isCurrentSelected,
                   ),
-        
+                  
                   CategoryButton(
                     text: "Completed",
                     onPressed: handleCompletedChange,
@@ -119,9 +128,14 @@ class _MainSubjectsPageState extends State<MainSubjectsPage> {
                   ),
                 ],
               ),
-        
-              
-              Expanded(
+            ),
+                
+            
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: isLandscape ? 200 : 24,
+                ),
                 child: ListView.builder(
                   shrinkWrap: true,
                   itemCount: selectedList.length,
@@ -135,8 +149,8 @@ class _MainSubjectsPageState extends State<MainSubjectsPage> {
                   }
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         )
       ),
     );

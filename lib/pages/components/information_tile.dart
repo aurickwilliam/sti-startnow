@@ -34,7 +34,7 @@ class InformationTile extends StatelessWidget {
             color: AppTheme.colors.white,
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
-              color: AppTheme.colors.gold,
+              color: AppTheme.colors.gray,
               width: 2.0
             )
           ),
