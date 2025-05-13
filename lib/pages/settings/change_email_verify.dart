@@ -13,25 +13,32 @@ class ChangeEmailVerify extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppTheme.colors.white,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // Header, instructions, and verify email
-              Column(
+
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
+    // content
+    Widget content = Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        // Header, instructions, and verify email
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Change email header
+            PageAppBar(
+              title: "Change Email"
+            ),
+    
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: isLandscape ? 200 : 24,
+              ),
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Change email header
-                  PageAppBar(
-                    title: "Change Email"
-                  ),
-
                   const SizedBox(height: 20),
-        
+                  
                   // Instructions header
                   Text(
                     "Verify New Email",
@@ -41,9 +48,9 @@ class ChangeEmailVerify extends StatelessWidget {
                       fontSize: 24,
                     ),
                   ),
-
+                      
                   const SizedBox(height: 4),
-        
+                  
                   // Instructions
                   Text(
                     "Enter the 6-Digit Code that will be sent to your new email for verification.",
@@ -52,9 +59,9 @@ class ChangeEmailVerify extends StatelessWidget {
                       fontSize: 14,
                     ),
                   ),
-
+                      
                   const SizedBox(height: 30),
-        
+                  
                   // Verification code field
                   NumberInput(
                     controller: codeController, 
@@ -63,9 +70,9 @@ class ChangeEmailVerify extends StatelessWidget {
                     isRequired: false, 
                     isEnable: true
                   ),
-
+                      
                   const SizedBox(height: 10),
-        
+                  
                   // Resend code
                   Text(
                     "Resend Code",
@@ -77,20 +84,42 @@ class ChangeEmailVerify extends StatelessWidget {
                   ),
                 ],
               ),
-        
-              // Submit button
-              BottomButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AccountSettings()),
-                  );
-                }, 
-                text: "Submit"
-              )
-            ],
-          ),
+            ),
+          ],
         ),
+            
+        // Submit button
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: isLandscape ? 200 : 24,
+            vertical: isLandscape ? 20 : 0,
+          ),
+          child: BottomButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AccountSettings()),
+              );
+            }, 
+            text: "Submit"
+          ),
+        )
+      ],
+    );
+
+    // Choosing the parent widget based on orientation
+    Widget parentWidget = isLandscape 
+      ? SingleChildScrollView(
+        child: content,
+      )
+      : Container(
+        child: content,
+      );
+
+    return Scaffold(
+      backgroundColor: AppTheme.colors.white,
+      body: SafeArea(
+        child: parentWidget
       ),
     );
   }

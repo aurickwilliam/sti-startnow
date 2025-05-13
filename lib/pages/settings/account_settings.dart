@@ -13,11 +13,14 @@ class AccountSettings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape ? true : false;
+
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+        child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -29,45 +32,55 @@ class AccountSettings extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => Settings()));
                 },
               ),
-
-              const SizedBox(height: 20),
-        
-              // Sub header
-              Text(
-                "Account Settings",
-                style: GoogleFonts.roboto(
-                  fontWeight: FontWeight.w500, 
-                  fontSize: 16
+          
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: isLandscape ? 200 : 24,
                 ),
-              ),
-              const SizedBox(height: 10),
-        
-              // Settings box
-              OptionBox(
-                children: [
-                  OptionTile(
-                    text: "Change Password", 
-                    icon: Icons.lock_outline, 
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ChangePassword()),
-                      );
-                    }
-                  ),
-
-                  OptionTile(
-                    text: "Change Email", 
-                    icon: Icons.email_outlined, 
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ChangeEmail()),
-                      );
-                    },
-                    isLastItem: true,
-                  ),
-                ]
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 20),
+                        
+                    // Sub header
+                    Text(
+                      "Account Settings",
+                      style: GoogleFonts.roboto(
+                        fontWeight: FontWeight.w500, 
+                        fontSize: 16
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                        
+                    // Settings box
+                    OptionBox(
+                      children: [
+                        OptionTile(
+                          text: "Change Password", 
+                          icon: Icons.lock_outline, 
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => ChangePassword()),
+                            );
+                          }
+                        ),
+                              
+                        OptionTile(
+                          text: "Change Email", 
+                          icon: Icons.email_outlined, 
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => ChangeEmail()),
+                            );
+                          },
+                          isLastItem: true,
+                        ),
+                      ]
+                    ),
+                  ],
+                ),
               )
             ],
           ),

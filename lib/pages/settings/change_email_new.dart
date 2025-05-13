@@ -12,50 +12,74 @@ class ChangeEmailNew extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
+    // Content inside
+    Widget content = Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        // Header and text field
+        Column(
+          children: [
+            // Change email header
+            PageAppBar(
+              title: "Change Email"
+            ),
+    
+            const SizedBox(height: 20),
+            
+            // New email field
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: isLandscape ? 200 : 24,
+              ),
+              child: TextInput(
+                controller: newEmailController, 
+                label: "Enter New Email:", 
+                hint: "Enter New Email", 
+                isRequired: false, 
+                isEnable: true
+              ),
+            )
+          ],
+        ),
+            
+        // Submit button
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: isLandscape ? 200 : 24,
+           vertical: isLandscape ? 10 : 0 
+          ),
+          child: BottomButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChangeEmailVerify(),
+                ),
+              );
+            }, 
+            text: "Submit"
+          ),
+        )
+      ],
+    );
+
+    // Choosing parent widget based on orientation
+    Widget parentWidget = isLandscape 
+      ? SingleChildScrollView(
+        child: content,
+      )
+      : Container(
+        child: content,
+      );
+
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // Header and text field
-              Column(
-                children: [
-                  // Change email header
-                  PageAppBar(
-                    title: "Change Email"
-                  ),
-
-                  const SizedBox(height: 20),
-        
-                  // New email field
-                  TextInput(
-                    controller: newEmailController, 
-                    label: "Enter New Email:", 
-                    hint: "Enter New Email", 
-                    isRequired: false, 
-                    isEnable: true
-                  )
-                ],
-              ),
-        
-              // Submit button
-              BottomButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ChangeEmailVerify(),
-                    ),
-                  );
-                }, 
-                text: "Submit"
-              )
-            ],
-          ),
-        ),
+        child: parentWidget,
       ),
     );
   }

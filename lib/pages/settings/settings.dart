@@ -12,11 +12,14 @@ class Settings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape ? true : false;
+
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10),
+        child: SingleChildScrollView(
           child: Column(
             children: [
               // Settings header
@@ -27,40 +30,50 @@ class Settings extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => MainDashboard()));
                 },
               ),
-              
-              const SizedBox(height: 20),
 
-              OptionBox(
-                children: [
-                  OptionTile(
-                    text: "Account Settings", 
-                    icon: Icons.account_circle_outlined, 
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AccountSettings(),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: isLandscape ? 200 : 24,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 20),
+                            
+                    OptionBox(
+                      children: [
+                        OptionTile(
+                          text: "Account Settings", 
+                          icon: Icons.account_circle_outlined, 
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AccountSettings(),
+                              ),
+                            );
+                          }
                         ),
-                      );
-                    }
-                  ),
-
-                  OptionTile(
-                    text: "Notifications", 
-                    icon: Icons.notifications_outlined, 
-                    onTap: () {}
-                  ),
-
-                  OptionTile(
-                    text: "Sign Out", 
-                    icon: Icons.logout, 
-                    onTap: () {
-                      Navigator.push(context, 
-                      MaterialPageRoute(builder: (context) => SignInStudentPage()));
-                    },
-                    isLastItem: true,
-                  )
-                ]
+                            
+                        OptionTile(
+                          text: "Notifications", 
+                          icon: Icons.notifications_outlined, 
+                          onTap: () {}
+                        ),
+                            
+                        OptionTile(
+                          text: "Sign Out", 
+                          icon: Icons.logout, 
+                          onTap: () {
+                            Navigator.push(context, 
+                            MaterialPageRoute(builder: (context) => SignInStudentPage()));
+                          },
+                          isLastItem: true,
+                        )
+                      ]
+                    ),
+                  ],
+                ),
               )
             ],
           ),
