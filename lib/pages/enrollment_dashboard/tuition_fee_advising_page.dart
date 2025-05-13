@@ -35,7 +35,7 @@ class TuitionFeeAdvisingPage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     // if is in landscape mode
-    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape ? true : false;
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
       backgroundColor: AppTheme.colors.white,

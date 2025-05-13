@@ -25,10 +25,16 @@ class _StudentPortalPageState extends State<StudentPortalPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppTheme.colors.white,
-      body: SafeArea(
-        child: Column(
+
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
+    // Content
+    Widget content = Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             EnrollmentHeader(
               step1: true, 
@@ -37,49 +43,67 @@ class _StudentPortalPageState extends State<StudentPortalPage> {
               step4: false, 
               title: "Student Portal"
             ),
-
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      children: [
-                        NumberInput(
-                          controller: studentNumberController, 
-                          label: "Student Number:", 
-                          hint: "02000XXXXXX", 
-                          isRequired: true,
-                          isEnable: true,
-                        ),
-                    
-                        const SizedBox(height: 10,),
-                    
-                        PasswordInput(
-                          controller: accessCodeController, 
-                          label: "Access Code:", 
-                          hint: "Enter Access Code", 
-                          isRequired: true,
-                          isEnable: true,
-                        ),
-                      ],
-                    ),
-
-                    BottomButton(
-                      onPressed: () {
-                        Navigator.push(context, 
-                        MaterialPageRoute(builder: (context) => 
-                        PaymentReceiptPage(studentStatus: widget.studentStatus,)));
-                      },
-                      text: "Submit",
-                    )
-                  ],
-                ),
-              )
+        
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: isLandscape ? 200 : 24, 
+                vertical: 10
+              ),
+              child: Column(
+                children: [
+                  NumberInput(
+                    controller: studentNumberController, 
+                    label: "Student Number:", 
+                    hint: "02000XXXXXX", 
+                    isRequired: true,
+                    isEnable: true,
+                  ),
+              
+                  const SizedBox(height: 10,),
+              
+                  PasswordInput(
+                    controller: accessCodeController, 
+                    label: "Access Code:", 
+                    hint: "Enter Access Code", 
+                    isRequired: true,
+                    isEnable: true,
+                  ),
+                ],
+              ),
             )
           ],
+        ),
+
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: isLandscape ? 200 : 24,
+            vertical: isLandscape ? 10 : 0
+          ),
+          child: BottomButton(
+            onPressed: () {
+              Navigator.push(context, 
+              MaterialPageRoute(builder: (context) => 
+              PaymentReceiptPage(studentStatus: widget.studentStatus,)));
+            },
+            text: "Submit",
+          ),
         )
+      ],
+    );
+
+    // Choosing the parent widget
+    Widget parentWidget = isLandscape
+      ? SingleChildScrollView(
+        child: content,
+      )
+      : Container(
+        child: content  ,
+      );
+
+    return Scaffold(
+      backgroundColor: AppTheme.colors.white,
+      body: SafeArea(
+        child: parentWidget
       ),
     );
   }

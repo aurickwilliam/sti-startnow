@@ -21,7 +21,7 @@ class EnrollmentDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
 
     // Boolean if is in landscape
-    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape ? true : false;
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
       backgroundColor: AppTheme.colors.white,

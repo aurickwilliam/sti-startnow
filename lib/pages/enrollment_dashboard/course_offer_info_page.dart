@@ -24,7 +24,7 @@ class CourseOfferInfoPage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     // if is in Landscape
-    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape ? true : false;
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
       backgroundColor: AppTheme.colors.white,

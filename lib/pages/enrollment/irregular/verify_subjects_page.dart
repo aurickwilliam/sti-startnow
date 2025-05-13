@@ -42,69 +42,87 @@ class VerifySubjectsPage extends StatelessWidget {
     final subjectListProvider = Provider.of<SubjectListProvider>(context);
     final totalUnits = subjectListProvider.getTotalUnitsSelectedSubjects();
 
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
-        child: Column(
-          children: [
-            EnrollmentHeader(
-              step1: true, 
-              step2: true, 
-              step3: true, 
-              step4: false, 
-              title: "Enrollment"
-            ),
-
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 15),
-                child: ListView(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              EnrollmentHeader(
+                step1: true, 
+                step2: true, 
+                step3: true, 
+                step4: false, 
+                title: "Enrollment"
+              ),
+          
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 10
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Schedule:",
-                          style: GoogleFonts.roboto(
-                            color: AppTheme.colors.primary,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Schedule:",
+                              style: GoogleFonts.roboto(
+                                color: AppTheme.colors.primary,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            
+                            Text(
+                              "Units: $totalUnits",
+                              style: GoogleFonts.roboto(
+                                color: AppTheme.colors.primary,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          ],
                         ),
-
-                        Text(
-                          "Units: $totalUnits",
-                          style: GoogleFonts.roboto(
-                            color: AppTheme.colors.primary,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        )
+                            
+                        Divider(
+                          height: 10,
+                        ),
+                            
+                        CustomDataTable(
+                          columnNames: columnNames, 
+                          dataTableValues: dataTableValues
+                        ),
+                            
+                        const SizedBox(height: 50,),
                       ],
                     ),
-
-                    Divider(
-                      height: 10,
+                  ),
+                      
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: isLandscape ? 200 : 24,
+                      vertical: isLandscape ? 10 : 0
                     ),
-
-                    CustomDataTable(
-                      columnNames: columnNames, 
-                      dataTableValues: dataTableValues
-                    ),
-
-                    const SizedBox(height: 50,),
-
-                    BackNextButton(
+                    child: BackNextButton(
                       nextPressed: () {
                         Navigator.push(context, 
                         MaterialPageRoute(builder: (context) => CompletedPage()));
                       }
-                    )
-                  ],
-                ),
-              ),
-            )
-          ],
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

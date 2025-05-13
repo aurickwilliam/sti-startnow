@@ -107,23 +107,31 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
     programController.text = program;
     studentAcademicTypeController.text = widget.studentStatus;
 
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
-        child: Column(
-          children: [
-            EnrollmentHeader(
-              step1: true, 
-              step2: true, 
-              step3: true, 
-              step4: false, 
-              title: "Enrollment"
-            ),
-
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-                child: ListView(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              EnrollmentHeader(
+                step1: true, 
+                step2: true, 
+                step3: true, 
+                step4: false, 
+                title: "Enrollment"
+              ),
+          
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: isLandscape ? 200 : 24, 
+                  vertical: 10
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       "Student Details:",
@@ -133,9 +141,9 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-
+              
                     const SizedBox(height: 20,),
-
+              
                     // STUDENT NUMBER
                     TextInput(
                       controller: studentNoController, 
@@ -144,9 +152,9 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
                       isRequired: false, 
                       isEnable: false
                     ),
-
+              
                     const SizedBox(height: 10,),
-
+              
                     // STUDENT NAME
                     TextInput(
                       controller: studentNameController, 
@@ -155,7 +163,7 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
                       isRequired: false, 
                       isEnable: false
                     ),
-
+              
                     const SizedBox(height: 10,),
                     
                     // STUDENT PROGRAM
@@ -166,9 +174,9 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
                       isRequired: false, 
                       isEnable: false
                     ),
-
+              
                     const SizedBox(height: 10,),
-
+              
                     // STUDENT ACADEMIC TYPE
                     TextInput(
                       controller: studentAcademicTypeController, 
@@ -177,7 +185,7 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
                       isRequired: false, 
                       isEnable: false
                     ),
-
+              
                     const SizedBox(height: 10,),
                     
                     // STUDENT ADMISSION TYPE
@@ -190,9 +198,9 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
                       isRequired: true, 
                       isEnable: true, 
                     ),
-
+              
                     const SizedBox(height: 10,),
-
+              
                     // STUDENT NEW LEVEL
                     CustomDropdownMenu(
                       listChoices: newYearLevel, 
@@ -203,9 +211,9 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
                       isRequired: true, 
                       isEnable: true, 
                     ),
-
+              
                     const SizedBox(height: 10,),
-
+              
                     // PAYMENT LOCATION
                     CustomDropdownMenu(
                       listChoices: paymentLocation, 
@@ -216,9 +224,9 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
                       isRequired: true, 
                       isEnable: true, 
                     ),
-
+              
                     const SizedBox(height: 10,),
-
+              
                     // PAYMENT TYPE
                     CustomDropdownMenu(
                       listChoices: paymentType, 
@@ -229,9 +237,9 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
                       isRequired: true, 
                       isEnable: true, 
                     ),
-
+              
                     const SizedBox(height: 10,),
-
+              
                     // REFERENCE NO.
                     TextInput(
                       controller: referenceNoController, 
@@ -240,9 +248,9 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
                       isRequired: true, 
                       isEnable: true
                     ),
-
+              
                     const SizedBox(height: 10,),
-
+              
                     // AMOUNT PAID
                     NumberInput(
                       controller: amountPaidController, 
@@ -251,9 +259,9 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
                       isRequired: true, 
                       isEnable: true
                     ),
-
+              
                     const SizedBox(height: 10,),
-
+              
                     NumberInput(
                       controller: contactNoController, 
                       label: "Contact Number:", 
@@ -261,21 +269,21 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
                       isRequired: true, 
                       isEnable: true
                     ),
-
+              
                     const SizedBox(height: 100,),
-
+              
                     BottomButton(
                       onPressed: () {
                         handleNavigation();
                       }, 
                       text: "Submit"
                     )
-
+              
                   ],
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         )
       ),
     );

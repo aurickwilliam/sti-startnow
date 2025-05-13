@@ -31,10 +31,15 @@ class _SelectYearLevelState extends State<SelectYearLevelPage> {
     // Reference lang sa provider
     final subjectListProvider = Provider.of<SubjectListProvider>(context);
 
-    return Scaffold(
-      backgroundColor: AppTheme.colors.white,
-      body: SafeArea(
-        child: Column(
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
+    // Content
+    Widget content = Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             EnrollmentHeader(
               step1: true, 
@@ -43,107 +48,129 @@ class _SelectYearLevelState extends State<SelectYearLevelPage> {
               step4: false, 
               title: "Enrollment"
             ),
-
-            Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-                  child: Column(
+        
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: isLandscape ? 200 : 24, 
+                vertical: 10
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Select Year Level: ",
-                            style: GoogleFonts.roboto(
-                              color: AppTheme.colors.primary,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: AppTheme.colors.primary,
-                              borderRadius: BorderRadius.circular(10)
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "Count:",
-                                    style: GoogleFonts.roboto(
-                                      color: AppTheme.colors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500
-                                    ),
-                                  ),
-                              
-                                  const SizedBox(width: 10,),
-                              
-                                  Container(
-                                    width: 30,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: AppTheme.colors.white
-                                    ),
-                                    child: Text(
-                                      // Length of the list which hold all the selected subjects
-                                      subjectListProvider.allSelectedSubjects.length.toString(),
-                                      style: GoogleFonts.roboto(
-                                        color: AppTheme.colors.black,
-                                        fontSize: 16,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  )
-                                ],
+                      Text(
+                        "Select Year Level: ",
+                        style: GoogleFonts.roboto(
+                          color: AppTheme.colors.primary,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: AppTheme.colors.primary,
+                          borderRadius: BorderRadius.circular(10)
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Count:",
+                                style: GoogleFonts.roboto(
+                                  color: AppTheme.colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500
+                                ),
                               ),
-                            ),
+                          
+                              const SizedBox(width: 10,),
+                          
+                              Container(
+                                width: 30,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: AppTheme.colors.white
+                                ),
+                                child: Text(
+                                  // Length of the list which hold all the selected subjects
+                                  subjectListProvider.allSelectedSubjects.length.toString(),
+                                  style: GoogleFonts.roboto(
+                                    color: AppTheme.colors.black,
+                                    fontSize: 16,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              )
+                            ],
                           ),
-                        ],
+                        ),
                       ),
-                              
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: yearLevel.length,
-                        itemBuilder: (context, index) {
-                          return YearLevelTile(
-                            year: yearLevel[index],
-                            onTap: () {
-                              // setState(() {
-                              //   selectedYearLevel = yearLevel[index];
-                              // });
-                              subjectListProvider.changeSeletectedYear(index + 1);
-                              
-                              Navigator.push(context, 
-                              MaterialPageRoute(builder: (_) => SelectSubjectPage()));
-                            },
-                          );
-                        },
-                      ),
-
-                      const SizedBox(height: 30,),
-                  
-                      BottomButton(
-                        onPressed: () {
-                          Navigator.push(context, 
-                          MaterialPageRoute(builder: (context) => VerifySubjectsPage()));
-
-                          for (var sub in subjectListProvider.allSelectedSubjects) {
-                            print(sub.name);
-                          }
-                        }, 
-                        text: "Submit"
-                      )
                     ],
                   ),
-                ),
+                          
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: yearLevel.length,
+                    itemBuilder: (context, index) {
+                      return YearLevelTile(
+                        year: yearLevel[index],
+                        onTap: () {
+                          // setState(() {
+                          //   selectedYearLevel = yearLevel[index];
+                          // });
+                          subjectListProvider.changeSeletectedYear(index + 1);
+                          
+                          Navigator.push(context, 
+                          MaterialPageRoute(builder: (_) => SelectSubjectPage()));
+                        },
+                      );
+                    },
+                  ),
+                      
+                  const SizedBox(height: 30,),
+                ],
               ),
             )
           ],
+        ),
+
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: isLandscape ? 200 : 24,
+            vertical: isLandscape ? 10 : 0
+          ),
+          child: BottomButton(
+            onPressed: () {
+              Navigator.push(context, 
+              MaterialPageRoute(builder: (context) => VerifySubjectsPage()));
+              
+              for (var sub in subjectListProvider.allSelectedSubjects) {
+                print(sub.name);
+              }
+            }, 
+            text: "Submit"
+          ),
         )
+      ],
+    );
+
+    // Choosing the parent widget
+    Widget parentWidget = isLandscape
+      ? SingleChildScrollView(
+        child: content,
+      )
+      : Container(
+        child: content,
+      );
+
+    return Scaffold(
+      backgroundColor: AppTheme.colors.white,
+      body: SafeArea(
+        child: parentWidget
       ),
     );
   }

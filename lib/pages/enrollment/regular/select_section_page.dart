@@ -47,96 +47,123 @@ class SelectSectionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
-        child: Column(
-          children: [
-            EnrollmentHeader(
-              step1: true,
-              step2: true,
-              step3: true,
-              step4: false,
-              title: "Enrollment",
-            ),
-
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 10,
-                ),
-                child: ListView(
-                  children: [
-                    Text(
-                      "Select a Section",
-                      style: GoogleFonts.roboto(
-                        color: AppTheme.colors.primary,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              EnrollmentHeader(
+                step1: true,
+                step2: true,
+                step3: true,
+                step4: false,
+                title: "Enrollment",
+              ),
+          
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: isLandscape ? 200 : 24,
+                      vertical: 10
                     ),
-
-                    const SizedBox(height: 20),
-
-                    CustomDropdownMenu(
-                      listChoices: listSection,
-                      controller: sectionController,
-                      label: "Available Sections:",
-                      hint: "Select a section",
-                      initialValue: "",
-                      isRequired: false,
-                      isEnable: true,
-                    ),
-
-                    const SizedBox(height: 30,),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Schedule:",
+                          "Select a Section",
                           style: GoogleFonts.roboto(
                             color: AppTheme.colors.primary,
-                            fontSize: 18,
+                            fontSize: 24,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-
-                        Text(
-                          "Units: $totalUnits",
-                          style: GoogleFonts.roboto(
-                            color: AppTheme.colors.primary,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        )
+                          
+                        const SizedBox(height: 20),
+                          
+                        CustomDropdownMenu(
+                          listChoices: listSection,
+                          controller: sectionController,
+                          label: "Available Sections:",
+                          hint: "Select a section",
+                          initialValue: "",
+                          isRequired: false,
+                          isEnable: true,
+                        ),
                       ],
                     ),
-
-                    Divider(
-                      height: 10,
+                  ),
+                    
+                  const SizedBox(height: 30,),
+                    
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 24,
                     ),
-
-                    CustomDataTable(
-                      columnNames: columnNames, 
-                      dataTableValues: dataTableValues
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Schedule:",
+                              style: GoogleFonts.roboto(
+                                color: AppTheme.colors.primary,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          
+                            Text(
+                              "Units: $totalUnits",
+                              style: GoogleFonts.roboto(
+                                color: AppTheme.colors.primary,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          ],
+                        ),
+                          
+                        Divider(
+                          height: 10,
+                        ),
+                          
+                        CustomDataTable(
+                          columnNames: columnNames, 
+                          dataTableValues: dataTableValues
+                        ),
+                      ],
                     ),
-
-                    const SizedBox(height: 50,),
-
-                    BottomButton(
+                  ),
+                    
+                  const SizedBox(height: 50,),
+                    
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: isLandscape ? 200 : 24,
+                      vertical: isLandscape ? 10 : 0
+                    ),
+                    child: BottomButton(
                       onPressed: () {
                         Navigator.push(context, 
                         MaterialPageRoute(builder: (context) => CompletedPage()));
                       }, 
                       text: "Submit"
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
