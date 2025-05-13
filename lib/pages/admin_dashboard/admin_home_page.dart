@@ -10,12 +10,16 @@ class AdminHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
       backgroundColor: AppTheme.colors.primary,
 
       // Need ng layout builder para get ung size ng parent/screen
       body: LayoutBuilder(
-        builder: (context, constraints){
+        builder: (context, constraints){ 
           return SafeArea(
             child: SingleChildScrollView(
               
@@ -83,7 +87,10 @@ class AdminHomePage extends StatelessWidget {
                             )
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 25),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: isLandscape ? 200 : 24, 
+                              vertical: 25
+                            ),
                             child: Column(
                               children: [
 

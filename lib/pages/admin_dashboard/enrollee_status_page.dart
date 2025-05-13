@@ -15,11 +15,13 @@ class EnrolleeStatusPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final enrolleeList = Provider.of<EnrolleeListProvider>(context);
 
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+        child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -29,59 +31,70 @@ class EnrolleeStatusPage extends StatelessWidget {
                   Navigator.pop(context);
                 }
               ),
-
-              const SizedBox(height: 20,),
-
-              Text(
-                "Student Enrollment Status:",
-                style: GoogleFonts.roboto(
-                  color: AppTheme.colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
+          
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: isLandscape ? 200 : 24,
+                  vertical: 10
                 ),
-              ),
-
-              const SizedBox(height: 10,),
-
-              OptionBox(
-                children: [
-                  OptionTile(
-                    text: "Unverified", 
-                    icon: Icons.sentiment_dissatisfied_rounded, 
-                    onTap: () {
-                      enrolleeList.changeSelectedStatus(1);
-                      print(enrolleeList.getSelectedStatus);
-
-                      Navigator.push(context, 
-                      MaterialPageRoute(builder: (context) => EnrolleeListPage()));
-                    }
-                  ),
-
-                  OptionTile(
-                    text: "Pending", 
-                    icon: Icons.schedule_rounded, 
-                    onTap: () {
-                      enrolleeList.changeSelectedStatus(2);
-                      print(enrolleeList.getSelectedStatus);
-
-                      Navigator.push(context, 
-                      MaterialPageRoute(builder: (context) => EnrolleeListPage()));
-                    }
-                  ),
-
-                  OptionTile(
-                    text: "Verified", 
-                    icon: Icons.sentiment_satisfied_rounded, 
-                    onTap: () {
-                      enrolleeList.changeSelectedStatus(3);
-                      print(enrolleeList.getSelectedStatus);
-
-                      Navigator.push(context, 
-                      MaterialPageRoute(builder: (context) => EnrolleeListPage()));
-                    },
-                    isLastItem: true,
-                  ),
-                ]
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 20,),
+                              
+                    Text(
+                      "Student Enrollment Status:",
+                      style: GoogleFonts.roboto(
+                        color: AppTheme.colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                              
+                    const SizedBox(height: 10,),
+                              
+                    OptionBox(
+                      children: [
+                        OptionTile(
+                          text: "Unverified", 
+                          icon: Icons.sentiment_dissatisfied_rounded, 
+                          onTap: () {
+                            enrolleeList.changeSelectedStatus(1);
+                            print(enrolleeList.getSelectedStatus);
+                              
+                            Navigator.push(context, 
+                            MaterialPageRoute(builder: (context) => EnrolleeListPage()));
+                          }
+                        ),
+                              
+                        OptionTile(
+                          text: "Pending", 
+                          icon: Icons.schedule_rounded, 
+                          onTap: () {
+                            enrolleeList.changeSelectedStatus(2);
+                            print(enrolleeList.getSelectedStatus);
+                              
+                            Navigator.push(context, 
+                            MaterialPageRoute(builder: (context) => EnrolleeListPage()));
+                          }
+                        ),
+                              
+                        OptionTile(
+                          text: "Verified", 
+                          icon: Icons.sentiment_satisfied_rounded, 
+                          onTap: () {
+                            enrolleeList.changeSelectedStatus(3);
+                            print(enrolleeList.getSelectedStatus);
+                              
+                            Navigator.push(context, 
+                            MaterialPageRoute(builder: (context) => EnrolleeListPage()));
+                          },
+                          isLastItem: true,
+                        ),
+                      ]
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

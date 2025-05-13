@@ -26,12 +26,14 @@ class EnrolleeListPage extends StatelessWidget {
 
     // List of Enrollees
     List<Student> listOfEnrolless = enrolleeListProvider.getSelectedStudents;
+
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
     
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+        child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -41,38 +43,51 @@ class EnrolleeListPage extends StatelessWidget {
                   Navigator.pop(context);
                 }
               ),
-
-              const SizedBox(height: 10,),
-
-              Text(
-                "$status Enrollees:",
-                style: GoogleFonts.roboto(
-                  color: AppTheme.colors.primary,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+          
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: isLandscape ? 200 : 24,
                 ),
-              ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 10,),
+                            
+                    Text(
+                      "$status Enrollees:",
+                      style: GoogleFonts.roboto(
+                        color: AppTheme.colors.primary,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                            
+                    const SizedBox(height: 10,),
+                            
+                    ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: listOfEnrolless.length,
+                      itemBuilder: (context, index) {
+                        return EnrolleeTile(
+                          firstName: listOfEnrolless[index].firstName, 
+                          lastName: listOfEnrolless[index].lastName, 
+                          course: listOfEnrolless[index].course, 
+                          profileImg: listOfEnrolless[index].profileImg,
+                          onTap: () {
+                            Navigator.push(context, 
+                            MaterialPageRoute(builder: (context) => 
+                            EnrolleeInformationPage(
+                              student: listOfEnrolless[index],
+                            )));
+                          },
+                        );
+                      },
+                    ),
 
-              const SizedBox(height: 10,),
-
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: listOfEnrolless.length,
-                itemBuilder: (context, index) {
-                  return EnrolleeTile(
-                    firstName: listOfEnrolless[index].firstName, 
-                    lastName: listOfEnrolless[index].lastName, 
-                    course: listOfEnrolless[index].course, 
-                    profileImg: listOfEnrolless[index].profileImg,
-                    onTap: () {
-                      Navigator.push(context, 
-                      MaterialPageRoute(builder: (context) => 
-                      EnrolleeInformationPage(
-                        student: listOfEnrolless[index],
-                      )));
-                    },
-                  );
-                },
+                    const SizedBox(height: 20,),
+                  ],
+                ),
               )
             ],
           ),
