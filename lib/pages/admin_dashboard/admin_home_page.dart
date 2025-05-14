@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sti_startnow/pages/components/announcement_card.dart';
 import 'package:sti_startnow/pages/admin_dashboard/components/enrollees_card.dart';
-import 'package:sti_startnow/pages/components/schedule_card.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class AdminHomePage extends StatelessWidget {
@@ -94,18 +92,9 @@ class AdminHomePage extends StatelessWidget {
                             child: Column(
                               children: [
 
-                                // Announcemnet Card
-                                AnnouncementCard(),
-
-                                const SizedBox(height: 20,),
-
-                                // Schedule Card
-                                ScheduleCard(),
-
-                                const SizedBox(height: 20,),
-
                                 // Enrollees Card
                                 EnrolleesCard(),
+
                               ],
                             ),
                           ),

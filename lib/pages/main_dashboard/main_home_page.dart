@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sti_startnow/pages/components/announcement_card.dart';
 import 'package:sti_startnow/pages/components/bottom_button.dart';
 import 'package:sti_startnow/pages/components/schedule_card.dart';
 import 'package:sti_startnow/pages/drawer/about_page.dart';
@@ -142,11 +141,6 @@ class MainHomePage extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-
-                                // Announcement
-                                AnnouncementCard(),
-
-                                const SizedBox(height: 20,),
 
                                 Text(
                                   "New Semester for SY 2025 - 2026",
