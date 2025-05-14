@@ -17,13 +17,6 @@ class SignInBox extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppTheme.colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Color(0x40000000),
-            blurRadius: 4.0,
-            offset: Offset(0, 1),
-          ),
-        ],
       ),
       child: Padding(
         padding: const EdgeInsets.all(20.0),

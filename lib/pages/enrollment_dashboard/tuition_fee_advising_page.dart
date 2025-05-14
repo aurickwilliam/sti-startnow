@@ -33,54 +33,67 @@ class TuitionFeeAdvisingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // if is in landscape mode
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-
-              PageAppBar(
-                title: "Tuition Fee", 
-                onPressed: () {
-                  Navigator.pop(context);
-                }
-              ),
-
-              const SizedBox(height: 10,),
-
-              Text(
-                "Select a Course:",
-                style: GoogleFonts.roboto(
-                  color: AppTheme.colors.black,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+        
+            PageAppBar(
+              title: "Tuition Fee", 
+              onPressed: () {
+                Navigator.pop(context);
+              }
+            ),
+        
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: isLandscape ? 200 : 24, 
+                  vertical: 10
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    
+                    Text(
+                      "Select a Course:",
+                      style: GoogleFonts.roboto(
+                        color: AppTheme.colors.black,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: courses.length,
+                        itemBuilder: (context, index) {
+                          return CourseTile(
+                            courseName: courses[index][0],
+                            imgPath: courses[index][1],
+                            onTap: () {
+                              Navigator.push(
+                                context, 
+                                MaterialPageRoute(
+                                  builder: (context) => TuitionFeeCoursePage(index: index,)
+                                )
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
-
-              Expanded(
-                child: ListView.builder(
-                  itemCount: courses.length,
-                  itemBuilder: (context, index) {
-                    return CourseTile(
-                      courseName: courses[index][0],
-                      imgPath: courses[index][1],
-                      onTap: () {
-                        Navigator.push(
-                          context, 
-                          MaterialPageRoute(
-                            builder: (context) => TuitionFeeCoursePage(index: index,)
-                          )
-                        );
-                      },
-                    );
-                  },
-                ),
-              ),
-            ],
-          )
+            ),
+          ],
         )
       )
     );

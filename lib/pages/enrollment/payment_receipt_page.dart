@@ -38,10 +38,16 @@ class _PaymentReceiptPageState extends State<PaymentReceiptPage> {
   
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppTheme.colors.white,
-      body: SafeArea(
-        child: Column(
+
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
+    // Content
+    Widget content = Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             EnrollmentHeader(
               step1: true,
@@ -50,73 +56,91 @@ class _PaymentReceiptPageState extends State<PaymentReceiptPage> {
               step4: false,
               title: "Payment Receipt",
             ),
-
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                    
-                        // Greetings to the student
-                        Text(
-                          "Hello, $name",
-                          style: GoogleFonts.roboto(
-                            color: AppTheme.colors.primary,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                    
-                        const SizedBox(height: 10,),
-                    
-                        Text(
-                          "Kindly upload your official receipt for payment verification. Please note that uploading fraudulent invoice may result in disciplinary action.",
-                          style: GoogleFonts.roboto(
-                            color: AppTheme.colors.black,
-                            fontSize: 16,
-                          ),
-                        ),
-
-                        const SizedBox(height: 10,),
-
-                        CustomOutlineButton(
-                          text: "Attached a Photo",
-                          onPressed: () {
-                            pickImageFromGallery();
-                          },
-                        ),
-
-                        const SizedBox(height: 10,),
-
-                        // Text for displaying the File Name of the image
-                        Text(
-                          selectedImageName != null ? "$selectedImageName" : "No selected image",
-                          style: GoogleFonts.roboto(
-                            color: AppTheme.colors.black,
-                            fontSize: 14,
-                          ),
-                        )
-                      ],
+        
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: isLandscape ? 200 : 24, 
+                vertical: 10
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+              
+                  // Greetings to the student
+                  Text(
+                    "Hello, $name",
+                    style: GoogleFonts.roboto(
+                      color: AppTheme.colors.primary,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
                     ),
-
-                    BottomButton(
-                      onPressed: () {
-                        Navigator.push(context, 
-                        MaterialPageRoute(builder: (context) => 
-                        StudentInformationPage(studentStatus: widget.studentStatus)));
-                      }, 
-                      text: "Submit"
-                    )
-                  ],
-                ),
+                  ),
+              
+                  const SizedBox(height: 10,),
+              
+                  Text(
+                    "Kindly upload your official receipt for payment verification. Please note that uploading fraudulent invoice may result in disciplinary action.",
+                    style: GoogleFonts.roboto(
+                      color: AppTheme.colors.black,
+                      fontSize: 16,
+                    ),
+                  ),
+                    
+                  const SizedBox(height: 10,),
+                    
+                  CustomOutlineButton(
+                    text: "Attached a Photo",
+                    onPressed: () {
+                      pickImageFromGallery();
+                    },
+                  ),
+                    
+                  const SizedBox(height: 10,),
+                    
+                  // Text for displaying the File Name of the image
+                  Text(
+                    selectedImageName != null ? "$selectedImageName" : "No selected image",
+                    style: GoogleFonts.roboto(
+                      color: AppTheme.colors.black,
+                      fontSize: 14,
+                    ),
+                  )
+                ],
               ),
             )
           ],
+        ),
+
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: isLandscape ? 200 : 24,
+            vertical: isLandscape ? 20 : 0
+          ),
+          child: BottomButton(
+            onPressed: () {
+              Navigator.push(context, 
+              MaterialPageRoute(builder: (context) => 
+              StudentInformationPage(studentStatus: widget.studentStatus)));
+            }, 
+            text: "Submit"
+          ),
         )
+      ],
+    );
+
+    // Choosing the parent widget
+    Widget parentWidget = isLandscape
+      ? SingleChildScrollView(
+        child: content,
+      )
+      : Container(
+        child: content,
+      );
+
+    return Scaffold(
+      backgroundColor: AppTheme.colors.white,
+      body: SafeArea(
+        child: parentWidget
       ),
     );
   }

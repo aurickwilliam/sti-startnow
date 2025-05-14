@@ -34,10 +34,16 @@ class _ReservationFeePageState extends State<ReservationFeePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppTheme.colors.white,
-      body: SafeArea(
-        child: Column(
+
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
+    // Content
+    Widget content = Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             EnrollmentHeader(
               step1: true, 
@@ -46,80 +52,105 @@ class _ReservationFeePageState extends State<ReservationFeePage> {
               step4: true, 
               title: "Reservation Fee"
             ),
-
+        
             const SizedBox(height: 10,),
-
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        RichText(
-                          text: TextSpan(
-                            style: GoogleFonts.roboto(
-                              color: AppTheme.colors.black,
-                              fontSize: 16,
-                            ),
-                                  
-                            children: [
-                              TextSpan(
-                                text: "Pay the reservation fee online or over-the-counter thru our "
-                              ),
-                                  
-                              TextSpan(
-                                text: "Alternative Payment Partners.",
-                                style: GoogleFonts.roboto(
-                                  color: AppTheme.colors.primary,
-                                  textStyle: TextStyle(decoration: TextDecoration.underline),
-                                  fontWeight: FontWeight.w500
-                                )
-                              ),
-                                  
-                              TextSpan(
-                                text: "\n\nAttach the screenshot or a photo of your proof of payment below:",
-                              )
-                            ]
-                          )
-                        ),
-                                  
-                        const SizedBox(height: 30,),
-                                  
-                        CustomOutlineButton(
-                          text: "Attach a Photo",
-                          onPressed: () {
-                            pickReservationPhotoFromGallery();
-                          },
-                        ),
-
-                        const SizedBox(height: 10,),
-
-                        Text(
-                          reservationImg == null ? "No selected Image" : "$reservationImgName",
+        
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: isLandscape ? 200 : 24, 
+                vertical: 10
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      RichText(
+                        text: TextSpan(
                           style: GoogleFonts.roboto(
                             color: AppTheme.colors.black,
-                            fontSize: 14,
+                            fontSize: 16,
                           ),
+                                
+                          children: [
+                            TextSpan(
+                              text: "Pay the reservation fee online or over-the-counter thru our "
+                            ),
+                                
+                            TextSpan(
+                              text: "Alternative Payment Partners.",
+                              style: GoogleFonts.roboto(
+                                color: AppTheme.colors.primary,
+                                textStyle: TextStyle(decoration: TextDecoration.underline),
+                                fontWeight: FontWeight.w500
+                              )
+                            ),
+                                
+                            TextSpan(
+                              text: "\n\nAttach the screenshot or a photo of your proof of payment below:",
+                            )
+                          ]
                         )
-                      ],
-                    ),
-
-                    BottomButton(
-                      onPressed: () {
-                        Navigator.push(context, 
-                        MaterialPageRoute(builder: (context) => MainDashboard()));
-                      }, 
-                      text: "Submit Application"
-                    )
-                  ],
-                ),
+                      ),
+                                
+                      const SizedBox(height: 30,),
+                                
+                      CustomOutlineButton(
+                        text: "Attach a Photo",
+                        onPressed: () {
+                          pickReservationPhotoFromGallery();
+                        },
+                      ),
+            
+                      const SizedBox(height: 10,),
+            
+                      Text(
+                        reservationImg == null ? "No selected Image" : "$reservationImgName",
+                        style: GoogleFonts.roboto(
+                          color: AppTheme.colors.black,
+                          fontSize: 14,
+                        ),
+                      )
+                    ],
+                  ),
+            
+                  
+                ],
               ),
             )
           ],
+        ),
+
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: isLandscape ? 200 : 24,
+            vertical: isLandscape ? 20 : 0,
+          ),
+          child: BottomButton(
+            onPressed: () {
+              Navigator.push(context, 
+              MaterialPageRoute(builder: (context) => MainDashboard()));
+            }, 
+            text: "Submit Application"
+          ),
         )
+      ],
+    );
+
+    // Choosing the parent widget
+    Widget parentWidget = isLandscape
+      ? SingleChildScrollView(
+        child: content,
+      )
+      : Container(
+        child: content,
+      );
+
+    return Scaffold(
+      backgroundColor: AppTheme.colors.white,
+      body: SafeArea(
+        child: parentWidget
       ),
     );
   }

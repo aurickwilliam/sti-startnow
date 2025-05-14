@@ -17,8 +17,8 @@ class FullscreenImagePage extends StatelessWidget {
         onTap: () {
           Navigator.pop(context);
         },
-        child: Center(
-          child: InteractiveViewer(
+        child: InteractiveViewer(
+          child: Center(
             child: Image.asset(
               imgPath,
               fit: BoxFit.contain,

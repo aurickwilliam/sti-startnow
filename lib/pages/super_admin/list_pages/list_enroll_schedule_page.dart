@@ -37,34 +37,42 @@ class _ListEnrollSchedulePageState extends State<ListEnrollSchedulePage> {
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-            child: Column(
-              children: [
-                PageAppBar(
-                  title: "Enroll Schedule"
+          child: Column(
+            children: [
+              PageAppBar(
+                title: "Enroll Schedule"
+              ),
+          
+              const SizedBox(height: 10,),
+          
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 10
                 ),
-
-                const SizedBox(height: 10,),
-
-                SearchBox(
-                  controller: searchController, 
-                  label: "Search:", 
-                  hint: "Enter school year"
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SearchBox(
+                      controller: searchController, 
+                      label: "Search:", 
+                      hint: "Enter school year"
+                    ),
+                              
+                    const SizedBox(height: 20,),
+                              
+                    ListDataTable(
+                      columnNames: columnNames, 
+                      dataTableValues: values,
+                      handleNavigation: (item) {
+                        Navigator.push(context, 
+                        MaterialPageRoute(builder: (context) => EditEnrollSchedRowPage(rowValues: item)));
+                      },
+                    ),
+                  ],
                 ),
-
-                const SizedBox(height: 20,),
-
-                ListDataTable(
-                  columnNames: columnNames, 
-                  dataTableValues: values,
-                  handleNavigation: (item) {
-                    Navigator.push(context, 
-                    MaterialPageRoute(builder: (context) => EditEnrollSchedRowPage(rowValues: item)));
-                  },
-                )
-              ],
-            ),
+              )
+            ],
           ),
         )
       ),

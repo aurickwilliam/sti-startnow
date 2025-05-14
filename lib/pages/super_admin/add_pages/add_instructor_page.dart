@@ -21,81 +21,103 @@ class _AddInstructorPageState extends State<AddInstructorPage> {
 
   @override
   Widget build(BuildContext context) {
+    
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
+    // Content
+    Widget content = Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            PageAppBar(
+              title: "Instructors"
+            ),
+        
+            const SizedBox(height: 20,),
+        
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: isLandscape ? 200 : 24,
+                vertical: 10
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Add New Instructor",
+                    style: GoogleFonts.roboto(
+                      color: AppTheme.colors.primary,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  
+                  const SizedBox(height: 20,),
+                  
+                  TextInput(
+                    controller: firstNameController, 
+                    label: "First Name:", 
+                    hint: "Enter First Name",
+                  ),
+                  
+                  const SizedBox(height: 10,),
+                  
+                  TextInput(
+                    controller: lastNameController, 
+                    label: "Last Name:",
+                    hint: "Enter Last Name",
+                  ),
+                  
+                  const SizedBox(height: 10,),
+                  
+                  TextInput(
+                    controller: departmentController, 
+                    label: "Department:",
+                    hint: "Enter Department Name",
+                  ),
+                  
+                  const SizedBox(height: 10,),
+                  
+                  TextInput(
+                    controller: emailAddressController, 
+                    label: "Email Address:",
+                    hint: "example@domain.com",
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: isLandscape ? 200 : 24,
+            vertical: isLandscape ? 10 : 0
+          ),
+          child: BottomButton(
+            onPressed: () {}, 
+            text: "Add New Instructor"
+          ),
+        )
+      ],
+    );
+
+    // Parent Widget
+    Widget parentWidget = isLandscape
+      ? SingleChildScrollView(
+        child: content,
+      )
+      : Container(
+        child: content,
+      );
+
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              PageAppBar(
-                title: "Instructors"
-              ),
-
-              const SizedBox(height: 20,),
-
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Add New Instructor",
-                          style: GoogleFonts.roboto(
-                            color: AppTheme.colors.primary,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-
-                        const SizedBox(height: 20,),
-
-                        TextInput(
-                          controller: firstNameController, 
-                          label: "First Name:", 
-                          hint: "Enter First Name",
-                        ),
-
-                        const SizedBox(height: 10,),
-
-                        TextInput(
-                          controller: lastNameController, 
-                          label: "Last Name:",
-                          hint: "Enter Last Name",
-                        ),
-                        
-                        const SizedBox(height: 10,),
-                        
-                        TextInput(
-                          controller: departmentController, 
-                          label: "Department:",
-                          hint: "Enter Department Name",
-                        ),
-
-                        const SizedBox(height: 10,),
-
-                        TextInput(
-                          controller: emailAddressController, 
-                          label: "Email Address:",
-                          hint: "example@domain.com",
-                        ),
-                      ],
-                    ),
-
-                    BottomButton(
-                      onPressed: () {}, 
-                      text: "Add New Instructor"
-                    )
-                  ],
-                )
-              )
-            ],
-          ),
-        )
+        child: parentWidget
       ),
     );
   }

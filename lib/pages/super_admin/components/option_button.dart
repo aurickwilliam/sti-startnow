@@ -16,40 +16,33 @@ class OptionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Column(
-        children: [
-          Container(
-            width: 70,
-            height: 70,
-            decoration: BoxDecoration(
-              color: AppTheme.colors.white,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: AppTheme.colors.gray,
-                width: 2.0
-              )
-            ),
-
-            child: Icon(
-              icon,
-              size: 30,
-              color: AppTheme.colors.gold,
-            ),
-          ),
-
-          const SizedBox(height: 10,),
-
-          Text(
+    return Padding(
+      padding: const EdgeInsets.only(top: 10),
+      child: Material(
+        child: ListTile(
+          onTap: onTap,
+          title: Text(
             title,
             style: GoogleFonts.roboto(
               color: AppTheme.colors.black,
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
+              fontSize: 16,
             ),
-          )
-        ],
+          ),
+          tileColor: AppTheme.colors.white,
+      
+          leading: Icon(
+            icon,
+            color: AppTheme.colors.gold,
+          ),
+      
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+            side: BorderSide(
+              color: AppTheme.colors.gray,
+              width: 2.0
+            )
+          ),
+        ),
       ),
     );
   }

@@ -13,24 +13,31 @@ class ChangePasswordNew extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppTheme.colors.white,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // Header and text fields
-              Column(
-                children: [
-                  // Change password header
-                  PageAppBar(
-                    title: "Change Password"
-                  ),
 
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
+    // Content
+    Widget content = Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        // Header and text fields
+        Column(
+          children: [
+            // Change password header
+            PageAppBar(
+              title: "Change Password"
+            ),
+    
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: isLandscape ? 200 : 24,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   const SizedBox(height: 20),
-        
+                  
                   // New password field
                   PasswordInput(
                     controller: newPasswordController, 
@@ -39,9 +46,9 @@ class ChangePasswordNew extends StatelessWidget {
                     isRequired: false, 
                     isEnable: true
                   ),
-
+                      
                   const SizedBox(height: 15),
-        
+                  
                   // Re-type new password
                   PasswordInput(
                     controller: reTypePasswordController, 
@@ -49,23 +56,45 @@ class ChangePasswordNew extends StatelessWidget {
                     hint: "Re-Type New Password", 
                     isRequired: false, 
                     isEnable: true
-                  )
+                  ),
                 ],
               ),
-        
-              // Change pass button
-              BottomButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AccountSettings()),
-                  );
-                }, 
-                text: "Change Password"
-              )
-            ],
-          ),
+            )
+          ],
         ),
+            
+        // Change pass button
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: isLandscape ? 200 : 24,
+            vertical: isLandscape ? 10 : 0,
+          ),
+          child: BottomButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AccountSettings()),
+              );
+            }, 
+            text: "Change Password"
+          ),
+        )
+      ],
+    );
+
+    // Choosing parent widget based on orientation
+    Widget parentWidget = isLandscape
+      ? SingleChildScrollView(
+        child: content,
+      )
+      : Container(
+        child: content,
+      );
+
+    return Scaffold(
+      backgroundColor: AppTheme.colors.white,
+      body: SafeArea(
+        child: parentWidget
       ),
     );
   }

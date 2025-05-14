@@ -409,209 +409,222 @@ class CourseOfferListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                PageAppBar(
-                  title: "Course Offer", 
-                  onPressed: () {
-                    Navigator.pop(context);
-                  }
-                ),
-          
-                const SizedBox(height: 10,),
-          
-                Text(
-                  "Information Technology",
-                  style: GoogleFonts.roboto(
-                    color: AppTheme.colors.primary,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                
-                Column(
-                  children: informationTechnologyCourses.map((course) {
-                    return CourseTile(
-                      courseName: course[0], 
-                      imgPath: course[1], 
-                      onTap: () {
-                        Navigator.push(context, 
-                        MaterialPageRoute(builder: (context) => 
-                        CourseOfferInfoPage(
-                          courseName: course[0],
-                          imgPath: coverImgCourse[0],
-                          courseDescription: course[2],
-                          skillToLearn: course[3],
-                          careerOppotunities: course[4],
-                        )));
-                      }
-                    );
-                  }).toList(),
-                ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
 
-                const SizedBox(height: 10,),
-          
-                Text(
-                  "Engineering",
-                  style: GoogleFonts.roboto(
-                    color: AppTheme.colors.primary,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+              PageAppBar(
+                title: "Course Offer", 
+                onPressed: () {
+                  Navigator.pop(context);
+                }
+              ),
+                    
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: isLandscape ? 200 : 24,
+                  vertical: 10,
                 ),
-                
-                Column(
-                  children: engineeringCourses.map((course) {
-                    return CourseTile(
-                      courseName: course[0], 
-                      imgPath: course[1], 
-                      onTap: () {
-                        Navigator.push(context, 
-                        MaterialPageRoute(builder: (context) => 
-                        CourseOfferInfoPage(
-                          courseName: course[0],
-                          imgPath: coverImgCourse[1],
-                          courseDescription: course[2],
-                           skillToLearn: course[3],
-                          careerOppotunities: course[4],
-                        )));
-                      }
-                    );
-                  }).toList(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 10,),
+                          
+                    Text(
+                      "Information Technology",
+                      style: GoogleFonts.roboto(
+                        color: AppTheme.colors.primary,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    
+                    Column(
+                      children: informationTechnologyCourses.map((course) {
+                        return CourseTile(
+                          courseName: course[0], 
+                          imgPath: course[1], 
+                          onTap: () {
+                            Navigator.push(context, 
+                            MaterialPageRoute(builder: (context) => 
+                            CourseOfferInfoPage(
+                              courseName: course[0],
+                              imgPath: coverImgCourse[0],
+                              courseDescription: course[2],
+                              skillToLearn: course[3],
+                              careerOppotunities: course[4],
+                            )));
+                          }
+                        );
+                      }).toList(),
+                    ),
+                              
+                    const SizedBox(height: 10,),
+                          
+                    Text(
+                      "Engineering",
+                      style: GoogleFonts.roboto(
+                        color: AppTheme.colors.primary,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    
+                    Column(
+                      children: engineeringCourses.map((course) {
+                        return CourseTile(
+                          courseName: course[0], 
+                          imgPath: course[1], 
+                          onTap: () {
+                            Navigator.push(context, 
+                            MaterialPageRoute(builder: (context) => 
+                            CourseOfferInfoPage(
+                              courseName: course[0],
+                              imgPath: coverImgCourse[1],
+                              courseDescription: course[2],
+                               skillToLearn: course[3],
+                              careerOppotunities: course[4],
+                            )));
+                          }
+                        );
+                      }).toList(),
+                    ),
+                              
+                    const SizedBox(height: 10,),
+                          
+                    Text(
+                      "Business & Mangement",
+                      style: GoogleFonts.roboto(
+                        color: AppTheme.colors.primary,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    
+                    Column(
+                      children: businessManagementCourses.map((course) {
+                        return CourseTile(
+                          courseName: course[0], 
+                          imgPath: course[1], 
+                          onTap: () {
+                            Navigator.push(context, 
+                            MaterialPageRoute(builder: (context) => 
+                            CourseOfferInfoPage(
+                              courseName: course[0],
+                              imgPath: coverImgCourse[2],
+                              courseDescription: course[2],
+                               skillToLearn: course[3],
+                              careerOppotunities: course[4],
+                            )));
+                          }
+                        );
+                      }).toList(),
+                    ),
+                              
+                    const SizedBox(height: 10,),
+                          
+                    Text(
+                      "Hospitality Management",
+                      style: GoogleFonts.roboto(
+                        color: AppTheme.colors.primary,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    
+                    Column(
+                      children: hospitalityManagementCourses.map((course) {
+                        return CourseTile(
+                          courseName: course[0], 
+                          imgPath: course[1], 
+                          onTap: () {
+                            Navigator.push(context, 
+                            MaterialPageRoute(builder: (context) => 
+                            CourseOfferInfoPage(
+                              courseName: course[0],
+                              imgPath: coverImgCourse[3],
+                              courseDescription: course[2],
+                               skillToLearn: course[3],
+                              careerOppotunities: course[4],
+                            )));
+                          }
+                        );
+                      }).toList(),
+                    ),
+                              
+                    const SizedBox(height: 10,),
+                          
+                    Text(
+                      "Tourism Management",
+                      style: GoogleFonts.roboto(
+                        color: AppTheme.colors.primary,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    
+                    Column(
+                      children: tourismManagementCourses.map((course) {
+                        return CourseTile(
+                          courseName: course[0], 
+                          imgPath: course[1], 
+                          onTap: () {
+                            Navigator.push(context, 
+                            MaterialPageRoute(builder: (context) => 
+                            CourseOfferInfoPage(
+                              courseName: course[0],
+                              imgPath: coverImgCourse[4],
+                              courseDescription: course[2],
+                               skillToLearn: course[3],
+                              careerOppotunities: course[4],
+                            )));
+                          }
+                        );
+                      }).toList(),
+                    ),
+                              
+                    const SizedBox(height: 10,),
+                          
+                    Text(
+                      "Art & Sciences",
+                      style: GoogleFonts.roboto(
+                        color: AppTheme.colors.primary,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    
+                    Column(
+                      children: artSciencesCourses.map((course) {
+                        return CourseTile(
+                          courseName: course[0], 
+                          imgPath: course[1], 
+                          onTap: () {
+                            Navigator.push(context, 
+                            MaterialPageRoute(builder: (context) => 
+                            CourseOfferInfoPage(
+                              courseName: course[0],
+                              imgPath: coverImgCourse[5],
+                              courseDescription: course[2],
+                               skillToLearn: course[3],
+                              careerOppotunities: course[4],
+                            )));
+                          }
+                        );
+                      }).toList(),
+                    ),
+                  ],
                 ),
-
-                const SizedBox(height: 10,),
-          
-                Text(
-                  "Business & Mangement",
-                  style: GoogleFonts.roboto(
-                    color: AppTheme.colors.primary,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                
-                Column(
-                  children: businessManagementCourses.map((course) {
-                    return CourseTile(
-                      courseName: course[0], 
-                      imgPath: course[1], 
-                      onTap: () {
-                        Navigator.push(context, 
-                        MaterialPageRoute(builder: (context) => 
-                        CourseOfferInfoPage(
-                          courseName: course[0],
-                          imgPath: coverImgCourse[2],
-                          courseDescription: course[2],
-                           skillToLearn: course[3],
-                          careerOppotunities: course[4],
-                        )));
-                      }
-                    );
-                  }).toList(),
-                ),
-
-                const SizedBox(height: 10,),
-          
-                Text(
-                  "Hospitality Management",
-                  style: GoogleFonts.roboto(
-                    color: AppTheme.colors.primary,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                
-                Column(
-                  children: hospitalityManagementCourses.map((course) {
-                    return CourseTile(
-                      courseName: course[0], 
-                      imgPath: course[1], 
-                      onTap: () {
-                        Navigator.push(context, 
-                        MaterialPageRoute(builder: (context) => 
-                        CourseOfferInfoPage(
-                          courseName: course[0],
-                          imgPath: coverImgCourse[3],
-                          courseDescription: course[2],
-                           skillToLearn: course[3],
-                          careerOppotunities: course[4],
-                        )));
-                      }
-                    );
-                  }).toList(),
-                ),
-
-                const SizedBox(height: 10,),
-          
-                Text(
-                  "Tourism Management",
-                  style: GoogleFonts.roboto(
-                    color: AppTheme.colors.primary,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                
-                Column(
-                  children: tourismManagementCourses.map((course) {
-                    return CourseTile(
-                      courseName: course[0], 
-                      imgPath: course[1], 
-                      onTap: () {
-                        Navigator.push(context, 
-                        MaterialPageRoute(builder: (context) => 
-                        CourseOfferInfoPage(
-                          courseName: course[0],
-                          imgPath: coverImgCourse[4],
-                          courseDescription: course[2],
-                           skillToLearn: course[3],
-                          careerOppotunities: course[4],
-                        )));
-                      }
-                    );
-                  }).toList(),
-                ),
-
-                const SizedBox(height: 10,),
-          
-                Text(
-                  "Art & Sciences",
-                  style: GoogleFonts.roboto(
-                    color: AppTheme.colors.primary,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                
-                Column(
-                  children: artSciencesCourses.map((course) {
-                    return CourseTile(
-                      courseName: course[0], 
-                      imgPath: course[1], 
-                      onTap: () {
-                        Navigator.push(context, 
-                        MaterialPageRoute(builder: (context) => 
-                        CourseOfferInfoPage(
-                          courseName: course[0],
-                          imgPath: coverImgCourse[5],
-                          courseDescription: course[2],
-                           skillToLearn: course[3],
-                          careerOppotunities: course[4],
-                        )));
-                      }
-                    );
-                  }).toList(),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         )
       ),

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sti_startnow/pages/components/announcement_card.dart';
 import 'package:sti_startnow/pages/admin_dashboard/components/enrollees_card.dart';
-import 'package:sti_startnow/pages/components/schedule_card.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class AdminHomePage extends StatelessWidget {
@@ -10,12 +8,16 @@ class AdminHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
       backgroundColor: AppTheme.colors.primary,
 
       // Need ng layout builder para get ung size ng parent/screen
       body: LayoutBuilder(
-        builder: (context, constraints){
+        builder: (context, constraints){ 
           return SafeArea(
             child: SingleChildScrollView(
               
@@ -83,22 +85,16 @@ class AdminHomePage extends StatelessWidget {
                             )
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 25),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: isLandscape ? 200 : 24, 
+                              vertical: 25
+                            ),
                             child: Column(
                               children: [
 
-                                // Announcemnet Card
-                                AnnouncementCard(),
-
-                                const SizedBox(height: 20,),
-
-                                // Schedule Card
-                                ScheduleCard(),
-
-                                const SizedBox(height: 20,),
-
                                 // Enrollees Card
                                 EnrolleesCard(),
+
                               ],
                             ),
                           ),

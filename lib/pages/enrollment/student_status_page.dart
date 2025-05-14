@@ -46,22 +46,30 @@ class _StudentStatusPageState extends State<StudentStatusPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppTheme.colors.white,
-      body: SafeArea(
-        child: Column(
-          children: [
-            EnrollmentHeader(
-              step1: true, 
-              step2: false, 
-              step3: false, 
-              step4: false,
-              title: "Student Status",
-            ),
 
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
+    // Content
+    Widget content = Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              EnrollmentHeader(
+                step1: true, 
+                step2: false, 
+                step3: false, 
+                step4: false,
+                title: "Student Status",
+              ),
+          
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: isLandscape ? 200 : 24, 
+                  vertical: 10
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -109,19 +117,42 @@ class _StudentStatusPageState extends State<StudentStatusPage> {
                         )
                       ],
                     ),
-
-                    BottomButton(
-                      onPressed: () {
-                        handleNavigation();
-                      },
-                      text: "Next",
-                    )
+              
+                    
                   ],
                 ),
               )
-            )
-          ],
-        )
+            ],
+          ),
+
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: isLandscape ? 200 : 24,
+              vertical: isLandscape ? 10 : 0,
+            ),
+            child: BottomButton(
+              onPressed: () {
+                handleNavigation();
+              },
+              text: "Next",
+            ),
+          )
+        ],
+      );
+
+    // Choosing the parent widget
+    Widget parentWidget = isLandscape
+      ? SingleChildScrollView(
+        child: content,
+      )
+      : Container(
+        child: content,
+      );
+
+    return Scaffold(
+      backgroundColor: AppTheme.colors.white,
+      body: SafeArea(
+        child: parentWidget
       ),
     );
   }

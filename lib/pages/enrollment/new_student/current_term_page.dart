@@ -42,10 +42,15 @@ class _CurrentTermPageState extends State<CurrentTermPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppTheme.colors.white,
-      body: SafeArea(
-        child: Column(
+
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
+    // Content
+    Widget content = Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             EnrollmentHeader(
@@ -56,127 +61,145 @@ class _CurrentTermPageState extends State<CurrentTermPage> {
               title: "Personal Information"
             ),
         
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: isLandscape ? 200 : 24, 
+                vertical: 10
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  RichText(
+                    text: TextSpan(
+                      style: GoogleFonts.roboto(
+                        color: AppTheme.colors.black,
+                        fontSize: 16,
+                      ),
+                      
                       children: [
-                        RichText(
-                          text: TextSpan(
-                            style: GoogleFonts.roboto(
-                              color: AppTheme.colors.black,
-                              fontSize: 16,
-                            ),
-                            
-                            children: [
-                              TextSpan(
-                                text: "You have chosen ",
-                              ),
-                            
-                              TextSpan(
-                                text: "BSCS",
-                                style: GoogleFonts.roboto(
-                                  color: AppTheme.colors.primary,
-                                  textStyle: TextStyle(decoration: TextDecoration.underline),
-                                  fontWeight: FontWeight.w500
-                                )
-                              ),
-                            
-                              TextSpan(
-                                text: " at ",
-                              ),
-                            
-                              TextSpan(
-                                text: "Caloocan",
-                                style: GoogleFonts.roboto(
-                                  color: AppTheme.colors.primary,
-                                  textStyle: TextStyle(decoration: TextDecoration.underline),
-                                  fontWeight: FontWeight.w500
-                                )
-                              ),
-                            ]
+                        TextSpan(
+                          text: "You have chosen ",
+                        ),
+                      
+                        TextSpan(
+                          text: "BSCS",
+                          style: GoogleFonts.roboto(
+                            color: AppTheme.colors.primary,
+                            textStyle: TextStyle(decoration: TextDecoration.underline),
+                            fontWeight: FontWeight.w500
                           )
                         ),
-                            
-                        const SizedBox(height: 20,),
-                            
-                        Text(
-                          "Fill up the necessary information:",
+                      
+                        TextSpan(
+                          text: " at ",
+                        ),
+                      
+                        TextSpan(
+                          text: "Caloocan",
                           style: GoogleFonts.roboto(
-                            color: AppTheme.colors.black,
-                            fontSize: 16,
+                            color: AppTheme.colors.primary,
+                            textStyle: TextStyle(decoration: TextDecoration.underline),
                             fontWeight: FontWeight.w500
-                          ),
+                          )
                         ),
-                            
-                        const SizedBox(height: 20,),
-                        
-                        CustomDropdownMenu(
-                          listChoices: admitTypeChoices, 
-                          controller: admitTypeController, 
-                          label: "Admit Type:", 
-                          hint: "Please Select Admit Type", 
-                          initialValue: "", 
-                          isRequired: true, 
-                          isEnable: true
-                        ),
-                                    
-                        const SizedBox(height: 10,),
-                                    
-                        CustomDropdownMenu(
-                          listChoices: yearLevelChoices, 
-                          controller: yearLevelController, 
-                          label: "Year Level:", 
-                          hint: "Please Select Year Level", 
-                          initialValue: "", 
-                          isRequired: true, 
-                          isEnable: true
-                        ),
-                                    
-                        const SizedBox(height: 10,),
-                                    
-                        CustomDropdownMenu(
-                          listChoices: schoolYearChoices, 
-                          controller: schoolYearController, 
-                          label: "School Year:", 
-                          hint: "Please Select School Year", 
-                          initialValue: "", 
-                          isRequired: true, 
-                          isEnable: true
-                        ),
-                                    
-                        const SizedBox(height: 10,),
-                                    
-                        CustomDropdownMenu(
-                          listChoices: termChoices, 
-                          controller: termController, 
-                          label: "Term:", 
-                          hint: "Please Select Term", 
-                          initialValue: "", 
-                          isRequired: true, 
-                          isEnable: true
-                        )
-                                    
-                      ],
+                      ]
+                    )
+                  ),
+                      
+                  const SizedBox(height: 20,),
+                      
+                  Text(
+                    "Fill up the necessary information:",
+                    style: GoogleFonts.roboto(
+                      color: AppTheme.colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500
                     ),
-        
-                    BottomButton(
-                      onPressed: () {
-                        Navigator.push(context, 
-                        MaterialPageRoute(builder: (context) => StudentInfoPage()));
-                      }, 
-                      text: "Next"
-                    ),
-                  ],
-                ),
+                  ),
+                      
+                  const SizedBox(height: 20,),
+                  
+                  CustomDropdownMenu(
+                    listChoices: admitTypeChoices, 
+                    controller: admitTypeController, 
+                    label: "Admit Type:", 
+                    hint: "Please Select Admit Type", 
+                    initialValue: "", 
+                    isRequired: true, 
+                    isEnable: true
+                  ),
+                              
+                  const SizedBox(height: 10,),
+                              
+                  CustomDropdownMenu(
+                    listChoices: yearLevelChoices, 
+                    controller: yearLevelController, 
+                    label: "Year Level:", 
+                    hint: "Please Select Year Level", 
+                    initialValue: "", 
+                    isRequired: true, 
+                    isEnable: true
+                  ),
+                              
+                  const SizedBox(height: 10,),
+                              
+                  CustomDropdownMenu(
+                    listChoices: schoolYearChoices, 
+                    controller: schoolYearController, 
+                    label: "School Year:", 
+                    hint: "Please Select School Year", 
+                    initialValue: "", 
+                    isRequired: true, 
+                    isEnable: true
+                  ),
+                              
+                  const SizedBox(height: 10,),
+                              
+                  CustomDropdownMenu(
+                    listChoices: termChoices, 
+                    controller: termController, 
+                    label: "Term:", 
+                    hint: "Please Select Term", 
+                    initialValue: "", 
+                    isRequired: true, 
+                    isEnable: true
+                  )
+                              
+                ],
               ),
             )
           ],
-        )
+        ),
+
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: isLandscape ? 200 : 24,
+            vertical: isLandscape ? 10 : 0
+          ),
+          child: BottomButton(
+            onPressed: () {
+              Navigator.push(context, 
+              MaterialPageRoute(builder: (context) => StudentInfoPage()));
+            }, 
+            text: "Next"
+          ),
+        ),
+      ],
+    );
+
+    // Choosing the parent widget
+    Widget parentWidget = isLandscape
+      ? SingleChildScrollView(
+        child: content,
+      )
+      : Container(
+        child: content,
+      );
+
+    return Scaffold(
+      backgroundColor: AppTheme.colors.white,
+      body: SafeArea(
+        child: parentWidget
       ),
     );
   }

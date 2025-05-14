@@ -46,10 +46,15 @@ class _StudentTypePageState extends State<StudentTypePage> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      backgroundColor: AppTheme.colors.white,
-      body: SafeArea(
-        child: Column(
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
+    // Content
+    Widget content = Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             EnrollmentHeader(
               step1: true,
@@ -58,45 +63,63 @@ class _StudentTypePageState extends State<StudentTypePage> {
               step4: false,
               title: "Student Type",
             ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,  
-                  children: [
-                    Column(
-                      children: [
-                        Text(
-                          "Kindly fill-out the online application form for a fast and efficient admissions procedure.",
-                          style: GoogleFonts.roboto(
-                            color: AppTheme.colors.black,
-                            fontSize: 14,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        MultipleChoiceCard(
-                          question: "What type of student are you?",
-                          choices: typeStudent,
-                          selectedItem: selectedItem,
-                          onChanged: handleSelectedItem, 
-                        ),
-              
-                        const SizedBox(height: 20,)
-                      ],
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: isLandscape ? 200 : 24, 
+                vertical: 10
+              ),
+              child: Column(
+                children: [
+                  Text(
+                    "Kindly fill-out the online application form for a fast and efficient admissions procedure.",
+                    style: GoogleFonts.roboto(
+                      color: AppTheme.colors.black,
+                      fontSize: 14,
                     ),
-                      
-                    BottomButton(
-                      onPressed: () {
-                        handleNavigation();
-                      },
-                      text: "Next",
-                    )
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 20),
+                  MultipleChoiceCard(
+                    question: "What type of student are you?",
+                    choices: typeStudent,
+                    selectedItem: selectedItem,
+                    onChanged: handleSelectedItem, 
+                  ),
+                              
+                  const SizedBox(height: 20,)
+                ],
               ),
             ),
           ],
         ),
+
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: isLandscape ? 200 : 24,
+            vertical: isLandscape ? 10 : 0
+          ),
+          child: BottomButton(
+            onPressed: () {
+              handleNavigation();
+            },
+            text: "Next",
+          ),
+        )
+      ],
+    );
+
+    // Choosing the parent widget based on orientation
+    Widget parentWidget = isLandscape
+      ? SingleChildScrollView(
+        child: content,
+      )
+      : Container(
+        child: content,
+      );
+
+    return Scaffold(
+      backgroundColor: AppTheme.colors.white,
+      body: SafeArea(
+        child: parentWidget
       ),
     );
   }

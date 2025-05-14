@@ -9,40 +9,49 @@ class AdminProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AdminProfileCard(
-                name: "John Doe",
-                studentNo: "02000123456",
-                profileImg: "assets/img/def_profile.jpg",
-                coverImg: "assets/img/sample_cover.png",
-              ),
-
-              const SizedBox(height: 20,),
-
-              AdminProfileInformationCard(
-                children: [
-                  InformationTile(
-                    label: "Department:",
-                    data: "Information Technology",
-                  ),
-
-                  const SizedBox(height: 10,),
-
-                  InformationTile(
-                    label: "Email Address:",
-                    data: "johndoe.123456@caloocan.sti.edu.ph",
-                  )
-                ],
-              ),
-
-            ],
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: isLandscape ? 200 : 24, 
+              vertical: 15
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AdminProfileCard(
+                  name: "John Doe",
+                  studentNo: "02000123456",
+                  profileImg: "assets/img/def_profile.jpg",
+                  coverImg: "assets/img/sample_cover.png",
+                ),
+          
+                const SizedBox(height: 20,),
+          
+                AdminProfileInformationCard(
+                  children: [
+                    InformationTile(
+                      label: "Department:",
+                      data: "Information Technology",
+                    ),
+          
+                    const SizedBox(height: 10,),
+          
+                    InformationTile(
+                      label: "Email Address:",
+                      data: "johndoe.123456@caloocan.sti.edu.ph",
+                    )
+                  ],
+                ),
+          
+              ],
+            ),
           ),
         )
       ),

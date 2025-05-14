@@ -22,7 +22,7 @@ class BottomButton extends StatelessWidget {
         foregroundColor: AppTheme.colors.white,
         minimumSize: Size(isFullWidth ? double.infinity : 150, 46),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(6)
+          borderRadius: BorderRadius.circular(10)
         )
       ),
       onPressed: onPressed,

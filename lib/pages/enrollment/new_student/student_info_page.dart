@@ -48,6 +48,10 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
@@ -65,7 +69,10 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
               const SizedBox(height: 10,),
           
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                padding: EdgeInsets.symmetric(
+                  horizontal: isLandscape ? 200 : 24, 
+                  vertical: 10
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

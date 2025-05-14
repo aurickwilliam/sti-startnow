@@ -67,66 +67,79 @@ class _TuitionFeeCoursePageState extends State<TuitionFeeCoursePage> {
 
     yearLevelController.text = yearLevelList.first;
 
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                PageAppBar(
-                  title: "Tuition Fee", 
-                  onPressed: () {
-                    Navigator.pop(context);
-                  }
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              PageAppBar(
+                title: "Tuition Fee", 
+                onPressed: () {
+                  Navigator.pop(context);
+                }
+              ),
+                    
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: isLandscape ? 200 : 24,
                 ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    
+                    const SizedBox(height: 10,),
 
-                const SizedBox(height: 10,),
-          
-                Container(
-                  child: Text(
-                    courses[widget.index],
-                    softWrap: true,
-                    textAlign: TextAlign.left,
-                    style: GoogleFonts.roboto(
-                      color: AppTheme.colors.black,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+                    Container(
+                      child: Text(
+                        courses[widget.index],
+                        softWrap: true,
+                        textAlign: TextAlign.left,
+                        style: GoogleFonts.roboto(
+                          color: AppTheme.colors.black,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                  ),
+                              
+                    const SizedBox(height: 10,),
+                              
+                    // Dropdown of Year Level 
+                    CustomDropdownMenu(
+                      listChoices: yearLevelList, 
+                      controller: yearLevelController,
+                      label: "Year Level:",
+                      hint: "Select a Year Level",
+                      initialValue: yearLevelList.first,
+                      isRequired: false,
+                      isEnable: true,
+                    ),
+                              
+                    const SizedBox(height: 20,),
+                              
+                    Text(
+                      "Units: 23",
+                      style: GoogleFonts.roboto(
+                        color: AppTheme.colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                              
+                    const SizedBox(height: 10,),
+                              
+                    TuitionTypeCard(),
+
+                    const SizedBox(height: 30,),
+                  ],
                 ),
-
-                const SizedBox(height: 10,),
-
-                // Dropdown of Year Level 
-                CustomDropdownMenu(
-                  listChoices: yearLevelList, 
-                  controller: yearLevelController,
-                  label: "Year Level:",
-                  hint: "Select a Year Level",
-                  initialValue: yearLevelList.first,
-                  isRequired: false,
-                  isEnable: true,
-                ),
-
-                const SizedBox(height: 20,),
-
-                Text(
-                  "Units: 23",
-                  style: GoogleFonts.roboto(
-                    color: AppTheme.colors.black,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-
-                const SizedBox(height: 10,),
-
-                TuitionTypeCard(),
-              ],
-            ),
+              ),
+            ],
           ),
         )
       ),

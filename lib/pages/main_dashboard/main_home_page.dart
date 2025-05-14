@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sti_startnow/pages/components/announcement_card.dart';
 import 'package:sti_startnow/pages/components/bottom_button.dart';
 import 'package:sti_startnow/pages/components/schedule_card.dart';
 import 'package:sti_startnow/pages/drawer/about_page.dart';
@@ -16,6 +15,10 @@ class MainHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape ? true : false;
+
     return Scaffold(
       backgroundColor: AppTheme.colors.primary,
 
@@ -23,7 +26,7 @@ class MainHomePage extends StatelessWidget {
       endDrawer: Drawer(
         backgroundColor: AppTheme.colors.white,
         child: Padding(
-          padding: const EdgeInsets.only(top: 50, right: 20),
+          padding: const EdgeInsets.only(top: 30, right: 20),
           child: ListView(
             children: [
               DrawerTile(
@@ -131,15 +134,13 @@ class MainHomePage extends StatelessWidget {
                           ),
 
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 25),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: isLandscape ? 200 : 24,
+                              vertical: 25
+                            ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-
-                                // Announcement
-                                AnnouncementCard(),
-
-                                const SizedBox(height: 20,),
 
                                 Text(
                                   "New Semester for SY 2025 - 2026",

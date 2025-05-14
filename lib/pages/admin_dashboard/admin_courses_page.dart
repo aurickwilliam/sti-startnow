@@ -5,7 +5,7 @@ import 'package:sti_startnow/pages/enrollment_dashboard/components/course_tile.d
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class AdminCoursesPage extends StatefulWidget {
-  AdminCoursesPage({super.key});
+  const AdminCoursesPage({super.key});
 
   @override
   State<AdminCoursesPage> createState() => _AdminCoursesPageState();
@@ -37,20 +37,27 @@ class _AdminCoursesPageState extends State<AdminCoursesPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-          child: Column(
-            children: [
-              PageAppBar(
-                title: "Courses", 
-                onPressed: () {},
-                hasBackButton: false,
-              ),
-
-              Expanded(
+        child: Column(
+          children: [
+            PageAppBar(
+              title: "Courses", 
+              onPressed: () {},
+              hasBackButton: false,
+            ),
+        
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: isLandscape ? 200 : 24,
+                  vertical: 10
+                ),
                 child: ListView.builder(
                   itemCount: courses.length,
                   itemBuilder: (context, index) {
@@ -61,16 +68,16 @@ class _AdminCoursesPageState extends State<AdminCoursesPage> {
                         setState(() {
                           selectedCourse = courses[index][0];
                         });
-
+                        
                         Navigator.push(context, 
                         MaterialPageRoute(builder: (context) => EnrolleeStatusPage()));
                       }
                     );
                   }
                 ),
-              )
-            ]
-          ),
+              ),
+            )
+          ]
         )
       ),
     );

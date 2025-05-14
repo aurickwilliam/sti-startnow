@@ -21,25 +21,28 @@ class PageAppBar extends StatelessWidget {
       width: double.infinity,
       child: Column(
         children: [
-          Row(
-            children: [
-              hasBackButton ? IconButton(
-                onPressed: onPressed ?? () { Navigator.pop(context); }, 
-                icon: Icon(Icons.arrow_circle_left),
-                iconSize: 35,
-                color: AppTheme.colors.primary,
-              ) : SizedBox.shrink(), 
-
-              Text(
-                title,
-                softWrap: true,
-                style: GoogleFonts.roboto(
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              children: [
+                hasBackButton ? IconButton(
+                  onPressed: onPressed ?? () { Navigator.pop(context); }, 
+                  icon: Icon(Icons.arrow_circle_left),
+                  iconSize: 35,
                   color: AppTheme.colors.primary,
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
-              )
-            ],
+                ) : SizedBox.shrink(), 
+            
+                Text(
+                  title,
+                  softWrap: true,
+                  style: GoogleFonts.roboto(
+                    color: AppTheme.colors.primary,
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+              ],
+            ),
           ),
           Divider(
             height: 10,

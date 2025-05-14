@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/pages/sign_in/sign_in_admin_page.dart';
 import 'package:sti_startnow/pages/super_admin/components/option_button.dart';
-import 'package:sti_startnow/pages/super_admin/list_pages/list_announcements_page.dart';
 import 'package:sti_startnow/pages/super_admin/list_pages/list_enroll_schedule_page.dart';
 import 'package:sti_startnow/pages/super_admin/list_pages/list_instructors_page.dart';
 import 'package:sti_startnow/pages/super_admin/list_pages/list_programs_page.dart';
@@ -16,6 +15,10 @@ class SuperAdminDashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
       backgroundColor: AppTheme.colors.primary,
       body: SafeArea(
@@ -78,10 +81,11 @@ class SuperAdminDashboard extends StatelessWidget {
                   ),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 24),
-                  child: GridView.count(
-                    mainAxisSpacing: 20,
-                    crossAxisCount: 3,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: isLandscape ? 200 : 24, 
+                    vertical: 24
+                  ),
+                  child: ListView(
                     children: [
                       OptionButton(
                         icon: Icons.person,
@@ -97,14 +101,6 @@ class SuperAdminDashboard extends StatelessWidget {
                         onTap: () {
                           Navigator.push(context, 
                           MaterialPageRoute(builder: (context) => ListInstructorsPage()));
-                        },
-                      ),
-                      OptionButton(
-                        icon: Icons.notifications_active_rounded,
-                        title: "Announcement",
-                        onTap: () {
-                          Navigator.push(context, 
-                          MaterialPageRoute(builder: (context) => ListAnnouncementsPage()));
                         },
                       ),
                       OptionButton(
