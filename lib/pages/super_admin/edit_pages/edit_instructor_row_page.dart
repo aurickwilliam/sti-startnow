@@ -32,67 +32,88 @@ class _EditInstructorRowPageState extends State<EditInstructorRowPage> {
     departmentController.text = widget.rowValues[3];
     emailAddressController.text = widget.rowValues[4];
 
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
+    // Content
+    Widget content = Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          children: [
+            PageAppBar(
+              title: "Edit Information"
+            ),
+        
+            const SizedBox(height: 20,),
+        
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: isLandscape ? 200 : 24,
+                vertical: 10
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextInput(
+                    controller: firstNameController, 
+                    label: "First Name:", 
+                  ),
+                              
+                  const SizedBox(height: 10,),
+                              
+                  TextInput(
+                    controller: lastNameController, 
+                    label: "Last Name:", 
+                  ),
+                              
+                  const SizedBox(height: 10,),
+                              
+                  TextInput(
+                    controller: departmentController, 
+                    label: "Department:"
+                  ),
+                              
+                  const SizedBox(height: 10,),
+                      
+                  TextInput(
+                    controller: emailAddressController, 
+                    label: "Email Address:"
+                  ),
+                              
+                  const SizedBox(height: 10,),
+                ],
+              ),
+            )
+          ],
+        ),
+
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: isLandscape ? 200 : 24,
+            vertical: isLandscape ? 10 : 0
+          ),
+          child: BottomButton(
+            onPressed: () {}, 
+            text: "Save"
+          ),
+        )
+      ],
+    );
+
+    // Parent Widget
+    Widget parentWidget = isLandscape
+      ? SingleChildScrollView(
+        child: content,
+      )
+      : Container(
+        child: content,
+      );
+
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-          child: Column(
-            children: [
-              PageAppBar(
-                title: "Edit Information"
-              ),
-
-              const SizedBox(height: 20,),
-
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TextInput(
-                          controller: firstNameController, 
-                          label: "First Name:", 
-                        ),
-                
-                        const SizedBox(height: 10,),
-                
-                        TextInput(
-                          controller: lastNameController, 
-                          label: "Last Name:", 
-                        ),
-                
-                        const SizedBox(height: 10,),
-                
-                        TextInput(
-                          controller: departmentController, 
-                          label: "Department:"
-                        ),
-                
-                        const SizedBox(height: 10,),
-
-                        TextInput(
-                          controller: emailAddressController, 
-                          label: "Email Address:"
-                        ),
-                
-                        const SizedBox(height: 10,),
-                      ],
-                    ),
-                
-                    BottomButton(
-                      onPressed: () {}, 
-                      text: "Save"
-                    )
-                
-                  ],
-                ),
-              )
-            ],
-          ),
-        )
+        child: parentWidget
       ),
     );
   }

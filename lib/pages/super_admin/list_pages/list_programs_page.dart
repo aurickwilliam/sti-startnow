@@ -38,34 +38,42 @@ class _ListProgramsPageState extends State<ListProgramsPage> {
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-            child: Column(
-              children: [
-                PageAppBar(
-                  title: "Programs"
+          child: Column(
+            children: [
+              PageAppBar(
+                title: "Programs"
+              ),
+          
+              const SizedBox(height: 10,),
+          
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 10
                 ),
-
-                const SizedBox(height: 10,),
-
-                SearchBox(
-                  controller: searchController, 
-                  label: "Search:", 
-                  hint: "Enter a program name"
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SearchBox(
+                      controller: searchController, 
+                      label: "Search:", 
+                      hint: "Enter a program name"
+                    ),
+                              
+                    const SizedBox(height: 20,),
+                              
+                    ListDataTable(
+                      columnNames: columnNames, 
+                      dataTableValues: values,
+                      handleNavigation: (item) {
+                        Navigator.push(context, 
+                        MaterialPageRoute(builder: (context) => EditProgramRowPage(rowValues: item)));
+                      },
+                    ),
+                  ],
                 ),
-
-                const SizedBox(height: 20,),
-
-                ListDataTable(
-                  columnNames: columnNames, 
-                  dataTableValues: values,
-                  handleNavigation: (item) {
-                    Navigator.push(context, 
-                    MaterialPageRoute(builder: (context) => EditProgramRowPage(rowValues: item)));
-                  },
-                )
-              ],
-            ),
+              )
+            ],
           ),
         )
       ),

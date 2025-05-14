@@ -16,6 +16,10 @@ class SuperAdminDashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
       backgroundColor: AppTheme.colors.primary,
       body: SafeArea(
@@ -78,10 +82,11 @@ class SuperAdminDashboard extends StatelessWidget {
                   ),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 24),
-                  child: GridView.count(
-                    mainAxisSpacing: 20,
-                    crossAxisCount: 3,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: isLandscape ? 200 : 24, 
+                    vertical: 24
+                  ),
+                  child: ListView(
                     children: [
                       OptionButton(
                         icon: Icons.person,

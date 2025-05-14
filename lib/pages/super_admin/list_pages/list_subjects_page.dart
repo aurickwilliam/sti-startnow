@@ -39,34 +39,42 @@ class _ListSubjectsPageState extends State<ListSubjectsPage> {
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-            child: Column(
-              children: [
-                PageAppBar(
-                  title: "Subjects"
+          child: Column(
+            children: [
+              PageAppBar(
+                title: "Subjects"
+              ),
+          
+              const SizedBox(height: 10,),
+          
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 10
                 ),
-
-                const SizedBox(height: 10,),
-
-                SearchBox(
-                  controller: searchController, 
-                  label: "Search:", 
-                  hint: "Enter a subject name"
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SearchBox(
+                      controller: searchController, 
+                      label: "Search:", 
+                      hint: "Enter a subject name"
+                    ),
+                              
+                    const SizedBox(height: 20,),
+                              
+                    ListDataTable(
+                      columnNames: columnNames, 
+                      dataTableValues: values,
+                      handleNavigation: (item) {
+                        Navigator.push(context, 
+                        MaterialPageRoute(builder: (context) => EditSubjectRowPage(rowValues: item)));
+                      },
+                    ),
+                  ],
                 ),
-
-                const SizedBox(height: 20,),
-
-                ListDataTable(
-                  columnNames: columnNames, 
-                  dataTableValues: values,
-                  handleNavigation: (item) {
-                    Navigator.push(context, 
-                    MaterialPageRoute(builder: (context) => EditSubjectRowPage(rowValues: item)));
-                  },
-                )
-              ],
-            ),
+              )
+            ],
           ),
         )
       ),
