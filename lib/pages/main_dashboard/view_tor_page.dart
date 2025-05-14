@@ -16,54 +16,68 @@ class ViewTorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+        child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               PageAppBar(
                 title: "Documents"
               ),
-
+          
               const SizedBox(height: 10,),
-
-              Text(
-                documentName,
-                style: GoogleFonts.roboto(
-                  color: AppTheme.colors.primary,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
+          
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: isLandscape ? 200 : 24,
+                  vertical: 10
                 ),
-              ),
-
-              const SizedBox(height: 20,),
-
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(context, 
-                  MaterialPageRoute(builder: (context) => 
-                  FullscreenImagePage(
-                    imgPath: documentImgPath,
-                  )));
-                },
-                child: Container(
-                  width: double.infinity,
-                  height: 500,
-                  decoration: BoxDecoration(
-                    color: AppTheme.colors.white,
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(
-                      color: AppTheme.colors.primary,
-                      width: 2.0
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      documentName,
+                      style: GoogleFonts.roboto(
+                        color: AppTheme.colors.primary,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                    image: DecorationImage(
-                      image: AssetImage(documentImgPath),
-                      fit: BoxFit.contain
-                    )
-                  ),
+                            
+                    const SizedBox(height: 20,),
+                            
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(context, 
+                        MaterialPageRoute(builder: (context) => 
+                        FullscreenImagePage(
+                          imgPath: documentImgPath,
+                        )));
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        height: 500,
+                        decoration: BoxDecoration(
+                          color: AppTheme.colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(
+                            color: AppTheme.colors.primary,
+                            width: 2.0
+                          ),
+                          image: DecorationImage(
+                            image: AssetImage(documentImgPath),
+                            fit: BoxFit.contain
+                          )
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               )
             ],

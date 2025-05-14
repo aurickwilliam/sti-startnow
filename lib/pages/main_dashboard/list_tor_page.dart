@@ -14,55 +14,68 @@ class ListTorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // if is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                PageAppBar(
-                  title: "Documents",
-                  onPressed: () {
-                    Navigator.push(context, 
-                    MaterialPageRoute(builder: (context) => 
-                    MainDashboard(selectedIndex: 2,)));
-                  },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              PageAppBar(
+                title: "Documents",
+                onPressed: () {
+                  Navigator.push(context, 
+                  MaterialPageRoute(builder: (context) => 
+                  MainDashboard(selectedIndex: 2,)));
+                },
+              ),
+                    
+              const SizedBox(height: 10,),
+                    
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 10
                 ),
-          
-                const SizedBox(height: 10,),
-          
-                Text(
-                  "Transcript of Records:",
-                  style: GoogleFonts.roboto(
-                    color: AppTheme.colors.primary,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Transcript of Records:",
+                      style: GoogleFonts.roboto(
+                        color: AppTheme.colors.primary,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                          
+                    const SizedBox(height: 20,),
+                          
+                    Container(
+                      child: GridView.count(
+                        physics: NeverScrollableScrollPhysics(),
+                        mainAxisSpacing: 20,
+                        crossAxisSpacing: 20,
+                        shrinkWrap: true,
+                        crossAxisCount: isLandscape ? 4 : 2,
+                        children: List.generate(10, (index) {
+                          return DocumentCard(
+                            imgDocPath: sampleDataDocument[0][0], 
+                            docName: sampleDataDocument[0][1]
+                          );
+                        }),
+                      ),
+                    ),
+                  ],
                 ),
+              ),
           
-                const SizedBox(height: 10,),
-          
-                Center(
-                  child: Wrap(
-                    runAlignment: WrapAlignment.center,
-                    alignment: WrapAlignment.center,
-                    spacing: 20,
-                    runSpacing: 20,
-                    children: List.generate(10, (index) {
-                      return DocumentCard(
-                        imgDocPath: sampleDataDocument[0][0], 
-                        docName: sampleDataDocument[0][1]
-                      );
-                    })
-                  ),
-                ),
-
-                const SizedBox(height: 30,),
-              ],
-            ),
+              const SizedBox(height: 30,),
+            ],
           ),
         )
       ),

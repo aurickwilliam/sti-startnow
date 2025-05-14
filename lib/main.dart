@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: AppTheme.define(),
-        home: StudentTypePage(),
+        home: RegisterPage(),
       ),
     );
   }
