@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/pages/components/back_next_button.dart';
+import 'package:sti_startnow/pages/components/custom_date_picker.dart';
 import 'package:sti_startnow/pages/components/custom_dropdown_menu.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
@@ -180,12 +181,11 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
                     const SizedBox(height: 10,),
 
                     // Date of Birth
-                    TextInput(
+                    CustomDatePicker(
                       controller: dateBirthController, 
-                      label: "Date of Birth:", 
-                      hint: "mm/dd/yy", 
-                      isRequired: true, 
-                      isEnable: true
+                      label: "Date of Birth:",
+                      hint: "yyyy-mm-dd",
+                      isRequired: true,
                     ),
 
                     const SizedBox(height: 10,),

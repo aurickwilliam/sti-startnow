@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/pages/components/back_next_button.dart';
+import 'package:sti_startnow/pages/components/custom_date_picker.dart';
 import 'package:sti_startnow/pages/components/custom_dropdown_menu.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
@@ -161,12 +162,10 @@ class _LastSchoolPageState extends State<LastSchoolPage> {
                     const SizedBox(height: 10,),
 
                     // Date of Graduation
-                    TextInput(
+                    CustomDatePicker(
                       controller: dateGraduationController, 
                       label: "Date of Graduation:",
-                      hint: "mm/dd/yy", 
-                      isRequired: false, 
-                      isEnable: true
+                      hint: "yyyy-mm-dd",
                     ),
 
                     const SizedBox(height: 10,),
