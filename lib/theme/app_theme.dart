@@ -15,6 +15,7 @@ class AppTheme {
         space: 1,
       ),
       primaryColor: colors.primary,
+      colorScheme: ColorScheme.fromSeed(seedColor: AppTheme.colors.primary)
     );
   }
 }
