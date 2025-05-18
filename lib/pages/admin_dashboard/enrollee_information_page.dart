@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/admin_dashboard/admin_dashboard.dart';
+import 'package:sti_startnow/pages/admin_dashboard/components/verify_button.dart';
 import 'package:sti_startnow/pages/components/fullscreen_image_page.dart';
 import 'package:sti_startnow/pages/components/option_box.dart';
 import 'package:sti_startnow/pages/components/option_tile.dart';
@@ -24,7 +25,8 @@ class EnrolleeInformationPage extends StatefulWidget {
 
 class _EnrolleeInformationPageState extends State<EnrolleeInformationPage> {
 
-  bool isApproved = false;
+  String selectedStatus = "";
+  final denyMessageController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -154,50 +156,55 @@ class _EnrolleeInformationPageState extends State<EnrolleeInformationPage> {
                           
                     const SizedBox(height: 20,),
                           
-                    // Option Label
-                    Text(
-                      "Select Status:",
-                      style: GoogleFonts.roboto(
-                        color: AppTheme.colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+                    // // Option Label
+                    // Text(
+                    //   "Select Status:",
+                    //   style: GoogleFonts.roboto(
+                    //     color: AppTheme.colors.black,
+                    //     fontSize: 16,
+                    //     fontWeight: FontWeight.w500,
+                    //   ),
+                    // ),
                           
-                    const SizedBox(height: 10,),
+                    // const SizedBox(height: 10,),
                           
-                    OptionBox(
-                      children: [
+                    // OptionBox(
+                    //   children: [
                           
-                        // Unverified
-                        OptionTile(
-                          text: "Unverified", 
-                          icon: Icons.sentiment_dissatisfied_rounded, 
-                          onTap: () {
+                    //     // Unverified
+                    //     OptionTile(
+                    //       text: "Unverified", 
+                    //       icon: Icons.sentiment_dissatisfied_rounded, 
+                    //       onTap: () {
                           
-                          }
-                        ),
+                    //       }
+                    //     ),
                           
-                        // Pending
-                        OptionTile(
-                          text: "Pending", 
-                          icon: Icons.schedule_rounded, 
-                          onTap: () {
+                    //     // Pending
+                    //     OptionTile(
+                    //       text: "Pending", 
+                    //       icon: Icons.schedule_rounded, 
+                    //       onTap: () {
                           
-                          }
-                        ),
+                    //       }
+                    //     ),
                           
-                        // Verified
-                        OptionTile(
-                          text: "Verified", 
-                          icon: Icons.sentiment_satisfied_rounded, 
-                          onTap: () {
+                    //     // Verified
+                    //     OptionTile(
+                    //       text: "Verified", 
+                    //       icon: Icons.sentiment_satisfied_rounded, 
+                    //       onTap: () {
                           
-                          }
-                        ),
-                      ]
-                    ),
+                    //       },
+                    //       isLastItem: true,
+                    //     ),
+                    //   ]
+                    // ),
                               
+                    // const SizedBox(height: 20,),
+
+                    Divider(),
+                    
                     const SizedBox(height: 20,),
                               
                     // Receipt Approval label
@@ -224,37 +231,78 @@ class _EnrolleeInformationPageState extends State<EnrolleeInformationPage> {
                       ),
                     ),
                               
-                    const SizedBox(height: 10,),
+                    const SizedBox(height: 20,),
                               
-                    // Approve checkbox
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Container(
-                        width: 180,
-                        child: CheckboxListTile(
-                          title: Text(
-                            "Approve"
-                          ),
-                          value: isApproved, 
-                          onChanged: (bool? value) {
-                            setState(() {
-                              isApproved = value!;
-                            });
-                          },
-                          activeColor: AppTheme.colors.gold,
-                          checkColor: AppTheme.colors.white,
-                          controlAffinity: ListTileControlAffinity.leading,
-                        
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            side: BorderSide(
-                              color: AppTheme.colors.gray,
-                              width: 2.0
-                            )
-                          ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: AppTheme.colors.white,
+                        border: Border.all(
+                          color: AppTheme.colors.gray,
+                          width: 2.0
                         ),
+                        borderRadius: BorderRadius.circular(15)
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        // Approve checkbox
+                        children: [
+                          VerifyButton(
+                            title: "Approve",
+                            onTap: (value) {
+                              setState(() {
+                                selectedStatus = value.toString();
+                              });
+                            }, 
+                            selectedValue: selectedStatus,
+                          ),
+                          
+                          // Denied Button
+                          VerifyButton(
+                            title: "Deny", 
+                            onTap: (value) {
+                              setState(() {
+                                selectedStatus = value.toString();
+                              });
+                            },
+                            selectedValue: selectedStatus,
+                          ),
+                        ],
                       ),
                     ),
+                    
+                    const SizedBox(height: 20,),
+
+                      selectedStatus == "Deny" ? TextField(
+                        controller: denyMessageController,
+                        maxLines: 7,
+                        keyboardType: TextInputType.multiline, 
+                        decoration: InputDecoration(
+                          hintText: 'Enter a message...',
+                          border: OutlineInputBorder(), 
+
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: AppTheme.colors.primary, 
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(15)
+                          ),
+
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: AppTheme.colors.gray,
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(15)
+                          ),
+                        ),
+
+                        style: GoogleFonts.roboto(
+                          color: AppTheme.colors.black,
+                          fontSize: 14
+                        ),
+                      ) 
+                      : SizedBox(),
                     
                     const SizedBox(height: 50,),
                               
@@ -268,7 +316,6 @@ class _EnrolleeInformationPageState extends State<EnrolleeInformationPage> {
                   ],
                 ),
               )
-          
             ],
           ),
         ),
