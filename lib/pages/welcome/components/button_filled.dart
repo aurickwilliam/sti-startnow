@@ -22,7 +22,7 @@ class ButtonFilled extends StatelessWidget {
         backgroundColor: AppTheme.colors.secondary,
 
         side: BorderSide(
-          color: AppTheme.colors.primary,
+          color: AppTheme.colors.secondary,
           width: 2.0
         ),
 
