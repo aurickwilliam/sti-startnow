@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/pages/components/back_next_button.dart';
 import 'package:sti_startnow/pages/components/custom_date_picker.dart';
-import 'package:sti_startnow/pages/components/custom_dropdown_menu.dart';
+import 'package:sti_startnow/pages/components/custom_dropdown/custom_dropdown_menu.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/enrollment/new_student/father_info_page.dart';
@@ -17,13 +17,14 @@ class LastSchoolPage extends StatefulWidget {
 
 class _LastSchoolPageState extends State<LastSchoolPage> {
 
-  final TextEditingController schoolTypeController = TextEditingController();
+  String schoolTypeValue = "";
   final TextEditingController nameSchoolController = TextEditingController();
   final TextEditingController strandController = TextEditingController();
   final TextEditingController dateGraduationController = TextEditingController();
-  final TextEditingController schoolYearController = TextEditingController();
+  String schoolYearValue = "";
   final TextEditingController gradeController = TextEditingController();
-  final TextEditingController termController = TextEditingController();
+  String termValue = "";
+  String yearLevelValue = "";
 
   final List<String> schoolTypeChoices = [
     "Primary",
@@ -65,7 +66,7 @@ class _LastSchoolPageState extends State<LastSchoolPage> {
     "Grade 10",
     "Grade 11",
     "Grade 12",
-    "Fourth Year High School"
+    "Fourth Year High School",
     "First Year College",
     "Second Year College",
     "Third Year College",
@@ -129,12 +130,15 @@ class _LastSchoolPageState extends State<LastSchoolPage> {
                     // School Type
                     CustomDropdownMenu(
                       listChoices: schoolTypeChoices, 
-                      controller: schoolTypeController, 
                       label: "School Type:", 
                       hint: "Please Select a Type", 
-                      initialValue: "", 
                       isRequired: true, 
-                      isEnable: true
+                      selectedValue: schoolTypeValue,
+                      onTap: (index) {
+                        setState(() {
+                          schoolTypeValue = schoolTypeChoices[index];
+                        });
+                      },
                     ),
 
                     const SizedBox(height: 10,),
@@ -173,12 +177,15 @@ class _LastSchoolPageState extends State<LastSchoolPage> {
                     // School Year
                     CustomDropdownMenu(
                       listChoices: schoolYearChoices, 
-                      controller: schoolYearController, 
                       label: "School Year:", 
                       hint: "Please Select a School Year", 
-                      initialValue: "", 
                       isRequired: true, 
-                      isEnable: true
+                      selectedValue: schoolYearValue,
+                      onTap: (index) {
+                        setState(() {
+                          schoolYearValue = schoolYearChoices[index];
+                        });
+                      },
                     ),
 
                     const SizedBox(height: 10,),
@@ -186,12 +193,15 @@ class _LastSchoolPageState extends State<LastSchoolPage> {
                     // Year Level / Grade
                     CustomDropdownMenu(
                       listChoices: yearLevelChoices, 
-                      controller: gradeController, 
                       label: "Year Level / Grade:", 
                       hint: "Please Select Year / Grade", 
-                      initialValue: "", 
                       isRequired: true, 
-                      isEnable: true
+                      selectedValue: yearLevelValue,
+                      onTap: (index) {
+                        setState(() {
+                          yearLevelValue = yearLevelChoices[index];
+                        });
+                      },
                     ),
 
                     const SizedBox(height: 10,),
@@ -199,12 +209,14 @@ class _LastSchoolPageState extends State<LastSchoolPage> {
                     // Last Term
                     CustomDropdownMenu(
                       listChoices: termChoices, 
-                      controller: termController, 
                       label: "Term:", 
                       hint: "Please Select a School Term", 
-                      initialValue: "", 
-                      isRequired: false, 
-                      isEnable: true
+                      selectedValue: termValue,
+                      onTap: (index) {
+                        setState(() {
+                          termValue = termChoices[index];
+                        });
+                      },
                     ),
 
                     const SizedBox(height: 50,),

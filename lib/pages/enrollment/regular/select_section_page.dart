@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sti_startnow/pages/components/custom_dropdown_menu.dart';
+import 'package:sti_startnow/pages/components/custom_dropdown/custom_dropdown_menu.dart';
 import 'package:sti_startnow/pages/enrollment/completed_page.dart';
 import 'package:sti_startnow/pages/components/bottom_button.dart';
 import 'package:sti_startnow/pages/components/custom_data_table.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
-class SelectSectionPage extends StatelessWidget {
+class SelectSectionPage extends StatefulWidget {
   SelectSectionPage({super.key});
 
+  @override
+  State<SelectSectionPage> createState() => _SelectSectionPageState();
+}
+
+class _SelectSectionPageState extends State<SelectSectionPage> {
   // Temporary values for list of section
   final List<String> listSection = ["CS401", "CS402", "CS403", "CS404"];
-
 
   // Values for the Column
   final List<String> columnNames = [
@@ -43,7 +47,7 @@ class SelectSectionPage extends StatelessWidget {
     ["COSC1001", "P.E./PATHFIT 4: Team Sports", "3.00", "1:00PM - 3:00PM", "TH", "COURT"],
   ];
 
-  final TextEditingController sectionController = TextEditingController();
+  String sectionValue = "";
 
   @override
   Widget build(BuildContext context) {
@@ -90,12 +94,14 @@ class SelectSectionPage extends StatelessWidget {
                           
                         CustomDropdownMenu(
                           listChoices: listSection,
-                          controller: sectionController,
                           label: "Available Sections:",
                           hint: "Select a section",
-                          initialValue: "",
-                          isRequired: false,
-                          isEnable: true,
+                          selectedValue: sectionValue,
+                          onTap: (index) {
+                            setState(() {
+                              sectionValue = listSection[index];
+                            });
+                          },
                         ),
                       ],
                     ),

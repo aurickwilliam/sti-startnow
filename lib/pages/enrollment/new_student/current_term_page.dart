@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/pages/components/bottom_button.dart';
-import 'package:sti_startnow/pages/components/custom_dropdown_menu.dart';
+import 'package:sti_startnow/pages/components/custom_dropdown/custom_dropdown_menu.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/enrollment/new_student/student_info_page.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
@@ -35,10 +35,10 @@ class _CurrentTermPageState extends State<CurrentTermPage> {
     "1st Term",
   ];
 
-  final TextEditingController admitTypeController = TextEditingController();
-  final TextEditingController yearLevelController = TextEditingController();
-  final TextEditingController schoolYearController = TextEditingController();
-  final TextEditingController termController = TextEditingController();
+  String admitTypeValue = "";
+  String yearLevelValue = "";
+  String schoolYearValue = "";
+  String termValue = "";
 
   @override
   Widget build(BuildContext context) {
@@ -121,48 +121,60 @@ class _CurrentTermPageState extends State<CurrentTermPage> {
                   
                   CustomDropdownMenu(
                     listChoices: admitTypeChoices, 
-                    controller: admitTypeController, 
                     label: "Admit Type:", 
                     hint: "Please Select Admit Type", 
-                    initialValue: "", 
                     isRequired: true, 
-                    isEnable: true
+                    selectedValue: admitTypeValue,
+                    onTap: (index) {
+                      setState(() {
+                        admitTypeValue = admitTypeChoices[index];
+                      });
+                    },
                   ),
                               
                   const SizedBox(height: 10,),
                               
                   CustomDropdownMenu(
                     listChoices: yearLevelChoices, 
-                    controller: yearLevelController, 
                     label: "Year Level:", 
                     hint: "Please Select Year Level", 
-                    initialValue: "", 
                     isRequired: true, 
-                    isEnable: true
+                    selectedValue: yearLevelValue,
+                    onTap: (index) {
+                      setState(() {
+                        yearLevelValue = yearLevelChoices[index];
+                      });
+                    },
                   ),
                               
                   const SizedBox(height: 10,),
                               
                   CustomDropdownMenu(
                     listChoices: schoolYearChoices, 
-                    controller: schoolYearController, 
                     label: "School Year:", 
                     hint: "Please Select School Year", 
-                    initialValue: "", 
                     isRequired: true, 
-                    isEnable: true
+                    selectedValue: schoolYearValue,
+                    onTap: (index) {
+                      setState(() {
+                        schoolYearValue = schoolYearChoices[index];
+                      });
+                    },
                   ),
                               
                   const SizedBox(height: 10,),
                               
                   CustomDropdownMenu(
                     listChoices: termChoices, 
-                    controller: termController, 
                     label: "Term:", 
                     hint: "Please Select Term", 
-                    initialValue: "", 
                     isRequired: true, 
-                    isEnable: true
+                    selectedValue: termValue,
+                    onTap: (index) {
+                      setState(() {
+                        termValue = termChoices[index];
+                      });
+                    },
                   )
                               
                 ],

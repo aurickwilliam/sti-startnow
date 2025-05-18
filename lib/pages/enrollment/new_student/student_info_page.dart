@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/pages/components/back_next_button.dart';
 import 'package:sti_startnow/pages/components/custom_date_picker.dart';
-import 'package:sti_startnow/pages/components/custom_dropdown_menu.dart';
+import 'package:sti_startnow/pages/components/custom_dropdown/custom_dropdown_menu.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/enrollment/new_student/current_address_page.dart';
@@ -24,9 +24,9 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
 
   final TextEditingController suffixNameController = TextEditingController();
 
-  final TextEditingController genderController = TextEditingController();
+  String genderValue = "";
 
-  final TextEditingController civilStatusController = TextEditingController();
+  String civilStatusValue = "";
 
   final TextEditingController citizenshipController = TextEditingController();
 
@@ -146,12 +146,15 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
                     // Gender
                     CustomDropdownMenu(
                       listChoices: genderChoices, 
-                      controller: genderController, 
                       label: "Gender:", 
                       hint: "Gender", 
-                      initialValue: "", 
                       isRequired: true, 
-                      isEnable: true
+                      selectedValue: genderValue,
+                      onTap: (index) {
+                        setState(() {
+                          genderValue = genderChoices[index];
+                        });
+                      },
                     ),
 
                     const SizedBox(height: 10,),
@@ -159,12 +162,15 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
                     // Civil Status
                     CustomDropdownMenu(
                       listChoices: civilStatusChoices, 
-                      controller: civilStatusController, 
                       label: "Civil Status:", 
                       hint: "Civil Status", 
-                      initialValue: "", 
                       isRequired: true, 
-                      isEnable: true
+                      selectedValue: civilStatusValue,
+                      onTap: (index) {
+                        setState(() {
+                          civilStatusValue = civilStatusChoices[index];
+                        });
+                      },
                     ),
 
                     const SizedBox(height: 10,),
