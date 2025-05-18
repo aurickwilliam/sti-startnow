@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:sti_startnow/pages/components/bottom_button.dart';
+import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/enrollment/components/year_level_tile.dart';
 import 'package:sti_startnow/pages/enrollment/irregular/select_subject_page.dart';

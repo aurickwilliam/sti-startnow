@@ -7,7 +7,7 @@ import 'package:sti_startnow/pages/components/fullscreen_image_page.dart';
 import 'package:sti_startnow/pages/components/option_box.dart';
 import 'package:sti_startnow/pages/components/option_tile.dart';
 import 'package:sti_startnow/pages/admin_dashboard/components/receipt_container.dart';
-import 'package:sti_startnow/pages/components/bottom_button.dart';
+import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 

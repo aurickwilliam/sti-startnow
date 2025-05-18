@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sti_startnow/pages/components/bottom_button.dart';
+import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
+import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/enrollment/components/multiple_choice_card.dart';
 import 'package:sti_startnow/pages/enrollment/irregular/checklist_page.dart';
@@ -25,14 +26,29 @@ class _StudentStatusPageState extends State<StudentStatusPage> {
     });
   }
 
+  void checkifHasInput(){
+    if (selectedStatus == ""){
+      print("Select a Status");
+    }
+    else {
+      showModalBottomSheet(
+        isScrollControlled: true,
+        context: context, 
+        builder: (builder) {
+          return CustomBottomSheet(
+            submitFunc: () {
+              handleNavigation();
+            }
+          );
+        }
+      );
+    }
+  }
+
   // Refactor kapag nandyan na ung DB
   // Remove the prop drilling
   void handleNavigation(){
     Widget destination = SizedBox.shrink();
-
-    if (selectedStatus == ""){
-      print("Select a Status");
-    }
 
     if (selectedStatus == statusStudent[0]){
       destination = StudentPortalPage(studentStatus: selectedStatus);
@@ -132,7 +148,7 @@ class _StudentStatusPageState extends State<StudentStatusPage> {
             ),
             child: BottomButton(
               onPressed: () {
-                handleNavigation();
+                checkifHasInput();
               },
               text: "Next",
             ),

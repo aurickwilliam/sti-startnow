@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:sti_startnow/pages/components/back_next_button.dart';
+import 'package:sti_startnow/pages/components/buttons/back_next_button.dart';
+import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/enrollment/completed_page.dart';
 import 'package:sti_startnow/pages/components/custom_data_table.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
@@ -114,8 +115,17 @@ class VerifySubjectsPage extends StatelessWidget {
                     ),
                     child: BackNextButton(
                       nextPressed: () {
-                        Navigator.push(context, 
-                        MaterialPageRoute(builder: (context) => CompletedPage()));
+                        showModalBottomSheet(
+                          context: context, 
+                          builder: (builder) {
+                            return CustomBottomSheet(
+                              submitFunc: () {
+                                Navigator.push(context, 
+                                MaterialPageRoute(builder: (context) => CompletedPage()));
+                              }
+                            );
+                          }
+                        );
                       }
                     ),
                   )

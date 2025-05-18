@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/components/custom_dropdown/custom_dropdown_menu.dart';
 import 'package:sti_startnow/pages/enrollment/completed_page.dart';
-import 'package:sti_startnow/pages/components/bottom_button.dart';
+import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/custom_data_table.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
@@ -160,8 +161,17 @@ class _SelectSectionPageState extends State<SelectSectionPage> {
                     ),
                     child: BottomButton(
                       onPressed: () {
-                        Navigator.push(context, 
-                        MaterialPageRoute(builder: (context) => CompletedPage()));
+                        showModalBottomSheet(
+                          context: context, 
+                          builder: (builder) {
+                            return CustomBottomSheet(
+                              submitFunc: () {
+                                Navigator.push(context, 
+                                MaterialPageRoute(builder: (context) => CompletedPage()));
+                              }
+                            );
+                          }
+                        );
                       }, 
                       text: "Submit"
                     ),

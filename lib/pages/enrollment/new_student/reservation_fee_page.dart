@@ -3,8 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:sti_startnow/pages/components/bottom_button.dart';
-import 'package:sti_startnow/pages/components/custom_outline_button.dart';
+import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
+import 'package:sti_startnow/pages/components/buttons/custom_outline_button.dart';
+import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/main_dashboard/main_dashboard.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
@@ -129,8 +130,17 @@ class _ReservationFeePageState extends State<ReservationFeePage> {
           ),
           child: BottomButton(
             onPressed: () {
-              Navigator.push(context, 
-              MaterialPageRoute(builder: (context) => MainDashboard()));
+              showModalBottomSheet(
+                context: context, 
+                builder: (builder) {
+                  return CustomBottomSheet(
+                    submitFunc: () {
+                      Navigator.push(context, 
+                      MaterialPageRoute(builder: (context) => MainDashboard()));
+                    }
+                  );
+                }
+              );
             }, 
             text: "Submit Application"
           ),
