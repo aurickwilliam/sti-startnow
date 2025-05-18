@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sti_startnow/pages/components/custom_dropdown_menu.dart';
+import 'package:sti_startnow/pages/components/custom_dropdown/custom_dropdown_menu.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/components/tuition_type_card.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
@@ -39,33 +39,35 @@ class _TuitionFeeCoursePageState extends State<TuitionFeeCoursePage> {
     "4Y2",
   ];
 
-  TextEditingController yearLevelController = TextEditingController();
+  // TextEditingController yearLevelController = TextEditingController();
 
-  @override
-  void initState(){
-    super.initState();
+  // @override
+  // void initState(){
+  //   super.initState();
 
-    yearLevelController.addListener(handleYearLevelChange);
-  }
+  //   yearLevelController.addListener(handleYearLevelChange);
+  // }
 
   // Method when the user changes the dropdown
   // So it can change the card below
-  void handleYearLevelChange(){
-    print(yearLevelController.text);
+  void handleYearLevelChange(int index){
+    setState(() {
+      yearLevelValue = yearLevelList[index];
+    });
   }
 
-  @override
-  void dispose(){
-    yearLevelController.removeListener(handleYearLevelChange);
-    yearLevelController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose(){
+  //   yearLevelController.removeListener(handleYearLevelChange);
+  //   yearLevelController.dispose();
+  //   super.dispose();
+  // }
+
+  String yearLevelValue = "";
 
 
   @override
   Widget build(BuildContext context) {
-
-    yearLevelController.text = yearLevelList.first;
 
     // if is in landscape
     bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
@@ -112,12 +114,14 @@ class _TuitionFeeCoursePageState extends State<TuitionFeeCoursePage> {
                     // Dropdown of Year Level 
                     CustomDropdownMenu(
                       listChoices: yearLevelList, 
-                      controller: yearLevelController,
                       label: "Year Level:",
                       hint: "Select a Year Level",
-                      initialValue: yearLevelList.first,
-                      isRequired: false,
-                      isEnable: true,
+                      selectedValue: yearLevelValue,
+                      onTap: (index) {
+                        setState(() {
+                          yearLevelValue = yearLevelList[index];
+                        });
+                      },
                     ),
                               
                     const SizedBox(height: 20,),

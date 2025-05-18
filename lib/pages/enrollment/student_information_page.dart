@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sti_startnow/pages/components/custom_dropdown_menu.dart';
+import 'package:sti_startnow/pages/components/custom_dropdown/custom_dropdown_menu.dart';
 import 'package:sti_startnow/pages/components/number_input.dart';
 import 'package:sti_startnow/pages/components/bottom_button.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
@@ -30,10 +30,10 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
   final TextEditingController studentAcademicTypeController = TextEditingController();
 
   // Drop Downs
-  final TextEditingController admissionTypeController = TextEditingController();
-  final TextEditingController newYearLevelController = TextEditingController();
-  final TextEditingController paymentLocationController = TextEditingController();
-  final TextEditingController paymentTypeController = TextEditingController();
+  String admissionTypeValue = "";
+  String newYearLevelValue = "";
+  String paymentLocationValue = "";
+  String paymentTypeValue = "";
 
   // Text Input
   final TextEditingController referenceNoController = TextEditingController();
@@ -191,12 +191,15 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
                     // STUDENT ADMISSION TYPE
                     CustomDropdownMenu(
                       listChoices: admissionTypeList, 
-                      controller: admissionTypeController, 
                       label: "Admission Type:", 
                       hint: "Select Student Type",
-                      initialValue: "",
                       isRequired: true, 
-                      isEnable: true, 
+                      selectedValue: admissionTypeValue,
+                      onTap: (index) {
+                        setState(() {
+                          admissionTypeValue = admissionTypeList[index];
+                        });
+                      },
                     ),
               
                     const SizedBox(height: 10,),
@@ -204,12 +207,15 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
                     // STUDENT NEW LEVEL
                     CustomDropdownMenu(
                       listChoices: newYearLevel, 
-                      controller: newYearLevelController, 
                       label: "Your New Level:", 
                       hint: "Select New Level",
-                      initialValue: "",
                       isRequired: true, 
-                      isEnable: true, 
+                      selectedValue: newYearLevelValue,
+                      onTap: (index) {
+                        setState(() {
+                          newYearLevelValue = newYearLevel[index];
+                        });
+                      },
                     ),
               
                     const SizedBox(height: 10,),
@@ -217,12 +223,15 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
                     // PAYMENT LOCATION
                     CustomDropdownMenu(
                       listChoices: paymentLocation, 
-                      controller: paymentLocationController, 
                       label: "Payment Location:", 
-                      hint: "Select Payment Location",
-                      initialValue: "",
+                      hint: "Select Payment Location",                      
                       isRequired: true, 
-                      isEnable: true, 
+                      selectedValue: paymentLocationValue,
+                      onTap: (index) {
+                        setState(() {
+                          paymentLocationValue = paymentLocation[index];
+                        });
+                      },
                     ),
               
                     const SizedBox(height: 10,),
@@ -230,12 +239,15 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
                     // PAYMENT TYPE
                     CustomDropdownMenu(
                       listChoices: paymentType, 
-                      controller: paymentTypeController, 
                       label: "Payment Type:", 
                       hint: "Select Payment Type",
-                      initialValue: "",
                       isRequired: true, 
-                      isEnable: true, 
+                      selectedValue: paymentTypeValue,  
+                      onTap: (index) {
+                        setState(() {
+                          paymentTypeValue = paymentType[index];
+                        });
+                      },
                     ),
               
                     const SizedBox(height: 10,),
