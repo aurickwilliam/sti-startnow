@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sti_startnow/pages/components/bottom_button.dart';
+import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/components/password_input.dart';
 import 'package:sti_startnow/pages/settings/change_email_new.dart';

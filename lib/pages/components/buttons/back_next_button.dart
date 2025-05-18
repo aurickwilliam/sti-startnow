@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sti_startnow/pages/components/bottom_button.dart';
-import 'package:sti_startnow/pages/components/custom_outline_button.dart';
+import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
+import 'package:sti_startnow/pages/components/buttons/custom_outline_button.dart';
 
 class BackNextButton extends StatelessWidget {
   final Function() nextPressed;

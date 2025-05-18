@@ -56,11 +56,10 @@ class EnrolleeStatusPage extends StatelessWidget {
                     OptionBox(
                       children: [
                         OptionTile(
-                          text: "Unverified", 
+                          text: "Not Enrolled", 
                           icon: Icons.sentiment_dissatisfied_rounded, 
                           onTap: () {
                             enrolleeList.changeSelectedStatus(1);
-                            print(enrolleeList.getSelectedStatus);
                               
                             Navigator.push(context, 
                             MaterialPageRoute(builder: (context) => EnrolleeListPage()));
@@ -68,11 +67,10 @@ class EnrolleeStatusPage extends StatelessWidget {
                         ),
                               
                         OptionTile(
-                          text: "Pending", 
+                          text: "Unverified", 
                           icon: Icons.schedule_rounded, 
                           onTap: () {
                             enrolleeList.changeSelectedStatus(2);
-                            print(enrolleeList.getSelectedStatus);
                               
                             Navigator.push(context, 
                             MaterialPageRoute(builder: (context) => EnrolleeListPage()));
@@ -84,7 +82,6 @@ class EnrolleeStatusPage extends StatelessWidget {
                           icon: Icons.sentiment_satisfied_rounded, 
                           onTap: () {
                             enrolleeList.changeSelectedStatus(3);
-                            print(enrolleeList.getSelectedStatus);
                               
                             Navigator.push(context, 
                             MaterialPageRoute(builder: (context) => EnrolleeListPage()));

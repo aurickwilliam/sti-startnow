@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sti_startnow/pages/components/back_next_button.dart';
+import 'package:sti_startnow/pages/components/buttons/back_next_button.dart';
+import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/enrollment/components/validate_tile.dart';
 import 'package:sti_startnow/pages/enrollment/new_student/reservation_fee_page.dart';
@@ -250,8 +251,17 @@ class _ValidateDetailsPageState extends State<ValidateDetailsPage> {
 
                     BackNextButton(
                       nextPressed: () {
-                        Navigator.push(context, 
-                        MaterialPageRoute(builder: (context) => ReservationFeePage()));
+                        showModalBottomSheet(
+                          context: context, 
+                          builder: (builder) {
+                            return CustomBottomSheet(
+                              submitFunc: () {
+                                Navigator.push(context, 
+                                MaterialPageRoute(builder: (context) => ReservationFeePage()));
+                              }
+                            );
+                          }
+                        );
                       }
                     )
                   ],

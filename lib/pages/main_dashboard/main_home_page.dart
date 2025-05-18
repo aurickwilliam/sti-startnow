@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sti_startnow/pages/components/bottom_button.dart';
+import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/schedule_card.dart';
 import 'package:sti_startnow/pages/drawer/about_page.dart';
 import 'package:sti_startnow/pages/drawer/mission_vision_page.dart';

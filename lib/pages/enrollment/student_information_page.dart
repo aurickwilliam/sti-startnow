@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/components/custom_dropdown/custom_dropdown_menu.dart';
 import 'package:sti_startnow/pages/components/number_input.dart';
-import 'package:sti_startnow/pages/components/bottom_button.dart';
+import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/pages/enrollment/irregular/select_year_level_page.dart';
@@ -79,14 +80,28 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
     "Low Monthly"
   ];
 
+  void checkIfHasInput(){
+    if (widget.studentStatus == ""){
+      print("Select a Status");
+    }
+    else {
+      showModalBottomSheet(
+        context: context, 
+        builder: (builder) {
+          return CustomBottomSheet(
+            submitFunc: () {
+              handleNavigation();
+            }
+          );
+        }
+      );
+    }
+  }
+
   // Temporary
   // Remove Prop drilling
   void handleNavigation(){
     Widget destination = SizedBox.shrink();
-
-    if (widget.studentStatus == ""){
-      print("Select a Status");
-    }
 
     if (widget.studentStatus == "Regular"){
       destination = SelectSectionPage();
@@ -286,7 +301,7 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
               
                     BottomButton(
                       onPressed: () {
-                        handleNavigation();
+                        checkIfHasInput();
                       }, 
                       text: "Submit"
                     )

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sti_startnow/pages/components/bottom_button.dart';
+import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
+import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/enrollment/components/multiple_choice_card.dart';
 import 'package:sti_startnow/pages/enrollment/new_student/preferred_program_page.dart';
@@ -24,14 +25,29 @@ class _StudentTypePageState extends State<StudentTypePage> {
     });
   }
 
+  void checkIfHasInput(){
+    if (selectedItem == ""){
+      debugPrint("Select Type of Student");
+    }
+    else {
+      showModalBottomSheet(
+        isScrollControlled: true,
+        context: context, 
+        builder: (context) {
+          return CustomBottomSheet(
+            submitFunc: () {
+              handleNavigation();
+            },
+          );
+        }
+      );
+    }
+  }
+
   // Handle navigation
   void handleNavigation(){
    Widget destination = SizedBox.shrink();
-
-   if (selectedItem == ""){
-    debugPrint("Select Type of Student");
-   }
-   
+   debugPrint("SHIBAL");
    if (selectedItem == typeStudent[0]){
     destination = PreferredProgramPage();
    }
@@ -99,7 +115,7 @@ class _StudentTypePageState extends State<StudentTypePage> {
           ),
           child: BottomButton(
             onPressed: () {
-              handleNavigation();
+              checkIfHasInput();
             },
             text: "Next",
           ),

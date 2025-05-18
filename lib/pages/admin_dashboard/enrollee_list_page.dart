@@ -12,8 +12,8 @@ class EnrolleeListPage extends StatelessWidget {
   EnrolleeListPage({super.key});
 
   final List<String> listOfStatus = [
+    "Not Enrolled",
     "Unverified",
-    "Pending",
     "Verified"
   ];
 
