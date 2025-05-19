@@ -14,19 +14,18 @@ class ChatBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
 
-      // if it is user, align right
-      // if it is bot, align left
-      alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: Container(
+    // For User
+    Widget userBubble = Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Container(
           decoration: BoxDecoration(
-            color: isUser ? AppTheme.colors.gold : AppTheme.colors.white,
+            color: AppTheme.colors.gold,
             borderRadius: BorderRadius.circular(5),
             border: Border.all(
-              color: isUser ? AppTheme.colors.gold: AppTheme.colors.gray,
+              color: AppTheme.colors.gold,
               width: 2.0
             ),
           ),
@@ -35,13 +34,86 @@ class ChatBubble extends StatelessWidget {
             child: Text(
               message,
               style: GoogleFonts.roboto(
-                color: isUser ? AppTheme.colors.white : AppTheme.colors.black,
-                fontSize: 16,
+                color: AppTheme.colors.white,
+                fontSize: 14,
               ),
             ),
           ),
         ),
-      ),
+
+        const SizedBox(width: 5,),
+
+        // Profile Image
+        Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(999),
+            border: Border.all(
+              color: AppTheme.colors.primary,
+              width: 2.0
+            ),
+            image: DecorationImage(
+              image: AssetImage(
+                "assets/img/def_profile.jpg"
+              )
+            )
+          ),
+        )
+      ],
+    );
+
+    // For Bot
+    Widget botBubble = Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        // Profile Image
+        Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(999),
+            border: Border.all(
+              color: AppTheme.colors.primary,
+              width: 2.0
+            ),
+            image: DecorationImage(
+              image: AssetImage(
+                "assets/img/chatbot_profile/pero.png"
+              )
+            )
+          ),
+        ),
+
+        const SizedBox(width: 5,),
+
+        Container(
+          decoration: BoxDecoration(
+            color: AppTheme.colors.white,
+            borderRadius: BorderRadius.circular(5),
+            border: Border.all(
+              color: AppTheme.colors.gray,
+              width: 2.0
+            ),
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: Text(
+              message,
+              style: GoogleFonts.roboto(
+                color: AppTheme.colors.black,
+                fontSize: 14,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: isUser ? userBubble : botBubble
     );
   }
 }
