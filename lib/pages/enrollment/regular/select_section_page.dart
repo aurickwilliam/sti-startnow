@@ -9,7 +9,7 @@ import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart'
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class SelectSectionPage extends StatefulWidget {
-  SelectSectionPage({super.key});
+  const SelectSectionPage({super.key});
 
   @override
   State<SelectSectionPage> createState() => _SelectSectionPageState();
@@ -26,7 +26,7 @@ class _SelectSectionPageState extends State<SelectSectionPage> {
     "Units",
     "Time",
     "Day",
-    "Room"
+    "Room",
   ];
 
   // Temporary value for total units
@@ -34,27 +34,97 @@ class _SelectSectionPageState extends State<SelectSectionPage> {
 
   // Temporay values for the Data Table
   final List<List> dataTableValues = [
-    ["COSC1001", "Information Management", "3.00", "7:00AM - 9:00AM", "S", "512"],
-    ["COSC1001", "Information Management", "3.00", "7:00AM - 10:00AM", "W", "603"],
-    ["COSC1001", "Fundamentals of Mobile Programming", "3.00", "9:00AM - 11:00AM", "TH", "402"],
-    ["COSC1001", "Fundamentals of Mobile Programming", "3.00", "10:00AM - 1:00PM", "W", "603"],
-    ["COSC1001", "Human-Computer Interaction", "3.50", "7:00AM - 9:00AM", "TH", "402"],
-    ["COSC1001", "Human-Computer Interaction", "3.50", "11:30AM - 1:00PM", "TH", "601"],
+    [
+      "COSC1001",
+      "Information Management",
+      "3.00",
+      "7:00AM - 9:00AM",
+      "S",
+      "512",
+    ],
+    [
+      "COSC1001",
+      "Information Management",
+      "3.00",
+      "7:00AM - 10:00AM",
+      "W",
+      "603",
+    ],
+    [
+      "COSC1001",
+      "Fundamentals of Mobile Programming",
+      "3.00",
+      "9:00AM - 11:00AM",
+      "TH",
+      "402",
+    ],
+    [
+      "COSC1001",
+      "Fundamentals of Mobile Programming",
+      "3.00",
+      "10:00AM - 1:00PM",
+      "W",
+      "603",
+    ],
+    [
+      "COSC1001",
+      "Human-Computer Interaction",
+      "3.50",
+      "7:00AM - 9:00AM",
+      "TH",
+      "402",
+    ],
+    [
+      "COSC1001",
+      "Human-Computer Interaction",
+      "3.50",
+      "11:30AM - 1:00PM",
+      "TH",
+      "601",
+    ],
     ["COSC1001", "Ethics", "3.00", "7:00AM - 10:00AM", "F", "410"],
-    ["COSC1001", "Design and Analysis of Algorithms", "3.00", "10:00AM - 1:00PM", "F", "402"],
-    ["COSC1001", "Computer Systems Architecture", "3.00", "9:00AM - 12:00PM", "S", "509"],
+    [
+      "COSC1001",
+      "Design and Analysis of Algorithms",
+      "3.00",
+      "10:00AM - 1:00PM",
+      "F",
+      "402",
+    ],
+    [
+      "COSC1001",
+      "Computer Systems Architecture",
+      "3.00",
+      "9:00AM - 12:00PM",
+      "S",
+      "509",
+    ],
     ["COSC1001", "Great Books", "3.00", "7:00AM - 10:00AM", "T", "P"],
-    ["COSC1001", "Philippine Popular Culture", "3.00", "10:00AM - 1:00PM", "T", "402"],
-    ["COSC1001", "P.E./PATHFIT 4: Team Sports", "3.00", "1:00PM - 3:00PM", "TH", "COURT"],
+    [
+      "COSC1001",
+      "Philippine Popular Culture",
+      "3.00",
+      "10:00AM - 1:00PM",
+      "T",
+      "402",
+    ],
+    [
+      "COSC1001",
+      "P.E./PATHFIT 4: Team Sports",
+      "3.00",
+      "1:00PM - 3:00PM",
+      "TH",
+      "COURT",
+    ],
   ];
 
   String sectionValue = "";
 
   @override
   Widget build(BuildContext context) {
-
     // if is in landscape
-    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
@@ -70,14 +140,14 @@ class _SelectSectionPageState extends State<SelectSectionPage> {
                 step4: false,
                 title: "Enrollment",
               ),
-          
+
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: isLandscape ? 200 : 24,
-                      vertical: 10
+                      vertical: 10,
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,9 +160,9 @@ class _SelectSectionPageState extends State<SelectSectionPage> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                          
+
                         const SizedBox(height: 20),
-                          
+
                         CustomDropdownMenu(
                           listChoices: listSection,
                           label: "Available Sections:",
@@ -107,13 +177,11 @@ class _SelectSectionPageState extends State<SelectSectionPage> {
                       ],
                     ),
                   ),
-                    
-                  const SizedBox(height: 30,),
-                    
+
+                  const SizedBox(height: 30),
+
                   Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 24,
-                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 24),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -128,7 +196,7 @@ class _SelectSectionPageState extends State<SelectSectionPage> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                          
+
                             Text(
                               "Units: $totalUnits",
                               style: GoogleFonts.roboto(
@@ -136,44 +204,61 @@ class _SelectSectionPageState extends State<SelectSectionPage> {
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
-                            )
+                            ),
                           ],
                         ),
-                          
-                        Divider(
-                          height: 10,
-                        ),
-                          
+
+                        Divider(height: 10),
+
                         CustomDataTable(
-                          columnNames: columnNames, 
-                          dataTableValues: dataTableValues
+                          columnNames: columnNames,
+                          dataTableValues: dataTableValues,
                         ),
                       ],
                     ),
                   ),
-                    
-                  const SizedBox(height: 50,),
-                    
+
+                  const SizedBox(height: 50),
+
                   Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: isLandscape ? 200 : 24,
-                      vertical: isLandscape ? 10 : 0
+                      vertical: isLandscape ? 10 : 0,
                     ),
                     child: BottomButton(
                       onPressed: () {
-                        showModalBottomSheet(
-                          context: context, 
-                          builder: (builder) {
-                            return CustomBottomSheet(
-                              submitFunc: () {
-                                Navigator.push(context, 
-                                MaterialPageRoute(builder: (context) => CompletedPage()));
-                              }
-                            );
-                          }
-                        );
-                      }, 
-                      text: "Submit"
+                        if (sectionValue.isEmpty) {
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (builder) {
+                              return CustomBottomSheet(
+                                isError: true,
+                                title: "Your Section",
+                                subtitle: "Please select your section",
+                              );
+                            },
+                          );
+                        } else {
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (builder) {
+                              return CustomBottomSheet(
+                                submitFunc: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => CompletedPage(),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          );
+                        }
+                      },
+                      text: "Submit",
                     ),
                   ),
                 ],

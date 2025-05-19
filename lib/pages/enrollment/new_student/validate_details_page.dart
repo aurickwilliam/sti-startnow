@@ -15,7 +15,6 @@ class ValidateDetailsPage extends StatefulWidget {
 }
 
 class _ValidateDetailsPageState extends State<ValidateDetailsPage> {
-
   // Temporary Data
   final List<List> schoolInformationList = [
     ["Campus:", "Caloocan"],
@@ -23,7 +22,7 @@ class _ValidateDetailsPageState extends State<ValidateDetailsPage> {
     ["Admit Type:", "New Student"],
     ["Yr Level/Grade Level:", "1st Year"],
     ["School Year:", "2025-2026"],
-    ["Term:", "1st Term"]
+    ["Term:", "1st Term"],
   ];
 
   final List<List> studentInformationList = [
@@ -40,7 +39,7 @@ class _ValidateDetailsPageState extends State<ValidateDetailsPage> {
     ["Religion:", "Atheist"],
     ["Citizenship:", "Canadian"],
     ["Gender:", "Cismale"],
-    ["Civil Status:", "Widow"]
+    ["Civil Status:", "Widow"],
   ];
 
   final List<List> educationBGList = [
@@ -49,7 +48,7 @@ class _ValidateDetailsPageState extends State<ValidateDetailsPage> {
     ["Date of Graduation:", "N/A"],
     ["School Year:", "2024-2025"],
     ["Year/Grade:", "Grade 13"],
-    ["Term:", "3rd Term"]
+    ["Term:", "3rd Term"],
   ];
 
   final List<List> parentInformationList = [
@@ -60,9 +59,9 @@ class _ValidateDetailsPageState extends State<ValidateDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-
     // if is in landscape
-    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
@@ -72,19 +71,19 @@ class _ValidateDetailsPageState extends State<ValidateDetailsPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               EnrollmentHeader(
-                step1: true, 
-                step2: true, 
-                step3: true, 
-                step4: false, 
-                title: "Validate Details"
+                step1: true,
+                step2: true,
+                step3: true,
+                step4: false,
+                title: "Validate Details",
               ),
-          
-              const SizedBox(height: 10,),
-          
+
+              const SizedBox(height: 10),
+
               Padding(
                 padding: EdgeInsets.symmetric(
-                  horizontal: isLandscape ? 200 : 24, 
-                  vertical: 10
+                  horizontal: isLandscape ? 200 : 24,
+                  vertical: 10,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,9 +96,9 @@ class _ValidateDetailsPageState extends State<ValidateDetailsPage> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                        
-                    const SizedBox(height: 20,),
-                        
+
+                    const SizedBox(height: 20),
+
                     // ExpansionTile contents
                     // School Information
                     Container(
@@ -108,19 +107,18 @@ class _ValidateDetailsPageState extends State<ValidateDetailsPage> {
                         borderRadius: BorderRadius.circular(15),
                         border: Border.all(
                           color: AppTheme.colors.gray,
-                          width: 2.0
-                        )
+                          width: 2.0,
+                        ),
                       ),
                       child: Column(
                         children: [
-                      
                           // School Information
                           Padding(
                             padding: const EdgeInsets.all(5),
                             child: Theme(
-                              data: Theme.of(context).copyWith(
-                                dividerColor: Colors.transparent
-                              ),
+                              data: Theme.of(
+                                context,
+                              ).copyWith(dividerColor: Colors.transparent),
                               child: ExpansionTile(
                                 title: Text(
                                   "School Information",
@@ -131,29 +129,29 @@ class _ValidateDetailsPageState extends State<ValidateDetailsPage> {
                                   ),
                                 ),
                                 backgroundColor: AppTheme.colors.white,
-                                
+
                                 children: List.generate(
                                   schoolInformationList.length,
                                   (index) {
                                     return ValidateTile(
-                                      label: schoolInformationList[index][0], 
-                                      data: schoolInformationList[index][1]
+                                      label: schoolInformationList[index][0],
+                                      data: schoolInformationList[index][1],
                                     );
                                   },
                                 ),
                               ),
                             ),
                           ),
-                      
+
                           Divider(),
-                      
+
                           // Student Information
                           Padding(
                             padding: const EdgeInsets.all(5),
                             child: Theme(
-                              data: Theme.of(context).copyWith(
-                                dividerColor: Colors.transparent
-                              ),
+                              data: Theme.of(
+                                context,
+                              ).copyWith(dividerColor: Colors.transparent),
                               child: ExpansionTile(
                                 title: Text(
                                   "Student Information",
@@ -164,29 +162,29 @@ class _ValidateDetailsPageState extends State<ValidateDetailsPage> {
                                   ),
                                 ),
                                 backgroundColor: AppTheme.colors.white,
-                                
+
                                 children: List.generate(
                                   studentInformationList.length,
                                   (index) {
                                     return ValidateTile(
-                                      label: studentInformationList[index][0], 
-                                      data: studentInformationList[index][1]
+                                      label: studentInformationList[index][0],
+                                      data: studentInformationList[index][1],
                                     );
                                   },
                                 ),
                               ),
                             ),
                           ),
-                                    
+
                           Divider(),
-                                    
+
                           // Educational Background
                           Padding(
                             padding: const EdgeInsets.all(5),
                             child: Theme(
-                              data: Theme.of(context).copyWith(
-                                dividerColor: Colors.transparent
-                              ),
+                              data: Theme.of(
+                                context,
+                              ).copyWith(dividerColor: Colors.transparent),
                               child: ExpansionTile(
                                 title: Text(
                                   "Educational Background",
@@ -197,29 +195,29 @@ class _ValidateDetailsPageState extends State<ValidateDetailsPage> {
                                   ),
                                 ),
                                 backgroundColor: AppTheme.colors.white,
-                                
+
                                 children: List.generate(
                                   educationBGList.length,
                                   (index) {
                                     return ValidateTile(
-                                      label: educationBGList[index][0], 
-                                      data: educationBGList[index][1]
+                                      label: educationBGList[index][0],
+                                      data: educationBGList[index][1],
                                     );
                                   },
                                 ),
                               ),
                             ),
                           ),
-                                    
+
                           Divider(),
-                                    
+
                           // Parent / Guardian's Information
                           Padding(
                             padding: const EdgeInsets.all(5),
                             child: Theme(
-                              data: Theme.of(context).copyWith(
-                                dividerColor: Colors.transparent
-                              ),
+                              data: Theme.of(
+                                context,
+                              ).copyWith(dividerColor: Colors.transparent),
                               child: ExpansionTile(
                                 title: Text(
                                   "Parent/Guardian's Information",
@@ -230,13 +228,13 @@ class _ValidateDetailsPageState extends State<ValidateDetailsPage> {
                                   ),
                                 ),
                                 backgroundColor: AppTheme.colors.white,
-                                
+
                                 children: List.generate(
                                   parentInformationList.length,
                                   (index) {
                                     return ValidateTile(
-                                      label: parentInformationList[index][0], 
-                                      data: parentInformationList[index][1]
+                                      label: parentInformationList[index][0],
+                                      data: parentInformationList[index][1],
                                     );
                                   },
                                 ),
@@ -247,29 +245,34 @@ class _ValidateDetailsPageState extends State<ValidateDetailsPage> {
                       ),
                     ),
 
-                    const SizedBox(height: 30,),
+                    const SizedBox(height: 30),
 
                     BackNextButton(
                       nextPressed: () {
                         showModalBottomSheet(
-                          context: context, 
+                          isScrollControlled: true,
+                          context: context,
                           builder: (builder) {
                             return CustomBottomSheet(
                               submitFunc: () {
-                                Navigator.push(context, 
-                                MaterialPageRoute(builder: (context) => ReservationFeePage()));
-                              }
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ReservationFeePage(),
+                                  ),
+                                );
+                              },
                             );
-                          }
+                          },
                         );
-                      }
-                    )
+                      },
+                    ),
                   ],
                 ),
               ),
             ],
           ),
-        )
+        ),
       ),
     );
   }

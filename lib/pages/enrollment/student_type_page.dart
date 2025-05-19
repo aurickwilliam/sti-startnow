@@ -25,45 +25,55 @@ class _StudentTypePageState extends State<StudentTypePage> {
     });
   }
 
-  void checkIfHasInput(){
-    if (selectedItem == ""){
-      debugPrint("Select Type of Student");
-    }
-    else {
+  void checkIfHasInput() {
+    if (selectedItem == "") {
       showModalBottomSheet(
         isScrollControlled: true,
-        context: context, 
+        context: context,
+        builder: (context) {
+          return CustomBottomSheet(
+            isError: true,
+            title: "Please choose",
+            subtitle: "Please choose your student type",
+          );
+        },
+      );
+    } else {
+      showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
         builder: (context) {
           return CustomBottomSheet(
             submitFunc: () {
               handleNavigation();
             },
           );
-        }
+        },
       );
     }
   }
 
   // Handle navigation
-  void handleNavigation(){
-   Widget destination = SizedBox.shrink();
-   debugPrint("SHIBAL");
-   if (selectedItem == typeStudent[0]){
-    destination = PreferredProgramPage();
-   }
-   else if (selectedItem == typeStudent[1]){
-    destination = StudentStatusPage();
-   }
+  void handleNavigation() {
+    Widget destination = SizedBox.shrink();
+    debugPrint("SHIBAL");
+    if (selectedItem == typeStudent[0]) {
+      destination = PreferredProgramPage();
+    } else if (selectedItem == typeStudent[1]) {
+      destination = StudentStatusPage();
+    }
 
-   Navigator.push(context, 
-   MaterialPageRoute(builder: (context) => destination));
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => destination),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-
     // if is in landscape
-    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
     // Content
     Widget content = Column(
@@ -81,8 +91,8 @@ class _StudentTypePageState extends State<StudentTypePage> {
             ),
             Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: isLandscape ? 200 : 24, 
-                vertical: 10
+                horizontal: isLandscape ? 200 : 24,
+                vertical: 10,
               ),
               child: Column(
                 children: [
@@ -98,10 +108,10 @@ class _StudentTypePageState extends State<StudentTypePage> {
                     question: "What type of student are you?",
                     choices: typeStudent,
                     selectedItem: selectedItem,
-                    onChanged: handleSelectedItem, 
+                    onChanged: handleSelectedItem,
                   ),
-                              
-                  const SizedBox(height: 20,)
+
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
@@ -111,7 +121,7 @@ class _StudentTypePageState extends State<StudentTypePage> {
         Padding(
           padding: EdgeInsets.symmetric(
             horizontal: isLandscape ? 200 : 24,
-            vertical: isLandscape ? 10 : 0
+            vertical: isLandscape ? 10 : 0,
           ),
           child: BottomButton(
             onPressed: () {
@@ -119,24 +129,19 @@ class _StudentTypePageState extends State<StudentTypePage> {
             },
             text: "Next",
           ),
-        )
+        ),
       ],
     );
 
     // Choosing the parent widget based on orientation
-    Widget parentWidget = isLandscape
-      ? SingleChildScrollView(
-        child: content,
-      )
-      : Container(
-        child: content,
-      );
+    Widget parentWidget =
+        isLandscape
+            ? SingleChildScrollView(child: content)
+            : Container(child: content);
 
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
-      body: SafeArea(
-        child: parentWidget
-      ),
+      body: SafeArea(child: parentWidget),
     );
   }
 }
