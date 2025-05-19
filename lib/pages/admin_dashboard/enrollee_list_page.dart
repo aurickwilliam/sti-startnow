@@ -3,7 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/admin_dashboard/components/enrollee_tile.dart';
-import 'package:sti_startnow/pages/admin_dashboard/enrollee_information_page.dart';
+import 'package:sti_startnow/pages/admin_dashboard/edit_pages/enrollee_information_page.dart';
+import 'package:sti_startnow/pages/admin_dashboard/edit_pages/not_enrolled_page.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/providers/enrollee_list_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
@@ -14,7 +15,8 @@ class EnrolleeListPage extends StatelessWidget {
   final List<String> listOfStatus = [
     "Not Enrolled",
     "Unverified",
-    "Verified"
+    "Verified",
+    "Rejected",
   ];
 
   @override
@@ -29,6 +31,27 @@ class EnrolleeListPage extends StatelessWidget {
 
     // if is in landscape
     bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
+    // Handle navigation to which enrollee edit page
+    void handleNavigation(Student student){
+      Widget destination = SizedBox.shrink();
+
+      if (status == "Not Enrolled"){
+        destination = NotEnrolledPage(student: student);
+      }
+      else if (status == "Unverified"){
+        destination = EnrolleeInformationPage(student: student);
+      }
+      else if (status == "Verified"){
+        
+      }
+      else if (status == "Rejected"){
+
+      }
+      
+      Navigator.push(context, 
+      MaterialPageRoute(builder: (context) => destination));
+    }
     
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
@@ -75,11 +98,7 @@ class EnrolleeListPage extends StatelessWidget {
                           course: listOfEnrolless[index].course, 
                           profileImg: listOfEnrolless[index].profileImg,
                           onTap: () {
-                            Navigator.push(context, 
-                            MaterialPageRoute(builder: (context) => 
-                            EnrolleeInformationPage(
-                              student: listOfEnrolless[index],
-                            )));
+                            handleNavigation(listOfEnrolless[index]);
                           },
                         );
                       },

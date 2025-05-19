@@ -40,7 +40,6 @@ class EnrolleeStatusPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 20,),
                               
                     Text(
                       "Student Enrollment Status:",
@@ -79,9 +78,20 @@ class EnrolleeStatusPage extends StatelessWidget {
                               
                         OptionTile(
                           text: "Verified", 
-                          icon: Icons.sentiment_satisfied_rounded, 
+                          icon: Icons.check_rounded, 
                           onTap: () {
                             enrolleeList.changeSelectedStatus(3);
+                              
+                            Navigator.push(context, 
+                            MaterialPageRoute(builder: (context) => EnrolleeListPage()));
+                          },
+                        ),
+
+                        OptionTile(
+                          text: "Rejected", 
+                          icon: Icons.close_rounded, 
+                          onTap: () {
+                            enrolleeList.changeSelectedStatus(4);
                               
                             Navigator.push(context, 
                             MaterialPageRoute(builder: (context) => EnrolleeListPage()));

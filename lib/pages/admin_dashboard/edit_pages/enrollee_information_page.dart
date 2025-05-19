@@ -4,8 +4,6 @@ import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/admin_dashboard/admin_dashboard.dart';
 import 'package:sti_startnow/pages/admin_dashboard/components/verify_button.dart';
 import 'package:sti_startnow/pages/components/fullscreen_image_page.dart';
-import 'package:sti_startnow/pages/components/option_box.dart';
-import 'package:sti_startnow/pages/components/option_tile.dart';
 import 'package:sti_startnow/pages/admin_dashboard/components/receipt_container.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
@@ -155,53 +153,6 @@ class _EnrolleeInformationPageState extends State<EnrolleeInformationPage> {
                     ),
                           
                     const SizedBox(height: 20,),
-                          
-                    // // Option Label
-                    // Text(
-                    //   "Select Status:",
-                    //   style: GoogleFonts.roboto(
-                    //     color: AppTheme.colors.black,
-                    //     fontSize: 16,
-                    //     fontWeight: FontWeight.w500,
-                    //   ),
-                    // ),
-                          
-                    // const SizedBox(height: 10,),
-                          
-                    // OptionBox(
-                    //   children: [
-                          
-                    //     // Unverified
-                    //     OptionTile(
-                    //       text: "Unverified", 
-                    //       icon: Icons.sentiment_dissatisfied_rounded, 
-                    //       onTap: () {
-                          
-                    //       }
-                    //     ),
-                          
-                    //     // Pending
-                    //     OptionTile(
-                    //       text: "Pending", 
-                    //       icon: Icons.schedule_rounded, 
-                    //       onTap: () {
-                          
-                    //       }
-                    //     ),
-                          
-                    //     // Verified
-                    //     OptionTile(
-                    //       text: "Verified", 
-                    //       icon: Icons.sentiment_satisfied_rounded, 
-                    //       onTap: () {
-                          
-                    //       },
-                    //       isLastItem: true,
-                    //     ),
-                    //   ]
-                    // ),
-                              
-                    // const SizedBox(height: 20,),
 
                     Divider(),
                     
@@ -272,37 +223,53 @@ class _EnrolleeInformationPageState extends State<EnrolleeInformationPage> {
                     
                     const SizedBox(height: 20,),
 
-                      selectedStatus == "Deny" ? TextField(
-                        controller: denyMessageController,
-                        maxLines: 7,
-                        keyboardType: TextInputType.multiline, 
-                        decoration: InputDecoration(
-                          hintText: 'Enter a message...',
-                          border: OutlineInputBorder(), 
-
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: AppTheme.colors.primary, 
-                              width: 2.0,
-                            ),
-                            borderRadius: BorderRadius.circular(15)
-                          ),
-
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: AppTheme.colors.gray,
-                              width: 2.0,
-                            ),
-                            borderRadius: BorderRadius.circular(15)
+                    selectedStatus == "Deny" ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Reason for Denial:",
+                          style: GoogleFonts.roboto(
+                            color: AppTheme.colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
                           ),
                         ),
 
-                        style: GoogleFonts.roboto(
-                          color: AppTheme.colors.black,
-                          fontSize: 14
+                        const SizedBox(height: 10,),
+
+                        TextField(
+                          controller: denyMessageController,
+                          maxLines: 7,
+                          keyboardType: TextInputType.multiline, 
+                          decoration: InputDecoration(
+                            hintText: 'Enter a message...',
+                            border: OutlineInputBorder(), 
+                        
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: AppTheme.colors.primary, 
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(15)
+                            ),
+                        
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: AppTheme.colors.gray,
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(15)
+                            ),
+                          ),
+                        
+                          style: GoogleFonts.roboto(
+                            color: AppTheme.colors.black,
+                            fontSize: 14
+                          ),
                         ),
-                      ) 
-                      : SizedBox(),
+                      ],
+                    ) 
+                    : SizedBox(),
                     
                     const SizedBox(height: 50,),
                               

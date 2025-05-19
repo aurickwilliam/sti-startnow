@@ -47,7 +47,7 @@ class _StudentTypePageState extends State<StudentTypePage> {
   // Handle navigation
   void handleNavigation(){
    Widget destination = SizedBox.shrink();
-   debugPrint("SHIBAL");
+   
    if (selectedItem == typeStudent[0]){
     destination = PreferredProgramPage();
    }
