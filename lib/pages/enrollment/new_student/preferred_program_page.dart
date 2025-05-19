@@ -24,16 +24,16 @@ class _PreferredProgramPageState extends State<PreferredProgramPage> {
     "Bachelor of Science in Hospitality Management (BSHM)",
     "Bachelor of Arts in Communication (BACOMM)",
     "Bachelor of Multimedia Arts (BMMA)",
-    "Bachelor of Science in Tourism Management (BSTM)"
+    "Bachelor of Science in Tourism Management (BSTM)",
   ];
 
   String selectedCourse = "";
 
   @override
   Widget build(BuildContext context) {
-
     // if is in landscape
-    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
@@ -42,19 +42,19 @@ class _PreferredProgramPageState extends State<PreferredProgramPage> {
           child: Column(
             children: [
               EnrollmentHeader(
-                step1: true, 
-                step2: false, 
-                step3: false, 
-                step4: false, 
-                title: "Preferred Program"
+                step1: true,
+                step2: false,
+                step3: false,
+                step4: false,
+                title: "Preferred Program",
               ),
-          
-              const SizedBox(height: 10,),
+
+              const SizedBox(height: 10),
 
               Padding(
                 padding: EdgeInsets.symmetric(
-                  horizontal: isLandscape ? 200 : 24, 
-                  vertical: 10
+                  horizontal: isLandscape ? 200 : 24,
+                  vertical: 10,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,7 +67,7 @@ class _PreferredProgramPageState extends State<PreferredProgramPage> {
                       ),
                     ),
 
-                    const SizedBox(height: 10,),
+                    const SizedBox(height: 10),
 
                     Container(
                       width: double.infinity,
@@ -76,7 +76,7 @@ class _PreferredProgramPageState extends State<PreferredProgramPage> {
                         border: Border.all(
                           color: AppTheme.colors.gray,
                           width: 2.0,
-                        )
+                        ),
                       ),
 
                       child: Padding(
@@ -86,67 +86,85 @@ class _PreferredProgramPageState extends State<PreferredProgramPage> {
                           style: GoogleFonts.roboto(
                             color: AppTheme.colors.primary,
                             fontSize: 24,
-                            fontWeight: FontWeight.bold
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
                     ),
 
-                    const SizedBox(height: 20,),
+                    const SizedBox(height: 20),
 
                     Column(
                       children: List.generate(courses.length, (index) {
                         return RadioListTile(
-                          value: courses[index], 
-                          groupValue: selectedCourse, 
+                          value: courses[index],
+                          groupValue: selectedCourse,
                           activeColor: AppTheme.colors.gold,
 
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15)
+                            borderRadius: BorderRadius.circular(15),
                           ),
-                          
+
                           onChanged: (value) {
                             setState(() {
                               selectedCourse = value.toString();
                             });
                           },
-                          
+
                           title: Text(
                             courses[index],
                             style: GoogleFonts.roboto(
                               color: AppTheme.colors.black,
-                              fontSize: 16
+                              fontSize: 16,
                             ),
                           ),
                         );
                       }),
                     ),
 
-                    const SizedBox(height: 50,),
+                    const SizedBox(height: 50),
 
                     BottomButton(
                       onPressed: () {
-                        showModalBottomSheet(
-                          context: context, 
-                          builder: (builder) {
-                            return CustomBottomSheet(
-                              submitFunc: () {
-                                Navigator.push(context, 
-                                MaterialPageRoute(builder: (context) => CurrentTermPage()));
-                              }
-                            );
-                          }
-                        );
-                      }, 
-                      text: "Next"
-                    )
-
+                        if (selectedCourse.isEmpty) {
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (context) {
+                              return CustomBottomSheet(
+                                isError: true,
+                                title: "Please choose",
+                                subtitle: "Please choose your preferred course",
+                              );
+                            },
+                          );
+                        } else {
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (builder) {
+                              return CustomBottomSheet(
+                                submitFunc: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => CurrentTermPage(),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          );
+                        }
+                      },
+                      text: "Next",
+                    ),
                   ],
                 ),
               ),
             ],
           ),
-        )
+        ),
       ),
     );
   }

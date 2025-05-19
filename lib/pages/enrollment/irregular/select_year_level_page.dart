@@ -17,22 +17,16 @@ class SelectYearLevelPage extends StatefulWidget {
 }
 
 class _SelectYearLevelState extends State<SelectYearLevelPage> {
-
-  List<String> yearLevel = [
-    "1st Year",
-    "2nd Year",
-    "3rd Year",
-    "4th Year",
-  ];
+  List<String> yearLevel = ["1st Year", "2nd Year", "3rd Year", "4th Year"];
 
   @override
   Widget build(BuildContext context) {
-
     // Reference lang sa provider
     final subjectListProvider = Provider.of<SubjectListProvider>(context);
 
     // if is in landscape
-    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
     // Content
     Widget content = Column(
@@ -42,17 +36,17 @@ class _SelectYearLevelState extends State<SelectYearLevelPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             EnrollmentHeader(
-              step1: true, 
-              step2: true, 
-              step3: true, 
-              step4: false, 
-              title: "Enrollment"
+              step1: true,
+              step2: true,
+              step3: true,
+              step4: false,
+              title: "Enrollment",
             ),
-        
+
             Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: isLandscape ? 200 : 24, 
-                vertical: 10
+                horizontal: isLandscape ? 200 : 24,
+                vertical: 10,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,7 +65,7 @@ class _SelectYearLevelState extends State<SelectYearLevelPage> {
                       Container(
                         decoration: BoxDecoration(
                           color: AppTheme.colors.primary,
-                          borderRadius: BorderRadius.circular(10)
+                          borderRadius: BorderRadius.circular(10),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
@@ -82,35 +76,36 @@ class _SelectYearLevelState extends State<SelectYearLevelPage> {
                                 style: GoogleFonts.roboto(
                                   color: AppTheme.colors.white,
                                   fontSize: 16,
-                                  fontWeight: FontWeight.w500
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
-                          
-                              const SizedBox(width: 10,),
-                          
+
+                              const SizedBox(width: 10),
+
                               Container(
                                 width: 30,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5),
-                                  color: AppTheme.colors.white
+                                  color: AppTheme.colors.white,
                                 ),
                                 child: Text(
                                   // Length of the list which hold all the selected subjects
-                                  subjectListProvider.allSelectedSubjects.length.toString(),
+                                  subjectListProvider.allSelectedSubjects.length
+                                      .toString(),
                                   style: GoogleFonts.roboto(
                                     color: AppTheme.colors.black,
                                     fontSize: 16,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),
                       ),
                     ],
                   ),
-                          
+
                   ListView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
@@ -123,55 +118,56 @@ class _SelectYearLevelState extends State<SelectYearLevelPage> {
                           //   selectedYearLevel = yearLevel[index];
                           // });
                           subjectListProvider.changeSeletectedYear(index + 1);
-                          
-                          Navigator.push(context, 
-                          MaterialPageRoute(builder: (_) => SelectSubjectPage()));
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => SelectSubjectPage(),
+                            ),
+                          );
                         },
                       );
                     },
                   ),
-                      
-                  const SizedBox(height: 30,),
+
+                  const SizedBox(height: 30),
                 ],
               ),
-            )
+            ),
           ],
         ),
 
         Padding(
           padding: EdgeInsets.symmetric(
             horizontal: isLandscape ? 200 : 24,
-            vertical: isLandscape ? 10 : 0
+            vertical: isLandscape ? 10 : 0,
           ),
           child: BottomButton(
             onPressed: () {
-              Navigator.push(context, 
-              MaterialPageRoute(builder: (context) => VerifySubjectsPage()));
-              
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => VerifySubjectsPage()),
+              );
+
               for (var sub in subjectListProvider.allSelectedSubjects) {
-                print(sub.name);
+                debugPrint(sub.name);
               }
-            }, 
-            text: "Submit"
+            },
+            text: "Submit",
           ),
-        )
+        ),
       ],
     );
 
     // Choosing the parent widget
-    Widget parentWidget = isLandscape
-      ? SingleChildScrollView(
-        child: content,
-      )
-      : Container(
-        child: content,
-      );
+    Widget parentWidget =
+        isLandscape
+            ? SingleChildScrollView(child: content)
+            : Container(child: content);
 
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
-      body: SafeArea(
-        child: parentWidget
-      ),
+      body: SafeArea(child: parentWidget),
     );
   }
 }
