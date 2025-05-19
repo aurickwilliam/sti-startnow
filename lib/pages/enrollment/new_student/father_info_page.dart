@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/pages/components/buttons/back_next_button.dart';
+import 'package:sti_startnow/pages/components/custom_tooltip.dart';
 import 'package:sti_startnow/pages/components/number_input.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
@@ -76,13 +77,22 @@ class _FatherInfoPageState extends State<FatherInfoPage> {
           
                     const SizedBox(height: 20,),
 
-                    Text(
-                      "Father's Information:",
-                      style: GoogleFonts.roboto(
-                        color: AppTheme.colors.gold,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Father's Information:",
+                          style: GoogleFonts.roboto(
+                            color: AppTheme.colors.gold,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+
+                        CustomTooltip(
+                          message: "Put 'N/A' if Father Information Not Available"
+                        )
+                      ],
                     ),
 
                     const SizedBox(height: 10,),
