@@ -17,27 +17,23 @@ class CustomDataTable extends StatelessWidget {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: DataTable(
-          
           // Specify the columns
-          columns: columnNames.map((item) {
-            return DataColumn(
-              label: Text(
-                item,
-              )
-            );
-          }).toList(),
-        
+          columns:
+              columnNames.map((item) {
+                return DataColumn(label: Text(item));
+              }).toList(),
+
           // Specify Each Row
           // Automate this using map? when working on backend
-          rows: dataTableValues.map((item) {
-            return DataRow(
-              cells: item.map((value){
-                return DataCell(
-                  Text(value)
+          rows:
+              dataTableValues.map((item) {
+                return DataRow(
+                  cells:
+                      item.map((value) {
+                        return DataCell(Text(value.toString()));
+                      }).toList(),
                 );
               }).toList(),
-            );
-          }).toList(),
         ),
       ),
     );
