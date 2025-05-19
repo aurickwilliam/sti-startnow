@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
+import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/enrollment/components/year_level_tile.dart';
 import 'package:sti_startnow/pages/enrollment/irregular/select_subject_page.dart';
@@ -144,13 +145,28 @@ class _SelectYearLevelState extends State<SelectYearLevelPage> {
           ),
           child: BottomButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => VerifySubjectsPage()),
-              );
+              if (subjectListProvider.allSelectedSubjects.isEmpty) {
+                showModalBottomSheet(
+                  isScrollControlled: true,
+                  context: context,
+                  builder: (builder) {
+                    return CustomBottomSheet(
+                      isError: true,
+                      title: "Your Subjects",
+                      subtitle:
+                          "Please select your subjects\nfor this new semester",
+                    );
+                  },
+                );
+              } else {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => VerifySubjectsPage()),
+                );
+              }
 
               for (var sub in subjectListProvider.allSelectedSubjects) {
-                debugPrint(sub.name);
+                debugPrint(sub[1]);
               }
             },
             text: "Submit",

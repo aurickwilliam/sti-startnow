@@ -5,27 +5,111 @@ class SubjectListProvider extends ChangeNotifier {
   // Temporary Data for Subject List
   Map<int, List<Subject>> subjectPerYear = {
     1: [
-      Subject(name: "1 Information Management", code: "COSC1001", units: 3.00),
-      Subject(name: "1 Ethics", code: "COSC1001", units: 3.00),
-      Subject(name: "1 Great Books", code: "COSC1001", units: 3.00),
+      Subject(
+        name: "Euthenics",
+        code: "COSC1001",
+        units: 3.00,
+        schedule: "7:00AM - 9:00AM",
+        day: "S",
+        room: "306",
+      ),
+      Subject(
+        name: "Calculus",
+        code: "COSC1002",
+        units: 3.00,
+        schedule: "9:00AM - 11:00AM",
+        day: "S",
+        room: "306",
+      ),
+      Subject(
+        name: "Purposive Communication",
+        code: "COSC1003",
+        units: 3.00,
+        schedule: "11:30AM - 1:00PM",
+        day: "S",
+        room: "306",
+      ),
     ],
 
     2: [
-      Subject(name: "2 Information Management", code: "COSC1001", units: 3.00),
-      Subject(name: "2 Ethics", code: "COSC1001", units: 3.00),
-      Subject(name: "2 Great Books", code: "COSC1001", units: 3.00),
+      Subject(
+        name: "Understanding the Self",
+        code: "COSC1004",
+        units: 3.00,
+        schedule: "7:00AM - 9:00AM",
+        day: "M",
+        room: "406",
+      ),
+      Subject(
+        name: "Philippine Popular Culture",
+        code: "COSC1005",
+        units: 3.00,
+        schedule: "9:00AM - 11:00AM",
+        day: "M",
+        room: "406",
+      ),
+      Subject(
+        name: "Rizal's Life & Works",
+        code: "COSC1006",
+        units: 3.00,
+        schedule: "11:30AM - 1:00PM",
+        day: "M",
+        room: "406",
+      ),
     ],
 
     3: [
-      Subject(name: "3 Information Management", code: "COSC1001", units: 3.00),
-      Subject(name: "3 Ethics", code: "COSC1001", units: 3.00),
-      Subject(name: "3 Great Books", code: "COSC1001", units: 3.00),
+      Subject(
+        name: "Information Management",
+        code: "COSC1007",
+        units: 3.00,
+        schedule: "7:00AM - 9:00AM",
+        day: "T",
+        room: "506",
+      ),
+      Subject(
+        name: "Ethics",
+        code: "COSC1008",
+        units: 3.00,
+        schedule: "9:00AM - 11:00AM",
+        day: "T",
+        room: "506",
+      ),
+      Subject(
+        name: "Great Books",
+        code: "COSC1009",
+        units: 3.00,
+        schedule: "11:30AM - 1:00PM",
+        day: "T",
+        room: "506",
+      ),
     ],
 
     4: [
-      Subject(name: "4 Information Management", code: "COSC1001", units: 3.00),
-      Subject(name: "4 Ethics", code: "COSC1001", units: 3.00),
-      Subject(name: "4 Great Books", code: "COSC1001", units: 3.00),
+      Subject(
+        name: "Fundamentals of Mobile Programming",
+        code: "COSC1010",
+        units: 3.00,
+        schedule: "7:00AM - 9:00AM",
+        day: "F",
+        room: "906",
+      ),
+      Subject(
+        name: "Human-Computer Interaction",
+        code: "COSC1011",
+        units: 3.00,
+        schedule: "9:00AM - 11:00AM",
+        day: "F",
+        room: "906",
+      ),
+      Subject(
+        name: "Artificial Intelligence",
+        code: "COSC1012",
+        units: 3.00,
+        schedule: "11:30AM - 1:00PM",
+        day: "F",
+        room: "906",
+      ),
     ],
   };
 
@@ -38,7 +122,7 @@ class SubjectListProvider extends ChangeNotifier {
   }
 
   // Change the selected year level
-  void changeSeletectedYear(int year){
+  void changeSeletectedYear(int year) {
     selectedYear = year;
     notifyListeners();
   }
@@ -50,26 +134,37 @@ class SubjectListProvider extends ChangeNotifier {
   }
 
   // Filter and put all the selected subject in a single list
-  List<Subject> get allSelectedSubjects {
+  // Brute force coding go brrrr, refactor nalang pag may db na
+  List<List> get allSelectedSubjects {
     return subjectPerYear.values
-      .expand((list) => list)
-      .where((subject) => subject.isSelected)
-      .toList();
+        .expand((list) => list)
+        .where((subject) => subject.isSelected)
+        .map((subject) {
+          return [
+            subject.code,
+            subject.name,
+            subject.units,
+            subject.schedule,
+            subject.day,
+            subject.room,
+          ];
+        })
+        .toList();
   }
 
   // Method to call to change the isSelected of the Subject
-  void toggleSubject(Subject subject){
+  void toggleSubject(Subject subject) {
     subject.isSelected = !subject.isSelected;
     notifyListeners();
   }
 
   // Get total units
-  double getTotalUnitsSelectedSubjects(){
+  double getTotalUnitsSelectedSubjects() {
     double total = 0;
 
-    allSelectedSubjects.forEach((subject) {
-      total += subject.units;  
-    });
+    for (final subject in allSelectedSubjects) {
+      total += subject[2];
+    }
 
     return total;
   }
