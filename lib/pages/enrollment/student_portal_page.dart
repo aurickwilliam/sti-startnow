@@ -79,7 +79,7 @@ class _StudentPortalPageState extends State<StudentPortalPage> {
                       isRequired: true,
                       hasToolTip: true,
                       toolTipMessage: "SurnameYYYYMMDD",
-                      isAccessCode: true,
+                      altMessage: "Please enter your access code",
                     ),
                   ],
                 ),

@@ -8,78 +8,77 @@ import 'package:sti_startnow/theme/app_theme.dart';
 class ChangeEmail extends StatelessWidget {
   ChangeEmail({super.key});
 
+  final _formKey = GlobalKey<FormState>(); // For input validation
+
   final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-
     // if is in landscape
-    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
     // Content
-    Widget content = Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        // Header and text field
-        Column(
-          children: [
-            // Change email header
-            PageAppBar(
-              title: "Change Email"
+    Widget content = Form(
+      key: _formKey,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // Header and text field
+          Column(
+            children: [
+              // Change email header
+              PageAppBar(title: "Change Email"),
+
+              const SizedBox(height: 20),
+
+              // Enter password field
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: isLandscape ? 200 : 24,
+                ),
+                child: PasswordInput(
+                  controller: passwordController,
+                  label: "Enter Password:",
+                  hint: "Enter Password",
+                  isRequired: true,
+                  isEnable: true,
+                ),
+              ),
+            ],
+          ),
+
+          // Submit button
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: isLandscape ? 200 : 24,
+              vertical: isLandscape ? 10 : 0,
             ),
-    
-            const SizedBox(height: 20),
-            
-            // Enter password field
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: isLandscape ? 200 : 24,
-              ),
-              child: PasswordInput(
-                controller: passwordController, 
-                label: "Enter Password:", 
-                hint: "Enter Password", 
-                isRequired: false, 
-                isEnable: true
-              ),
-            )
-          ],
-        ),
-            
-        // Submit button
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: isLandscape ? 200 : 24,
-            vertical: isLandscape ? 10 : 0,
+            child: BottomButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ChangeEmailNew()),
+                  );
+                }
+              },
+              text: "Submit",
+            ),
           ),
-          child: BottomButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ChangeEmailNew()),
-              );
-            }, 
-            text: "Submit"
-          ),
-        )
-      ],
+        ],
+      ),
     );
 
-
     // Choosing parent widget based on orientation
-    Widget parentWidget = isLandscape
-      ? SingleChildScrollView(
-        child: content,
-      )
-      : Container(
-        child: content,
-      );
+    Widget parentWidget =
+        isLandscape
+            ? SingleChildScrollView(child: content)
+            : Container(child: content);
 
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
-      body: SafeArea(
-        child: parentWidget
-      ),
+      body: SafeArea(child: parentWidget),
     );
   }
 }

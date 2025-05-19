@@ -112,7 +112,7 @@ class _SignInAdminPageState extends State<SignInAdminPage> {
                                 return true;
                               }
                             },
-                            requiredMessage: "Please enter an email",
+                            requiredMessage: "Please enter your email",
                             invalidMessage: "Please enter a valid email",
                           ),
 
