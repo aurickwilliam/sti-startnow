@@ -94,7 +94,7 @@ class SignInStudentPage extends StatelessWidget {
                               }
                             },
                             requiredMessage:
-                                "Please enter an email or student no.",
+                                "Please enter your email or student no.",
                             invalidMessage:
                                 "Please enter a valid email or student no.",
                           ),

@@ -11,12 +11,13 @@ class PasswordInput extends StatefulWidget {
   final bool isEnable;
   final bool hasToolTip;
   final String toolTipMessage;
-
   final bool
   isPasswordChange; // Sa change password lang papakita valid password format
-  final bool isAccessCode; // Sa enrollment, para iba error message
+  final bool isRetype; // Para sa retype password sa change password
+  final String? newPass; // Para din sa retype
+  final String? altMessage; // Para iba message kapag wala inenter na password
 
-  const PasswordInput({
+  PasswordInput({
     super.key,
     required this.controller,
     required this.label,
@@ -26,8 +27,14 @@ class PasswordInput extends StatefulWidget {
     this.hasToolTip = false,
     this.toolTipMessage = "",
     this.isPasswordChange = false,
-    this.isAccessCode = false,
-  });
+    this.isRetype = false,
+    this.altMessage,
+    this.newPass,
+  }) {
+    if (isRetype) {
+      assert(newPass != null);
+    }
+  }
 
   @override
   State<PasswordInput> createState() => _PasswordInputState();
@@ -146,9 +153,7 @@ class _PasswordInputState extends State<PasswordInput> {
 
           validator: (input) {
             if (input == null || input.isEmpty) {
-              return widget.isAccessCode
-                  ? "Please enter your access code"
-                  : "Please enter a password";
+              return widget.altMessage ?? "Please enter your password";
             }
 
             if (widget.isPasswordChange) {
@@ -159,9 +164,15 @@ class _PasswordInputState extends State<PasswordInput> {
               }
             }
 
+            if (widget.isRetype) {
+              if (input != widget.newPass) {
+                return "Password does not match new password";
+              }
+            }
+
             return null;
           },
-          autovalidateMode: AutovalidateMode.onUserInteraction,
+          autovalidateMode: AutovalidateMode.onUnfocus,
         ),
       ],
     );
