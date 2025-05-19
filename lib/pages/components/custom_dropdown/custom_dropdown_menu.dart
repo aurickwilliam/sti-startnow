@@ -130,7 +130,7 @@ class _CustomDropdownMenuState extends State<CustomDropdownMenu> {
                       Text(
                         widget.hint,
                         style: GoogleFonts.roboto(
-                          color: AppTheme.colors.gray,
+                          color: AppTheme.colors.black,
                           fontSize: 16,
                         ),
                       ) : 

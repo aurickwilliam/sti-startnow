@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sti_startnow/pages/components/custom_tooltip.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class PasswordInput extends StatefulWidget {
@@ -8,14 +9,18 @@ class PasswordInput extends StatefulWidget {
   final String hint;
   final bool isRequired;
   final bool isEnable;
-
+  final bool hasToolTip;
+  final String toolTipMessage;
+  
   const PasswordInput({
     super.key,
     required this.controller,
     required this.label,
     required this.hint,
-    required this.isRequired,
-    required this.isEnable,
+    this.isRequired = false,
+    this.isEnable = true,
+    this.hasToolTip = false,
+    this.toolTipMessage = "",
   });
 
   @override
@@ -51,25 +56,36 @@ class _PasswordInputState extends State<PasswordInput> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        RichText(
-          text: TextSpan(
-            style: GoogleFonts.roboto(
-              color: AppTheme.colors.black,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
-            children: [
-              TextSpan(
-                text: widget.label
-              ),
-              TextSpan(
-                text: widget.isRequired ? "*" : "",
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            RichText(
+              text: TextSpan(
                 style: GoogleFonts.roboto(
-                  color: AppTheme.colors.red
-                )
+                  color: AppTheme.colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+                children: [
+                  TextSpan(
+                    text: widget.label
+                  ),
+                  TextSpan(
+                    text: widget.isRequired ? "*" : "",
+                    style: GoogleFonts.roboto(
+                      color: AppTheme.colors.red
+                    )
+                  )
+                ]
               )
-            ]
-          )
+            ),
+
+            widget.hasToolTip ? 
+            CustomTooltip(
+              message: widget.toolTipMessage
+            )
+            : SizedBox()
+          ],
         ),
 
         const SizedBox(height: 10,),
@@ -77,7 +93,7 @@ class _PasswordInputState extends State<PasswordInput> {
         TextField(
           // Hide Password
           obscureText: hidePassword,
-
+        
           focusNode: focusNode,
           enabled: widget.isEnable,
           controller: widget.controller,
@@ -90,7 +106,7 @@ class _PasswordInputState extends State<PasswordInput> {
               ),
               borderRadius: BorderRadius.circular(10)
             ),
-
+        
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
                 color: AppTheme.colors.gray,
@@ -98,7 +114,7 @@ class _PasswordInputState extends State<PasswordInput> {
               ),
               borderRadius: BorderRadius.circular(10)
             ),
-
+        
             hintText: widget.hint,
             suffixIcon: isFocused ? IconButton(
               onPressed: () {
