@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/components/custom_dropdown/custom_dropdown_menu.dart';
 import 'package:sti_startnow/pages/enrollment/completed_page.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/custom_data_table.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
+import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class SelectSectionPage extends StatefulWidget {
@@ -16,6 +19,7 @@ class SelectSectionPage extends StatefulWidget {
 }
 
 class _SelectSectionPageState extends State<SelectSectionPage> {
+  late Student student;
   // Temporary values for list of section
   final List<String> listSection = ["CS401", "CS402", "CS403", "CS404"];
 
@@ -121,149 +125,166 @@ class _SelectSectionPageState extends State<SelectSectionPage> {
   String sectionValue = "";
 
   @override
+  void initState() {
+    student = context.read<DatabaseProvider>().student;
+
+    sectionValue = student.enrollment.section ?? "";
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // if is in landscape
     bool isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
 
-    return Scaffold(
-      backgroundColor: AppTheme.colors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              EnrollmentHeader(
-                step1: true,
-                step2: true,
-                step3: true,
-                step4: false,
-                title: "Enrollment",
-              ),
+    return PopScope(
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) {
+          student.enrollment.section = sectionValue;
+        }
+      },
+      child: Scaffold(
+        backgroundColor: AppTheme.colors.white,
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                EnrollmentHeader(
+                  step1: true,
+                  step2: true,
+                  step3: true,
+                  step4: false,
+                  title: "Enrollment",
+                ),
 
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: isLandscape ? 200 : 24,
-                      vertical: 10,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Select a Section",
-                          style: GoogleFonts.roboto(
-                            color: AppTheme.colors.primary,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: isLandscape ? 200 : 24,
+                        vertical: 10,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Select a Section",
+                            style: GoogleFonts.roboto(
+                              color: AppTheme.colors.primary,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
 
-                        const SizedBox(height: 20),
+                          const SizedBox(height: 20),
 
-                        CustomDropdownMenu(
-                          listChoices: listSection,
-                          label: "Available Sections:",
-                          hint: "Select a section",
-                          selectedValue: sectionValue,
-                          onTap: (index) {
-                            setState(() {
-                              sectionValue = listSection[index];
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 30),
-
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Schedule:",
-                              style: GoogleFonts.roboto(
-                                color: AppTheme.colors.primary,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-
-                            Text(
-                              "Units: $totalUnits",
-                              style: GoogleFonts.roboto(
-                                color: AppTheme.colors.primary,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        Divider(height: 10),
-
-                        CustomDataTable(
-                          columnNames: columnNames,
-                          dataTableValues: dataTableValues,
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 50),
-
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: isLandscape ? 200 : 24,
-                      vertical: isLandscape ? 10 : 0,
-                    ),
-                    child: BottomButton(
-                      onPressed: () {
-                        if (sectionValue.isEmpty) {
-                          showModalBottomSheet(
-                            isScrollControlled: true,
-                            context: context,
-                            builder: (builder) {
-                              return CustomBottomSheet(
-                                isError: true,
-                                title: "Your Section",
-                                subtitle: "Please select your section",
-                              );
+                          CustomDropdownMenu(
+                            listChoices: listSection,
+                            label: "Available Sections:",
+                            hint: "Select a section",
+                            selectedValue: sectionValue,
+                            onTap: (index) {
+                              setState(() {
+                                sectionValue = listSection[index];
+                              });
                             },
-                          );
-                        } else {
-                          showModalBottomSheet(
-                            isScrollControlled: true,
-                            context: context,
-                            builder: (builder) {
-                              return CustomBottomSheet(
-                                submitFunc: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => CompletedPage(),
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          );
-                        }
-                      },
-                      text: "Submit",
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+
+                    const SizedBox(height: 30),
+
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Schedule:",
+                                style: GoogleFonts.roboto(
+                                  color: AppTheme.colors.primary,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+
+                              Text(
+                                "Units: $totalUnits",
+                                style: GoogleFonts.roboto(
+                                  color: AppTheme.colors.primary,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          Divider(height: 10),
+
+                          CustomDataTable(
+                            columnNames: columnNames,
+                            dataTableValues: dataTableValues,
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 50),
+
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: isLandscape ? 200 : 24,
+                        vertical: isLandscape ? 10 : 0,
+                      ),
+                      child: BottomButton(
+                        onPressed: () {
+                          if (sectionValue.isEmpty) {
+                            showModalBottomSheet(
+                              isScrollControlled: true,
+                              context: context,
+                              builder: (builder) {
+                                return CustomBottomSheet(
+                                  isError: true,
+                                  title: "Your Section",
+                                  subtitle: "Please select your section",
+                                );
+                              },
+                            );
+                          } else {
+                            student.enrollment.section = sectionValue;
+                            showModalBottomSheet(
+                              isScrollControlled: true,
+                              context: context,
+                              builder: (builder) {
+                                return CustomBottomSheet(
+                                  submitFunc: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => CompletedPage(),
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            );
+                          }
+                        },
+                        text: "Submit",
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
