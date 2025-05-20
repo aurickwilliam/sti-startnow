@@ -168,7 +168,30 @@ class _PaymentReceiptPageState extends State<PaymentReceiptPage> {
 
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
-      body: SafeArea(child: parentWidget),
+      body: PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, result) async {
+          bool userPop = false;
+
+          userPop = await showModalBottomSheet(
+            isScrollControlled: true,
+            context: context,
+            builder: (builder) {
+              return CustomBottomSheet(
+                submitFunc: () {
+                  Navigator.of(context).pop(true);
+                },
+                subtitle: "All of your entered information\nwill be deleted",
+              );
+            },
+          );
+
+          if (userPop && context.mounted) {
+            Navigator.of(context).pop(result);
+          }
+        },
+        child: SafeArea(child: parentWidget),
+      ),
     );
   }
 }

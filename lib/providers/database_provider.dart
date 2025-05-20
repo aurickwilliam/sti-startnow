@@ -12,5 +12,6 @@ class DatabaseProvider extends ChangeNotifier {
 
   void initializeExistingStudent() {
     // Kapag may database na
+    _student = Student();
   }
 }
