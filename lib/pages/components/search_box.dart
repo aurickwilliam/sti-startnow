@@ -7,12 +7,14 @@ class SearchBox extends StatefulWidget {
   final String label;
   final String hint;
   final bool isEnable;
+  final void Function(String)? onChanged;
 
   const SearchBox({
     super.key,
     required this.controller,
     required this.label,
     required this.hint,
+    required this.onChanged,
     this.isEnable = true,
   });
 
@@ -54,17 +56,14 @@ class _SearchBoxState extends State<SearchBox> {
               fontSize: 16,
               fontWeight: FontWeight.w500,
             ),
-            children: [
-              TextSpan(
-                text: widget.label
-              ),
-            ]
-          )
+            children: [TextSpan(text: widget.label)],
+          ),
         ),
 
-        const SizedBox(height: 10,),
+        const SizedBox(height: 10),
 
         TextField(
+          onChanged: widget.onChanged,
           focusNode: focusNode,
           enabled: widget.isEnable,
           controller: widget.controller,
@@ -72,47 +71,40 @@ class _SearchBoxState extends State<SearchBox> {
             border: OutlineInputBorder(),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: AppTheme.colors.primary, 
+                color: AppTheme.colors.primary,
                 width: 2.0,
               ),
-              borderRadius: BorderRadius.circular(10)
+              borderRadius: BorderRadius.circular(10),
             ),
 
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppTheme.colors.gray,
-                width: 2.0,
-              ),
-              borderRadius: BorderRadius.circular(10)
+              borderSide: BorderSide(color: AppTheme.colors.gray, width: 2.0),
+              borderRadius: BorderRadius.circular(10),
             ),
 
             disabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppTheme.colors.gray,
-                width: 2.0,
-              ),
-              borderRadius: BorderRadius.circular(10)
+              borderSide: BorderSide(color: AppTheme.colors.gray, width: 2.0),
+              borderRadius: BorderRadius.circular(10),
             ),
 
             hintText: widget.hint,
-            suffixIcon: isFocused ? IconButton(
-              onPressed: () {
-                widget.controller.clear();
-              },
-              icon: Icon(Icons.clear),
-            ) : null,
+            suffixIcon:
+                isFocused
+                    ? IconButton(
+                      onPressed: () {
+                        widget.controller.clear();
+                      },
+                      icon: Icon(Icons.clear),
+                    )
+                    : null,
 
             prefixIcon: Icon(
               Icons.search_rounded,
               color: isFocused ? AppTheme.colors.primary : AppTheme.colors.gray,
-            )
+            ),
           ),
-          style: GoogleFonts.roboto(
-            color: AppTheme.colors.black,
-            fontSize: 16
-          ),
-
-        )
+          style: GoogleFonts.roboto(color: AppTheme.colors.black, fontSize: 16),
+        ),
       ],
     );
   }

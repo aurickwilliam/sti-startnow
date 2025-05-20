@@ -27,10 +27,70 @@ class _ListProgramsPageState extends State<ListProgramsPage> {
 
   // Temporary Values for the table
   List<List> values = [
-    ["1", "Bachelor of Science in Computer Science", "BSCS", "Information Technology", "..."],
-    ["2", "Bachelor of Science in Information Technology", "BSIT", "Information Technology", "..."],
-    ["3", "Bachelor of Science in Computer Engineering", "BSCPE", "Information Technology", "..."],
+    [
+      "1",
+      "Bachelor of Science in Computer Science",
+      "BSCS",
+      "Information Technology",
+      "...",
+    ],
+    [
+      "2",
+      "Bachelor of Science in Information Technology",
+      "BSIT",
+      "Information Technology",
+      "...",
+    ],
+    [
+      "3",
+      "Bachelor of Science in Computer Engineering",
+      "BSCPE",
+      "Information Technology",
+      "...",
+    ],
+    [
+      "4",
+      "Bachelor of Science in Artificial Intelligence",
+      "BSIT",
+      "Information Technology",
+      "...",
+    ],
+    [
+      "5",
+      "Bachelor of Science in Machine Learning",
+      "BSCPE",
+      "Information Technology",
+      "...",
+    ],
   ];
+
+  List<List> matchedValues = [];
+
+  @override
+  void initState() {
+    matchedValues = values;
+    super.initState();
+  }
+
+  void searchValues(String searchTerm) {
+    List<List> results = [];
+
+    if (searchTerm.isEmpty) {
+      results = values;
+    } else {
+      results =
+          values
+              .where(
+                (program) =>
+                    program[1].toLowerCase().contains(searchTerm.toLowerCase()),
+              )
+              .toList();
+    }
+
+    setState(() {
+      matchedValues = results;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,58 +100,60 @@ class _ListProgramsPageState extends State<ListProgramsPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              PageAppBar(
-                title: "Programs"
-              ),
-          
-              const SizedBox(height: 10,),
-          
+              PageAppBar(title: "Programs"),
+
+              const SizedBox(height: 10),
+
               Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 10
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SearchBox(
-                      controller: searchController, 
-                      label: "Search:", 
-                      hint: "Enter a program name"
+                      controller: searchController,
+                      label: "Search:",
+                      hint: "Enter a program name",
+                      onChanged: searchValues,
                     ),
-                              
-                    const SizedBox(height: 20,),
-                              
-                    ListDataTable(
-                      columnNames: columnNames, 
-                      dataTableValues: values,
-                      handleNavigation: (item) {
-                        Navigator.push(context, 
-                        MaterialPageRoute(builder: (context) => EditProgramRowPage(rowValues: item)));
-                      },
-                    ),
+
+                    const SizedBox(height: 20),
+
+                    matchedValues.isNotEmpty
+                        ? ListDataTable(
+                          columnNames: columnNames,
+                          dataTableValues: matchedValues,
+                          handleNavigation: (item) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (context) =>
+                                        EditProgramRowPage(rowValues: item),
+                              ),
+                            );
+                          },
+                        )
+                        : Center(child: Text("No matches found")),
                   ],
                 ),
-              )
+              ),
             ],
           ),
-        )
+        ),
       ),
 
-       // FAB
+      // FAB
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, 
-          MaterialPageRoute(builder: (context) => AddProgramPage()));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddProgramPage()),
+          );
         },
         backgroundColor: AppTheme.colors.white,
         foregroundColor: AppTheme.colors.primary,
-        child: const Icon(
-          Icons.add,
-          size: 30,
-        ),
+        child: const Icon(Icons.add, size: 30),
       ),
-      
     );
   }
 }

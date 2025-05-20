@@ -17,19 +17,45 @@ class _ListEnrollSchedulePageState extends State<ListEnrollSchedulePage> {
   final TextEditingController searchController = TextEditingController();
 
   // Column values
-  List<String> columnNames = [
-    "#",
-    "From",
-    "To",
-    "School Year",
-    "Term",
-  ];
+  List<String> columnNames = ["#", "From", "To", "School Year", "Term"];
 
   // Temporary Values for the table
   List<List> values = [
     ["1", "mm/dd/yy", "mm/dd/yy", "2025-2026", "1st Term"],
     ["2", "mm/dd/yy", "mm/dd/yy", "2024-2025", "2nd Term"],
+    ["3", "mm/dd/yy", "mm/dd/yy", "2023-2024", "1st Term"],
+    ["4", "mm/dd/yy", "mm/dd/yy", "2022-2023", "1st Term"],
+    ["5", "mm/dd/yy", "mm/dd/yy", "2021-2022", "2nd Term"],
   ];
+
+  List<List> matchedValues = [];
+
+  @override
+  void initState() {
+    matchedValues = values;
+    super.initState();
+  }
+
+  void searchValues(String searchTerm) {
+    List<List> results = [];
+
+    if (searchTerm.isEmpty) {
+      results = values;
+    } else {
+      results =
+          values
+              .where(
+                (schedule) => schedule[3].toLowerCase().contains(
+                  searchTerm.toLowerCase(),
+                ),
+              )
+              .toList();
+    }
+
+    setState(() {
+      matchedValues = results;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,56 +65,59 @@ class _ListEnrollSchedulePageState extends State<ListEnrollSchedulePage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              PageAppBar(
-                title: "Enroll Schedule"
-              ),
-          
-              const SizedBox(height: 10,),
-          
+              PageAppBar(title: "Enroll Schedule"),
+
+              const SizedBox(height: 10),
+
               Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 10
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SearchBox(
-                      controller: searchController, 
-                      label: "Search:", 
-                      hint: "Enter school year"
+                      controller: searchController,
+                      label: "Search:",
+                      hint: "Enter school year",
+                      onChanged: searchValues,
                     ),
-                              
-                    const SizedBox(height: 20,),
-                              
-                    ListDataTable(
-                      columnNames: columnNames, 
-                      dataTableValues: values,
-                      handleNavigation: (item) {
-                        Navigator.push(context, 
-                        MaterialPageRoute(builder: (context) => EditEnrollSchedRowPage(rowValues: item)));
-                      },
-                    ),
+
+                    const SizedBox(height: 20),
+
+                    matchedValues.isNotEmpty
+                        ? ListDataTable(
+                          columnNames: columnNames,
+                          dataTableValues: matchedValues,
+                          handleNavigation: (item) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (context) =>
+                                        EditEnrollSchedRowPage(rowValues: item),
+                              ),
+                            );
+                          },
+                        )
+                        : Center(child: Text("No matches found")),
                   ],
                 ),
-              )
+              ),
             ],
           ),
-        )
+        ),
       ),
 
-       // FAB
+      // FAB
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, 
-          MaterialPageRoute(builder: (context) => AddEnrollSchedPage()));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddEnrollSchedPage()),
+          );
         },
         backgroundColor: AppTheme.colors.white,
         foregroundColor: AppTheme.colors.primary,
-        child: const Icon(
-          Icons.add,
-          size: 30,
-        ),
+        child: const Icon(Icons.add, size: 30),
       ),
     );
   }
