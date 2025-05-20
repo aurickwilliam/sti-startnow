@@ -30,6 +30,10 @@ class Student {
   String profileImg;
   final String receiptImg;
 
+  // Temporary
+  String status;
+  String? denyMessage;
+
   Student({
     this.course,
     this.firstName,
@@ -38,6 +42,7 @@ class Student {
     this.academicType,
     this.email,
     this.contactNo,
+    this.status = "Not Enrolled",
     this.receiptImg = "assets/img/sample_receipt.jpg",
     this.profileImg = "assets/img/def_profile.jpg",
   }) {
