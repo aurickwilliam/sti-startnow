@@ -33,10 +33,14 @@ class _ReviewedEnrolleePageState extends State<ReviewedEnrolleePage> {
   String enrollmentStatus = "";
 
   @override
-  Widget build(BuildContext context) {
-
-    receiptStatus = widget.status == "Verified" ? "Approve" : "Deny";
+  void initState() {
     enrollmentStatus = widget.status;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    receiptStatus = widget.status == "Verified" ? "Approve" : "Deny";
 
     // if is in landscape
     bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
