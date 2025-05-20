@@ -9,19 +9,19 @@ import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
-class EnrolleeInformationPage extends StatefulWidget {
+class UnverifiedEnrolleePage extends StatefulWidget {
   final Student student;
 
-  const EnrolleeInformationPage({
+  const UnverifiedEnrolleePage({
     super.key,
     required this.student,
   });
 
   @override
-  State<EnrolleeInformationPage> createState() => _EnrolleeInformationPageState();
+  State<UnverifiedEnrolleePage> createState() => _UnverifiedEnrolleePageState();
 }
 
-class _EnrolleeInformationPageState extends State<EnrolleeInformationPage> {
+class _UnverifiedEnrolleePageState extends State<UnverifiedEnrolleePage> {
 
   String selectedStatus = "";
   final denyMessageController = TextEditingController();

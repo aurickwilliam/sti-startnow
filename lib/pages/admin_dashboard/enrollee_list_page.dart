@@ -3,7 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/admin_dashboard/components/enrollee_tile.dart';
-import 'package:sti_startnow/pages/admin_dashboard/edit_pages/enrollee_information_page.dart';
+import 'package:sti_startnow/pages/admin_dashboard/edit_pages/reviewed_enrollee_page.dart';
+import 'package:sti_startnow/pages/admin_dashboard/edit_pages/unverified_enrollee_page.dart';
 import 'package:sti_startnow/pages/admin_dashboard/edit_pages/not_enrolled_page.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/providers/enrollee_list_provider.dart';
@@ -40,13 +41,10 @@ class EnrolleeListPage extends StatelessWidget {
         destination = NotEnrolledPage(student: student);
       }
       else if (status == "Unverified"){
-        destination = EnrolleeInformationPage(student: student);
+        destination = UnverifiedEnrolleePage(student: student);
       }
-      else if (status == "Verified"){
-        
-      }
-      else if (status == "Rejected"){
-
+      else if (status == "Verified" || status == "Rejected"){
+        destination = ReviewedEnrolleePage(student: student, status: status);
       }
       
       Navigator.push(context, 
