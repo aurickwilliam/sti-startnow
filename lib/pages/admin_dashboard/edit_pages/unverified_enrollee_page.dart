@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/admin_dashboard/admin_dashboard.dart';
 import 'package:sti_startnow/pages/admin_dashboard/components/verify_button.dart';
@@ -7,27 +8,25 @@ import 'package:sti_startnow/pages/components/fullscreen_image_page.dart';
 import 'package:sti_startnow/pages/admin_dashboard/components/receipt_container.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
+import 'package:sti_startnow/providers/enrollee_list_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class UnverifiedEnrolleePage extends StatefulWidget {
   final Student student;
 
-  const UnverifiedEnrolleePage({
-    super.key,
-    required this.student,
-  });
+  const UnverifiedEnrolleePage({super.key, required this.student});
 
   @override
   State<UnverifiedEnrolleePage> createState() => _UnverifiedEnrolleePageState();
 }
 
 class _UnverifiedEnrolleePageState extends State<UnverifiedEnrolleePage> {
-
   String selectedStatus = "";
   final denyMessageController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final students = Provider.of<EnrolleeListProvider>(context);
     // if is in landscape
     bool isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
@@ -150,8 +149,8 @@ class _UnverifiedEnrolleePageState extends State<UnverifiedEnrolleePage> {
                         ),
                       ),
                     ),
-                          
-                    const SizedBox(height: 20,),
+
+                    const SizedBox(height: 20),
 
                     // const SizedBox(height: 20,),
                     Divider(),
@@ -227,60 +226,75 @@ class _UnverifiedEnrolleePageState extends State<UnverifiedEnrolleePage> {
                       ),
                     ),
 
-                    selectedStatus == "Deny" ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 20,),
+                    selectedStatus == "Deny"
+                        ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 20),
 
-                        Text(
-                          "Reason for Denial:",
-                          style: GoogleFonts.roboto(
-                            color: AppTheme.colors.black,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16,
-                          ),
-                        ),
-
-                        const SizedBox(height: 10,),
-
-                        TextField(
-                          controller: denyMessageController,
-                          maxLines: 7,
-                          keyboardType: TextInputType.multiline, 
-                          decoration: InputDecoration(
-                            hintText: 'Enter a message...',
-                            border: OutlineInputBorder(), 
-                        
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: AppTheme.colors.primary, 
-                                width: 2.0,
+                            Text(
+                              "Reason for Denial:",
+                              style: GoogleFonts.roboto(
+                                color: AppTheme.colors.black,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16,
                               ),
-                              borderRadius: BorderRadius.circular(15)
                             ),
-                        
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: AppTheme.colors.gray,
-                                width: 2.0,
+
+                            const SizedBox(height: 10),
+
+                            TextField(
+                              controller: denyMessageController,
+                              maxLines: 7,
+                              keyboardType: TextInputType.multiline,
+                              decoration: InputDecoration(
+                                hintText: 'Enter a message...',
+                                border: OutlineInputBorder(),
+
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: AppTheme.colors.primary,
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: AppTheme.colors.gray,
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
                               ),
-                              borderRadius: BorderRadius.circular(15)
+
+                              style: GoogleFonts.roboto(
+                                color: AppTheme.colors.black,
+                                fontSize: 14,
+                              ),
                             ),
-                          ),
-                        
-                          style: GoogleFonts.roboto(
-                            color: AppTheme.colors.black,
-                            fontSize: 14
-                          ),
-                        ),
-                      ],
-                    ) 
-                    : SizedBox(),
-                    
-                    const SizedBox(height: 50,),
-                              
+                          ],
+                        )
+                        : SizedBox(),
+
+                    const SizedBox(height: 50),
+
                     BottomButton(
                       onPressed: () {
+                        if (selectedStatus.isNotEmpty) {
+                          final status =
+                              selectedStatus == "Approved"
+                                  ? "Verified"
+                                  : "Rejected";
+
+                          if (status == "Rejected") {
+                            students.setDenyMessage(
+                              widget.student,
+                              denyMessageController.text,
+                            );
+                          }
+                          students.changeStudentStatus(widget.student, status);
+                        }
                         Navigator.push(
                           context,
                           MaterialPageRoute(
