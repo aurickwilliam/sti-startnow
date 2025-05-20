@@ -230,6 +230,8 @@ class _UnverifiedEnrolleePageState extends State<UnverifiedEnrolleePage> {
                     selectedStatus == "Deny" ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        const SizedBox(height: 20,),
+
                         Text(
                           "Reason for Denial:",
                           style: GoogleFonts.roboto(

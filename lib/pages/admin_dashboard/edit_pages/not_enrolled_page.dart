@@ -107,7 +107,7 @@ class _NotEnrolledPageState extends State<NotEnrolledPage> {
                         
                                 // Course
                                 Text(
-                                  widget.student.course,
+                                  widget.student.course!,
                                   style: GoogleFonts.roboto(
                                     color: AppTheme.colors.black,
                                     fontSize: 15,
@@ -116,7 +116,7 @@ class _NotEnrolledPageState extends State<NotEnrolledPage> {
                         
                                 // Student Number
                                 Text(
-                                  widget.student.studentNo,
+                                  widget.student.studentNo!,
                                   style: GoogleFonts.roboto(
                                     color: AppTheme.colors.black,
                                     fontSize: 15,
@@ -125,7 +125,7 @@ class _NotEnrolledPageState extends State<NotEnrolledPage> {
                         
                                 // Email Address
                                 Text(
-                                  widget.student.email,
+                                  widget.student.email!,
                                   style: GoogleFonts.roboto(
                                     color: AppTheme.colors.black,
                                     fontSize: 15,
@@ -134,7 +134,7 @@ class _NotEnrolledPageState extends State<NotEnrolledPage> {
                         
                                 // Contact Number
                                 Text(
-                                  widget.student.contactNo,
+                                  widget.student.contactNo!,
                                   style: GoogleFonts.roboto(
                                     color: AppTheme.colors.black,
                                     fontSize: 15,

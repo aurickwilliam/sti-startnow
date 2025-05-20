@@ -121,7 +121,7 @@ class _ReviewedEnrolleePageState extends State<ReviewedEnrolleePage> {
                         
                                 // Course
                                 Text(
-                                  widget.student.course,
+                                  widget.student.course!,
                                   style: GoogleFonts.roboto(
                                     color: AppTheme.colors.black,
                                     fontSize: 15,
@@ -130,7 +130,7 @@ class _ReviewedEnrolleePageState extends State<ReviewedEnrolleePage> {
                         
                                 // Student Number
                                 Text(
-                                  widget.student.studentNo,
+                                  widget.student.studentNo!,
                                   style: GoogleFonts.roboto(
                                     color: AppTheme.colors.black,
                                     fontSize: 15,
@@ -139,7 +139,7 @@ class _ReviewedEnrolleePageState extends State<ReviewedEnrolleePage> {
                         
                                 // Email Address
                                 Text(
-                                  widget.student.email,
+                                  widget.student.email!,
                                   style: GoogleFonts.roboto(
                                     color: AppTheme.colors.black,
                                     fontSize: 15,
@@ -148,7 +148,7 @@ class _ReviewedEnrolleePageState extends State<ReviewedEnrolleePage> {
                         
                                 // Contact Number
                                 Text(
-                                  widget.student.contactNo,
+                                  widget.student.contactNo!,
                                   style: GoogleFonts.roboto(
                                     color: AppTheme.colors.black,
                                     fontSize: 15,

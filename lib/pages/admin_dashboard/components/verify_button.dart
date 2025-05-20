@@ -18,28 +18,25 @@ class VerifyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 180,
-      child: RadioListTile(
-        title: Text(
-          title,
-          style: GoogleFonts.roboto(
-            color: AppTheme.colors.black,
-            fontSize: 16,
-          ),
+    return RadioListTile(
+      title: Text(
+        title,
+        style: GoogleFonts.roboto(
+          color: AppTheme.colors.black,
+          fontSize: 16,
         ),
-        groupValue: selectedValue,
-        value: title,
-        activeColor: AppTheme.colors.gold,
-
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15)
-        ),
-
-        onChanged: isEnable ? (value) {
-          onTap(value);
-        } : null,
       ),
+      groupValue: selectedValue,
+      value: title,
+      activeColor: AppTheme.colors.gold,
+    
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15)
+      ),
+    
+      onChanged: isEnable ? (value) {
+        onTap(value);
+      } : null,
     );
   }
 }
