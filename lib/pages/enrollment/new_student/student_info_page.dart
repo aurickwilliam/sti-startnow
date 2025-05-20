@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/components/buttons/back_next_button.dart';
 import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/components/custom_date_picker.dart';
@@ -7,6 +9,7 @@ import 'package:sti_startnow/pages/components/custom_dropdown/custom_dropdown_me
 import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/enrollment/new_student/current_address_page.dart';
+import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class StudentInfoPage extends StatefulWidget {
@@ -17,6 +20,8 @@ class StudentInfoPage extends StatefulWidget {
 }
 
 class _StudentInfoPageState extends State<StudentInfoPage> {
+  late Student student;
+
   final _formKey = GlobalKey<FormState>(); // For input validation
 
   final TextEditingController firstNameController = TextEditingController();
@@ -29,7 +34,6 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
   final TextEditingController religionController = TextEditingController();
 
   final List<String> genderChoices = ["Male", "Female", "Others"];
-
   final List<String> civilStatusChoices = ["Single", "Married"];
 
   String genderValue = "";
@@ -59,6 +63,37 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
       return false;
     }
     return valid;
+  }
+
+  @override
+  void initState() {
+    student = context.read<DatabaseProvider>().student;
+
+    firstNameController.text = student.firstName ?? "";
+    lastNameController.text = student.lastName ?? "";
+    middleNameController.text = student.middleName ?? "";
+    suffixNameController.text = student.suffixName ?? "";
+    citizenshipController.text = student.citizenship ?? "";
+    dateBirthController.text = student.dateOfBirth ?? "";
+    birthPlaceController.text = student.birthPlace ?? "";
+    religionController.text = student.religion ?? "";
+    genderValue = student.gender ?? "";
+    civilStatusValue = student.civilStatus ?? "";
+
+    super.initState();
+  }
+
+  void saveInput() {
+    student.firstName = firstNameController.text;
+    student.lastName = lastNameController.text;
+    student.middleName = middleNameController.text;
+    student.suffixName = suffixNameController.text;
+    student.citizenship = citizenshipController.text;
+    student.dateOfBirth = dateBirthController.text;
+    student.birthPlace = birthPlaceController.text;
+    student.religion = religionController.text;
+    student.gender = genderValue;
+    student.civilStatus = civilStatusValue;
   }
 
   @override
@@ -245,6 +280,8 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
                       BackNextButton(
                         nextPressed: () {
                           if (validate()) {
+                            saveInput();
+
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -265,6 +302,10 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
                               },
                             );
                           }
+                        },
+                        backPressed: () {
+                          saveInput();
+                          Navigator.pop(context);
                         },
                       ),
                     ],

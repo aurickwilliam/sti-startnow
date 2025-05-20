@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/components/custom_dropdown/custom_dropdown_menu.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/enrollment/new_student/student_info_page.dart';
+import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class CurrentTermPage extends StatefulWidget {
@@ -15,6 +18,8 @@ class CurrentTermPage extends StatefulWidget {
 }
 
 class _CurrentTermPageState extends State<CurrentTermPage> {
+  late Student student;
+
   final List<String> admitTypeChoices = ["New Student", "Transferee"];
 
   final List<String> yearLevelChoices = [
@@ -60,6 +65,25 @@ class _CurrentTermPageState extends State<CurrentTermPage> {
       return false;
     }
     return true;
+  }
+
+  @override
+  void initState() {
+    student = context.read<DatabaseProvider>().student;
+
+    admitTypeValue = student.enrollment.admissionType ?? "";
+    yearLevelValue = student.enrollment.yearLevel ?? "";
+    schoolYearValue = student.enrollment.academicYear ?? "";
+    termValue = student.enrollment.semester ?? "";
+
+    super.initState();
+  }
+
+  void saveInput() {
+    student.enrollment.admissionType = admitTypeValue;
+    student.enrollment.yearLevel = yearLevelValue;
+    student.enrollment.academicYear = schoolYearValue;
+    student.enrollment.semester = termValue;
   }
 
   @override
@@ -220,6 +244,7 @@ class _CurrentTermPageState extends State<CurrentTermPage> {
           child: BottomButton(
             onPressed: () {
               if (validate()) {
+                saveInput();
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => StudentInfoPage()),
@@ -252,7 +277,14 @@ class _CurrentTermPageState extends State<CurrentTermPage> {
 
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
-      body: SafeArea(child: parentWidget),
+      body: PopScope(
+        onPopInvokedWithResult: (didPop, result) {
+          if (didPop) {
+            saveInput();
+          }
+        },
+        child: SafeArea(child: parentWidget),
+      ),
     );
   }
 }

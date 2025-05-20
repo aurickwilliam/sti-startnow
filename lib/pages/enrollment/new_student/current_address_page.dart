@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/components/buttons/back_next_button.dart';
 import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/components/number_input.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/enrollment/new_student/permananet_address_page.dart';
+import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class CurrentAddressPage extends StatefulWidget {
@@ -16,6 +19,8 @@ class CurrentAddressPage extends StatefulWidget {
 }
 
 class _CurrentAddressPageState extends State<CurrentAddressPage> {
+  late Student student;
+
   final _formKey = GlobalKey<FormState>(); // For input validation
 
   final TextEditingController streetNoController = TextEditingController();
@@ -25,6 +30,31 @@ class _CurrentAddressPageState extends State<CurrentAddressPage> {
   final TextEditingController cityController = TextEditingController();
   final TextEditingController provinceController = TextEditingController();
   final TextEditingController zipCodeController = TextEditingController();
+
+  @override
+  void initState() {
+    student = context.read<DatabaseProvider>().student;
+
+    streetNoController.text = student.currentAddress.streetNumber ?? "";
+    streetController.text = student.currentAddress.street ?? "";
+    subdivisionController.text = student.currentAddress.subdivision ?? "";
+    barangayController.text = student.currentAddress.barangay ?? "";
+    cityController.text = student.currentAddress.city ?? "";
+    provinceController.text = student.currentAddress.province ?? "";
+    zipCodeController.text = student.currentAddress.zipCode ?? "";
+
+    super.initState();
+  }
+
+  void saveInput() {
+    student.currentAddress.streetNumber = streetNoController.text;
+    student.currentAddress.street = streetController.text;
+    student.currentAddress.subdivision = subdivisionController.text;
+    student.currentAddress.barangay = barangayController.text;
+    student.currentAddress.city = cityController.text;
+    student.currentAddress.province = provinceController.text;
+    student.currentAddress.zipCode = zipCodeController.text;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -167,6 +197,7 @@ class _CurrentAddressPageState extends State<CurrentAddressPage> {
                       BackNextButton(
                         nextPressed: () {
                           if (_formKey.currentState!.validate()) {
+                            saveInput();
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -187,6 +218,10 @@ class _CurrentAddressPageState extends State<CurrentAddressPage> {
                               },
                             );
                           }
+                        },
+                        backPressed: () {
+                          saveInput();
+                          Navigator.pop(context);
                         },
                       ),
                     ],

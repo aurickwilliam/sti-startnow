@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/components/buttons/back_next_button.dart';
 import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/components/custom_date_picker.dart';
@@ -7,6 +9,7 @@ import 'package:sti_startnow/pages/components/custom_dropdown/custom_dropdown_me
 import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/enrollment/new_student/father_info_page.dart';
+import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class LastSchoolPage extends StatefulWidget {
@@ -17,6 +20,8 @@ class LastSchoolPage extends StatefulWidget {
 }
 
 class _LastSchoolPageState extends State<LastSchoolPage> {
+  late Student student;
+
   final _formKey = GlobalKey<FormState>(); // For input validation
 
   final TextEditingController nameSchoolController = TextEditingController();
@@ -100,6 +105,32 @@ class _LastSchoolPageState extends State<LastSchoolPage> {
       return false;
     }
     return valid;
+  }
+
+  @override
+  void initState() {
+    student = context.read<DatabaseProvider>().student;
+
+    nameSchoolController.text = student.currentLastSchool.schoolName ?? "";
+    strandController.text = student.currentLastSchool.program ?? "";
+    dateGraduationController.text =
+        student.currentLastSchool.graduationDate ?? "";
+    schoolTypeValue = student.currentLastSchool.schoolType ?? "";
+    schoolYearValue = student.currentLastSchool.schoolYear ?? "";
+    termValue = student.currentLastSchool.term ?? "";
+    yearLevelValue = student.currentLastSchool.yearLevel ?? "";
+
+    super.initState();
+  }
+
+  void saveInput() {
+    student.currentLastSchool.schoolName = nameSchoolController.text;
+    student.currentLastSchool.program = strandController.text;
+    student.currentLastSchool.graduationDate = dateGraduationController.text;
+    student.currentLastSchool.schoolType = schoolTypeValue;
+    student.currentLastSchool.schoolYear = schoolYearValue;
+    student.currentLastSchool.term = termValue;
+    student.currentLastSchool.yearLevel = yearLevelValue;
   }
 
   @override
@@ -258,6 +289,7 @@ class _LastSchoolPageState extends State<LastSchoolPage> {
                       BackNextButton(
                         nextPressed: () {
                           if (validate()) {
+                            saveInput();
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -278,6 +310,10 @@ class _LastSchoolPageState extends State<LastSchoolPage> {
                               },
                             );
                           }
+                        },
+                        backPressed: () {
+                          saveInput();
+                          Navigator.pop(context);
                         },
                       ),
                     ],

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/components/buttons/back_next_button.dart';
 import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/components/number_input.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/enrollment/new_student/last_school_page.dart';
+import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class ContactDetailsPage extends StatefulWidget {
@@ -16,11 +19,30 @@ class ContactDetailsPage extends StatefulWidget {
 }
 
 class _ContactDetailsPageState extends State<ContactDetailsPage> {
+  late Student student;
+
   final _formKey = GlobalKey<FormState>(); // For input validation
 
   final TextEditingController telephoneController = TextEditingController();
   final TextEditingController mobileController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+
+  @override
+  void initState() {
+    student = context.read<DatabaseProvider>().student;
+
+    telephoneController.text = student.telephone ?? "";
+    mobileController.text = student.contactNo ?? "";
+    emailController.text = student.email ?? "";
+
+    super.initState();
+  }
+
+  void saveInput() {
+    student.telephone = telephoneController.text;
+    student.contactNo = mobileController.text;
+    student.email = emailController.text;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -141,6 +163,7 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
                       BackNextButton(
                         nextPressed: () {
                           if (_formKey.currentState!.validate()) {
+                            saveInput();
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -161,6 +184,10 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
                               },
                             );
                           }
+                        },
+                        backPressed: () {
+                          saveInput();
+                          Navigator.pop(context);
                         },
                       ),
                     ],

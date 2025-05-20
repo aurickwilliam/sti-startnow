@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/enrollment/new_student/current_term_page.dart';
+import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class PreferredProgramPage extends StatefulWidget {
@@ -14,6 +17,8 @@ class PreferredProgramPage extends StatefulWidget {
 }
 
 class _PreferredProgramPageState extends State<PreferredProgramPage> {
+  late Student student;
+
   final List<String> courses = [
     "Bachelor of Science in Computer Science (BSCS)",
     "Bachelor of Science in Information Technology (BSIT)",
@@ -30,139 +35,171 @@ class _PreferredProgramPageState extends State<PreferredProgramPage> {
   String selectedCourse = "";
 
   @override
+  void initState() {
+    student = context.read<DatabaseProvider>().student;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // if is in landscape
     bool isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
 
-    return Scaffold(
-      backgroundColor: AppTheme.colors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              EnrollmentHeader(
-                step1: true,
-                step2: false,
-                step3: false,
-                step4: false,
-                title: "Preferred Program",
-              ),
+    // PopScope pang detect ng back button press
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        bool userPop = false;
 
-              const SizedBox(height: 10),
+        userPop = await showModalBottomSheet(
+          isScrollControlled: true,
+          context: context,
+          builder: (builder) {
+            return CustomBottomSheet(
+              submitFunc: () {
+                Navigator.of(context).pop(true);
+              },
+              subtitle: "All of your entered information\nwill be deleted",
+            );
+          },
+        );
 
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: isLandscape ? 200 : 24,
-                  vertical: 10,
+        if (userPop && context.mounted) {
+          Navigator.of(context).pop(result);
+        }
+      },
+      child: Scaffold(
+        backgroundColor: AppTheme.colors.white,
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                EnrollmentHeader(
+                  step1: true,
+                  step2: false,
+                  step3: false,
+                  step4: false,
+                  title: "Preferred Program",
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Kindly fill-out the online application form for a fast and efficient admissions procedure.",
-                      style: GoogleFonts.roboto(
-                        color: AppTheme.colors.black,
-                        fontSize: 14,
-                      ),
-                    ),
 
-                    const SizedBox(height: 10),
+                const SizedBox(height: 10),
 
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        border: Border.all(
-                          color: AppTheme.colors.gray,
-                          width: 2.0,
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: isLandscape ? 200 : 24,
+                    vertical: 10,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Kindly fill-out the online application form for a fast and efficient admissions procedure.",
+                        style: GoogleFonts.roboto(
+                          color: AppTheme.colors.black,
+                          fontSize: 14,
                         ),
                       ),
 
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          "Courses:",
-                          style: GoogleFonts.roboto(
-                            color: AppTheme.colors.primary,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
+                      const SizedBox(height: 10),
+
+                      Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(
+                            color: AppTheme.colors.gray,
+                            width: 2.0,
                           ),
                         ),
-                      ),
-                    ),
 
-                    const SizedBox(height: 20),
-
-                    Column(
-                      children: List.generate(courses.length, (index) {
-                        return RadioListTile(
-                          value: courses[index],
-                          groupValue: selectedCourse,
-                          activeColor: AppTheme.colors.gold,
-
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-
-                          onChanged: (value) {
-                            setState(() {
-                              selectedCourse = value.toString();
-                            });
-                          },
-
-                          title: Text(
-                            courses[index],
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Courses:",
                             style: GoogleFonts.roboto(
-                              color: AppTheme.colors.black,
-                              fontSize: 16,
+                              color: AppTheme.colors.primary,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                        );
-                      }),
-                    ),
+                        ),
+                      ),
 
-                    const SizedBox(height: 50),
+                      const SizedBox(height: 20),
 
-                    BottomButton(
-                      onPressed: () {
-                        if (selectedCourse.isEmpty) {
-                          showModalBottomSheet(
-                            isScrollControlled: true,
-                            context: context,
-                            builder: (context) {
-                              return CustomBottomSheet(
-                                isError: true,
-                                title: "Please choose",
-                                subtitle: "Please choose your preferred course",
-                              );
+                      Column(
+                        children: List.generate(courses.length, (index) {
+                          return RadioListTile(
+                            value: courses[index],
+                            groupValue: selectedCourse,
+                            activeColor: AppTheme.colors.gold,
+
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+
+                            onChanged: (value) {
+                              setState(() {
+                                selectedCourse = value.toString();
+                              });
                             },
+
+                            title: Text(
+                              courses[index],
+                              style: GoogleFonts.roboto(
+                                color: AppTheme.colors.black,
+                                fontSize: 16,
+                              ),
+                            ),
                           );
-                        } else {
-                          showModalBottomSheet(
-                            isScrollControlled: true,
-                            context: context,
-                            builder: (builder) {
-                              return CustomBottomSheet(
-                                submitFunc: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => CurrentTermPage(),
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          );
-                        }
-                      },
-                      text: "Next",
-                    ),
-                  ],
+                        }),
+                      ),
+
+                      const SizedBox(height: 50),
+
+                      BottomButton(
+                        onPressed: () {
+                          if (selectedCourse.isEmpty) {
+                            showModalBottomSheet(
+                              isScrollControlled: true,
+                              context: context,
+                              builder: (context) {
+                                return CustomBottomSheet(
+                                  isError: true,
+                                  title: "Please choose",
+                                  subtitle:
+                                      "Please choose your preferred course",
+                                );
+                              },
+                            );
+                          } else {
+                            showModalBottomSheet(
+                              isScrollControlled: true,
+                              context: context,
+                              builder: (builder) {
+                                return CustomBottomSheet(
+                                  submitFunc: () {
+                                    student.course = selectedCourse;
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => CurrentTermPage(),
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            );
+                          }
+                        },
+                        text: "Next",
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

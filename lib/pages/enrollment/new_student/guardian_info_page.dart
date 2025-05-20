@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/components/buttons/back_next_button.dart';
 import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/components/custom_tooltip.dart';
@@ -7,6 +9,7 @@ import 'package:sti_startnow/pages/components/number_input.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/enrollment/new_student/validate_details_page.dart';
+import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class GuardianInfoPage extends StatefulWidget {
@@ -17,6 +20,8 @@ class GuardianInfoPage extends StatefulWidget {
 }
 
 class _GuardianInfoPageState extends State<GuardianInfoPage> {
+  late Student student;
+
   final _formKey = GlobalKey<FormState>(); // For input validation
 
   final TextEditingController firstNameController = TextEditingController();
@@ -27,6 +32,33 @@ class _GuardianInfoPageState extends State<GuardianInfoPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController occupationController = TextEditingController();
   final TextEditingController relationshipController = TextEditingController();
+
+  @override
+  void initState() {
+    student = context.read<DatabaseProvider>().student;
+
+    firstNameController.text = student.guardian.firstName ?? "";
+    lastNameController.text = student.guardian.lastName ?? "";
+    middleInitialController.text = student.guardian.middleInitial ?? "";
+    suffixController.text = student.guardian.suffix ?? "";
+    mobileNoController.text = student.guardian.mobileNumber ?? "";
+    emailController.text = student.guardian.email ?? "";
+    occupationController.text = student.guardian.occupation ?? "";
+    relationshipController.text = student.guardian.relationship ?? "";
+
+    super.initState();
+  }
+
+  void saveInput() {
+    student.guardian.firstName = firstNameController.text;
+    student.guardian.lastName = lastNameController.text;
+    student.guardian.middleInitial = middleInitialController.text;
+    student.guardian.suffix = suffixController.text;
+    student.guardian.mobileNumber = mobileNoController.text;
+    student.guardian.email = emailController.text;
+    student.guardian.occupation = occupationController.text;
+    student.guardian.relationship = relationshipController.text;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -189,13 +221,13 @@ class _GuardianInfoPageState extends State<GuardianInfoPage> {
 
                           if (emailPattern.hasMatch(input)) {
                             return false;
-                          } else if (input == "N/A") {
+                          } else if (input == "n/a") {
                             return false;
                           } else {
                             return true;
                           }
                         },
-                        requiredMessage: "Please enter an email or 'N/A'",
+                        requiredMessage: "Please enter an email or 'n/a'",
                         invalidMessage: "Please enter a valid email address",
                       ),
 
@@ -226,6 +258,7 @@ class _GuardianInfoPageState extends State<GuardianInfoPage> {
                       BackNextButton(
                         nextPressed: () {
                           if (_formKey.currentState!.validate()) {
+                            saveInput();
                             showModalBottomSheet(
                               isScrollControlled: true,
                               context: context,
@@ -257,6 +290,10 @@ class _GuardianInfoPageState extends State<GuardianInfoPage> {
                               },
                             );
                           }
+                        },
+                        backPressed: () {
+                          saveInput();
+                          Navigator.pop(context);
                         },
                       ),
                     ],

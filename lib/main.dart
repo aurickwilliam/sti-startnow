@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/enrollment_dashboard.dart';
 import 'package:sti_startnow/pages/welcome/welcome_page.dart';
+import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/providers/enrollee_list_provider.dart';
 import 'package:sti_startnow/providers/subject_list_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => SubjectListProvider()),
 
         ChangeNotifierProvider(create: (context) => EnrolleeListProvider()),
+        ChangeNotifierProvider(create: (context) => DatabaseProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/enrollment/components/multiple_choice_card.dart';
 import 'package:sti_startnow/pages/enrollment/new_student/preferred_program_page.dart';
 import 'package:sti_startnow/pages/enrollment/student_status_page.dart';
+import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class StudentTypePage extends StatefulWidget {
@@ -59,6 +61,12 @@ class _StudentTypePageState extends State<StudentTypePage> {
     debugPrint("SHIBAL");
     if (selectedItem == typeStudent[0]) {
       destination = PreferredProgramPage();
+
+      // New student object kung saan maiistore lahat ng input ni user during enrollment
+      Provider.of<DatabaseProvider>(
+        context,
+        listen: false,
+      ).initializeNewStudent();
     } else if (selectedItem == typeStudent[1]) {
       destination = StudentStatusPage();
     }

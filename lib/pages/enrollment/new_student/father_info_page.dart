@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/components/buttons/back_next_button.dart';
 import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/components/custom_tooltip.dart';
@@ -7,6 +9,7 @@ import 'package:sti_startnow/pages/components/number_input.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/enrollment/new_student/mother_info_page.dart';
+import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class FatherInfoPage extends StatefulWidget {
@@ -17,6 +20,8 @@ class FatherInfoPage extends StatefulWidget {
 }
 
 class _FatherInfoPageState extends State<FatherInfoPage> {
+  late Student student;
+
   final _formKey = GlobalKey<FormState>(); // For input validation
 
   final TextEditingController firstNameController = TextEditingController();
@@ -26,6 +31,31 @@ class _FatherInfoPageState extends State<FatherInfoPage> {
   final TextEditingController mobileNoController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController occupationController = TextEditingController();
+
+  @override
+  void initState() {
+    student = context.read<DatabaseProvider>().student;
+
+    firstNameController.text = student.father.firstName ?? "";
+    lastNameController.text = student.father.lastName ?? "";
+    middleInitialController.text = student.father.middleInitial ?? "";
+    suffixController.text = student.father.suffix ?? "";
+    mobileNoController.text = student.father.mobileNumber ?? "";
+    emailController.text = student.father.email ?? "";
+    occupationController.text = student.father.occupation ?? "";
+
+    super.initState();
+  }
+
+  void saveInput() {
+    student.father.firstName = firstNameController.text;
+    student.father.lastName = lastNameController.text;
+    student.father.middleInitial = middleInitialController.text;
+    student.father.suffix = suffixController.text;
+    student.father.mobileNumber = mobileNoController.text;
+    student.father.email = emailController.text;
+    student.father.occupation = occupationController.text;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -188,13 +218,13 @@ class _FatherInfoPageState extends State<FatherInfoPage> {
 
                           if (emailPattern.hasMatch(input)) {
                             return false;
-                          } else if (input == "N/A") {
+                          } else if (input == "n/a") {
                             return false;
                           } else {
                             return true;
                           }
                         },
-                        requiredMessage: "Please enter an email or 'N/A'",
+                        requiredMessage: "Please enter an email or 'n/a'",
                         invalidMessage: "Please enter a valid email address",
                       ),
 
@@ -214,6 +244,7 @@ class _FatherInfoPageState extends State<FatherInfoPage> {
                       BackNextButton(
                         nextPressed: () {
                           if (_formKey.currentState!.validate()) {
+                            saveInput();
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -234,6 +265,10 @@ class _FatherInfoPageState extends State<FatherInfoPage> {
                               },
                             );
                           }
+                        },
+                        backPressed: () {
+                          saveInput();
+                          Navigator.pop(context);
                         },
                       ),
                     ],
