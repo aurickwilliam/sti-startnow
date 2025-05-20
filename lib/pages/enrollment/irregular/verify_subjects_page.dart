@@ -19,24 +19,95 @@ class VerifySubjectsPage extends StatelessWidget {
     "Units",
     "Time",
     "Day",
-    "Room"
+    "Room",
   ];
 
-  // Temporay values for the Data Table
+  /* Temporay values for the Data Table
   final List<List> dataTableValues = [
-    ["COSC1001", "Information Management", "3.00", "7:00AM - 9:00AM", "S", "512"],
-    ["COSC1001", "Information Management", "3.00", "7:00AM - 10:00AM", "W", "603"],
-    ["COSC1001", "Fundamentals of Mobile Programming", "3.00", "9:00AM - 11:00AM", "TH", "402"],
-    ["COSC1001", "Fundamentals of Mobile Programming", "3.00", "10:00AM - 1:00PM", "W", "603"],
-    ["COSC1001", "Human-Computer Interaction", "3.50", "7:00AM - 9:00AM", "TH", "402"],
-    ["COSC1001", "Human-Computer Interaction", "3.50", "11:30AM - 1:00PM", "TH", "601"],
+    [
+      "COSC1001",
+      "Information Management",
+      "3.00",
+      "7:00AM - 9:00AM",
+      "S",
+      "512",
+    ],
+    [
+      "COSC1001",
+      "Information Management",
+      "3.00",
+      "7:00AM - 10:00AM",
+      "W",
+      "603",
+    ],
+    [
+      "COSC1001",
+      "Fundamentals of Mobile Programming",
+      "3.00",
+      "9:00AM - 11:00AM",
+      "TH",
+      "402",
+    ],
+    [
+      "COSC1001",
+      "Fundamentals of Mobile Programming",
+      "3.00",
+      "10:00AM - 1:00PM",
+      "W",
+      "603",
+    ],
+    [
+      "COSC1001",
+      "Human-Computer Interaction",
+      "3.50",
+      "7:00AM - 9:00AM",
+      "TH",
+      "402",
+    ],
+    [
+      "COSC1001",
+      "Human-Computer Interaction",
+      "3.50",
+      "11:30AM - 1:00PM",
+      "TH",
+      "601",
+    ],
     ["COSC1001", "Ethics", "3.00", "7:00AM - 10:00AM", "F", "410"],
-    ["COSC1001", "Design and Analysis of Algorithms", "3.00", "10:00AM - 1:00PM", "F", "402"],
-    ["COSC1001", "Computer Systems Architecture", "3.00", "9:00AM - 12:00PM", "S", "509"],
+    [
+      "COSC1001",
+      "Design and Analysis of Algorithms",
+      "3.00",
+      "10:00AM - 1:00PM",
+      "F",
+      "402",
+    ],
+    [
+      "COSC1001",
+      "Computer Systems Architecture",
+      "3.00",
+      "9:00AM - 12:00PM",
+      "S",
+      "509",
+    ],
     ["COSC1001", "Great Books", "3.00", "7:00AM - 10:00AM", "T", "P"],
-    ["COSC1001", "Philippine Popular Culture", "3.00", "10:00AM - 1:00PM", "T", "402"],
-    ["COSC1001", "P.E./PATHFIT 4: Team Sports", "3.00", "1:00PM - 3:00PM", "TH", "COURT"],
+    [
+      "COSC1001",
+      "Philippine Popular Culture",
+      "3.00",
+      "10:00AM - 1:00PM",
+      "T",
+      "402",
+    ],
+    [
+      "COSC1001",
+      "P.E./PATHFIT 4: Team Sports",
+      "3.00",
+      "1:00PM - 3:00PM",
+      "TH",
+      "COURT",
+    ],
   ];
+  */
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +115,8 @@ class VerifySubjectsPage extends StatelessWidget {
     final totalUnits = subjectListProvider.getTotalUnitsSelectedSubjects();
 
     // if is in landscape
-    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
@@ -53,21 +125,18 @@ class VerifySubjectsPage extends StatelessWidget {
           child: Column(
             children: [
               EnrollmentHeader(
-                step1: true, 
-                step2: true, 
-                step3: true, 
-                step4: false, 
-                title: "Enrollment"
+                step1: true,
+                step2: true,
+                step3: true,
+                step4: false,
+                title: "Enrollment",
               ),
-          
+
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 10
-                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -82,7 +151,7 @@ class VerifySubjectsPage extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            
+
                             Text(
                               "Units: $totalUnits",
                               style: GoogleFonts.roboto(
@@ -90,47 +159,50 @@ class VerifySubjectsPage extends StatelessWidget {
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
-                            )
+                            ),
                           ],
                         ),
-                            
-                        Divider(
-                          height: 10,
-                        ),
-                            
+
+                        Divider(height: 10),
+
                         CustomDataTable(
-                          columnNames: columnNames, 
-                          dataTableValues: dataTableValues
+                          columnNames: columnNames,
+                          dataTableValues:
+                              subjectListProvider.allSelectedSubjects,
                         ),
-                            
-                        const SizedBox(height: 50,),
+
+                        const SizedBox(height: 50),
                       ],
                     ),
                   ),
-                      
+
                   Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: isLandscape ? 200 : 24,
-                      vertical: isLandscape ? 10 : 0
+                      vertical: isLandscape ? 10 : 0,
                     ),
                     child: BackNextButton(
                       nextPressed: () {
                         showModalBottomSheet(
-                          context: context, 
+                          context: context,
                           builder: (builder) {
                             return CustomBottomSheet(
                               submitFunc: () {
-                                Navigator.push(context, 
-                                MaterialPageRoute(builder: (context) => CompletedPage()));
-                              }
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => CompletedPage(),
+                                  ),
+                                );
+                              },
                             );
-                          }
+                          },
                         );
-                      }
+                      },
                     ),
-                  )
+                  ),
                 ],
-              )
+              ),
             ],
           ),
         ),

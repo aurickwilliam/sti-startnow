@@ -18,11 +18,12 @@ class SignInAdminPage extends StatefulWidget {
 }
 
 class _SignInAdminPageState extends State<SignInAdminPage> {
-  final TextEditingController emailController = TextEditingController();
+  final _formKey = GlobalKey<FormState>(); // For input validation
 
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  void handleAdminNavigation(){
+  void handleAdminNavigation() {
     String email = emailController.text;
     String password = passwordController.text;
 
@@ -32,36 +33,39 @@ class _SignInAdminPageState extends State<SignInAdminPage> {
       destination = SuperAdminDashboard();
     }
 
-    Navigator.push(context, 
-    MaterialPageRoute(builder: (context) => destination));
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => destination),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-
     // if is in landscape
-    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
-    
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
-      backgroundColor: AppTheme.colors.bgWhite,      
+      backgroundColor: AppTheme.colors.bgWhite,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-        
               // Image Container
               Container(
                 height: 200,
                 decoration: BoxDecoration(
                   color: AppTheme.colors.gray,
                   image: DecorationImage(
-                    image: AssetImage("assets/img/sign_in/one_sti_cover_img.jpg"),
-                    fit: BoxFit.cover
-                  )
+                    image: AssetImage(
+                      "assets/img/sign_in/one_sti_cover_img.jpg",
+                    ),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-        
+
               Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: isLandscape ? 200 : 24,
@@ -79,64 +83,85 @@ class _SignInAdminPageState extends State<SignInAdminPage> {
                         fontSize: 32,
                       ),
                     ),
-                            
+
                     const SizedBox(height: 24),
-                            
+
                     // Sign in box
-                    SignInBox(
-                      children: [
-                        // Email text field
-                        TextInput(
-                          controller: emailController, 
-                          label: "Email Address:", 
-                          hint: "Email Address", 
-                          isRequired: true, 
-                          isEnable: true
-                        ),
-                    
-                        const SizedBox(height: 16),
-                          
-                        // Password text field
-                        PasswordInput(
-                          controller: passwordController, 
-                          label: "Password:", 
-                          hint: "Password", 
-                          isRequired: true, 
-                          isEnable: true
-                        ),
-                        
-                        const SizedBox(height: 20),
-                          
-                        // Sign in button
-                        ElevatedButton(
-                          onPressed: () {
-                            handleAdminNavigation();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppTheme.colors.primary,
-                            minimumSize: Size(double.infinity, 46),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                    Form(
+                      key: _formKey,
+                      child: SignInBox(
+                        children: [
+                          // Email text field
+                          TextInput(
+                            controller: emailController,
+                            label: "Email Address:",
+                            hint: "Email Address",
+                            isRequired: true,
+                            isEnable: true,
+                            hasFormat: true,
+                            invalidCheck: (input) {
+                              RegExp emailPattern = RegExp(
+                                r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                              );
+
+                              if (emailPattern.hasMatch(input)) {
+                                return false;
+                              } else if (input == "MIS") {
+                                return false;
+                              } else {
+                                return true;
+                              }
+                            },
+                            requiredMessage: "Please enter your email",
+                            invalidMessage: "Please enter a valid email",
+                          ),
+
+                          const SizedBox(height: 16),
+
+                          // Password text field
+                          PasswordInput(
+                            controller: passwordController,
+                            label: "Password:",
+                            hint: "Password",
+                            isRequired: true,
+                            isEnable: true,
+                          ),
+
+                          const SizedBox(height: 20),
+
+                          // Sign in button
+                          ElevatedButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                handleAdminNavigation();
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppTheme.colors.primary,
+                              minimumSize: Size(double.infinity, 46),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            child: Text(
+                              "Sign In",
+                              style: GoogleFonts.roboto(
+                                color: AppTheme.colors.white,
+                                fontSize: 16,
+                              ),
                             ),
                           ),
-                          child: Text(
-                            "Sign In",
-                            style: GoogleFonts.roboto(
-                              color: AppTheme.colors.white, 
-                              fontSize: 16
-                            ),
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                            
+
                     const SizedBox(height: 24),
-                            
+
                     // Divider
                     Divider(),
-                            
+
                     const SizedBox(height: 16),
-                            
+
                     // Other pages
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -145,22 +170,29 @@ class _SignInAdminPageState extends State<SignInAdminPage> {
                           header: "New Student?",
                           linkText: "Enroll now",
                           onTap: () {
-                            Navigator.push(context, 
-                            MaterialPageRoute(builder: (context) => EnrollmentDashboard()));
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EnrollmentDashboard(),
+                              ),
+                            );
                           },
                         ),
                         SignInOption(
                           header: "An existing student?",
                           linkText: "Sign In here",
                           onTap: () {
-                            Navigator.push(context, 
-                            MaterialPageRoute(builder: (context) => SignInStudentPage()));
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SignInStudentPage(),
+                              ),
+                            );
                           },
                         ),
                       ],
                     ),
-                    
-                    const SizedBox(height: 50,),
+                    const SizedBox(height: 50),
                   ],
                 ),
               ),

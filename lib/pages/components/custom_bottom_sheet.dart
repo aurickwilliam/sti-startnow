@@ -3,11 +3,23 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class CustomBottomSheet extends StatelessWidget {
-  final Function submitFunc;
-  const CustomBottomSheet({
+  final Function? submitFunc;
+  final String? title;
+  final String? subtitle;
+  final bool isError; // Kapag user error
+
+  CustomBottomSheet({
     super.key,
-    required this.submitFunc
-  });
+    this.submitFunc,
+    this.title,
+    this.subtitle,
+    this.isError = false,
+  }) {
+    if (!isError) {
+      assert(submitFunc != null);
+      // Kapag hindi naman error, dapat may submitFunc
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +28,7 @@ class CustomBottomSheet extends StatelessWidget {
       height: 400,
       decoration: BoxDecoration(
         color: AppTheme.colors.white,
-        borderRadius: BorderRadius.circular(25)
+        borderRadius: BorderRadius.circular(25),
       ),
       child: Padding(
         padding: const EdgeInsets.all(25.0),
@@ -24,29 +36,27 @@ class CustomBottomSheet extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              child: Image.asset(
-                "assets/img/enrollment/warning.png",
-                scale: 5,
-                fit: BoxFit.contain,
-              ),
+            Image.asset(
+              "assets/img/enrollment/warning.png",
+              scale: 5,
+              fit: BoxFit.contain,
             ),
 
-            const SizedBox(height: 20,),
+            const SizedBox(height: 20),
 
             Text(
-              "Are you sure?",
+              title ?? "Are you sure?",
               style: GoogleFonts.roboto(
                 color: AppTheme.colors.black,
                 fontSize: 32,
-                fontWeight: FontWeight.bold
+                fontWeight: FontWeight.bold,
               ),
             ),
 
-            const SizedBox(height: 10,),
+            const SizedBox(height: 10),
 
             Text(
-              "Changes will not be made\nthroughout the enrollment!",
+              subtitle ?? "Changes will not be made\nthroughout the enrollment",
               style: GoogleFonts.roboto(
                 color: AppTheme.colors.black,
                 fontSize: 16,
@@ -54,7 +64,7 @@ class CustomBottomSheet extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
 
-            const SizedBox(height: 30,),
+            const SizedBox(height: 30),
 
             Row(
               children: [
@@ -62,52 +72,58 @@ class CustomBottomSheet extends StatelessWidget {
                   child: FilledButton(
                     onPressed: () {
                       Navigator.pop(context);
-                    }, 
+                    },
                     style: FilledButton.styleFrom(
-                      backgroundColor: AppTheme.colors.gray,
+                      backgroundColor:
+                          isError
+                              ? AppTheme.colors.green
+                              : AppTheme.colors.gray,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)
+                        borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                  
+
                     child: Text(
-                      "Cancel",
+                      isError ? "Confirm" : "Cancel",
                       style: GoogleFonts.roboto(
                         color: AppTheme.colors.white,
                         fontSize: 16,
-                        fontWeight: FontWeight.w500
+                        fontWeight: FontWeight.w500,
                       ),
-                    )
+                    ),
                   ),
                 ),
 
-                const SizedBox(width: 20,),
+                const SizedBox(width: 20),
 
-                Expanded(
-                  child: FilledButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      submitFunc();
-                    }, 
-                    style: FilledButton.styleFrom(
-                      backgroundColor: AppTheme.colors.green,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)
-                      )
-                    ),
+                // Isa lang button kapag user error, goods lang ba?
+                isError
+                    ? Container()
+                    : Expanded(
+                      child: FilledButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          submitFunc!();
+                        },
+                        style: FilledButton.styleFrom(
+                          backgroundColor: AppTheme.colors.green,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
 
-                    child: Text(
-                      "Yes, Submit",
-                      style: GoogleFonts.roboto(
-                        color: AppTheme.colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500
+                        child: Text(
+                          "Yes, Submit",
+                          style: GoogleFonts.roboto(
+                            color: AppTheme.colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
                       ),
-                    )
-                  ),
-                )
-              ],  
-            )
+                    ),
+              ],
+            ),
           ],
         ),
       ),

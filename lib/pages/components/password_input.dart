@@ -11,8 +11,13 @@ class PasswordInput extends StatefulWidget {
   final bool isEnable;
   final bool hasToolTip;
   final String toolTipMessage;
-  
-  const PasswordInput({
+  final bool
+  isPasswordChange; // Sa change password lang papakita valid password format
+  final bool isRetype; // Para sa retype password sa change password
+  final String? newPass; // Para din sa retype
+  final String? altMessage; // Para iba message kapag wala inenter na password
+
+  PasswordInput({
     super.key,
     required this.controller,
     required this.label,
@@ -21,7 +26,15 @@ class PasswordInput extends StatefulWidget {
     this.isEnable = true,
     this.hasToolTip = false,
     this.toolTipMessage = "",
-  });
+    this.isPasswordChange = false,
+    this.isRetype = false,
+    this.altMessage,
+    this.newPass,
+  }) {
+    if (isRetype) {
+      assert(newPass != null);
+    }
+  }
 
   @override
   State<PasswordInput> createState() => _PasswordInputState();
@@ -67,33 +80,27 @@ class _PasswordInputState extends State<PasswordInput> {
                   fontWeight: FontWeight.w500,
                 ),
                 children: [
-                  TextSpan(
-                    text: widget.label
-                  ),
+                  TextSpan(text: widget.label),
                   TextSpan(
                     text: widget.isRequired ? "*" : "",
-                    style: GoogleFonts.roboto(
-                      color: AppTheme.colors.red
-                    )
-                  )
-                ]
-              )
+                    style: GoogleFonts.roboto(color: AppTheme.colors.red),
+                  ),
+                ],
+              ),
             ),
 
-            widget.hasToolTip ? 
-            CustomTooltip(
-              message: widget.toolTipMessage
-            )
-            : SizedBox()
+            widget.hasToolTip
+                ? CustomTooltip(message: widget.toolTipMessage)
+                : SizedBox(),
           ],
         ),
 
-        const SizedBox(height: 10,),
+        const SizedBox(height: 10),
 
-        TextField(
+        TextFormField(
           // Hide Password
           obscureText: hidePassword,
-        
+
           focusNode: focusNode,
           enabled: widget.isEnable,
           controller: widget.controller,
@@ -101,35 +108,72 @@ class _PasswordInputState extends State<PasswordInput> {
             border: OutlineInputBorder(),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: AppTheme.colors.primary, 
+                color: AppTheme.colors.primary,
                 width: 2.0,
               ),
-              borderRadius: BorderRadius.circular(10)
+              borderRadius: BorderRadius.circular(10),
             ),
-        
+
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppTheme.colors.gray,
-                width: 2.0,
-              ),
-              borderRadius: BorderRadius.circular(10)
+              borderSide: BorderSide(color: AppTheme.colors.gray, width: 2.0),
+              borderRadius: BorderRadius.circular(10),
             ),
-        
+
+            errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: AppTheme.colors.red, width: 2.0),
+              borderRadius: BorderRadius.circular(10),
+            ),
+
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: AppTheme.colors.red, width: 2.0),
+              borderRadius: BorderRadius.circular(10),
+            ),
+
             hintText: widget.hint,
-            suffixIcon: isFocused ? IconButton(
-              onPressed: () {
-                setState(() {
-                  hidePassword = !hidePassword;
-                });
-              },
-              icon: Icon(hidePassword ? Icons.visibility : Icons.visibility_off),
-            ) : null,
+            errorStyle: TextStyle(color: Colors.red[600]),
+
+            suffixIcon:
+                isFocused
+                    ? IconButton(
+                      onPressed: () {
+                        setState(() {
+                          hidePassword = !hidePassword;
+                        });
+                      },
+                      icon: Icon(
+                        hidePassword ? Icons.visibility : Icons.visibility_off,
+                      ),
+                    )
+                    : null,
           ),
-          style: GoogleFonts.roboto(
-            color: AppTheme.colors.black,
-            fontSize: 16
-          ),
-        )
+          style: GoogleFonts.roboto(color: AppTheme.colors.black, fontSize: 16),
+          onTapOutside: (event) {
+            focusNode.unfocus();
+          },
+
+          validator: (input) {
+            if (input == null || input.isEmpty) {
+              return widget.altMessage ?? "Please enter your password";
+            }
+
+            if (widget.isPasswordChange) {
+              RegExp passwordPattern = RegExp(r"^123$");
+
+              if (!passwordPattern.hasMatch(input)) {
+                return "Password must be 123";
+              }
+            }
+
+            if (widget.isRetype) {
+              if (input != widget.newPass) {
+                return "Password does not match new password";
+              }
+            }
+
+            return null;
+          },
+          autovalidateMode: AutovalidateMode.onUnfocus,
+        ),
       ],
     );
   }

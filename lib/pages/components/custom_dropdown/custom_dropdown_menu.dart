@@ -11,6 +11,7 @@ class CustomDropdownMenu extends StatefulWidget {
   final String label;
   final bool isRequired;
   final bool isEnable;
+  final bool isError;
   final Function(int index) onTap;
 
   const CustomDropdownMenu({
@@ -21,6 +22,7 @@ class CustomDropdownMenu extends StatefulWidget {
     this.hint = "",
     this.isRequired = false,
     this.isEnable = true,
+    this.isError = false,
     required this.onTap,
   });
 
@@ -29,7 +31,6 @@ class CustomDropdownMenu extends StatefulWidget {
 }
 
 class _CustomDropdownMenuState extends State<CustomDropdownMenu> {
-
   final OverlayPortalController dropdownController = OverlayPortalController();
 
   final link = LayerLink();
@@ -53,25 +54,21 @@ class _CustomDropdownMenuState extends State<CustomDropdownMenu> {
               fontWeight: FontWeight.w500,
             ),
             children: [
-              TextSpan(
-                text: widget.label
-              ),
+              TextSpan(text: widget.label),
               TextSpan(
                 text: widget.isRequired ? "*" : "",
-                style: GoogleFonts.roboto(
-                  color: AppTheme.colors.red
-                )
-              )
-            ]
-          )
+                style: GoogleFonts.roboto(color: AppTheme.colors.red),
+              ),
+            ],
+          ),
         ),
 
-        const SizedBox(height: 5,),
+        const SizedBox(height: 5),
 
         CompositedTransformTarget(
           link: link,
           child: OverlayPortal(
-            controller: dropdownController, 
+            controller: dropdownController,
             overlayChildBuilder: (context) {
               return GestureDetector(
                 onTap: () {
@@ -87,13 +84,15 @@ class _CustomDropdownMenuState extends State<CustomDropdownMenu> {
                     targetAnchor: Alignment.bottomLeft,
                     child: Align(
                       alignment: AlignmentDirectional.topStart,
-                  
+
                       // Menu of Items Widget
                       child: MenuDropdown(
                         width: btnWidth,
-                        child: List.generate(widget.listChoices.length, (index) {
+                        child: List.generate(widget.listChoices.length, (
+                          index,
+                        ) {
                           return MenuItem(
-                            text: widget.listChoices[index], 
+                            text: widget.listChoices[index],
                             onTap: () {
                               widget.onTap(index);
                               dropdownController.toggle();
@@ -117,44 +116,65 @@ class _CustomDropdownMenuState extends State<CustomDropdownMenu> {
                   color: AppTheme.colors.white,
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(
-                    color: isDropDownShowing ? AppTheme.colors.primary : AppTheme.colors.gray,
-                    width: 2.0
-                  )
+                    color:
+                        isDropDownShowing
+                            ? widget.isError
+                                ? AppTheme.colors.red
+                                : AppTheme.colors.primary
+                            : widget.isError
+                            ? AppTheme.colors.red
+                            : AppTheme.colors.gray,
+                    width: 2.0,
+                  ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 10,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      widget.selectedValue.isEmpty ? 
-                      Text(
-                        widget.hint,
-                        style: GoogleFonts.roboto(
-                          color: AppTheme.colors.black,
-                          fontSize: 16,
-                        ),
-                      ) : 
-                      Text(
-                        widget.selectedValue,
-                        style: GoogleFonts.roboto(
-                          color: AppTheme.colors.black,
-                          fontSize: 16,
-                        ),
-                      ),
-                      
+                      widget.selectedValue.isEmpty
+                          ? Text(
+                            widget.hint,
+                            style: GoogleFonts.roboto(
+                              color: AppTheme.colors.black,
+                              fontSize: 16,
+                            ),
+                          )
+                          : Text(
+                            widget.selectedValue,
+                            style: GoogleFonts.roboto(
+                              color: AppTheme.colors.black,
+                              fontSize: 16,
+                            ),
+                          ),
+
                       Icon(
-                        isDropDownShowing ? 
-                        Icons.arrow_drop_up_outlined : Icons.arrow_drop_down,
+                        isDropDownShowing
+                            ? Icons.arrow_drop_up_outlined
+                            : Icons.arrow_drop_down,
                         size: 30,
                         color: AppTheme.colors.black,
-                      )
+                      ),
                     ],
                   ),
-                )
+                ),
               ),
             ),
           ),
-        )
+        ),
+
+        widget.isError
+            ? Padding(
+              padding: const EdgeInsets.only(left: 8.0, top: 1),
+              child: Text(
+                "Please choose one",
+                style: TextStyle(color: Colors.red[600], fontSize: 12),
+              ),
+            )
+            : Container(),
       ],
     );
   }
