@@ -97,6 +97,36 @@ class EnrolleeListProvider extends ChangeNotifier{
         contactNo: "09123456789"
       ),
     ],
+
+    4: [
+      Student(
+        firstName: "Kai", 
+        lastName: "Rejected", 
+        course: "BSCS", 
+        studentNo: "02000123456", 
+        academicType: "Regular",
+        email: "johndoe@gmail.com",
+        contactNo: "09123456789"
+      ),
+      Student(
+        firstName: "Ray", 
+        lastName: "Quan", 
+        course: "BSCS", 
+        studentNo: "02000123456", 
+        academicType: "Regular",
+        email: "johndoe@gmail.com",
+        contactNo: "09123456789"
+      ),
+      Student(
+        firstName: "Duke", 
+        lastName: "Dennis", 
+        course: "BSCS", 
+        studentNo: "02000123456", 
+        academicType: "Regular",
+        email: "johndoe@gmail.com",
+        contactNo: "09123456789"
+      ),
+    ],
   };
 
 

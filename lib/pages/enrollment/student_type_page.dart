@@ -54,14 +54,15 @@ class _StudentTypePageState extends State<StudentTypePage> {
   }
 
   // Handle navigation
-  void handleNavigation() {
-    Widget destination = SizedBox.shrink();
-    debugPrint("SHIBAL");
-    if (selectedItem == typeStudent[0]) {
-      destination = PreferredProgramPage();
-    } else if (selectedItem == typeStudent[1]) {
-      destination = StudentStatusPage();
-    }
+  void handleNavigation(){
+   Widget destination = SizedBox.shrink();
+   
+   if (selectedItem == typeStudent[0]){
+    destination = PreferredProgramPage();
+   }
+   else if (selectedItem == typeStudent[1]){
+    destination = StudentStatusPage();
+   }
 
     Navigator.push(
       context,

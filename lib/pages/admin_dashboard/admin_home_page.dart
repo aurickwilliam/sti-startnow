@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/pages/admin_dashboard/components/enrollees_card.dart';
+import 'package:sti_startnow/pages/sign_in/sign_in_admin_page.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class AdminHomePage extends StatelessWidget {
@@ -46,27 +47,17 @@ class AdminHomePage extends StatelessWidget {
                               ),
                             ),
                         
-                            Row(
-                              children: [
-                                IconButton(
-                                  onPressed: () {}, 
-                                  icon: Icon(
-                                    Icons.notifications_none_outlined,
-                                    color: AppTheme.colors.gold,
-                                    size: 30,
-                                  )
-                                ),
-                        
-                                IconButton(
-                                  onPressed: () {}, 
-                                  icon: Icon(
-                                    Icons.account_circle_outlined,
-                                    color: AppTheme.colors.gold,
-                                    size: 30,
-                                  )
-                                ),
-                              ],
-                            )
+                            IconButton(
+                              onPressed: () {
+                                Navigator.push(context, 
+                                MaterialPageRoute(builder: (context) => SignInAdminPage()));
+                              }, 
+                              icon: Icon(
+                                Icons.logout_rounded,
+                                color: AppTheme.colors.gold,
+                                size: 30,
+                              )
+                            ),
                           ],
                         ),
                       ),
