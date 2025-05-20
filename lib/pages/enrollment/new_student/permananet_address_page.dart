@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/components/buttons/back_next_button.dart';
 import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/components/number_input.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/enrollment/new_student/contact_details_page.dart';
+import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class PermananetAddressPage extends StatefulWidget {
@@ -16,6 +19,8 @@ class PermananetAddressPage extends StatefulWidget {
 }
 
 class _PermanentAddressPageState extends State<PermananetAddressPage> {
+  late Student student;
+
   final _formKey = GlobalKey<FormState>(); // For input validation
 
   final TextEditingController streetNoController = TextEditingController();
@@ -25,6 +30,31 @@ class _PermanentAddressPageState extends State<PermananetAddressPage> {
   final TextEditingController cityController = TextEditingController();
   final TextEditingController provinceController = TextEditingController();
   final TextEditingController zipCodeController = TextEditingController();
+
+  @override
+  void initState() {
+    student = context.read<DatabaseProvider>().student;
+
+    streetNoController.text = student.permanentAddress.streetNumber ?? "";
+    streetController.text = student.permanentAddress.street ?? "";
+    subdivisionController.text = student.permanentAddress.subdivision ?? "";
+    barangayController.text = student.permanentAddress.barangay ?? "";
+    cityController.text = student.permanentAddress.city ?? "";
+    provinceController.text = student.permanentAddress.province ?? "";
+    zipCodeController.text = student.permanentAddress.zipCode ?? "";
+
+    super.initState();
+  }
+
+  void saveInput() {
+    student.permanentAddress.streetNumber = streetNoController.text;
+    student.permanentAddress.street = streetController.text;
+    student.permanentAddress.subdivision = subdivisionController.text;
+    student.permanentAddress.barangay = barangayController.text;
+    student.permanentAddress.city = cityController.text;
+    student.permanentAddress.province = provinceController.text;
+    student.permanentAddress.zipCode = zipCodeController.text;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -167,6 +197,7 @@ class _PermanentAddressPageState extends State<PermananetAddressPage> {
                       BackNextButton(
                         nextPressed: () {
                           if (_formKey.currentState!.validate()) {
+                            saveInput();
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -187,6 +218,10 @@ class _PermanentAddressPageState extends State<PermananetAddressPage> {
                               },
                             );
                           }
+                        },
+                        backPressed: () {
+                          saveInput();
+                          Navigator.pop(context);
                         },
                       ),
                     ],

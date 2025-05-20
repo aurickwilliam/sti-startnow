@@ -113,7 +113,7 @@ class CustomBottomSheet extends StatelessWidget {
                         ),
 
                         child: Text(
-                          "Yes, Submit",
+                          "Yes, I'm sure",
                           style: GoogleFonts.roboto(
                             color: AppTheme.colors.white,
                             fontSize: 16,

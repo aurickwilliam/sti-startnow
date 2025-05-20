@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:sti_startnow/models/address.dart';
+import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/components/buttons/back_next_button.dart';
 import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/enrollment/components/validate_tile.dart';
 import 'package:sti_startnow/pages/enrollment/new_student/reservation_fee_page.dart';
+import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class ValidateDetailsPage extends StatefulWidget {
@@ -15,50 +19,123 @@ class ValidateDetailsPage extends StatefulWidget {
 }
 
 class _ValidateDetailsPageState extends State<ValidateDetailsPage> {
+  late Student student;
   // Temporary Data
-  final List<List> schoolInformationList = [
-    ["Campus:", "Caloocan"],
-    ["Preferred Course:", "BSCS"],
-    ["Admit Type:", "New Student"],
-    ["Yr Level/Grade Level:", "1st Year"],
-    ["School Year:", "2025-2026"],
-    ["Term:", "1st Term"],
-  ];
+  late List<List> schoolInformationList;
+  late List<List> studentInformationList;
+  late List<List> educationBGList;
+  late List<List> parentInformationList;
 
-  final List<List> studentInformationList = [
-    ["First Name:", "John"],
-    ["Middle Name:", "Donaldson"],
-    ["Last Name:", "Doe"],
-    ["Suffix Name:", "N/A"],
-    ["Telephone Number:", "2935544"],
-    ["Mobile Number:", "09123456789"],
-    ["Current Address:", "Samson St. STI Caloocan"],
-    ["Permanent Address:", "Caimito Rd. Kadiliman"],
-    ["Email Address:", "johndoe@yahoo.com"],
-    ["Date of Birth:", "mm/dd/yy"],
-    ["Religion:", "Atheist"],
-    ["Citizenship:", "Canadian"],
-    ["Gender:", "Cismale"],
-    ["Civil Status:", "Widow"],
-  ];
+  @override
+  void initState() {
+    student = context.read<DatabaseProvider>().student;
 
-  final List<List> educationBGList = [
-    ["Current or Last School Attended:", "Stanford University"],
-    ["Program/Track & Strand/Specialization:", "Political Science"],
-    ["Date of Graduation:", "N/A"],
-    ["School Year:", "2024-2025"],
-    ["Year/Grade:", "Grade 13"],
-    ["Term:", "3rd Term"],
-  ];
+    super.initState();
+  }
 
-  final List<List> parentInformationList = [
-    ["Father's Name / Contact#:", "Steve Jobs / 09123456789"],
-    ["Mother's Name / Contact#:", "Mary Jane / 09123456789"],
-    ["Guardian's Name / Contact#:", "Vicenzo Cassano / 09123456789"],
-  ];
+  String formatAddress(Address address) {
+    String formattedAddress = "${address.streetNumber} ${address.street},";
+
+    if (address.subdivision!.isNotEmpty) {
+      formattedAddress += " ${address.subdivision},";
+    }
+
+    if (address.barangay!.isNotEmpty) {
+      formattedAddress += " ${address.barangay},";
+    }
+
+    formattedAddress += " ${address.city}";
+
+    if (address.province!.isNotEmpty) {
+      formattedAddress += ", ${address.province}";
+    }
+
+    if (address.zipCode!.isNotEmpty) {
+      formattedAddress += ", ${address.zipCode}";
+    }
+
+    return formattedAddress;
+  }
 
   @override
   Widget build(BuildContext context) {
+    schoolInformationList = [
+      ["Campus:", "Caloocan"],
+      ["Preferred Course:", student.course],
+      ["Admit Type:", student.enrollment.admissionType],
+      ["Yr Level/Grade Level:", student.enrollment.yearLevel],
+      ["School Year:", student.enrollment.academicYear],
+      ["Term:", student.enrollment.semester],
+    ];
+
+    studentInformationList = [
+      ["First Name:", student.firstName],
+      [
+        "Middle Name:",
+        student.middleName!.isEmpty ? "N/A" : student.middleName,
+      ],
+      ["Last Name:", student.lastName],
+      [
+        "Suffix Name:",
+        student.suffixName!.isEmpty ? "N/A" : student.suffixName,
+      ],
+      [
+        "Telephone Number:",
+        student.telephone!.isEmpty ? "N/A" : student.telephone,
+      ],
+      ["Mobile Number:", student.contactNo],
+      ["Current Address:", formatAddress(student.currentAddress)],
+      ["Permanent Address:", formatAddress(student.permanentAddress)],
+      ["Email Address:", student.email],
+      ["Date of Birth:", student.dateOfBirth],
+      ["Religion:", student.religion],
+      ["Citizenship:", student.citizenship],
+      ["Gender:", student.gender],
+      ["Civil Status:", student.civilStatus],
+    ];
+
+    educationBGList = [
+      [
+        "Current or Last School Attended:",
+        student.currentLastSchool.schoolName,
+      ],
+      [
+        "Program/Track & Strand/Specialization:",
+        student.currentLastSchool.program!.isEmpty
+            ? "N/A"
+            : student.currentLastSchool.program,
+      ],
+      [
+        "Date of Graduation:",
+        student.currentLastSchool.graduationDate!.isEmpty
+            ? "N/A"
+            : student.currentLastSchool.graduationDate,
+      ],
+      ["School Year:", student.currentLastSchool.schoolYear],
+      ["Year/Grade:", student.currentLastSchool.yearLevel],
+      [
+        "Term:",
+        student.currentLastSchool.term!.isEmpty
+            ? "N/A"
+            : student.currentLastSchool.term,
+      ],
+    ];
+
+    // PLEASE REFACTOR THIS SHIT
+    parentInformationList = [
+      [
+        "Father's Name / Contact#:",
+        "${student.father.firstName == "N/A" || student.father.lastName == "N/A" ? "N/A" : "${student.father.firstName} ${student.father.lastName}"} / ${student.father.mobileNumber == "0" ? "N/A" : student.father.mobileNumber}",
+      ],
+      [
+        "Mother's Name / Contact#:",
+        "${student.mother.firstName == "N/A" || student.mother.lastName == "N/A" ? "N/A" : "${student.mother.firstName} ${student.mother.lastName}"} / ${student.mother.mobileNumber == "0" ? "N/A" : student.mother.mobileNumber}",
+      ],
+      [
+        "Guardian's Name / Contact#:",
+        "${student.guardian.firstName == "N/A" || student.guardian.lastName == "N/A" ? "N/A" : "${student.guardian.firstName} ${student.guardian.lastName}"} / ${student.guardian.mobileNumber == "0" ? "N/A" : student.guardian.mobileNumber}",
+      ],
+    ];
     // if is in landscape
     bool isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;

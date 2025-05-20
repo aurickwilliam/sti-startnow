@@ -13,12 +13,7 @@ import 'package:sti_startnow/theme/app_theme.dart';
 class EnrolleeListPage extends StatelessWidget {
   EnrolleeListPage({super.key});
 
-  final List<String> listOfStatus = [
-    "Not Enrolled",
-    "Unverified",
-    "Verified",
-    "Rejected",
-  ];
+  final List<String> listOfStatus = ["Not Enrolled", "Unverified", "Verified"];
 
   @override
   Widget build(BuildContext context) {
@@ -59,12 +54,12 @@ class EnrolleeListPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               PageAppBar(
-                title: "List of Enrollees", 
+                title: "List of Enrollees",
                 onPressed: () {
                   Navigator.pop(context);
-                }
+                },
               ),
-          
+
               Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: isLandscape ? 200 : 24,
@@ -72,8 +67,8 @@ class EnrolleeListPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 10,),
-                            
+                    const SizedBox(height: 10),
+
                     Text(
                       "$status Enrollees:",
                       style: GoogleFonts.roboto(
@@ -82,18 +77,18 @@ class EnrolleeListPage extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                            
-                    const SizedBox(height: 10,),
-                            
+
+                    const SizedBox(height: 10),
+
                     ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: listOfEnrolless.length,
                       itemBuilder: (context, index) {
                         return EnrolleeTile(
-                          firstName: listOfEnrolless[index].firstName, 
-                          lastName: listOfEnrolless[index].lastName, 
-                          course: listOfEnrolless[index].course, 
+                          firstName: listOfEnrolless[index].firstName!,
+                          lastName: listOfEnrolless[index].lastName!,
+                          course: listOfEnrolless[index].course!,
                           profileImg: listOfEnrolless[index].profileImg,
                           onTap: () {
                             handleNavigation(listOfEnrolless[index]);
@@ -102,13 +97,13 @@ class EnrolleeListPage extends StatelessWidget {
                       },
                     ),
 
-                    const SizedBox(height: 20,),
+                    const SizedBox(height: 20),
                   ],
                 ),
-              )
+              ),
             ],
           ),
-        )
+        ),
       ),
     );
   }
