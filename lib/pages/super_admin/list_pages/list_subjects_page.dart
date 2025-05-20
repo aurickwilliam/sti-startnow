@@ -28,10 +28,76 @@ class _ListSubjectsPageState extends State<ListSubjectsPage> {
 
   // Temporary Values for the table
   List<List> values = [
-    ["1", "Information Management", "COSC1001", "3.00", "2nd Year", "Information Technology"],
-    ["2", "Fundamental of Mobile Programming", "COSC1001", "3.00", "2nd Year", "Information Technology"],
-    ["3", "Computer Programming 3", "COSC1001", "3.00", "2nd Year", "Information Technology"],
+    [
+      "1",
+      "Information Management",
+      "COSC1001",
+      "3.00",
+      "2nd Year",
+      "Information Technology",
+    ],
+    [
+      "2",
+      "Fundamental of Mobile Programming",
+      "COSC1001",
+      "3.00",
+      "2nd Year",
+      "Information Technology",
+    ],
+    [
+      "3",
+      "Computer Programming 3",
+      "COSC1001",
+      "3.00",
+      "2nd Year",
+      "Information Technology",
+    ],
+    [
+      "4",
+      "Great Books",
+      "COSC1001",
+      "3.00",
+      "2nd Year",
+      "Information Technology",
+    ],
+    [
+      "5",
+      "Philippine Popular Culture",
+      "COSC1001",
+      "3.00",
+      "2nd Year",
+      "Information Technology",
+    ],
   ];
+
+  List<List> matchedValues = [];
+
+  @override
+  void initState() {
+    matchedValues = values;
+    super.initState();
+  }
+
+  void searchValues(String searchTerm) {
+    List<List> results = [];
+
+    if (searchTerm.isEmpty) {
+      results = values;
+    } else {
+      results =
+          values
+              .where(
+                (subject) => subject[1].toLowerCase().startsWith(
+                  searchTerm.toLowerCase(),
+                ),
+              )
+              .toList();
+    }
+
+    setState(() {
+      matchedValues = results;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,56 +107,59 @@ class _ListSubjectsPageState extends State<ListSubjectsPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              PageAppBar(
-                title: "Subjects"
-              ),
-          
-              const SizedBox(height: 10,),
-          
+              PageAppBar(title: "Subjects"),
+
+              const SizedBox(height: 10),
+
               Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 10
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SearchBox(
-                      controller: searchController, 
-                      label: "Search:", 
-                      hint: "Enter a subject name"
+                      controller: searchController,
+                      label: "Search:",
+                      hint: "Enter a subject name",
+                      onChanged: searchValues,
                     ),
-                              
-                    const SizedBox(height: 20,),
-                              
-                    ListDataTable(
-                      columnNames: columnNames, 
-                      dataTableValues: values,
-                      handleNavigation: (item) {
-                        Navigator.push(context, 
-                        MaterialPageRoute(builder: (context) => EditSubjectRowPage(rowValues: item)));
-                      },
-                    ),
+
+                    const SizedBox(height: 20),
+
+                    matchedValues.isNotEmpty
+                        ? ListDataTable(
+                          columnNames: columnNames,
+                          dataTableValues: matchedValues,
+                          handleNavigation: (item) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (context) =>
+                                        EditSubjectRowPage(rowValues: item),
+                              ),
+                            );
+                          },
+                        )
+                        : Center(child: Text("No matches found")),
                   ],
                 ),
-              )
+              ),
             ],
           ),
-        )
+        ),
       ),
 
       // FAB
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, 
-          MaterialPageRoute(builder: (context) => AddSubjectPage()));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddSubjectPage()),
+          );
         },
         backgroundColor: AppTheme.colors.white,
         foregroundColor: AppTheme.colors.primary,
-        child: const Icon(
-          Icons.add,
-          size: 30,
-        ),
+        child: const Icon(Icons.add, size: 30),
       ),
     );
   }
