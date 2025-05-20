@@ -13,7 +13,7 @@ import 'package:sti_startnow/theme/app_theme.dart';
 class EnrolleeListPage extends StatelessWidget {
   EnrolleeListPage({super.key});
 
-  final List<String> listOfStatus = ["Not Enrolled", "Unverified", "Verified"];
+  final List<String> listOfStatus = ["Not Enrolled", "Unverified", "Verified", "Rejected"];
 
   @override
   Widget build(BuildContext context) {
