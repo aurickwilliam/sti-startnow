@@ -283,7 +283,7 @@ class _UnverifiedEnrolleePageState extends State<UnverifiedEnrolleePage> {
                       onPressed: () {
                         if (selectedStatus.isNotEmpty) {
                           final status =
-                              selectedStatus == "Approved"
+                              selectedStatus == "Approve"
                                   ? "Verified"
                                   : "Rejected";
 
