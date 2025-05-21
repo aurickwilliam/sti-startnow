@@ -14,7 +14,7 @@ void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   await checkIfFirstLaunch();
-  debugPrint("Hello");
+
   FlutterNativeSplash.remove();
   runApp(const MyApp());
 }
