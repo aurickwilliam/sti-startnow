@@ -8,7 +8,7 @@ import 'package:sti_startnow/pages/components/custom_tooltip.dart';
 import 'package:sti_startnow/pages/components/number_input.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
-import 'package:sti_startnow/pages/enrollment/new_student/validate_details_page.dart';
+import 'package:sti_startnow/pages/enrollment/new_student/new_select_section_page.dart';
 import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
@@ -269,7 +269,7 @@ class _GuardianInfoPageState extends State<GuardianInfoPage> {
                                       context,
                                       MaterialPageRoute(
                                         builder:
-                                            (context) => ValidateDetailsPage(),
+                                            (context) => NewSelectSectionPage(),
                                       ),
                                     );
                                   },
