@@ -56,6 +56,29 @@ class _PermanentAddressPageState extends State<PermananetAddressPage> {
     student.permanentAddress.zipCode = zipCodeController.text;
   }
 
+  bool isSameWithCurrentAddress = false;
+
+  void ifSameWithCurrentAddress(){
+    if (isSameWithCurrentAddress) {
+      streetNoController.text = student.currentAddress.streetNumber!;
+      streetController.text = student.currentAddress.street!;
+      subdivisionController.text = student.currentAddress.subdivision!;
+      barangayController.text = student.currentAddress.barangay!;
+      cityController.text = student.currentAddress.city!;
+      provinceController.text = student.currentAddress.province!;
+      zipCodeController.text = student.currentAddress.zipCode!;
+    }
+    else {
+      streetNoController.text = "";
+      streetController.text = "";
+      subdivisionController.text = "";
+      barangayController.text = "";
+      cityController.text = "";
+      provinceController.text = "";
+      zipCodeController.text = "";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // if is in landscape
@@ -107,6 +130,34 @@ class _PermanentAddressPageState extends State<PermananetAddressPage> {
                       ),
 
                       const SizedBox(height: 10),
+
+                      // Checkbox if same address sa current
+                      CheckboxListTile(
+                        contentPadding: EdgeInsets.zero,
+                        controlAffinity: ListTileControlAffinity.leading,
+                        value: isSameWithCurrentAddress, 
+                        onChanged: (value) {
+                          setState(() {
+                            isSameWithCurrentAddress = value!;
+                            ifSameWithCurrentAddress();
+                          });
+                        },
+
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15)
+                        ),
+
+                        title: Text(
+                          "Same as Current Address",
+                          style: GoogleFonts.roboto(
+                            color: AppTheme.colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 20,),
 
                       // Street No / Unit No
                       TextInput(
