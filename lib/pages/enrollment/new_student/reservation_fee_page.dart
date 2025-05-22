@@ -1,13 +1,16 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/buttons/custom_outline_button.dart';
 import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/enrollment/completed_page.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
+import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class ReservationFeePage extends StatefulWidget {
@@ -18,6 +21,8 @@ class ReservationFeePage extends StatefulWidget {
 }
 
 class _ReservationFeePageState extends State<ReservationFeePage> {
+  late DatabaseProvider db;
+
   File? reservationImg;
   File? reservationImgName;
 
@@ -32,6 +37,40 @@ class _ReservationFeePageState extends State<ReservationFeePage> {
       reservationImg = File(returnedImage!.path);
       reservationImgName = File(returnedImage.name);
     });
+  }
+
+  Future<void> finishNewStudentEnrollment() async {
+    // Show circular progress indicator
+    showDialog(
+      context: context,
+      builder: (context) {
+        return PopScope(
+          canPop: false,
+          child: Center(child: const CircularProgressIndicator()),
+        );
+      },
+    );
+
+    // Create student account
+    // Reminder: handle errors
+    await db.createNewStudent();
+
+    // Pop circular progress indicator
+    if (mounted) {
+      Navigator.pop(context);
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => CompletedPage()),
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    db = context.read<DatabaseProvider>();
+
+    super.initState();
   }
 
   @override
@@ -154,13 +193,8 @@ class _ReservationFeePageState extends State<ReservationFeePage> {
                   context: context,
                   builder: (builder) {
                     return CustomBottomSheet(
-                      submitFunc: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CompletedPage(),
-                          ),
-                        );
+                      submitFunc: () async {
+                        await finishNewStudentEnrollment();
                       },
                     );
                   },

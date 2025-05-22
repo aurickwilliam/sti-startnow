@@ -165,7 +165,7 @@ class EnrolleeListProvider extends ChangeNotifier {
       academicType: "Regular",
       email: "johndoe@gmail.com",
       contactNo: "09123456789",
-      status: "Unverified",
+      status: "Not Enrolled",
     ),
     Student(
       firstName: "Leonard",
@@ -175,7 +175,7 @@ class EnrolleeListProvider extends ChangeNotifier {
       academicType: "Regular",
       email: "johndoe@gmail.com",
       contactNo: "09123456789",
-      status: "Unverified",
+      status: "Not Enrolled",
     ),
     Student(
       firstName: "Penny",
@@ -185,7 +185,7 @@ class EnrolleeListProvider extends ChangeNotifier {
       academicType: "Regular",
       email: "johndoe@gmail.com",
       contactNo: "09123456789",
-      status: "Unverified",
+      status: "Not Enrolled",
     ),
     Student(
       firstName: "Kai",
