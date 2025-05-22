@@ -10,7 +10,7 @@ import 'package:sti_startnow/theme/app_theme.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
@@ -24,6 +24,7 @@ void main() async {
   FlutterNativeSplash.remove();
   runApp(const MyApp());
 }
+
 
 late final bool isFirstLaunch;
 final supabase = Supabase.instance.client;
