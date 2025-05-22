@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/components/option_box.dart';
 import 'package:sti_startnow/pages/components/option_tile.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
@@ -12,9 +13,11 @@ class Settings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     // if is in landscape
-    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape ? true : false;
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape
+            ? true
+            : false;
 
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
@@ -26,8 +29,10 @@ class Settings extends StatelessWidget {
               PageAppBar(
                 title: "Settings",
                 onPressed: () {
-                  Navigator.push(context, 
-                  MaterialPageRoute(builder: (context) => MainDashboard()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MainDashboard()),
+                  );
                 },
               ),
 
@@ -39,12 +44,12 @@ class Settings extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 20),
-                            
+
                     OptionBox(
                       children: [
                         OptionTile(
-                          text: "Account Settings", 
-                          icon: Icons.account_circle_outlined, 
+                          text: "Account Settings",
+                          icon: Icons.account_circle_outlined,
                           onTap: () {
                             Navigator.push(
                               context,
@@ -52,29 +57,37 @@ class Settings extends StatelessWidget {
                                 builder: (context) => AccountSettings(),
                               ),
                             );
-                          }
+                          },
                         ),
-                            
+
                         OptionTile(
-                          text: "Notifications", 
-                          icon: Icons.notifications_outlined, 
-                          onTap: () {}
+                          text: "Notifications",
+                          icon: Icons.notifications_outlined,
+                          onTap: () {},
                         ),
-                            
+
                         OptionTile(
-                          text: "Sign Out", 
-                          icon: Icons.logout, 
-                          onTap: () {
-                            Navigator.push(context, 
-                            MaterialPageRoute(builder: (context) => SignInStudentPage()));
+                          text: "Sign Out",
+                          icon: Icons.logout,
+                          onTap: () async {
+                            await supabase.auth.signOut();
+
+                            if (context.mounted) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SignInStudentPage(),
+                                ),
+                              );
+                            }
                           },
                           isLastItem: true,
-                        )
-                      ]
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),

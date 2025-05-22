@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:sti_startnow/models/address.dart';
 import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/components/buttons/back_next_button.dart';
 import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
@@ -33,30 +32,6 @@ class _ValidateDetailsPageState extends State<ValidateDetailsPage> {
     super.initState();
   }
 
-  String formatAddress(Address address) {
-    String formattedAddress = "${address.streetNumber} ${address.street},";
-
-    if (address.subdivision!.isNotEmpty) {
-      formattedAddress += " ${address.subdivision},";
-    }
-
-    if (address.barangay!.isNotEmpty) {
-      formattedAddress += " ${address.barangay},";
-    }
-
-    formattedAddress += " ${address.city}";
-
-    if (address.province!.isNotEmpty) {
-      formattedAddress += ", ${address.province}";
-    }
-
-    if (address.zipCode!.isNotEmpty) {
-      formattedAddress += ", ${address.zipCode}";
-    }
-
-    return formattedAddress;
-  }
-
   @override
   Widget build(BuildContext context) {
     schoolInformationList = [
@@ -84,8 +59,8 @@ class _ValidateDetailsPageState extends State<ValidateDetailsPage> {
         student.telephone!.isEmpty ? "N/A" : student.telephone,
       ],
       ["Mobile Number:", student.contactNo],
-      ["Current Address:", formatAddress(student.currentAddress)],
-      ["Permanent Address:", formatAddress(student.permanentAddress)],
+      ["Current Address:", student.currentAddress.fullAddress],
+      ["Permanent Address:", student.permanentAddress.fullAddress],
       ["Email Address:", student.email],
       ["Date of Birth:", student.dateOfBirth],
       ["Religion:", student.religion],

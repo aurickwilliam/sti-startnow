@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sti_startnow/pages/enrollment_dashboard/enrollment_dashboard.dart';
-import 'package:sti_startnow/pages/welcome/welcome_page.dart';
+import 'package:sti_startnow/pages/home_page.dart';
 import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/providers/enrollee_list_provider.dart';
 import 'package:sti_startnow/providers/subject_list_provider.dart';
@@ -21,10 +20,8 @@ Future<void> main() async {
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVodWRxaXphZXllY3FrZnRjeHlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc3OTc4MTMsImV4cCI6MjA2MzM3MzgxM30._590W8qSdRFd-NeVeKW41GY43T8bJJLKyISqUD-apyo',
   );
 
-  FlutterNativeSplash.remove();
   runApp(const MyApp());
 }
-
 
 late final bool isFirstLaunch;
 final supabase = Supabase.instance.client;
@@ -43,7 +40,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: AppTheme.define(),
-        home: isFirstLaunch ? WelcomePage() : EnrollmentDashboard(),
+        home: HomePage(),
       ),
     );
   }

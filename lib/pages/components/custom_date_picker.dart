@@ -175,7 +175,10 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
   Future<void> selectDate() async {
     DateTime? date = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate:
+          widget.controller.text.isEmpty
+              ? DateTime.now()
+              : DateTime.parse(widget.controller.text),
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
     );

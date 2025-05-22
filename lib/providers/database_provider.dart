@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/models/student.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DatabaseProvider extends ChangeNotifier {
   // For student information
@@ -12,71 +13,160 @@ class DatabaseProvider extends ChangeNotifier {
     _student = Student();
   }
 
-  Future<void> initializeExistingStudent(String email) async {
+  Future<void> initializeExistingStudent(int studentNumber) async {
     _student = Student();
-    _student.email = email;
 
-    // Email gamit ko pang search ng database since sa database lang naaaccess ang student number
-    // Ano pa ba pede gawin?
-    final res = await supabase
+    // Read student info
+    final studentRes = await supabase
         .from("STUDENT")
         .select()
-        .eq('personal_email', _student.email!);
+        .eq('student_id', studentNumber);
 
-    _student.studentNo = res[0]['student_id'].toString();
-    _student.firstName = res[0]['stud_fname'];
-    _student.middleName = res[0]['stud_mname'];
-    _student.lastName = res[0]['stud_lname'];
+    if (studentRes.isNotEmpty) {
+      final studentInfo = studentRes[0];
+      _student.studentNo = "0${studentInfo['student_id']}";
+      _student.firstName = studentInfo['stud_fname'];
+      _student.middleName = studentInfo['stud_mname'];
+      _student.lastName = studentInfo['stud_lname'];
+      _student.suffixName = studentInfo['stud_suffix'];
+    }
   }
 
   // Create new student account
   Future<void> createNewStudent() async {
-    // Generate student password/access code
-    final surname = _student.lastName;
-    final String year, month, day;
-    [year, month, day] = student.dateOfBirth!.split('-');
+    final email = _student.email;
+    final password = _generateAccessCode();
 
-    final res = await supabase.auth.signUp(
-      email: student.email,
-      password: "$surname$year$month$day",
-    );
+    final res = await supabase.auth.signUp(email: email, password: password);
 
     final session = res.session;
 
     if (session != null) {
       final user = session.user;
-      await supabase.from('user_roles').insert({
+      await supabase.from('USER_ROLES').insert({
         'user_id': user.id,
         'role': 'student',
       });
+      // I am sorry for this abomination -Patio
       await _insertStudentInfo();
+      await _generateSchoolEmail();
+    } else {
+      debugPrint(
+        "This shoud not happen (hopefully)",
+      ); // Kasi may try catch naman sa tatawag ng function nato
     }
   }
 
-  // Find email from student number
-  Future<String?> findEmail(String studentNumber) async {
+  // Generate student password/access code for new student
+  String _generateAccessCode() {
+    final surname = _student.lastName;
+    final String year, month, day;
+    [year, month, day] = _student.dateOfBirth!.split('-');
+
+    return "$surname$year$month$day";
+  }
+
+  // Generate school email for new student
+  Future<void> _generateSchoolEmail() async {
+    final surname = _student.lastName!.toLowerCase();
+    final studentNumber = _student.studentNo!.substring(5);
+
+    _student.schoolEmail = "$surname.$studentNumber@caloocan.sti.edu.ph";
+
+    // Update school email field sa row ni student
+    await supabase
+        .from("STUDENT")
+        .update({'school_email': _student.schoolEmail})
+        .eq('student_id', int.parse(_student.studentNo!));
+  }
+
+  // Get the studet number for new student (since sa db na generate)
+  Future<String> _getNewStudentNumber() async {
     final res = await supabase
         .from("STUDENT")
-        .select('personal_email')
-        .eq('student_id', studentNumber);
+        .select('student_id')
+        .eq('personal_email', _student.email!);
+
+    if (res.isNotEmpty) {
+      final studentNumber = res[0]['student_id'];
+      return "0$studentNumber";
+    }
+    return "This should not happen (hopefully)";
+  }
+
+  // Find email from student number
+  Future<PostgrestMap?> findStudent(
+    String credential, {
+    bool usedStudentNumber = false,
+    bool usedSchoolEmail = false,
+  }) async {
+    final PostgrestList res; // response mula sa database
+    if (usedStudentNumber) {
+      res = await supabase
+          .from("STUDENT")
+          .select('student_id, personal_email')
+          .eq('student_id', int.parse(credential));
+    } else if (usedSchoolEmail) {
+      res = await supabase
+          .from("STUDENT")
+          .select('student_id, personal_email')
+          .eq('school_email', credential);
+    } else {
+      res = await supabase
+          .from("STUDENT")
+          .select('student_id, personal_email')
+          .eq(
+            'personal_email',
+            credential,
+          ); // Ginagawa ko pa din to para icheck na student talaga (di admin or ano)
+    }
 
     if (res.isEmpty) {
       return null;
     }
 
-    final email = res[0]['personal_email'];
-    return email;
+    final data = res[0]; // student email and student number
+    return data;
   }
 
   // Insert info ng new student
   Future<void> _insertStudentInfo() async {
-    await supabase.from('STUDENT').insert({
+    // Personal info
+    await supabase.from("STUDENT").insert({
       'stud_lname': _student.lastName,
       'stud_fname': _student.firstName,
       'stud_mname': _student.middleName,
       'gender': _student.gender,
       'birth_date': _student.dateOfBirth,
       'personal_email': _student.email,
+      'stud_suffix': _student.suffixName,
+      'civil_status': _student.civilStatus,
+      'citizenship': _student.citizenship,
+      'birth_place': _student.birthPlace,
+      'religion': _student.religion,
+      'current_address': _student.currentAddress.fullAddress,
+      'permanent_address': _student.permanentAddress.fullAddress,
+      'telephone': _student.telephone,
+      'mobile': _student.contactNo,
+    });
+
+    // Get student number para sa susunod na inserts
+    _student.studentNo = await _getNewStudentNumber();
+    final studentNumber = int.parse(_student.studentNo!);
+
+    // Academic background info
+    final school = _student.currentLastSchool;
+
+    await supabase.from("ACADEMIC_BG").insert({
+      'student_id': studentNumber,
+      'school_type': school.schoolType,
+      'school_name': school.schoolName,
+      'program': school.program,
+      'grad_date':
+          school.graduationDate!.isEmpty ? null : school.graduationDate,
+      'school_year': school.schoolYear,
+      'year_level': school.yearLevel,
+      'term': school.term,
     });
   }
 
