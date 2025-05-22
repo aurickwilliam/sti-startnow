@@ -7,17 +7,13 @@ import 'package:sti_startnow/theme/app_theme.dart';
 class MainDashboard extends StatefulWidget {
   final int selectedIndex;
 
-  const MainDashboard({
-    super.key,
-    this.selectedIndex = 0,
-  });
+  const MainDashboard({super.key, this.selectedIndex = 0});
 
   @override
   State<MainDashboard> createState() => _MainDashboardState();
 }
 
 class _MainDashboardState extends State<MainDashboard> {
-
   int currentPageIndex = 0;
 
   final List<Widget> listOfDestination = [
@@ -27,7 +23,7 @@ class _MainDashboardState extends State<MainDashboard> {
   ];
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     currentPageIndex = widget.selectedIndex;
   }
@@ -38,11 +34,8 @@ class _MainDashboardState extends State<MainDashboard> {
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           border: Border(
-            top: BorderSide(
-              color: AppTheme.colors.gray,
-              width: 1.0
-            )
-          ) 
+            top: BorderSide(color: AppTheme.colors.gray, width: 1.0),
+          ),
         ),
         child: NavigationBar(
           destinations: [
@@ -57,9 +50,9 @@ class _MainDashboardState extends State<MainDashboard> {
                 scale: 18,
                 color: AppTheme.colors.primary,
               ),
-              label: "Home"
+              label: "Home",
             ),
-        
+
             NavigationDestination(
               selectedIcon: Image.asset(
                 "assets/img/navigation_icon/school_filled.png",
@@ -71,9 +64,9 @@ class _MainDashboardState extends State<MainDashboard> {
                 scale: 18,
                 color: AppTheme.colors.primary,
               ),
-              label: "Courses"
+              label: "Courses",
             ),
-        
+
             NavigationDestination(
               selectedIcon: Image.asset(
                 "assets/img/navigation_icon/user_filled.png",
@@ -85,10 +78,10 @@ class _MainDashboardState extends State<MainDashboard> {
                 scale: 18,
                 color: AppTheme.colors.primary,
               ),
-              label: "Profile"
+              label: "Profile",
             ),
           ],
-        
+
           selectedIndex: currentPageIndex,
           onDestinationSelected: (int index) {
             setState(() {
