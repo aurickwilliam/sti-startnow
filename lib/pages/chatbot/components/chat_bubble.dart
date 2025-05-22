@@ -17,7 +17,7 @@ class ChatBubble extends StatelessWidget {
 
     // For User
     Widget userBubble = Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Container(
@@ -65,7 +65,7 @@ class ChatBubble extends StatelessWidget {
 
     // For Bot
     Widget botBubble = Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         // Profile Image
@@ -88,23 +88,25 @@ class ChatBubble extends StatelessWidget {
 
         const SizedBox(width: 5,),
 
-        Container(
-          decoration: BoxDecoration(
-            color: AppTheme.colors.white,
-            borderRadius: BorderRadius.circular(5),
-            border: Border.all(
-              color: AppTheme.colors.gray,
-              width: 2.0
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+              color: AppTheme.colors.white,
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(
+                color: AppTheme.colors.gray,
+                width: 2.0
+              ),
             ),
-          ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            child: Text(
-              message,
-              softWrap: true,
-              style: GoogleFonts.roboto(
-                color: AppTheme.colors.black,
-                fontSize: 14,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child: Text(
+                message,
+                softWrap: true,
+                style: GoogleFonts.roboto(
+                  color: AppTheme.colors.black,
+                  fontSize: 14,
+                ),
               ),
             ),
           ),
