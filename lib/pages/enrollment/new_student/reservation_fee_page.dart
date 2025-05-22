@@ -170,7 +170,7 @@ class _ReservationFeePageState extends State<ReservationFeePage> {
         Padding(
           padding: EdgeInsets.symmetric(
             horizontal: isLandscape ? 200 : 24,
-            vertical: isLandscape ? 20 : 0,
+            vertical: 10,
           ),
           child: BottomButton(
             onPressed: () {

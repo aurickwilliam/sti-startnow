@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/components/search_box.dart';
 import 'package:sti_startnow/pages/super_admin/add_pages/add_enroll_sched_page.dart';
@@ -98,7 +99,32 @@ class _ListEnrollSchedulePageState extends State<ListEnrollSchedulePage> {
                             );
                           },
                         )
-                        : Center(child: Text("No matches found")),
+                        : Container(
+                          child: Center(
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: 200,
+                                  child: Image(
+                                    image: AssetImage(
+                                      "assets/img/not_found_img.png",
+                                    ),
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+
+                                Text(
+                                  "No matches found",
+                                  style: GoogleFonts.roboto(
+                                    color: AppTheme.colors.black,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold
+                                  ),
+                                ),
+                              ],
+                            )
+                          ),
+                        ),
                   ],
                 ),
               ),
