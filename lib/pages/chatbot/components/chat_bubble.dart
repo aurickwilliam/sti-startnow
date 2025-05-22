@@ -101,6 +101,7 @@ class ChatBubble extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: Text(
               message,
+              softWrap: true,
               style: GoogleFonts.roboto(
                 color: AppTheme.colors.black,
                 fontSize: 14,

@@ -217,15 +217,6 @@ class EnrollmentDashboard extends StatelessWidget {
 
                 const SizedBox(height: 15,),
 
-                EnrollmentImageTile(
-                  title: "Course\nRecommendation: \nA.I.",
-                  imgPath: "assets/img/enrollment_dashboard/one_sti_crop.jpg",
-                  onTap: () {
-                    // Navigator.push(context, 
-                    // MaterialPageRoute(builder: (context) => ));
-                  },
-                ),
-
                 const SizedBox(height: 30,),
               ],
             ),
