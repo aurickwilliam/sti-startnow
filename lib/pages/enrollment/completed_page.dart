@@ -4,6 +4,8 @@ import 'package:sti_startnow/pages/components/buttons/custom_outline_button.dart
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/main_dashboard/main_dashboard.dart';
+import 'package:sti_startnow/pdf/pre_assessment_api.dart';
+import 'package:sti_startnow/pdf/save_and_open_pdf.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class CompletedPage extends StatelessWidget {
@@ -50,7 +52,13 @@ class CompletedPage extends StatelessWidget {
                     
                   CustomOutlineButton(
                     text: "Download Pre-Assessment Form", 
-                    onPressed: () {}
+                    onPressed: () async {
+                      // ipasa nalang sa parameter ung object nandoon lahat ng info about sa pre-assessment
+                      final preAssessment = await PreAssessmentApi.generatePreAssessment();
+
+                      // IF GUSTO IOPEN PAGTAPOS IDOWNLOAD
+                      // SaveAndOpenPdf.openPdf(preAssessment);
+                    }
                   ),
                 ],
               ),

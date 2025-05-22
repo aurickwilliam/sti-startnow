@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sti_startnow/pages/enrollment/completed_page.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/enrollment_dashboard.dart';
 import 'package:sti_startnow/pages/welcome/welcome_page.dart';
 import 'package:sti_startnow/providers/database_provider.dart';
@@ -43,7 +44,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: AppTheme.define(),
-        home: isFirstLaunch ? WelcomePage() : EnrollmentDashboard(),
+        // home: isFirstLaunch ? WelcomePage() : EnrollmentDashboard(),
+        home: CompletedPage(),
       ),
     );
   }
