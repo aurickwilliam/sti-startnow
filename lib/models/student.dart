@@ -42,7 +42,7 @@ class Student {
     this.academicType,
     this.email,
     this.contactNo,
-    this.status = "Not Enrolled",
+    this.status = "Unverified",
     this.receiptImg = "assets/img/sample_receipt.jpg",
     this.profileImg = "assets/img/def_profile.jpg",
   }) {
@@ -58,5 +58,9 @@ class Student {
     guardian = ParentGuardian();
 
     enrollment = Enrollment();
+  }
+
+  String get fullName {
+    return "$firstName $lastName";
   }
 }
