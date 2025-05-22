@@ -44,8 +44,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: AppTheme.define(),
-        // home: isFirstLaunch ? WelcomePage() : EnrollmentDashboard(),
-        home: CompletedPage(),
+        home: isFirstLaunch ? WelcomePage() : EnrollmentDashboard(),
       ),
     );
   }
