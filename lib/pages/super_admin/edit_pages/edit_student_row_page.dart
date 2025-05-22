@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
+import 'package:sti_startnow/pages/components/buttons/delete_button.dart';
 import 'package:sti_startnow/pages/components/number_input.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
@@ -103,9 +104,20 @@ class _EditStudentRowPageState extends State<EditStudentRowPage> {
             horizontal: isLandscape ? 200 : 24,
             vertical: 10
           ),
-          child: BottomButton(
-            onPressed: () {}, 
-            text: "Save"
+          child: Column(
+            children: [
+              BottomButton(
+                onPressed: () {}, 
+                text: "Save"
+              ),
+
+              const SizedBox(height: 10,),
+
+              DeleteButton(
+                onPressed: () {}, 
+                text: "Delete"
+              )
+            ],
           ),
         )
       ],
