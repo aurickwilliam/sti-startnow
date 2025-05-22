@@ -99,7 +99,6 @@ class _StudentPortalPageState extends State<StudentPortalPage> {
             child: BottomButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  db.initializeExistingStudent();
                   studentNumberController.clear();
                   accessCodeController.clear();
                   Navigator.push(
