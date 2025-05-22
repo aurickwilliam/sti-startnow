@@ -52,7 +52,7 @@ class ChangeEmail extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(
               horizontal: isLandscape ? 200 : 24,
-              vertical: isLandscape ? 10 : 0,
+              vertical: 10,
             ),
             child: BottomButton(
               onPressed: () {
