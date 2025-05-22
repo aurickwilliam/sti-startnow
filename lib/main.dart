@@ -25,7 +25,8 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-late bool isFirstLaunch;
+
+late final bool isFirstLaunch;
 final supabase = Supabase.instance.client;
 
 class MyApp extends StatelessWidget {
