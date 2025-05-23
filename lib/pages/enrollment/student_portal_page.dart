@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/components/number_input.dart';
 import 'package:sti_startnow/pages/components/password_input.dart';
 import 'package:sti_startnow/pages/enrollment/payment_receipt_page.dart';
-import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class StudentPortalPage extends StatefulWidget {
@@ -25,8 +23,6 @@ class _StudentPortalPageState extends State<StudentPortalPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Reference sa database
-    final db = Provider.of<DatabaseProvider>(context);
     // if is in landscape
     bool isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
@@ -99,8 +95,6 @@ class _StudentPortalPageState extends State<StudentPortalPage> {
             child: BottomButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  studentNumberController.clear();
-                  accessCodeController.clear();
                   Navigator.push(
                     context,
                     MaterialPageRoute(

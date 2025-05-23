@@ -20,6 +20,7 @@ class Student {
   String? telephone;
   String? contactNo;
   String? email;
+  String? schoolEmail;
   late School currentLastSchool;
   late ParentGuardian father;
   late ParentGuardian mother;
@@ -61,6 +62,18 @@ class Student {
   }
 
   String get fullName {
-    return "$firstName $lastName";
+    String formattedName = firstName!;
+
+    if (middleName!.isNotEmpty) {
+      formattedName += ' ${middleName![0]}.';
+    }
+
+    formattedName += ' $lastName';
+
+    if (suffixName!.isNotEmpty) {
+      formattedName += ' $suffixName';
+    }
+
+    return formattedName;
   }
 }

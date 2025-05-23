@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class EnrollmentStatusCard extends StatelessWidget {
-  const EnrollmentStatusCard({super.key});
+  final Student student;
+  const EnrollmentStatusCard({super.key, required this.student});
 
   @override
   Widget build(BuildContext context) {
@@ -38,13 +40,13 @@ class EnrollmentStatusCard extends StatelessWidget {
                 ),
 
                 IconButton(
-                  onPressed: () {}, 
+                  onPressed: () {},
                   icon: Icon(
                     Icons.chevron_right_rounded,
                     color: AppTheme.colors.primary,
                     size: 25,
-                  )
-                )
+                  ),
+                ),
               ],
             ),
           ),
@@ -56,29 +58,26 @@ class EnrollmentStatusCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 // Name of the Student
                 Text(
-                  "John D. Doe",
+                  student.fullName,
                   style: GoogleFonts.roboto(
                     color: AppTheme.colors.black,
                     fontSize: 16,
-                    fontWeight: FontWeight.w500
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
 
                 // Student Number of the Student
                 Text(
-                  "02000123456",
+                  student.studentNo!,
                   style: GoogleFonts.roboto(
                     color: AppTheme.colors.black,
                     fontSize: 16,
                   ),
                 ),
 
-                Divider(
-                  height: 10,
-                ),
+                Divider(height: 10),
 
                 // Term and Year
                 Text(
@@ -90,7 +89,7 @@ class EnrollmentStatusCard extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 10,),
+                const SizedBox(height: 10),
 
                 RichText(
                   text: TextSpan(
@@ -100,24 +99,20 @@ class EnrollmentStatusCard extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                     children: [
-                      TextSpan(
-                        text: "Status: ",
-                      ),
+                      TextSpan(text: "Status: "),
 
                       // Status Text
                       TextSpan(
                         // Temporary
                         text: "PENDING",
-                        style: GoogleFonts.roboto(
-                          color: AppTheme.colors.gold,
-                        )
-                      )
-                    ]
-                  )
-                )
+                        style: GoogleFonts.roboto(color: AppTheme.colors.gold),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

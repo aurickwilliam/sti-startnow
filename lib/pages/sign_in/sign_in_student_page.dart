@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:sti_startnow/main.dart';
+import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/components/password_input.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/enrollment_dashboard.dart';
@@ -7,15 +10,86 @@ import 'package:sti_startnow/pages/main_dashboard/main_dashboard.dart';
 import 'package:sti_startnow/pages/sign_in/components/sign_in_box.dart';
 import 'package:sti_startnow/pages/sign_in/components/sign_in_option.dart';
 import 'package:sti_startnow/pages/sign_in/sign_in_admin_page.dart';
+import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
-class SignInStudentPage extends StatelessWidget {
-  SignInStudentPage({super.key});
+class SignInStudentPage extends StatefulWidget {
+  const SignInStudentPage({super.key});
 
-  final _formKey = GlobalKey<FormState>(); // For input validation
+  @override
+  State<SignInStudentPage> createState() => _SignInStudentPageState();
+}
 
+class _SignInStudentPageState extends State<SignInStudentPage> {
+  late DatabaseProvider db;
+
+  final _formKey = GlobalKey<FormState>();
+  // For input validation
   final TextEditingController emailController = TextEditingController();
+
   final TextEditingController passwordController = TextEditingController();
+
+  bool usedStudentNumber = false;
+  bool usedSchoolEmail = false;
+
+  Future<void> handleStudentSignIn() async {
+    // Show circular progress indicator
+    showDialog(
+      context: context,
+      builder: (context) {
+        return PopScope(
+          canPop: false,
+          child: Center(child: const CircularProgressIndicator()),
+        );
+      },
+    );
+
+    // Check if student exists
+    final student = await db.findStudent(
+      emailController.text,
+      usedStudentNumber: usedStudentNumber,
+      usedSchoolEmail: usedSchoolEmail,
+    );
+
+    if (student != null) {
+      // Note: handle errors
+      await supabase.auth.signInWithPassword(
+        email: student['personal_email'],
+        password: passwordController.text,
+      );
+
+      await db.initializeExistingStudent(student['student_id']);
+
+      if (mounted) {
+        Navigator.pop(context);
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const MainDashboard()),
+        );
+      }
+    } else {
+      if (mounted) {
+        Navigator.pop(context);
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return CustomBottomSheet(
+              isError: true,
+              title: "Something went wrong",
+              subtitle: "Student does not exist",
+            );
+          },
+        );
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    db = context.read<DatabaseProvider>();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,8 +160,12 @@ class SignInStudentPage extends StatelessWidget {
                               );
 
                               if (emailPattern.hasMatch(input)) {
+                                if (input.contains("caloocan.sti.edu.ph")) {
+                                  usedSchoolEmail = true;
+                                }
                                 return false;
                               } else if (studentNoPattern.hasMatch(input)) {
+                                usedStudentNumber = true;
                                 return false;
                               } else {
                                 return true;
@@ -114,14 +192,9 @@ class SignInStudentPage extends StatelessWidget {
 
                           // Sign in button
                           ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => MainDashboard(),
-                                  ),
-                                );
+                                await handleStudentSignIn();
                               }
                             },
                             style: ElevatedButton.styleFrom(
