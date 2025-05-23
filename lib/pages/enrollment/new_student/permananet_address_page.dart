@@ -20,6 +20,7 @@ class PermananetAddressPage extends StatefulWidget {
 
 class _PermanentAddressPageState extends State<PermananetAddressPage> {
   late Student student;
+  late bool isSameWithCurrentAddress;
 
   final _formKey = GlobalKey<FormState>(); // For input validation
 
@@ -34,6 +35,7 @@ class _PermanentAddressPageState extends State<PermananetAddressPage> {
   @override
   void initState() {
     student = context.read<DatabaseProvider>().student;
+    isSameWithCurrentAddress = student.isSameCurrentAddress ?? false;
 
     streetNoController.text = student.permanentAddress.streetNumber ?? "";
     streetController.text = student.permanentAddress.street ?? "";
@@ -54,9 +56,9 @@ class _PermanentAddressPageState extends State<PermananetAddressPage> {
     student.permanentAddress.city = cityController.text;
     student.permanentAddress.province = provinceController.text;
     student.permanentAddress.zipCode = zipCodeController.text;
-  }
 
-  bool isSameWithCurrentAddress = false;
+    student.isSameCurrentAddress = isSameWithCurrentAddress;
+  }
 
   void ifSameWithCurrentAddress(){
     if (isSameWithCurrentAddress) {
