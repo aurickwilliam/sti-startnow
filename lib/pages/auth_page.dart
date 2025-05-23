@@ -3,6 +3,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/admin_dashboard/admin_dashboard.dart';
+import 'package:sti_startnow/pages/internet_check/no_internet_page.dart';
 import 'package:sti_startnow/pages/main_dashboard/main_dashboard.dart';
 import 'package:sti_startnow/pages/super_admin/super_admin_dashboard.dart';
 import 'package:sti_startnow/providers/database_provider.dart';
@@ -32,7 +33,7 @@ class AuthPage extends StatelessWidget {
               return const MainDashboard();
           }
         }
-        return Container();
+        return NoInternetPage();
       },
     );
   }

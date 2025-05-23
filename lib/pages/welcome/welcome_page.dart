@@ -96,12 +96,11 @@ class _WelcomePageState extends State<WelcomePage> {
                             ButtonOutline(
                               text: "Sign In",
                               onPressed: () {
-                                Navigator.pushAndRemoveUntil(
+                                Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => SignInStudentPage(),
                                   ),
-                                  (context) => false,
                                 );
                               },
                             ),
@@ -125,12 +124,11 @@ class _WelcomePageState extends State<WelcomePage> {
                             ButtonFilled(
                               text: "Enroll Now!",
                               onPressed: () {
-                                Navigator.pushAndRemoveUntil(
+                                Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => EnrollmentDashboard(),
                                   ),
-                                  (context) => false,
                                 );
                               },
                             ),
