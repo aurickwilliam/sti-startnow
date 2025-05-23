@@ -76,8 +76,8 @@ class _SignInStudentPageState extends State<SignInStudentPage> {
           builder: (context) {
             return CustomBottomSheet(
               isError: true,
-              title: "Something went wrong",
-              subtitle: "Student does not exist",
+              title: "Invalid Credentials",
+              subtitle: "Invalid email/student number or password",
             );
           },
         );

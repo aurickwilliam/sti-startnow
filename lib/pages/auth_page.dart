@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/admin_dashboard/admin_dashboard.dart';
@@ -21,6 +22,7 @@ class AuthPage extends StatelessWidget {
       future: _getUserRoleAndData(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
+          FlutterNativeSplash.remove();
           switch (snapshot.data) {
             case 'super_admin':
               return const SuperAdminDashboard();
