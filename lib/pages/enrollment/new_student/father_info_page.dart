@@ -110,26 +110,26 @@ class _FatherInfoPageState extends State<FatherInfoPage> {
 
                       const SizedBox(height: 20),
 
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Father's Information:",
-                            style: GoogleFonts.roboto(
-                              color: AppTheme.colors.gold,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-
-                          CustomTooltip(
-                            message:
-                                "Put 'N/A' if Father Information Not Available",
-                          ),
-                        ],
+                      Text(
+                        "Father's Information:",
+                        style: GoogleFonts.roboto(
+                          color: AppTheme.colors.gold,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
 
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 5),
+
+                      Text(
+                        "Leave it all blank if information is not available",
+                        style: GoogleFonts.roboto(
+                          color: AppTheme.colors.black,
+                          fontSize: 16,
+                        ),
+                      ),
+
+                      const SizedBox(height: 15,),
 
                       // First Name
                       TextInput(
@@ -137,8 +137,8 @@ class _FatherInfoPageState extends State<FatherInfoPage> {
                         label: "First Name:",
                         hint: "First Name",
                         isRequired: true,
-                        isEnable: true,
-                        requiredMessage: "Please enter name or 'N/A'",
+                        isParentGuardian: true,
+                        whichParent: "FATHER",
                       ),
 
                       const SizedBox(height: 10),
@@ -149,8 +149,8 @@ class _FatherInfoPageState extends State<FatherInfoPage> {
                         label: "Last Name:",
                         hint: "Last Name",
                         isRequired: true,
-                        isEnable: true,
-                        requiredMessage: "Please enter name or 'N/A'",
+                        isParentGuardian: true,
+                        whichParent: "FATHER",
                       ),
 
                       const SizedBox(height: 10),
@@ -199,6 +199,7 @@ class _FatherInfoPageState extends State<FatherInfoPage> {
                         requiredMessage:
                             "Please enter a mobile no. or 0 if not applicable",
                         invalidMessage: "Please enter a valid mobile no.",
+                        isParentGuardian: true,
                       ),
 
                       const SizedBox(height: 10),
@@ -224,8 +225,10 @@ class _FatherInfoPageState extends State<FatherInfoPage> {
                             return true;
                           }
                         },
-                        requiredMessage: "Please enter an email or 'n/a'",
+                        requiredMessage: "Please enter an email or blank",
                         invalidMessage: "Please enter a valid email address",
+                        isParentGuardian: true,
+                        whichParent: "FATHER",
                       ),
 
                       const SizedBox(height: 10),
