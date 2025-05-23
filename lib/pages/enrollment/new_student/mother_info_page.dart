@@ -57,6 +57,16 @@ class _MotherInfoPageState extends State<MotherInfoPage> {
     student.mother.occupation = occupationController.text;
   }
 
+  // Check if all required fields has value
+  bool ifOtherInputHasValue() {
+    bool hasFName = firstNameController.text.trim().isNotEmpty;
+    bool hasLName = lastNameController.text.trim().isNotEmpty;
+    bool hasMobileNo = mobileNoController.text.trim().isNotEmpty;
+    bool hasEmail = emailController.text.trim().isNotEmpty;
+
+    return hasFName || hasLName || hasMobileNo || hasEmail;
+  }
+
   @override
   Widget build(BuildContext context) {
     // if is in landscape
@@ -110,26 +120,26 @@ class _MotherInfoPageState extends State<MotherInfoPage> {
 
                       const SizedBox(height: 20),
 
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Mother's Information:",
-                            style: GoogleFonts.roboto(
-                              color: AppTheme.colors.gold,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-
-                          CustomTooltip(
-                            message:
-                                "Put 'N/A' if Mother Information Not Available",
-                          ),
-                        ],
+                      Text(
+                        "Mother's Information:",
+                        style: GoogleFonts.roboto(
+                          color: AppTheme.colors.gold,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
 
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 5),
+
+                      Text(
+                        "Leave it all blank if information is not available",
+                        style: GoogleFonts.roboto(
+                          color: AppTheme.colors.black,
+                          fontSize: 16,
+                        ),
+                      ),
+
+                      const SizedBox(height: 15,),
 
                       // First Name
                       TextInput(
@@ -138,7 +148,9 @@ class _MotherInfoPageState extends State<MotherInfoPage> {
                         hint: "First Name",
                         isRequired: true,
                         isEnable: true,
-                        requiredMessage: "Please enter name or 'N/A'",
+                        requiredMessage: "Please enter name or put blank",
+                        isParentGuardian: true,
+                        ifOtherInputHasValue: ifOtherInputHasValue,
                       ),
 
                       const SizedBox(height: 10),
@@ -150,7 +162,9 @@ class _MotherInfoPageState extends State<MotherInfoPage> {
                         hint: "Last Name",
                         isRequired: true,
                         isEnable: true,
-                        requiredMessage: "Please enter name or 'N/A'",
+                        requiredMessage: "Please enter name or put blank",
+                        isParentGuardian: true,
+                        ifOtherInputHasValue: ifOtherInputHasValue
                       ),
 
                       const SizedBox(height: 10),
@@ -190,15 +204,15 @@ class _MotherInfoPageState extends State<MotherInfoPage> {
 
                           if (mobilePattern.hasMatch(input)) {
                             return false;
-                          } else if (input == "0") {
-                            return false;
                           } else {
                             return true;
                           }
                         },
                         requiredMessage:
-                            "Please enter a mobile no. or 0 if not applicable",
+                            "Please enter a mobile no. or put blank",
                         invalidMessage: "Please enter a valid mobile no.",
+                        isParentGuardian: true,
+                        ifOtherInputHasValue: ifOtherInputHasValue
                       ),
 
                       const SizedBox(height: 10),
@@ -218,14 +232,14 @@ class _MotherInfoPageState extends State<MotherInfoPage> {
 
                           if (emailPattern.hasMatch(input)) {
                             return false;
-                          } else if (input == "n/a") {
-                            return false;
                           } else {
                             return true;
                           }
                         },
-                        requiredMessage: "Please enter an email or 'n/a'",
+                        requiredMessage: "Please enter an email or put blank",
                         invalidMessage: "Please enter a valid email address",
+                        isParentGuardian: true,
+                        ifOtherInputHasValue: ifOtherInputHasValue
                       ),
 
                       const SizedBox(height: 10),
