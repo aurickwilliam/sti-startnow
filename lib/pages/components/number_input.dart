@@ -14,6 +14,8 @@ class NumberInput extends StatefulWidget {
   invalidCheck; // Gagamitin sa pag check kung sunod sa format ang input
   final String? requiredMessage; // Optional, message kapag wala inenter user
   final String? invalidMessage; // Optional, message kapag mali ienenter ni user
+  final bool isParentGuardian; // If gagamitin sa parent guardian na page
+  final Function()? ifOtherInputHasValue; // Method to check if lahat may value
 
   NumberInput({
     super.key,
@@ -26,6 +28,8 @@ class NumberInput extends StatefulWidget {
     this.invalidCheck,
     this.requiredMessage,
     this.invalidMessage,
+    this.isParentGuardian = false,
+    this.ifOtherInputHasValue,
   }) {
     if (hasFormat) {
       assert(invalidCheck != null);
@@ -139,6 +143,10 @@ class _NumberInputState extends State<NumberInput> {
                   ? (input) {
                     bool isInvalid;
                     String message;
+
+                    if (widget.isRequired && widget.isParentGuardian && !widget.ifOtherInputHasValue!()) {
+                      return null;
+                    }
 
                     if (widget.isRequired) {
                       isInvalid = input == null || input.trim().isEmpty;
