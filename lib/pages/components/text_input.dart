@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
-import 'package:sti_startnow/models/student.dart';
-import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class TextInput extends StatefulWidget {
@@ -44,15 +41,12 @@ class TextInput extends StatefulWidget {
 }
 
 class _TextInputState extends State<TextInput> {
-  late Student student;
   FocusNode focusNode = FocusNode();
   bool isFocused = false;
 
   @override
   void initState() {
     super.initState();
-    // Reference sa provider ni student para macheck if may laman ung ibang required fields
-    student = context.read<DatabaseProvider>().student;
 
     // Change the isFocused variable when the user focus on the textfield
     focusNode.addListener(() {
