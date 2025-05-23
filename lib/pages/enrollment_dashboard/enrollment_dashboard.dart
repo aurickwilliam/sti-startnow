@@ -19,9 +19,9 @@ class EnrollmentDashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     // Boolean if is in landscape
-    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
@@ -35,34 +35,44 @@ class EnrollmentDashboard extends StatelessWidget {
                 title: "Misson & Vision",
                 icon: Icons.key,
                 onTap: () {
-                  Navigator.push(context, 
-                  MaterialPageRoute(builder: (context) => MissionVisionPage()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MissionVisionPage(),
+                    ),
+                  );
                 },
               ),
 
-              const SizedBox(height: 20,),
+              const SizedBox(height: 20),
 
               DrawerTile(
                 title: "About",
                 icon: Icons.emoji_objects_outlined,
                 onTap: () {
-                  Navigator.push(context, 
-                  MaterialPageRoute(builder: (context) => AboutPage()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AboutPage()),
+                  );
                 },
               ),
 
-              const SizedBox(height: 20,),
+              const SizedBox(height: 20),
 
               DrawerTile(
                 title: "Sign In",
                 icon: Icons.login_rounded,
                 onTap: () {
-                  Navigator.push(context, 
-                  MaterialPageRoute(builder: (context) => SignInStudentPage()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SignInStudentPage(),
+                    ),
+                  );
                 },
               ),
 
-              const SizedBox(height: 20,),
+              const SizedBox(height: 20),
             ],
           ),
         ),
@@ -70,25 +80,22 @@ class EnrollmentDashboard extends StatelessWidget {
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, 
-          MaterialPageRoute(builder: (context) => Chatbot()));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Chatbot()),
+          );
         },
         backgroundColor: AppTheme.colors.gold,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(999)
-        ),
-        child: Icon(
-          Icons.lightbulb,
-          color: AppTheme.colors.white,
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
+        child: Icon(Icons.lightbulb, color: AppTheme.colors.white),
       ),
 
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: isLandscape ? 200 : 24, 
-              vertical: 15
+              horizontal: isLandscape ? 200 : 24,
+              vertical: 15,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,7 +108,6 @@ class EnrollmentDashboard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                    
                           // Greetings at the Top
                           Text(
                             "Welcome Future STIer's",
@@ -111,12 +117,12 @@ class EnrollmentDashboard extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                    
+
                           // Hamburger Menu for the Drawer
                           IconButton(
                             onPressed: () {
                               Scaffold.of(context).openEndDrawer();
-                            }, 
+                            },
                             icon: Icon(Icons.menu),
                             iconSize: 35,
                             color: AppTheme.colors.primary,
@@ -124,9 +130,9 @@ class EnrollmentDashboard extends StatelessWidget {
                         ],
                       ),
                     );
-                  }
+                  },
                 ),
-            
+
                 // Enrollment Schedule Title
                 Padding(
                   padding: const EdgeInsets.only(top: 20, bottom: 10),
@@ -143,22 +149,26 @@ class EnrollmentDashboard extends StatelessWidget {
                 // Enrollment Schedule Box
                 EnrollmentSchedule(),
 
-                const SizedBox( height: 15,),
+                const SizedBox(height: 15),
 
                 // Enrollment Button
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context, 
-                    MaterialPageRoute(builder: (context) => StudentTypePage()));
-                  }, 
-                  style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6),
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => StudentTypePage(),
                       ),
-                      elevation: 0,
-                      minimumSize: Size(double.infinity, 46),
-                      backgroundColor: AppTheme.colors.primary,
-                      foregroundColor: AppTheme.colors.white
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    elevation: 0,
+                    minimumSize: Size(double.infinity, 46),
+                    backgroundColor: AppTheme.colors.primary,
+                    foregroundColor: AppTheme.colors.white,
                   ),
                   child: Text(
                     "Enroll Now!",
@@ -169,55 +179,58 @@ class EnrollmentDashboard extends StatelessWidget {
                   ),
                 ),
 
-                Divider(
-                  height: 40,
-                  thickness: 4,
-                ),
+                Divider(height: 40, thickness: 4),
 
                 // Requirement Box
                 EnrollmentTile(
-                  title: "Requirement for \nEnrollee", 
-                  imgPath: "assets/img/enrollment_dashboard/requirement_img.png",
+                  title: "Requirement for \nEnrollee",
+                  imgPath:
+                      "assets/img/enrollment_dashboard/requirement_img.png",
                   onTap: () {
                     Navigator.push(
-                      context, 
+                      context,
                       MaterialPageRoute(
-                        builder: (context) => RequirementPage()
-                      )
+                        builder: (context) => RequirementPage(),
+                      ),
                     );
                   },
                 ),
 
-                const SizedBox(height: 15,),
+                const SizedBox(height: 15),
 
                 // Tuition Fee Advising Box
                 EnrollmentTile(
-                  title: "Tuition Fee \nAdvising", 
+                  title: "Tuition Fee \nAdvising",
                   imgPath: "assets/img/enrollment_dashboard/tuition.png",
                   onTap: () {
                     Navigator.push(
-                      context, 
+                      context,
                       MaterialPageRoute(
-                        builder: (context) => TuitionFeeAdvisingPage()
-                      )
+                        builder: (context) => TuitionFeeAdvisingPage(),
+                      ),
                     );
                   },
                 ),
 
-                const SizedBox(height: 15,),
+                const SizedBox(height: 15),
 
                 EnrollmentImageTile(
                   title: "Course Offering\nSY2025 - 2026",
-                  imgPath: "assets/img/enrollment_dashboard/courses_cover_photo.jpg",
+                  imgPath:
+                      "assets/img/enrollment_dashboard/courses_cover_photo.jpg",
                   onTap: () {
-                    Navigator.push(context, 
-                    MaterialPageRoute(builder: (context) => CourseOfferListPage()));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CourseOfferListPage(),
+                      ),
+                    );
                   },
                 ),
 
-                const SizedBox(height: 15,),
+                const SizedBox(height: 15),
 
-                const SizedBox(height: 30,),
+                const SizedBox(height: 30),
               ],
             ),
           ),

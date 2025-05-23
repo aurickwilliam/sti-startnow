@@ -14,6 +14,10 @@ class HomePage extends StatelessWidget {
     return StreamBuilder(
       stream: supabase.auth.onAuthStateChange,
       builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Container();
+        }
+
         final event = snapshot.hasData ? snapshot.data!.event : null;
 
         if (event == AuthChangeEvent.initialSession) {
