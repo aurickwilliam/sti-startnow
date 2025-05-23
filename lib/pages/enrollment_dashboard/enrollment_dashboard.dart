@@ -63,7 +63,7 @@ class EnrollmentDashboard extends StatelessWidget {
                 title: "Sign In",
                 icon: Icons.login_rounded,
                 onTap: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                       builder: (context) => SignInStudentPage(),
@@ -102,7 +102,7 @@ class EnrollmentDashboard extends StatelessWidget {
               children: [
                 Builder(
                   builder: (context) {
-                    return Container(
+                    return SizedBox(
                       width: double.infinity,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
