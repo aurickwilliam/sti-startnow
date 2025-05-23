@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/components/buttons/back_next_button.dart';
 import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
-import 'package:sti_startnow/pages/components/custom_tooltip.dart';
 import 'package:sti_startnow/pages/components/number_input.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
@@ -113,23 +112,13 @@ class _GuardianInfoPageState extends State<GuardianInfoPage> {
 
                       const SizedBox(height: 20),
 
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Guardian's Information:",
-                            style: GoogleFonts.roboto(
-                              color: AppTheme.colors.gold,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-
-                          CustomTooltip(
-                            message:
-                                "Put 'N/A' if Guardian Information Not Available",
-                          ),
-                        ],
+                      Text(
+                        "Guardian's Information:",
+                        style: GoogleFonts.roboto(
+                          color: AppTheme.colors.gold,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
 
                       const SizedBox(height: 10),
@@ -141,7 +130,7 @@ class _GuardianInfoPageState extends State<GuardianInfoPage> {
                         hint: "First Name",
                         isRequired: true,
                         isEnable: true,
-                        requiredMessage: "Please enter name or 'N/A'",
+                        requiredMessage: "Please enter name",
                       ),
 
                       const SizedBox(height: 10),
@@ -153,7 +142,7 @@ class _GuardianInfoPageState extends State<GuardianInfoPage> {
                         hint: "Last Name",
                         isRequired: true,
                         isEnable: true,
-                        requiredMessage: "Please enter name or 'N/A'",
+                        requiredMessage: "Please enter name",
                       ),
 
                       const SizedBox(height: 10),
@@ -193,14 +182,12 @@ class _GuardianInfoPageState extends State<GuardianInfoPage> {
 
                           if (mobilePattern.hasMatch(input)) {
                             return false;
-                          } else if (input == "0") {
-                            return false;
                           } else {
                             return true;
                           }
                         },
                         requiredMessage:
-                            "Please enter a mobile no. or 0 if not applicable",
+                            "Please enter a mobile no.",
                         invalidMessage: "Please enter a valid mobile no.",
                       ),
 
@@ -221,13 +208,11 @@ class _GuardianInfoPageState extends State<GuardianInfoPage> {
 
                           if (emailPattern.hasMatch(input)) {
                             return false;
-                          } else if (input == "n/a") {
-                            return false;
                           } else {
                             return true;
                           }
                         },
-                        requiredMessage: "Please enter an email or 'n/a'",
+                        requiredMessage: "Please enter an email",
                         invalidMessage: "Please enter a valid email address",
                       ),
 
@@ -249,8 +234,9 @@ class _GuardianInfoPageState extends State<GuardianInfoPage> {
                         controller: relationshipController,
                         label: "Relationship:",
                         hint: "Relationship",
-                        isRequired: false,
+                        isRequired: true,
                         isEnable: true,
+                        requiredMessage: "Please enter a relationship",
                       ),
 
                       const SizedBox(height: 50),
