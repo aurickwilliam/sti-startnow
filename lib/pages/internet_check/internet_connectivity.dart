@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/enrollment_dashboard.dart';
 import 'package:sti_startnow/pages/internet_check/no_internet_page.dart';
+import 'package:sti_startnow/pages/welcome/welcome_page.dart';
 
 class InternetConnectivity extends StatefulWidget {
   const InternetConnectivity({super.key});
@@ -13,7 +15,7 @@ class InternetConnectivity extends StatefulWidget {
 }
 
 class _InternetConnectivityState extends State<InternetConnectivity> {
-  bool isConnectedToInternet = false;
+  bool isConnectedToInternet = true;
 
   StreamSubscription? internetConnectionStreamSubscription;
 
@@ -47,6 +49,9 @@ class _InternetConnectivityState extends State<InternetConnectivity> {
 
   @override
   Widget build(BuildContext context) {
-    return isConnectedToInternet ? EnrollmentDashboard() : NoInternetPage();
+    return isConnectedToInternet ? 
+      isFirstLaunch ? WelcomePage() : EnrollmentDashboard() 
+      : 
+      NoInternetPage();
   }
 }
