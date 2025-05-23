@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:provider/provider.dart';
+import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/admin_dashboard/admin_dashboard.dart';
+import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/components/password_input.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/enrollment_dashboard.dart';
@@ -8,7 +12,9 @@ import 'package:sti_startnow/pages/sign_in/components/sign_in_box.dart';
 import 'package:sti_startnow/pages/sign_in/components/sign_in_option.dart';
 import 'package:sti_startnow/pages/sign_in/sign_in_student_page.dart';
 import 'package:sti_startnow/pages/super_admin/super_admin_dashboard.dart';
+import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SignInAdminPage extends StatefulWidget {
   const SignInAdminPage({super.key});
@@ -18,6 +24,7 @@ class SignInAdminPage extends StatefulWidget {
 }
 
 class _SignInAdminPageState extends State<SignInAdminPage> {
+  late DatabaseProvider db;
   final _formKey = GlobalKey<FormState>(); // For input validation
 
   final TextEditingController emailController = TextEditingController();
@@ -37,6 +44,114 @@ class _SignInAdminPageState extends State<SignInAdminPage> {
       context,
       MaterialPageRoute(builder: (context) => destination),
     );
+  }
+
+  Future<void> handleAdminSignIn() async {
+    // Show circular progress indicator
+    showDialog(
+      context: context,
+      builder: (context) {
+        return PopScope(
+          canPop: false,
+          child: Center(child: const CircularProgressIndicator()),
+        );
+      },
+    );
+
+    // Check kung may internet before any interaction
+    final isConnected = await InternetConnection().hasInternetAccess;
+    if (!isConnected) {
+      if (mounted) {
+        Navigator.pop(context);
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return CustomBottomSheet(
+              isError: true,
+              title: "Your Offline",
+              subtitle: "No internet connection, reconnect\nand try again",
+            );
+          },
+        );
+      }
+      return;
+    }
+
+    // Sign in user with email and password
+    try {
+      // Authentication response from supabase
+      final authRes = await supabase.auth.signInWithPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+
+      final user = authRes.user!;
+
+      // Database response from supabase about the user's role
+      final roleRes = await supabase
+          .from("USER_ROLES")
+          .select('role')
+          .eq('user_id', user.id);
+      final role = roleRes[0]['role'];
+      if (role != 'student') {
+        await db.initializeAdmin(user.email!, role);
+
+        if (mounted) {
+          Navigator.pop(context);
+          switch (role) {
+            case 'super_admin':
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SuperAdminDashboard(),
+                ),
+              );
+            case 'admin':
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const AdminDashboard()),
+              );
+          }
+        }
+      } else {
+        // Kapag student pala si user
+        await supabase.auth.signOut();
+        if (mounted) {
+          Navigator.pop(context);
+          showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              return CustomBottomSheet(
+                isError: true,
+                title: "Something went wrong",
+                subtitle: "Invalid login credentials",
+              );
+            },
+          );
+        }
+      }
+    } on AuthException catch (error) {
+      if (mounted) {
+        Navigator.pop(context);
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return CustomBottomSheet(
+              isError: true,
+              title: "Something went wrong",
+              subtitle: error.message,
+            );
+          },
+        );
+      }
+      return;
+    }
+  }
+
+  @override
+  void initState() {
+    db = context.read<DatabaseProvider>();
+    super.initState();
   }
 
   @override
@@ -131,9 +246,9 @@ class _SignInAdminPageState extends State<SignInAdminPage> {
 
                           // Sign in button
                           ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                handleAdminNavigation();
+                                await handleAdminSignIn();
                               }
                             },
                             style: ElevatedButton.styleFrom(
@@ -170,7 +285,7 @@ class _SignInAdminPageState extends State<SignInAdminPage> {
                           header: "New Student?",
                           linkText: "Enroll now",
                           onTap: () {
-                            Navigator.push(
+                            Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => EnrollmentDashboard(),
@@ -182,7 +297,7 @@ class _SignInAdminPageState extends State<SignInAdminPage> {
                           header: "An existing student?",
                           linkText: "Sign In here",
                           onTap: () {
-                            Navigator.push(
+                            Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => SignInStudentPage(),

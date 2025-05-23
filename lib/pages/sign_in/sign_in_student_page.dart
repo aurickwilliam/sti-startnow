@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
@@ -12,6 +13,7 @@ import 'package:sti_startnow/pages/sign_in/components/sign_in_option.dart';
 import 'package:sti_startnow/pages/sign_in/sign_in_admin_page.dart';
 import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SignInStudentPage extends StatefulWidget {
   const SignInStudentPage({super.key});
@@ -44,6 +46,25 @@ class _SignInStudentPageState extends State<SignInStudentPage> {
       },
     );
 
+    // Check kung may internet before any interaction
+    final isConnected = await InternetConnection().hasInternetAccess;
+    if (!isConnected) {
+      if (mounted) {
+        Navigator.pop(context);
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return CustomBottomSheet(
+              isError: true,
+              title: "Your Offline",
+              subtitle: "No internet connection, reconnect\nand try again",
+            );
+          },
+        );
+      }
+      return;
+    }
+
     // Check if student exists
     final student = await db.findStudent(
       emailController.text,
@@ -52,18 +73,33 @@ class _SignInStudentPageState extends State<SignInStudentPage> {
     );
 
     if (student != null) {
-      // Note: handle errors
-      await supabase.auth.signInWithPassword(
-        email: student['personal_email'],
-        password: passwordController.text,
-      );
+      try {
+        await supabase.auth.signInWithPassword(
+          email: student['personal_email'],
+          password: passwordController.text,
+        );
+      } on AuthException catch (error) {
+        if (mounted) {
+          Navigator.pop(context);
+          showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              return CustomBottomSheet(
+                isError: true,
+                title: "Something went wrong",
+                subtitle: error.message,
+              );
+            },
+          );
+        }
+        return;
+      }
 
       await db.initializeExistingStudent(student['student_id']);
-
       if (mounted) {
         Navigator.pop(context);
 
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const MainDashboard()),
         );
@@ -76,8 +112,8 @@ class _SignInStudentPageState extends State<SignInStudentPage> {
           builder: (context) {
             return CustomBottomSheet(
               isError: true,
-              title: "Invalid Credentials",
-              subtitle: "Invalid email/student number or password",
+              title: "Something went wrong",
+              subtitle: "Invalid login credentials",
             );
           },
         );
@@ -160,12 +196,15 @@ class _SignInStudentPageState extends State<SignInStudentPage> {
                               );
 
                               if (emailPattern.hasMatch(input)) {
+                                usedStudentNumber = false;
                                 if (input.contains("caloocan.sti.edu.ph")) {
                                   usedSchoolEmail = true;
                                 }
+                                usedSchoolEmail = false;
                                 return false;
                               } else if (studentNoPattern.hasMatch(input)) {
                                 usedStudentNumber = true;
+                                usedSchoolEmail = false;
                                 return false;
                               } else {
                                 return true;
@@ -230,7 +269,7 @@ class _SignInStudentPageState extends State<SignInStudentPage> {
                           header: "New Student?",
                           linkText: "Enroll now",
                           onTap: () {
-                            Navigator.push(
+                            Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => EnrollmentDashboard(),
@@ -242,7 +281,7 @@ class _SignInStudentPageState extends State<SignInStudentPage> {
                           header: "A faculty member?",
                           linkText: "Admin Sign In",
                           onTap: () {
-                            Navigator.push(
+                            Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => SignInAdminPage(),
