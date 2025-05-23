@@ -35,6 +35,8 @@ class Student {
   String status;
   String? denyMessage;
 
+  bool? isSameCurrentAddress;
+
   Student({
     this.course,
     this.firstName,
