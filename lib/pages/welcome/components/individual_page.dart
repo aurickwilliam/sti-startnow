@@ -14,6 +14,10 @@ class IndividualPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // if it is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Container(
       color: AppTheme.colors.white,
       child: Padding(
@@ -24,20 +28,23 @@ class IndividualPage extends StatelessWidget {
           children: [
             // Image container
             Container(
+              height: isLandscape ? 200 : 500,
               child: Image.asset(
                 image,
                 fit: BoxFit.contain,
               ),
             ),
         
-            const SizedBox(height: 50,),
+            SizedBox(
+              height: isLandscape ? 20 : 50,
+            ),
         
             Text(
               text,
               textAlign: TextAlign.center,
               style: GoogleFonts.roboto(
                 color: AppTheme.colors.black,
-                fontSize: 32,
+                fontSize: isLandscape ? 20 : 32,
                 fontWeight: FontWeight.bold
               ),
             )
