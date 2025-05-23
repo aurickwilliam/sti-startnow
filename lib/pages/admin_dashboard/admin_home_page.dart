@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/admin_dashboard/components/enrollees_card.dart';
-import 'package:sti_startnow/pages/sign_in/sign_in_admin_page.dart';
+import 'package:sti_startnow/pages/enrollment_dashboard/enrollment_dashboard.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class AdminHomePage extends StatelessWidget {
@@ -9,19 +10,18 @@ class AdminHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     // if is in landscape
-    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
       backgroundColor: AppTheme.colors.primary,
 
       // Need ng layout builder para get ung size ng parent/screen
       body: LayoutBuilder(
-        builder: (context, constraints){ 
+        builder: (context, constraints) {
           return SafeArea(
             child: SingleChildScrollView(
-              
               // Specify na sakupin ung max height
               child: ConstrainedBox(
                 constraints: BoxConstraints(minHeight: constraints.maxHeight),
@@ -30,10 +30,12 @@ class AdminHomePage extends StatelessWidget {
                 child: IntrinsicHeight(
                   child: Column(
                     children: [
-                            
                       // App Bar
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 15),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 15,
+                        ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -46,24 +48,34 @@ class AdminHomePage extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                        
+
                             IconButton(
-                              onPressed: () {
-                                Navigator.push(context, 
-                                MaterialPageRoute(builder: (context) => SignInAdminPage()));
-                              }, 
+                              onPressed: () async {
+                                await supabase.auth.signOut();
+
+                                if (context.mounted) {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder:
+                                          (context) =>
+                                              const EnrollmentDashboard(),
+                                    ),
+                                  );
+                                }
+                              },
                               icon: Icon(
                                 Icons.logout_rounded,
                                 color: AppTheme.colors.gold,
                                 size: 30,
-                              )
+                              ),
                             ),
                           ],
                         ),
                       ),
 
-                      const SizedBox(height: 10,),
-                            
+                      const SizedBox(height: 10),
+
                       // Content
                       Expanded(
                         child: Container(
@@ -72,30 +84,28 @@ class AdminHomePage extends StatelessWidget {
                             color: AppTheme.colors.white,
                             borderRadius: BorderRadius.only(
                               topRight: Radius.circular(35),
-                              topLeft: Radius.circular(35)
-                            )
+                              topLeft: Radius.circular(35),
+                            ),
                           ),
                           child: Padding(
                             padding: EdgeInsets.symmetric(
-                              horizontal: isLandscape ? 200 : 24, 
-                              vertical: 25
+                              horizontal: isLandscape ? 200 : 24,
+                              vertical: 25,
                             ),
                             child: Column(
                               children: [
-
                                 // Enrollees Card
                                 EnrolleesCard(),
-
                               ],
                             ),
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
               ),
-            )
+            ),
           );
         },
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sti_startnow/pages/sign_in/sign_in_admin_page.dart';
+import 'package:sti_startnow/main.dart';
+import 'package:sti_startnow/pages/enrollment_dashboard/enrollment_dashboard.dart';
 import 'package:sti_startnow/pages/super_admin/components/option_button.dart';
 import 'package:sti_startnow/pages/super_admin/list_pages/list_enroll_schedule_page.dart';
 import 'package:sti_startnow/pages/super_admin/list_pages/list_instructors_page.dart';
@@ -15,9 +16,9 @@ class SuperAdminDashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     // if is in landscape
-    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
       backgroundColor: AppTheme.colors.primary,
@@ -42,8 +43,12 @@ class SuperAdminDashboard extends StatelessWidget {
                     children: [
                       IconButton(
                         onPressed: () {
-                          Navigator.push(context, 
-                          MaterialPageRoute(builder: (context) => SuperAdminProfilePage()));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SuperAdminProfilePage(),
+                            ),
+                          );
                         },
                         icon: Icon(
                           Icons.account_circle_outlined,
@@ -53,9 +58,17 @@ class SuperAdminDashboard extends StatelessWidget {
                       ),
 
                       IconButton(
-                        onPressed: () {
-                          Navigator.push(context, 
-                          MaterialPageRoute(builder: (context) => SignInAdminPage()));
+                        onPressed: () async {
+                          await supabase.auth.signOut();
+                          if (context.mounted) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (context) => const EnrollmentDashboard(),
+                              ),
+                            );
+                          }
                         },
                         icon: Icon(
                           Icons.logout,
@@ -64,7 +77,7 @@ class SuperAdminDashboard extends StatelessWidget {
                         ),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
@@ -82,8 +95,8 @@ class SuperAdminDashboard extends StatelessWidget {
                 ),
                 child: Padding(
                   padding: EdgeInsets.symmetric(
-                    horizontal: isLandscape ? 200 : 24, 
-                    vertical: 24
+                    horizontal: isLandscape ? 200 : 24,
+                    vertical: 24,
                   ),
                   child: ListView(
                     children: [
@@ -91,40 +104,60 @@ class SuperAdminDashboard extends StatelessWidget {
                         icon: Icons.person,
                         title: "Students",
                         onTap: () {
-                          Navigator.push(context, 
-                          MaterialPageRoute(builder: (context) => ListStudentsPage()));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ListStudentsPage(),
+                            ),
+                          );
                         },
                       ),
                       OptionButton(
                         icon: Icons.local_library_rounded,
                         title: "Instructors",
                         onTap: () {
-                          Navigator.push(context, 
-                          MaterialPageRoute(builder: (context) => ListInstructorsPage()));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ListInstructorsPage(),
+                            ),
+                          );
                         },
                       ),
                       OptionButton(
                         icon: Icons.school_rounded,
                         title: "Programs",
                         onTap: () {
-                          Navigator.push(context, 
-                          MaterialPageRoute(builder: (context) => ListProgramsPage()));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ListProgramsPage(),
+                            ),
+                          );
                         },
                       ),
                       OptionButton(
                         icon: Icons.book_rounded,
                         title: "Subjects",
                         onTap: () {
-                          Navigator.push(context, 
-                          MaterialPageRoute(builder: (context) => ListSubjectsPage()));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ListSubjectsPage(),
+                            ),
+                          );
                         },
                       ),
                       OptionButton(
                         icon: Icons.date_range_rounded,
                         title: "Enroll Schedule",
                         onTap: () {
-                          Navigator.push(context, 
-                          MaterialPageRoute(builder: (context) => ListEnrollSchedulePage()));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ListEnrollSchedulePage(),
+                            ),
+                          );
                         },
                       ),
                     ],

@@ -3,9 +3,9 @@ import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/components/option_box.dart';
 import 'package:sti_startnow/pages/components/option_tile.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
+import 'package:sti_startnow/pages/enrollment_dashboard/enrollment_dashboard.dart';
 import 'package:sti_startnow/pages/main_dashboard/main_dashboard.dart';
 import 'package:sti_startnow/pages/settings/account_settings.dart';
-import 'package:sti_startnow/pages/sign_in/sign_in_student_page.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class Settings extends StatelessWidget {
@@ -73,11 +73,12 @@ class Settings extends StatelessWidget {
                             await supabase.auth.signOut();
 
                             if (context.mounted) {
-                              Navigator.push(
+                              Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => SignInStudentPage(),
+                                  builder: (context) => EnrollmentDashboard(),
                                 ),
+                                (context) => false,
                               );
                             }
                           },

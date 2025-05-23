@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sti_startnow/main.dart';
+import 'package:sti_startnow/models/admin.dart';
 import 'package:sti_startnow/models/student.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -8,7 +9,6 @@ class DatabaseProvider extends ChangeNotifier {
   late Student _student;
 
   Student get student => _student;
-
   void initializeNewStudent() {
     _student = Student();
   }
@@ -172,4 +172,33 @@ class DatabaseProvider extends ChangeNotifier {
 
   // Update info ng existing student
   Future<void> updateStudentInfo() async {}
+
+  // For admin information
+  late Admin _admin;
+
+  Admin get admin => _admin;
+
+  Future<void> initializeAdmin(String email, String adminType) async {
+    _admin = Admin();
+    final List<Map<String, dynamic>> adminRes;
+
+    if (adminType == 'super_admin') {
+      adminRes = await supabase.from("SUPER_ADMIN").select().eq('email', email);
+    } else {
+      adminRes = await supabase.from("ADMIN").select().eq('email', email);
+    }
+
+    if (adminRes.isNotEmpty) {
+      final adminInfo = adminRes[0];
+      _admin.firstName = adminInfo['admin_fname'];
+      _admin.lastName = adminInfo['admin_lname'];
+      _admin.email = adminInfo['email'];
+
+      if (adminType == 'super_admin') {
+        _admin.role = 'MIS';
+      } else {
+        _admin.role = adminInfo['role'];
+      }
+    }
+  }
 }

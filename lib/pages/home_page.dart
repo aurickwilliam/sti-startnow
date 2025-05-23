@@ -15,24 +15,27 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: InternetConnection().onStatusChange,
-      builder: (context, status) {
+      builder: (context, netSnapshot) {
         return StreamBuilder(
           stream: supabase.auth.onAuthStateChange,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting ||
-                status.connectionState == ConnectionState.waiting) {
+          builder: (context, authSnapshot) {
+            if (authSnapshot.connectionState == ConnectionState.waiting ||
+                netSnapshot.connectionState == ConnectionState.waiting) {
               return Container();
             }
 
-            if (status.data == InternetStatus.disconnected) {
+            final status = netSnapshot.hasData ? netSnapshot.data! : null;
+
+            if (status == InternetStatus.disconnected) {
               FlutterNativeSplash.remove();
               return NoInternetPage();
             }
 
-            final event = snapshot.hasData ? snapshot.data!.event : null;
+            final event =
+                authSnapshot.hasData ? authSnapshot.data!.event : null;
 
             if (event == AuthChangeEvent.initialSession) {
-              final session = snapshot.data!.session;
+              final session = authSnapshot.data!.session;
               if (session != null) {
                 return AuthPage(user: session.user);
               }

@@ -48,10 +48,9 @@ class AuthPage extends StatelessWidget {
       final role = res[0]['role'];
 
       switch (role) {
-        case 'super_admin':
-        // Initialize super_admin
-        case 'admin':
-        // Initialize admin
+        case 'super_admin' || 'admin':
+          // Initialize super_admin/admin
+          await db.initializeAdmin(user.email!, role);
         case 'student':
           // Initialize student based on student number
           final studentRes = await supabase
@@ -62,9 +61,9 @@ class AuthPage extends StatelessWidget {
           if (studentRes.isNotEmpty) {
             final studentNumber = studentRes[0]['student_id'];
             await db.initializeExistingStudent(studentNumber);
-            return role;
           }
       }
+      return role;
     }
     return null;
   }
