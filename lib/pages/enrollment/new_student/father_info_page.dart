@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/components/buttons/back_next_button.dart';
 import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
-import 'package:sti_startnow/pages/components/custom_tooltip.dart';
 import 'package:sti_startnow/pages/components/number_input.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
@@ -55,6 +54,16 @@ class _FatherInfoPageState extends State<FatherInfoPage> {
     student.father.mobileNumber = mobileNoController.text;
     student.father.email = emailController.text;
     student.father.occupation = occupationController.text;
+  }
+
+  // Check if all required fields has value
+  bool ifOtherInputHasValue() {
+    bool hasFName = firstNameController.text.trim().isNotEmpty;
+    bool hasLName = lastNameController.text.trim().isNotEmpty;
+    bool hasMobileNo = mobileNoController.text.trim().isNotEmpty;
+    bool hasEmail = emailController.text.trim().isNotEmpty;
+
+    return hasFName || hasLName || hasMobileNo || hasEmail;
   }
 
   @override
@@ -137,8 +146,9 @@ class _FatherInfoPageState extends State<FatherInfoPage> {
                         label: "First Name:",
                         hint: "First Name",
                         isRequired: true,
+                        requiredMessage: "Please enter a information or put blank",
                         isParentGuardian: true,
-                        whichParent: "FATHER",
+                        ifOtherInputHasValue: ifOtherInputHasValue,
                       ),
 
                       const SizedBox(height: 10),
@@ -149,8 +159,9 @@ class _FatherInfoPageState extends State<FatherInfoPage> {
                         label: "Last Name:",
                         hint: "Last Name",
                         isRequired: true,
+                        requiredMessage: "Please enter a information or put blank",
                         isParentGuardian: true,
-                        whichParent: "FATHER",
+                        ifOtherInputHasValue: ifOtherInputHasValue,
                       ),
 
                       const SizedBox(height: 10),
@@ -190,16 +201,15 @@ class _FatherInfoPageState extends State<FatherInfoPage> {
 
                           if (mobilePattern.hasMatch(input)) {
                             return false;
-                          } else if (input == "0") {
-                            return false;
                           } else {
                             return true;
                           }
                         },
                         requiredMessage:
-                            "Please enter a mobile no. or 0 if not applicable",
+                            "Please enter a mobile no. or put blank",
                         invalidMessage: "Please enter a valid mobile no.",
                         isParentGuardian: true,
+                        ifOtherInputHasValue: ifOtherInputHasValue,
                       ),
 
                       const SizedBox(height: 10),
@@ -219,16 +229,14 @@ class _FatherInfoPageState extends State<FatherInfoPage> {
 
                           if (emailPattern.hasMatch(input)) {
                             return false;
-                          } else if (input == "n/a") {
-                            return false;
                           } else {
                             return true;
                           }
                         },
-                        requiredMessage: "Please enter an email or blank",
+                        requiredMessage: "Please enter an email or put blank",
                         invalidMessage: "Please enter a valid email address",
                         isParentGuardian: true,
-                        whichParent: "FATHER",
+                        ifOtherInputHasValue: ifOtherInputHasValue,
                       ),
 
                       const SizedBox(height: 10),

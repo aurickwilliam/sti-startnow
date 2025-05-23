@@ -17,7 +17,7 @@ class TextInput extends StatefulWidget {
   final String? requiredMessage; // Optional, message kapag wala inenter user
   final String? invalidMessage; // Optional, message kapag mali ienenter ni user
   final bool isParentGuardian; // If gagamitin sa parent guardian na page
-  final String? whichParent;
+  final Function()? ifOtherInputHasValue; // Method to check if lahat may value
 
   TextInput({
     super.key,
@@ -29,9 +29,9 @@ class TextInput extends StatefulWidget {
     this.hasFormat = false,
     this.invalidCheck,
     this.requiredMessage,
-    this.invalidMessage,
+    this.invalidMessage,    
     this.isParentGuardian = false,
-    this.whichParent,
+    this.ifOtherInputHasValue,
   }) {
     if (hasFormat) {
       assert(invalidCheck != null);
@@ -66,30 +66,6 @@ class _TextInputState extends State<TextInput> {
   void dispose() {
     focusNode.dispose();
     super.dispose();
-  }
-
-  bool ifOtherFieldsHasNoValue(){
-    bool hasNoFName = false;
-    bool hasNoLName = false;
-    bool hasNoMobileNo = false;
-    bool hasNoEmail = false;
-
-    if (widget.whichParent == "FATHER") {
-      hasNoFName = student.father.firstName == "" || student.father.firstName == null;
-      hasNoLName = student.father.lastName == "" || student.father.lastName == null;
-      hasNoMobileNo = student.father.mobileNumber == "" || student.father.mobileNumber == null;
-      hasNoEmail = student.father.email == "" || student.father.email == null;
-    } 
-    else if (widget.whichParent == "MOTHER") {
-      hasNoFName = student.mother.firstName == "" || student.mother.firstName == null;
-      hasNoLName = student.mother.lastName == "" || student.mother.lastName == null;
-      hasNoMobileNo = student.mother.mobileNumber == "" || student.mother.mobileNumber == null;
-      hasNoEmail = student.mother.email == "" || student.mother.email == null;
-    }
-    debugPrint(widget.whichParent);
-    debugPrint(student.father.firstName);
-    
-    return hasNoFName && hasNoLName && hasNoMobileNo && hasNoEmail;
   }
 
   @override
@@ -175,7 +151,7 @@ class _TextInputState extends State<TextInput> {
                     bool isInvalid;
                     String message;
 
-                    if (widget.isRequired && widget.isParentGuardian && ifOtherFieldsHasNoValue()) {
+                    if (widget.isRequired && widget.isParentGuardian && !widget.ifOtherInputHasValue!()) {
                       return null;
                     }
 
