@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:provider/provider.dart';
+import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
+import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/components/number_input.dart';
 import 'package:sti_startnow/pages/components/password_input.dart';
 import 'package:sti_startnow/pages/enrollment/payment_receipt_page.dart';
+import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class StudentPortalPage extends StatefulWidget {
   final String studentStatus;
@@ -16,10 +22,108 @@ class StudentPortalPage extends StatefulWidget {
 }
 
 class _StudentPortalPageState extends State<StudentPortalPage> {
+  late DatabaseProvider db;
   final _formKey = GlobalKey<FormState>(); // For input validation
 
   final studentNumberController = TextEditingController();
   final accessCodeController = TextEditingController();
+
+  Future<void> fetchExistingStudent() async {
+    // Show circular progress indicator
+    showDialog(
+      context: context,
+      builder: (context) {
+        return PopScope(
+          canPop: false,
+          child: Center(child: const CircularProgressIndicator()),
+        );
+      },
+    );
+
+    // Check kung may internet before any interaction
+    final isConnected = await InternetConnection().hasInternetAccess;
+    if (!isConnected) {
+      if (mounted) {
+        Navigator.pop(context);
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return CustomBottomSheet(
+              isError: true,
+              title: "Your Offline",
+              subtitle: "No internet connection, reconnect\nand try again",
+            );
+          },
+        );
+      }
+      return;
+    }
+
+    // Check if student exists
+    final studentNumber = int.parse(studentNumberController.text);
+    final studentExists = await db.initializeExistingStudent(studentNumber);
+
+    if (studentExists) {
+      try {
+        await supabase.auth.signInWithPassword(
+          email: db.student.email,
+          password: accessCodeController.text,
+        );
+      } on AuthException {
+        if (mounted) {
+          Navigator.pop(context);
+          showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              return CustomBottomSheet(
+                isError: true,
+                title: "Invalid Access Code",
+                subtitle: "Please try again",
+              );
+            },
+          );
+        }
+        return;
+      }
+      // Code quality is decreasing every day, I am sorry
+      // Ginagawa ko to kasi kapag sinara ni user app after this page
+      // Tas binuksan nya ulit, mapupunta sya sa MainDashboard nya
+      await supabase.auth.signOut();
+
+      if (mounted) {
+        Navigator.pop(context);
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder:
+                (context) =>
+                    PaymentReceiptPage(studentStatus: widget.studentStatus),
+          ),
+        );
+      }
+    } else {
+      if (mounted) {
+        Navigator.pop(context);
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return CustomBottomSheet(
+              isError: true,
+              title: "Invalid Student No.",
+              subtitle: "Student does not exist",
+            );
+          },
+        );
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    db = context.read<DatabaseProvider>();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,17 +197,9 @@ class _StudentPortalPageState extends State<StudentPortalPage> {
               vertical: 10,
             ),
             child: BottomButton(
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey.currentState!.validate()) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder:
-                          (context) => PaymentReceiptPage(
-                            studentStatus: widget.studentStatus,
-                          ),
-                    ),
-                  );
+                  await fetchExistingStudent();
                 }
               },
               text: "Submit",

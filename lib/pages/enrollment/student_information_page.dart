@@ -48,8 +48,6 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
   final TextEditingController contactNoController = TextEditingController();
 
   // Temporary Data
-  final String studentNo = "02000123456";
-  final String studentName = "John Doe";
   final String program = "BSCS";
 
   // Choices for Admission Type
@@ -156,6 +154,8 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
     amountPaidController.text = student.enrollment.amountPaid ?? "";
     contactNoController.text = student.contactNo ?? "";
 
+    studentNoController.text = student.studentNo!;
+    studentNameController.text = student.fullName;
     super.initState();
   }
 
@@ -172,8 +172,6 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
   @override
   Widget build(BuildContext context) {
     // Assinging of value to the textfield
-    studentNoController.text = studentNo;
-    studentNameController.text = studentName;
     programController.text = program;
     studentAcademicTypeController.text = widget.studentStatus;
 

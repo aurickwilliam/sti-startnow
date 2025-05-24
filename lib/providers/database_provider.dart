@@ -9,11 +9,12 @@ class DatabaseProvider extends ChangeNotifier {
   late Student _student;
 
   Student get student => _student;
+
   void initializeNewStudent() {
     _student = Student();
   }
 
-  Future<void> initializeExistingStudent(int studentNumber) async {
+  Future<bool> initializeExistingStudent(int studentNumber) async {
     _student = Student();
 
     // Read student info
@@ -29,7 +30,12 @@ class DatabaseProvider extends ChangeNotifier {
       _student.middleName = studentInfo['stud_mname'];
       _student.lastName = studentInfo['stud_lname'];
       _student.suffixName = studentInfo['stud_suffix'];
+      _student.email = studentInfo['personal_email'];
+      _student.schoolEmail = studentInfo['school_email'];
+
+      return true; // successful
     }
+    return false; // fail
   }
 
   // Create new student account

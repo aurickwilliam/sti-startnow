@@ -199,8 +199,9 @@ class _SignInStudentPageState extends State<SignInStudentPage> {
                                 usedStudentNumber = false;
                                 if (input.contains("caloocan.sti.edu.ph")) {
                                   usedSchoolEmail = true;
+                                } else {
+                                  usedSchoolEmail = false;
                                 }
-                                usedSchoolEmail = false;
                                 return false;
                               } else if (studentNoPattern.hasMatch(input)) {
                                 usedStudentNumber = true;
