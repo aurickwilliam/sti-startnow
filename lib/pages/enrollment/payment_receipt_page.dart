@@ -3,11 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/buttons/custom_outline_button.dart';
 import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/enrollment/student_information_page.dart';
+import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class PaymentReceiptPage extends StatefulWidget {
@@ -19,7 +22,8 @@ class PaymentReceiptPage extends StatefulWidget {
 }
 
 class _PaymentReceiptPageState extends State<PaymentReceiptPage> {
-  final String name = "John Doe";
+  late Student student;
+  late final String name;
 
   File? selectedImage;
   File? selectedImageName;
@@ -34,6 +38,13 @@ class _PaymentReceiptPageState extends State<PaymentReceiptPage> {
       selectedImage = File(returnedImage!.path);
       selectedImageName = File(returnedImage.name);
     });
+  }
+
+  @override
+  void initState() {
+    student = context.read<DatabaseProvider>().student;
+    name = student.fullName;
+    super.initState();
   }
 
   @override

@@ -37,6 +37,7 @@ class _ValidateDetailsPageState extends State<ValidateDetailsPage> {
     schoolInformationList = [
       ["Campus:", "Caloocan"],
       ["Preferred Course:", student.course],
+      ["Section:", student.enrollment.section],
       ["Admit Type:", student.enrollment.admissionType],
       ["Yr Level/Grade Level:", student.enrollment.yearLevel],
       ["School Year:", student.enrollment.academicYear],
@@ -100,11 +101,11 @@ class _ValidateDetailsPageState extends State<ValidateDetailsPage> {
     parentInformationList = [
       [
         "Father's Name / Contact#:",
-        "${student.father.firstName == "N/A" || student.father.lastName == "N/A" ? "N/A" : "${student.father.firstName} ${student.father.lastName}"} / ${student.father.mobileNumber == "0" ? "N/A" : student.father.mobileNumber}",
+        "${student.father.firstName!.isEmpty || student.father.lastName!.isEmpty ? "N/A" : "${student.father.firstName} ${student.father.lastName}"} / ${student.father.mobileNumber!.isEmpty ? "N/A" : student.father.mobileNumber}",
       ],
       [
         "Mother's Name / Contact#:",
-        "${student.mother.firstName == "N/A" || student.mother.lastName == "N/A" ? "N/A" : "${student.mother.firstName} ${student.mother.lastName}"} / ${student.mother.mobileNumber == "0" ? "N/A" : student.mother.mobileNumber}",
+        "${student.mother.firstName!.isEmpty || student.mother.lastName!.isEmpty ? "N/A" : "${student.mother.firstName} ${student.mother.lastName}"} / ${student.mother.mobileNumber!.isEmpty ? "N/A" : student.mother.mobileNumber}",
       ],
       [
         "Guardian's Name / Contact#:",

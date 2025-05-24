@@ -142,7 +142,7 @@ class _NewSelectSectionPageState extends State<NewSelectSectionPage> {
     return PopScope(
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) {
-          // student.enrollment.section = sectionValue;
+          student.enrollment.section = sectionValue;
         }
       },
       child: Scaffold(
