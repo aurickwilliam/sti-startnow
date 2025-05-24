@@ -36,8 +36,6 @@ class _AddInstructorPageState extends State<AddInstructorPage> {
               title: "Instructors"
             ),
         
-            const SizedBox(height: 20,),
-        
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: isLandscape ? 200 : 24,
@@ -86,6 +84,8 @@ class _AddInstructorPageState extends State<AddInstructorPage> {
                     label: "Email Address:",
                     hint: "example@domain.com",
                   ),
+
+                  const SizedBox(height: 30,),
                 ],
               ),
             )
