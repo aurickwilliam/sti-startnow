@@ -1,15 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/pages/components/buttons/custom_outline_button.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
+import 'package:sti_startnow/pages/enrollment/components/download_toast.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/main_dashboard/main_dashboard.dart';
 import 'package:sti_startnow/pdf/pre_assessment_api.dart';
 import 'package:sti_startnow/pdf/save_and_open_pdf.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
-class CompletedPage extends StatelessWidget {
+class CompletedPage extends StatefulWidget {
   const CompletedPage({super.key});
+
+  @override
+  State<CompletedPage> createState() => _CompletedPageState();
+}
+
+class _CompletedPageState extends State<CompletedPage> {
+  late FToast fToast;
+
+  @override
+  void initState() {
+    super.initState();
+    fToast = FToast();
+    fToast.init(context);
+  }
+
+  _showToast(){
+    Widget toast = DownloadToast();
+
+    fToast.showToast(
+      child: toast,
+      gravity: ToastGravity.CENTER,
+      toastDuration: const Duration(seconds: 2),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +84,7 @@ class CompletedPage extends StatelessWidget {
 
                       // IF GUSTO IOPEN PAGTAPOS IDOWNLOAD
                       // SaveAndOpenPdf.openPdf(preAssessment);
+                      _showToast();
                     }
                   ),
                 ],
