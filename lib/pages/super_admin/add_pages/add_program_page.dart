@@ -33,8 +33,6 @@ class _AddProgramPageState extends State<AddProgramPage> {
           children: [
             PageAppBar(title: "Programs"),
 
-            const SizedBox(height: 20),
-
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: isLandscape ? 200 : 24,
@@ -76,7 +74,7 @@ class _AddProgramPageState extends State<AddProgramPage> {
                     hint: "Enter Department Name",
                   ),
 
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 30),
                 ],
               ),
             ),

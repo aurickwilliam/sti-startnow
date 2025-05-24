@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
+import 'package:sti_startnow/pages/components/custom_date_picker.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
@@ -37,8 +38,6 @@ class _AddEnrollSchedPageState extends State<AddEnrollSchedPage> {
               title: "Enroll Schedule"
             ),
         
-            const SizedBox(height: 20,),
-        
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: isLandscape ? 200 : 24,
@@ -58,18 +57,37 @@ class _AddEnrollSchedPageState extends State<AddEnrollSchedPage> {
                       
                   const SizedBox(height: 20,),
                       
-                  TextInput(
-                    controller: fromController, 
-                    label: "Title:", 
-                    hint: "Enter Title",
-                  ),
-                      
-                  const SizedBox(height: 10,),
-                      
-                  TextInput(
-                    controller: toController, 
-                    label: "Date:",
-                    hint: "Enter Date",
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // FROM
+                      Expanded(
+                        child: CustomDatePicker(
+                          controller: fromController, 
+                          label: "From:"
+                        ),
+                      ),
+                  
+                      const SizedBox(width: 10,),
+                  
+                      Icon(
+                        Icons.arrow_right_alt_rounded,
+                        color: AppTheme.colors.primary,
+                        size: 50,
+                      ),
+                  
+                      const SizedBox(width: 10,),
+                  
+                      // TO
+                      Expanded(
+                        child: CustomDatePicker(
+                          controller: toController, 
+                          label: "To:"
+                        ),
+                      ),
+                    ],
                   ),
                   
                   const SizedBox(height: 10,),
