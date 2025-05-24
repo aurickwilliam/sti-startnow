@@ -18,8 +18,7 @@ class _AddSubjectPageState extends State<AddSubjectPage> {
   final TextEditingController subjectNameController = TextEditingController();
   final TextEditingController subjectCodeController = TextEditingController();
   final TextEditingController subjectUnitsController = TextEditingController();
-  final TextEditingController subjectYearController = TextEditingController();
-  final TextEditingController subjectDepartmentController = TextEditingController();
+  final TextEditingController subjectPrerequisitesController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -67,32 +66,24 @@ class _AddSubjectPageState extends State<AddSubjectPage> {
                       
                   TextInput(
                     controller: subjectCodeController, 
-                    label: "Subject Code:",
-                    hint: "Enter Subject Code",
+                    label: "Course Code:",
+                    hint: "Enter Course Code",
                   ),
                   
                   const SizedBox(height: 10,),
                       
                   NumberInput(
                     controller: subjectUnitsController, 
-                    label: "Subject Units:",
+                    label: "Units:",
                     hint: "Enter Subject Units",
                   ),
                   
                   const SizedBox(height: 10,),
                       
                   TextInput(
-                    controller: subjectYearController, 
-                    label: "Subject Year:",
-                    hint: "Enter Subject Year",
-                  ),
-                  
-                  const SizedBox(height: 10,),
-                  
-                  TextInput(
-                    controller: subjectDepartmentController, 
-                    label: "Department:",
-                    hint: "Enter Department Name",
+                    controller: subjectPrerequisitesController, 
+                    label: "Subject Prerequisites:",
+                    hint: "Enter Subject Prerequisites",
                   ),
                       
                   const SizedBox(height: 10,),

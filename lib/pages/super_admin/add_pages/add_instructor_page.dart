@@ -84,6 +84,8 @@ class _AddInstructorPageState extends State<AddInstructorPage> {
                     label: "Email Address:",
                     hint: "example@domain.com",
                   ),
+
+                  const SizedBox(height: 30,),
                 ],
               ),
             )

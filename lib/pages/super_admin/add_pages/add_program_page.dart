@@ -74,7 +74,7 @@ class _AddProgramPageState extends State<AddProgramPage> {
                     hint: "Enter Department Name",
                   ),
 
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 30),
                 ],
               ),
             ),
