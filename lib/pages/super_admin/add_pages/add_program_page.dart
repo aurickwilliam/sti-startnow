@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
@@ -13,16 +14,15 @@ class AddProgramPage extends StatefulWidget {
 }
 
 class _AddProgramPageState extends State<AddProgramPage> {
-
   final TextEditingController programNameController = TextEditingController();
   final TextEditingController acronymController = TextEditingController();
   final TextEditingController departmentController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-
     // if is in landscape
-    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
     // Content
     Widget content = Column(
@@ -31,16 +31,14 @@ class _AddProgramPageState extends State<AddProgramPage> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            PageAppBar(
-              title: "Programs"
-            ),
-        
-            const SizedBox(height: 20,),
-        
+            PageAppBar(title: "Programs"),
+
+            const SizedBox(height: 20),
+
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: isLandscape ? 200 : 24,
-                vertical: 10
+                vertical: 10,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,65 +51,70 @@ class _AddProgramPageState extends State<AddProgramPage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                      
-                  const SizedBox(height: 20,),
-                      
+
+                  const SizedBox(height: 20),
+
                   TextInput(
-                    controller: programNameController, 
-                    label: "Program Name:", 
+                    controller: programNameController,
+                    label: "Program Name:",
                     hint: "Enter Program Name",
                   ),
-                      
-                  const SizedBox(height: 10,),
-                      
+
+                  const SizedBox(height: 10),
+
                   TextInput(
-                    controller: acronymController, 
+                    controller: acronymController,
                     label: "Acronym:",
                     hint: "Enter Program Acronym",
                   ),
-                  
-                  const SizedBox(height: 10,),
-                  
+
+                  const SizedBox(height: 10),
+
                   TextInput(
-                    controller: departmentController, 
+                    controller: departmentController,
                     label: "Department:",
                     hint: "Enter Department Name",
                   ),
-                      
-                  const SizedBox(height: 10,),
+
+                  const SizedBox(height: 10),
                 ],
               ),
-            )
+            ),
           ],
         ),
 
         Padding(
           padding: EdgeInsets.symmetric(
             horizontal: isLandscape ? 200 : 24,
-            vertical: 10
+            vertical: 10,
           ),
           child: BottomButton(
-            onPressed: () {}, 
-            text: "Add New Program"
+            onPressed: () async {
+              await supabase.from("PROGRAM").insert({
+                'program_name': programNameController.text,
+                'acronym': acronymController.text,
+                'department': departmentController.text,
+              });
+
+              if (context.mounted) {
+                Navigator.pop(context);
+              }
+            },
+            text: "Add New Program",
           ),
-        )
+        ),
       ],
     );
 
     // Parent Widget
-    Widget parentWidget = isLandscape
-      ? SingleChildScrollView(
-        child: content,
-      )
-      : Container(
-        child: content,
-      );
+    Widget parentWidget =
+        isLandscape
+            ? SingleChildScrollView(child: content)
+            : Container(child: content);
 
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
-      body: SafeArea(
-        child: parentWidget
-      ),
+      body: SafeArea(child: parentWidget),
     );
   }
 }

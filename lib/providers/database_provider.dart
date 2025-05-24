@@ -275,13 +275,21 @@ class DatabaseProvider extends ChangeNotifier {
     }
   }
 
-  // Program list
+  // For program information
   late List<PostgrestMap> _programList;
 
   List<PostgrestMap> get programs => _programList;
 
+  // For superadmin page lang siguro to
+  set setPrograms(List<PostgrestMap> newPrograms) {
+    _programList = newPrograms;
+  }
+
   Future<void> initializePrograms() async {
-    final res = await supabase.from("PROGRAM").select();
+    final res = await supabase
+        .from("PROGRAM")
+        .select()
+        .order('id', ascending: true);
     _programList = [];
     if (res.isNotEmpty) {
       for (int i = 0; i < res.length; i++) {

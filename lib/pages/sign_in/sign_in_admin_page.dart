@@ -30,22 +30,6 @@ class _SignInAdminPageState extends State<SignInAdminPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  void handleAdminNavigation() {
-    String email = emailController.text;
-    String password = passwordController.text;
-
-    Widget destination = AdminDashboard();
-
-    if (email == "MIS" && password == "admin123") {
-      destination = SuperAdminDashboard();
-    }
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => destination),
-    );
-  }
-
   Future<void> handleAdminSignIn() async {
     // Show circular progress indicator
     showDialog(
@@ -95,7 +79,7 @@ class _SignInAdminPageState extends State<SignInAdminPage> {
       final role = roleRes[0]['role'];
       if (role != 'student') {
         await db.initializeAdmin(user.email!, role);
-
+        await db.initializePrograms();
         if (mounted) {
           Navigator.pop(context);
           switch (role) {
