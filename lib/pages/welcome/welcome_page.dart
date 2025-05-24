@@ -99,7 +99,8 @@ class _WelcomePageState extends State<WelcomePage> {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => SignInStudentPage(),
+                                    builder:
+                                        (context) => const SignInStudentPage(),
                                   ),
                                 );
                               },
@@ -127,7 +128,9 @@ class _WelcomePageState extends State<WelcomePage> {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => EnrollmentDashboard(),
+                                    builder:
+                                        (context) =>
+                                            const EnrollmentDashboard(),
                                   ),
                                 );
                               },

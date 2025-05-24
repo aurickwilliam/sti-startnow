@@ -280,6 +280,11 @@ class DatabaseProvider extends ChangeNotifier {
 
   List<PostgrestMap> get programs => _programList;
 
+  // Para isang beses lang ma-initialize ang program information sa umpisa ng app
+  bool _initializationStatus = false;
+
+  bool get programsInitialized => _initializationStatus;
+
   // For superadmin page lang siguro to
   set setPrograms(List<PostgrestMap> newPrograms) {
     _programList = newPrograms;
@@ -295,6 +300,7 @@ class DatabaseProvider extends ChangeNotifier {
       for (int i = 0; i < res.length; i++) {
         _programList.add(res[i]);
       }
+      _initializationStatus = true;
     }
   }
 }
