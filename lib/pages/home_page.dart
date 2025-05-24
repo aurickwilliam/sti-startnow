@@ -3,9 +3,8 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/auth_page.dart';
-import 'package:sti_startnow/pages/enrollment_dashboard/enrollment_dashboard.dart';
+import 'package:sti_startnow/pages/initialization.dart';
 import 'package:sti_startnow/pages/internet_check/no_internet_page.dart';
-import 'package:sti_startnow/pages/welcome/welcome_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomePage extends StatelessWidget {
@@ -28,7 +27,7 @@ class HomePage extends StatelessWidget {
 
             if (status == InternetStatus.disconnected) {
               FlutterNativeSplash.remove();
-              return NoInternetPage();
+              return const NoInternetPage();
             }
 
             final event =
@@ -41,8 +40,8 @@ class HomePage extends StatelessWidget {
               }
             }
 
-            FlutterNativeSplash.remove();
-            return isFirstLaunch ? WelcomePage() : EnrollmentDashboard();
+            // Para ma-initialize ang programs bago matanggal ang splash screen
+            return const Initialization();
           },
         );
       },

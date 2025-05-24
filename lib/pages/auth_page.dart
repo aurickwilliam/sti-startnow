@@ -9,16 +9,26 @@ import 'package:sti_startnow/pages/super_admin/super_admin_dashboard.dart';
 import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class AuthPage extends StatelessWidget {
+class AuthPage extends StatefulWidget {
   final User user;
-  // ignore: prefer_const_constructors_in_immutables
-  AuthPage({super.key, required this.user});
 
-  late final DatabaseProvider db;
+  const AuthPage({super.key, required this.user});
+
+  @override
+  State<AuthPage> createState() => _AuthPageState();
+}
+
+class _AuthPageState extends State<AuthPage> {
+  late DatabaseProvider db;
+
+  @override
+  void initState() {
+    super.initState();
+    db = context.read<DatabaseProvider>();
+  }
 
   @override
   Widget build(BuildContext context) {
-    db = Provider.of<DatabaseProvider>(context);
     return FutureBuilder(
       future: _getUserRoleAndData(),
       builder: (context, snapshot) {
@@ -38,11 +48,11 @@ class AuthPage extends StatelessWidget {
     );
   }
 
-  Future _getUserRoleAndData() async {
+  Future<String?> _getUserRoleAndData() async {
     final res = await supabase
         .from("USER_ROLES")
         .select('role')
-        .eq('user_id', user.id);
+        .eq('user_id', widget.user.id);
 
     if (res.isNotEmpty) {
       final role = res[0]['role'];
@@ -50,20 +60,21 @@ class AuthPage extends StatelessWidget {
       switch (role) {
         case 'super_admin' || 'admin':
           // Initialize super_admin/admin
-          await db.initializeAdmin(user.email!, role);
-          await db.initializePrograms();
+          await db.initializeAdmin(widget.user.email!, role);
         case 'student':
           // Initialize student based on student number
           final studentRes = await supabase
               .from("STUDENT")
               .select('student_id')
-              .eq('personal_email', user.email!);
+              .eq('personal_email', widget.user.email!);
 
           if (studentRes.isNotEmpty) {
-            final studentNumber = studentRes[0]['student_id'];
+            final int studentNumber = studentRes[0]['student_id'];
             await db.initializeExistingStudent(studentNumber);
           }
       }
+      // From the bottom of my heart, I apologize for this
+      await db.initializePrograms();
       return role;
     }
     return null;
