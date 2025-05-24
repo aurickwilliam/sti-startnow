@@ -129,16 +129,16 @@ class _NewSelectSectionPageState extends State<NewSelectSectionPage> {
   void initState() {
     student = context.read<DatabaseProvider>().student;
 
+    sectionValue = student.enrollment.section ?? "";
     super.initState();
   }
-  
+
   @override
   Widget build(BuildContext context) {
-
     // if is in landscape
     bool isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
-        
+
     return PopScope(
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) {
@@ -159,7 +159,7 @@ class _NewSelectSectionPageState extends State<NewSelectSectionPage> {
                   step4: false,
                   title: "Section",
                 ),
-      
+
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -179,9 +179,9 @@ class _NewSelectSectionPageState extends State<NewSelectSectionPage> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-      
+
                           const SizedBox(height: 20),
-      
+
                           CustomDropdownMenu(
                             listChoices: listSection,
                             label: "Available Sections:",
@@ -196,9 +196,9 @@ class _NewSelectSectionPageState extends State<NewSelectSectionPage> {
                         ],
                       ),
                     ),
-      
+
                     const SizedBox(height: 30),
-      
+
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 24),
                       child: Column(
@@ -215,7 +215,7 @@ class _NewSelectSectionPageState extends State<NewSelectSectionPage> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-      
+
                               Text(
                                 "Units: $totalUnits",
                                 style: GoogleFonts.roboto(
@@ -226,9 +226,9 @@ class _NewSelectSectionPageState extends State<NewSelectSectionPage> {
                               ),
                             ],
                           ),
-      
+
                           Divider(height: 10),
-      
+
                           CustomDataTable(
                             columnNames: columnNames,
                             dataTableValues: dataTableValues,
@@ -236,9 +236,9 @@ class _NewSelectSectionPageState extends State<NewSelectSectionPage> {
                         ],
                       ),
                     ),
-      
+
                     const SizedBox(height: 50),
-      
+
                     Padding(
                       padding: EdgeInsets.symmetric(
                         horizontal: isLandscape ? 200 : 24,
@@ -269,7 +269,8 @@ class _NewSelectSectionPageState extends State<NewSelectSectionPage> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => ValidateDetailsPage(),
+                                        builder:
+                                            (context) => ValidateDetailsPage(),
                                       ),
                                     );
                                   },

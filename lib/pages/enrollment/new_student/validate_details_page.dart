@@ -101,15 +101,15 @@ class _ValidateDetailsPageState extends State<ValidateDetailsPage> {
     parentInformationList = [
       [
         "Father's Name / Contact#:",
-        "${student.father.firstName!.isEmpty || student.father.lastName!.isEmpty ? "N/A" : "${student.father.firstName} ${student.father.lastName}"} / ${student.father.mobileNumber!.isEmpty ? "N/A" : student.father.mobileNumber}",
+        "${student.father.firstName!.isEmpty ? "N/A" : student.father.fullName} / ${student.father.mobileNumber!.isEmpty ? "N/A" : student.father.mobileNumber}",
       ],
       [
         "Mother's Name / Contact#:",
-        "${student.mother.firstName!.isEmpty || student.mother.lastName!.isEmpty ? "N/A" : "${student.mother.firstName} ${student.mother.lastName}"} / ${student.mother.mobileNumber!.isEmpty ? "N/A" : student.mother.mobileNumber}",
+        "${student.mother.firstName!.isEmpty ? "N/A" : student.mother.fullName} / ${student.mother.mobileNumber!.isEmpty ? "N/A" : student.mother.mobileNumber}",
       ],
       [
         "Guardian's Name / Contact#:",
-        "${student.guardian.firstName == "N/A" || student.guardian.lastName == "N/A" ? "N/A" : "${student.guardian.firstName} ${student.guardian.lastName}"} / ${student.guardian.mobileNumber == "0" ? "N/A" : student.guardian.mobileNumber}",
+        "${student.guardian.firstName == "N/A" || student.guardian.lastName == "N/A" ? "N/A" : student.guardian.fullName} / ${student.guardian.mobileNumber == "0" ? "N/A" : student.guardian.mobileNumber}",
       ],
     ];
     // if is in landscape

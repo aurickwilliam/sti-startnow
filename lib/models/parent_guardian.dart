@@ -7,4 +7,8 @@ class ParentGuardian {
   String? email;
   String? occupation;
   String? relationship;
+
+  String get fullName {
+    return "$firstName $lastName";
+  }
 }

@@ -29,6 +29,7 @@ class Student {
   String? studentNo;
   String? academicType;
   String profileImg;
+  String? program;
   final String receiptImg;
 
   // Temporary

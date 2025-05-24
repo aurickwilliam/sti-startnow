@@ -51,6 +51,7 @@ class AuthPage extends StatelessWidget {
         case 'super_admin' || 'admin':
           // Initialize super_admin/admin
           await db.initializeAdmin(user.email!, role);
+          await db.initializePrograms();
         case 'student':
           // Initialize student based on student number
           final studentRes = await supabase
