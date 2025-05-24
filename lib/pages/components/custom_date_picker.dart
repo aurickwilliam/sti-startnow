@@ -180,7 +180,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
               ? DateTime.now()
               : DateTime.parse(widget.controller.text),
       firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
+      lastDate: DateTime.now(),
     );
 
     setState(() {

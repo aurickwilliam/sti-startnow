@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/components/search_box.dart';
 import 'package:sti_startnow/pages/super_admin/add_pages/add_program_page.dart';
 import 'package:sti_startnow/pages/super_admin/components/list_data_table.dart';
 import 'package:sti_startnow/pages/super_admin/edit_pages/edit_program_row_page.dart';
+import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class ListProgramsPage extends StatefulWidget {
@@ -15,61 +18,47 @@ class ListProgramsPage extends StatefulWidget {
 }
 
 class _ListProgramsPageState extends State<ListProgramsPage> {
+  late DatabaseProvider db;
   final TextEditingController searchController = TextEditingController();
 
   // Column values
-  List<String> columnNames = [
-    "#",
-    "Name",
-    "Acronym",
-    "Department",
-    "Description",
-  ];
+  List<String> columnNames = ["#", "Name", "Acronym", "Department"];
 
-  // Temporary Values for the table
-  List<List> values = [
-    [
-      "1",
-      "Bachelor of Science in Computer Science",
-      "BSCS",
-      "Information Technology",
-      "...",
-    ],
-    [
-      "2",
-      "Bachelor of Science in Information Technology",
-      "BSIT",
-      "Information Technology",
-      "...",
-    ],
-    [
-      "3",
-      "Bachelor of Science in Computer Engineering",
-      "BSCPE",
-      "Information Technology",
-      "...",
-    ],
-    [
-      "4",
-      "Bachelor of Science in Artificial Intelligence",
-      "BSIT",
-      "Information Technology",
-      "...",
-    ],
-    [
-      "5",
-      "Bachelor of Science in Machine Learning",
-      "BSCPE",
-      "Information Technology",
-      "...",
-    ],
-  ];
+  late List<List> values;
 
   List<List> matchedValues = [];
 
+  // From database
+  void getPrograms(List<Map<String, dynamic>> programs) {
+    db.setPrograms = programs;
+    setState(() {
+      values = [];
+      matchedValues = values;
+      for (final program in programs) {
+        values.add([
+          program['id'].toString(),
+          program['program_name'],
+          program['acronym'],
+          program['department'],
+        ]);
+      }
+    });
+  }
+
   @override
   void initState() {
-    matchedValues = values;
+    db = context.read<DatabaseProvider>();
+    getPrograms(db.programs); // Initial programs
+
+    // Listen to changes in the program database
+    supabase
+        .from("PROGRAM")
+        .stream(primaryKey: ['id'])
+        .order('id', ascending: true)
+        .listen((programs) {
+          getPrograms(programs);
+        });
+
     super.initState();
   }
 
@@ -127,37 +116,36 @@ class _ListProgramsPageState extends State<ListProgramsPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder:
-                                    (context) =>
-                                        EditProgramRowPage(rowValues: item),
+                                builder: (context) {
+                                  searchController.clear();
+                                  return EditProgramRowPage(rowValues: item);
+                                },
                               ),
                             );
                           },
                         )
-                        : Container(
-                          child: Center(
-                            child: Column(
-                              children: [
-                                Container(
-                                  width: 200,
-                                  child: Image(
-                                    image: AssetImage(
-                                      "assets/img/not_found_img.png",
-                                    ),
-                                    fit: BoxFit.contain,
+                        : Center(
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                width: 200,
+                                child: Image(
+                                  image: AssetImage(
+                                    "assets/img/not_found_img.png",
                                   ),
+                                  fit: BoxFit.contain,
                                 ),
+                              ),
 
-                                Text(
-                                  "No matches found",
-                                  style: GoogleFonts.roboto(
-                                    color: AppTheme.colors.black,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold
-                                  ),
+                              Text(
+                                "No matches found",
+                                style: GoogleFonts.roboto(
+                                  color: AppTheme.colors.black,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                              ],
-                            )
+                              ),
+                            ],
                           ),
                         ),
                   ],
@@ -171,6 +159,7 @@ class _ListProgramsPageState extends State<ListProgramsPage> {
       // FAB
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          searchController.clear();
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => AddProgramPage()),
