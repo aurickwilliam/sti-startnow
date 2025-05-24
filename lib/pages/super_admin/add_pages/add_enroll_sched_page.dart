@@ -37,8 +37,6 @@ class _AddEnrollSchedPageState extends State<AddEnrollSchedPage> {
               title: "Enroll Schedule"
             ),
         
-            const SizedBox(height: 20,),
-        
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: isLandscape ? 200 : 24,

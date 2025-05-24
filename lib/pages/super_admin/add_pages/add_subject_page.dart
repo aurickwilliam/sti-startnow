@@ -38,8 +38,6 @@ class _AddSubjectPageState extends State<AddSubjectPage> {
               title: "Subjects"
             ),
         
-            const SizedBox(height: 20,),
-        
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: isLandscape ? 200 : 24,

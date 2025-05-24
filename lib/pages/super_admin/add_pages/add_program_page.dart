@@ -33,8 +33,6 @@ class _AddProgramPageState extends State<AddProgramPage> {
           children: [
             PageAppBar(title: "Programs"),
 
-            const SizedBox(height: 20),
-
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: isLandscape ? 200 : 24,
