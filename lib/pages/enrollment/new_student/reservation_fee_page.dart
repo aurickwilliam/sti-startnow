@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/buttons/custom_outline_button.dart';
@@ -12,6 +13,7 @@ import 'package:sti_startnow/pages/enrollment/completed_page.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ReservationFeePage extends StatefulWidget {
   const ReservationFeePage({super.key});
@@ -51,17 +53,53 @@ class _ReservationFeePageState extends State<ReservationFeePage> {
       },
     );
 
+    // Check kung may internet before any interaction
+    final isConnected = await InternetConnection().hasInternetAccess;
+    if (!isConnected) {
+      if (mounted) {
+        Navigator.pop(context);
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return CustomBottomSheet(
+              isError: true,
+              title: "Your Offline",
+              subtitle: "No internet connection, reconnect\nand try again",
+            );
+          },
+        );
+      }
+      return;
+    }
+
     // Create student account
-    // Reminder: handle errors
-    await db.createNewStudent();
+    try {
+      await db.createNewStudent();
+    } on AuthException {
+      if (mounted) {
+        Navigator.pop(context);
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return CustomBottomSheet(
+              isError: true,
+              title: "Something went wrong",
+              subtitle: "Student already exists",
+            );
+          },
+        );
+      }
+      return;
+    }
 
     // Pop circular progress indicator
     if (mounted) {
       Navigator.pop(context);
 
-      Navigator.push(
+      Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => CompletedPage()),
+        MaterialPageRoute(builder: (context) => const CompletedPage()),
+        (context) => false,
       );
     }
   }

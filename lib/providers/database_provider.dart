@@ -174,6 +174,73 @@ class DatabaseProvider extends ChangeNotifier {
       'year_level': school.yearLevel,
       'term': school.term,
     });
+
+    // Parent/Guardian info
+    final father = _student.father;
+    final mother = _student.mother;
+    final guardian = _student.guardian;
+    bool guardianInserted = false;
+    // Kapag si father/mother ang guardian, wag na insert guardian sa database
+
+    // Check kung may father
+    if (father.firstName!.isNotEmpty) {
+      father.relationship = 'Father';
+      // Check if father is also guardian
+      if (guardian.firstName == father.firstName &&
+          guardian.lastName == father.lastName) {
+        father.relationship = 'Father/Guardian';
+        guardianInserted = true;
+      }
+
+      await supabase.from('PARENT_GUARDIAN').insert({
+        'student_id': studentNumber,
+        'fname': father.firstName,
+        'lname': father.lastName,
+        'minitial': father.middleInitial,
+        'suffix': father.suffix,
+        'mobile': father.mobileNumber,
+        'email': father.email,
+        'occupation': father.occupation,
+        'relationship': father.relationship,
+      });
+    }
+    // Check kung may mother
+    if (mother.firstName!.isNotEmpty) {
+      mother.relationship = 'Mother';
+      // Check if mother is also guardian
+      if (guardian.firstName == mother.firstName &&
+          guardian.lastName == mother.lastName) {
+        mother.relationship = 'Mother/Guardian';
+        guardianInserted = true;
+      }
+
+      await supabase.from('PARENT_GUARDIAN').insert({
+        'student_id': studentNumber,
+        'fname': mother.firstName,
+        'lname': mother.lastName,
+        'minitial': mother.middleInitial,
+        'suffix': mother.suffix,
+        'mobile': mother.mobileNumber,
+        'email': mother.email,
+        'occupation': mother.occupation,
+        'relationship': mother.relationship,
+      });
+    }
+
+    // Insert guardian
+    if (!guardianInserted) {
+      await supabase.from('PARENT_GUARDIAN').insert({
+        'student_id': studentNumber,
+        'fname': guardian.firstName,
+        'lname': guardian.lastName,
+        'minitial': guardian.middleInitial,
+        'suffix': guardian.suffix,
+        'mobile': guardian.mobileNumber,
+        'email': guardian.email,
+        'occupation': guardian.occupation,
+        'relationship': guardian.relationship,
+      });
+    }
   }
 
   // Update info ng existing student
@@ -204,6 +271,21 @@ class DatabaseProvider extends ChangeNotifier {
         _admin.role = 'MIS';
       } else {
         _admin.role = adminInfo['role'];
+      }
+    }
+  }
+
+  // Program list
+  late List<PostgrestMap> _programList;
+
+  List<PostgrestMap> get programs => _programList;
+
+  Future<void> initializePrograms() async {
+    final res = await supabase.from("PROGRAM").select();
+    _programList = [];
+    if (res.isNotEmpty) {
+      for (int i = 0; i < res.length; i++) {
+        _programList.add(res[i]);
       }
     }
   }
