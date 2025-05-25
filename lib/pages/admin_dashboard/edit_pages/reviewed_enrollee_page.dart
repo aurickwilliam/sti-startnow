@@ -3,12 +3,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/admin_dashboard/admin_dashboard.dart';
-import 'package:sti_startnow/pages/admin_dashboard/components/radio_option_tile.dart';
 import 'package:sti_startnow/pages/admin_dashboard/components/verify_button.dart';
+import 'package:sti_startnow/pages/admin_dashboard/edit_pages/logs_page.dart';
 import 'package:sti_startnow/pages/components/fullscreen_image_page.dart';
 import 'package:sti_startnow/pages/admin_dashboard/components/receipt_container.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
-import 'package:sti_startnow/pages/components/option_box.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/providers/enrollee_list_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
@@ -82,7 +81,10 @@ class _ReviewedEnrolleePageState extends State<ReviewedEnrolleePage> {
 
                         // Logs Button
                         ElevatedButton.icon(
-                          onPressed: () {}, 
+                          onPressed: () {
+                            Navigator.push(context, 
+                            MaterialPageRoute(builder: (context) => LogsPage()));
+                          }, 
                           icon: Icon(
                             Icons.description_rounded,
                             color: AppTheme.colors.primary,
