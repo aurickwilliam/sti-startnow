@@ -13,11 +13,11 @@ class PasswordInput extends StatefulWidget {
   final String toolTipMessage;
   final bool
   isPasswordChange; // Sa change password lang papakita valid password format
-  final bool isRetype; // Para sa retype password sa change password
-  final String? newPass; // Para din sa retype
+  final bool Function(String)?
+  retype; // Para sa retype password sa change password
   final String? altMessage; // Para iba message kapag wala inenter na password
 
-  PasswordInput({
+  const PasswordInput({
     super.key,
     required this.controller,
     required this.label,
@@ -27,14 +27,9 @@ class PasswordInput extends StatefulWidget {
     this.hasToolTip = false,
     this.toolTipMessage = "",
     this.isPasswordChange = false,
-    this.isRetype = false,
+    this.retype,
     this.altMessage,
-    this.newPass,
-  }) {
-    if (isRetype) {
-      assert(newPass != null);
-    }
-  }
+  });
 
   @override
   State<PasswordInput> createState() => _PasswordInputState();
@@ -141,7 +136,7 @@ class _PasswordInputState extends State<PasswordInput> {
                         });
                       },
                       icon: Icon(
-                        hidePassword ? Icons.visibility : Icons.visibility_off,
+                        hidePassword ? Icons.visibility_off : Icons.visibility,
                       ),
                     )
                     : null,
@@ -157,16 +152,19 @@ class _PasswordInputState extends State<PasswordInput> {
             }
 
             if (widget.isPasswordChange) {
-              RegExp passwordPattern = RegExp(r"^123$");
+              RegExp passwordPattern = RegExp(
+                r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{12,16}$",
+              );
 
               if (!passwordPattern.hasMatch(input)) {
-                return "Password must be 123";
+                return "12-16 characters, one uppercase, one lowercase, one digit";
               }
             }
 
-            if (widget.isRetype) {
-              if (input != widget.newPass) {
-                return "Password does not match new password";
+            if (widget.retype != null) {
+              // Kapag hindi niretype ang password
+              if (!widget.retype!(input)) {
+                return "Does not match new password";
               }
             }
 

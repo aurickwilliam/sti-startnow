@@ -4,7 +4,6 @@ import 'package:sti_startnow/pages/components/option_box.dart';
 import 'package:sti_startnow/pages/components/option_tile.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/enrollment_dashboard.dart';
-import 'package:sti_startnow/pages/main_dashboard/main_dashboard.dart';
 import 'package:sti_startnow/pages/settings/account_settings.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
@@ -26,15 +25,7 @@ class Settings extends StatelessWidget {
           child: Column(
             children: [
               // Settings header
-              PageAppBar(
-                title: "Settings",
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MainDashboard()),
-                  );
-                },
-              ),
+              PageAppBar(title: "Settings"),
 
               Padding(
                 padding: EdgeInsets.symmetric(
@@ -54,7 +45,7 @@ class Settings extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => AccountSettings(),
+                                builder: (context) => const AccountSettings(),
                               ),
                             );
                           },
@@ -76,7 +67,8 @@ class Settings extends StatelessWidget {
                               Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => EnrollmentDashboard(),
+                                  builder:
+                                      (context) => const EnrollmentDashboard(),
                                 ),
                                 (context) => false,
                               );

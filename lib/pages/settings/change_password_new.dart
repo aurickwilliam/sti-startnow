@@ -1,18 +1,101 @@
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
+import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/components/password_input.dart';
-import 'package:sti_startnow/pages/settings/account_settings.dart';
+import 'package:sti_startnow/pages/main_dashboard/main_dashboard.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class ChangePasswordNew extends StatelessWidget {
-  ChangePasswordNew({super.key});
+class ChangePasswordNew extends StatefulWidget {
+  const ChangePasswordNew({super.key});
 
-  final _formKey = GlobalKey<FormState>(); // For input validation
+  @override
+  State<ChangePasswordNew> createState() => _ChangePasswordNewState();
+}
 
+class _ChangePasswordNewState extends State<ChangePasswordNew> {
+  final _formKey = GlobalKey<FormState>();
+  // For input validation
   final TextEditingController newPasswordController = TextEditingController();
+
   final TextEditingController reTypePasswordController =
       TextEditingController();
+
+  Future<void> _updatePassword() async {
+    // Show circular progress indicator
+    showDialog(
+      context: context,
+      builder: (context) {
+        return PopScope(
+          canPop: false,
+          child: Center(child: const CircularProgressIndicator()),
+        );
+      },
+    );
+
+    // Check kung may internet before any interaction
+    final isConnected = await InternetConnection().hasInternetAccess;
+    if (!isConnected) {
+      if (mounted) {
+        Navigator.pop(context);
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return CustomBottomSheet(
+              isError: true,
+              title: "Your Offline",
+              subtitle: "No internet connection, reconnect\nand try again",
+            );
+          },
+        );
+      }
+      return;
+    }
+
+    // Update user password
+    try {
+      await supabase.auth.updateUser(
+        UserAttributes(password: newPasswordController.text),
+      );
+      // If successful, log out from other devices
+      await supabase.auth.signOut(scope: SignOutScope.others);
+
+      if (mounted) {
+        Navigator.pop(context);
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Password updated successfully'),
+            behavior: SnackBarBehavior.floating,
+            duration: Duration(seconds: 2),
+          ),
+        );
+
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const MainDashboard()),
+          (context) => false,
+        );
+      }
+    } on AuthException {
+      if (mounted) {
+        Navigator.pop(context);
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return CustomBottomSheet(
+              isError: true,
+              title: "Something went wrong",
+              subtitle: "Please try again",
+            );
+          },
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,8 +144,9 @@ class ChangePasswordNew extends StatelessWidget {
                       hint: "Re-Type New Password",
                       isRequired: true,
                       isEnable: true,
-                      isRetype: true,
-                      newPass: newPasswordController.text,
+                      retype: (input) {
+                        return input == newPasswordController.text;
+                      },
                       altMessage: "Please retype your new password",
                     ),
                   ],
@@ -78,12 +162,9 @@ class ChangePasswordNew extends StatelessWidget {
               vertical: 10,
             ),
             child: BottomButton(
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey.currentState!.validate()) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AccountSettings()),
-                  );
+                  await _updatePassword();
                 }
               },
               text: "Change Password",
