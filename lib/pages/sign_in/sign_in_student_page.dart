@@ -96,6 +96,7 @@ class _SignInStudentPageState extends State<SignInStudentPage> {
       }
 
       await db.initializeExistingStudent(student['student_id']);
+      await db.initializeCurrentEnroll();
       if (mounted) {
         Navigator.pop(context);
 

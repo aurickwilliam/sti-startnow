@@ -8,18 +8,14 @@ import 'package:sti_startnow/theme/app_theme.dart';
 
 class EnrollmentStatusPage extends StatefulWidget {
   final Student student;
-  
-  const EnrollmentStatusPage({
-    super.key,
-    required this.student,
-  });
+
+  const EnrollmentStatusPage({super.key, required this.student});
 
   @override
   State<EnrollmentStatusPage> createState() => _EnrollmentStatusPageState();
 }
 
 class _EnrollmentStatusPageState extends State<EnrollmentStatusPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,15 +24,10 @@ class _EnrollmentStatusPageState extends State<EnrollmentStatusPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              PageAppBar(
-                title: "Enrollment Status"
-              ),
+              PageAppBar(title: "Enrollment Status"),
 
               Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 10
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -45,34 +36,33 @@ class _EnrollmentStatusPageState extends State<EnrollmentStatusPage> {
                       style: GoogleFonts.roboto(
                         color: AppTheme.colors.primary,
                         fontSize: 20,
-                        fontWeight: FontWeight.bold
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
 
-                    const SizedBox(height: 10,),
+                    const SizedBox(height: 10),
 
                     InformationTile(
-                      label: "Name:", 
-                      data: widget.student.fullName
+                      label: "Name:",
+                      data: widget.student.fullName,
                     ),
 
-                    const SizedBox(height: 10,),
+                    const SizedBox(height: 10),
 
                     InformationTile(
-                      label: "Student No.:", 
-                      data: widget.student.studentNo!
+                      label: "Student No.:",
+                      data: widget.student.studentNo!,
                     ),
 
-                    const SizedBox(height: 10,),
+                    const SizedBox(height: 10),
 
                     InformationTile(
-                      label: "Term and Year:", 
-                      data: "3rd Year 1st Term SY. 2025 - 2026"
+                      label: "Term and Year:",
+                      data:
+                          "${widget.student.enrollment.yearLevel} ${widget.student.enrollment.semester} SY. ${widget.student.enrollment.academicYear}",
                     ),
 
-                    Divider(
-                      height: 30,
-                    ),
+                    Divider(height: 30),
 
                     RichText(
                       text: TextSpan(
@@ -88,24 +78,23 @@ class _EnrollmentStatusPageState extends State<EnrollmentStatusPage> {
                           TextSpan(
                             // Temporary
                             text: "PENDING",
-                            style: GoogleFonts.roboto(color: AppTheme.colors.gold),
+                            style: GoogleFonts.roboto(
+                              color: AppTheme.colors.gold,
+                            ),
                           ),
                         ],
                       ),
                     ),
 
-                    const SizedBox(height: 20,),
+                    const SizedBox(height: 20),
 
-                    BottomButton(
-                      onPressed: () {}, 
-                      text: "Re-Take Enrollment"
-                    )
+                    BottomButton(onPressed: () {}, text: "Re-Take Enrollment"),
                   ],
                 ),
               ),
             ],
           ),
-        )
+        ),
       ),
     );
   }

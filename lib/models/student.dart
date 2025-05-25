@@ -5,7 +5,8 @@ import 'package:sti_startnow/models/school.dart';
 
 class Student {
   String? studentNo;
-  String? course;
+  String? program;
+  String? course; // To be removed
   String? firstName;
   String? middleName;
   String? lastName;
@@ -27,9 +28,8 @@ class Student {
   late ParentGuardian mother;
   late ParentGuardian guardian;
   late Enrollment enrollment;
-  String? academicType;
+  int? enrollmentID;
   String profileImg;
-  String? program;
   final String receiptImg;
 
   // Temporary
@@ -43,7 +43,6 @@ class Student {
     this.firstName,
     this.lastName,
     this.studentNo,
-    this.academicType,
     this.email,
     this.contactNo,
     this.status = "Unverified",

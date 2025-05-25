@@ -16,26 +16,69 @@ class DatabaseProvider extends ChangeNotifier {
 
   Future<bool> initializeExistingStudent(int studentNumber) async {
     _student = Student();
+    _student.studentNo = "0$studentNumber";
 
     // Read student info
     final studentRes = await supabase
         .from("STUDENT")
-        .select()
+        .select('''
+          stud_fname, 
+          stud_mname, 
+          stud_lname, 
+          stud_suffix, 
+          personal_email, 
+          school_email, 
+          current_enrollment, 
+          PROGRAM(program_name)
+          ''')
         .eq('student_id', studentNumber);
 
     if (studentRes.isNotEmpty) {
       final studentInfo = studentRes[0];
-      _student.studentNo = "0${studentInfo['student_id']}";
       _student.firstName = studentInfo['stud_fname'];
       _student.middleName = studentInfo['stud_mname'];
       _student.lastName = studentInfo['stud_lname'];
       _student.suffixName = studentInfo['stud_suffix'];
       _student.email = studentInfo['personal_email'];
       _student.schoolEmail = studentInfo['school_email'];
-
-      return true; // successful
+      _student.enrollmentID = studentInfo['current_enrollment'];
+      _student.program = studentInfo['PROGRAM']['program_name'];
+      return true; // success
     }
     return false; // fail
+  }
+
+  Future<void> initializeCurrentEnroll() async {
+    if (_student.enrollmentID == null) {
+      return;
+    }
+
+    // Read student's current enrollment info
+    final enrollRes = await supabase
+        .from("ENROLLMENT")
+        .select('''
+          enrollment_status, 
+          academic_year, 
+          year_level,
+          term, 
+          SECTION(section_name)
+          ''')
+        .eq('enrollment_id', _student.enrollmentID!);
+
+    // I am sorry for this, I am tired
+    if (enrollRes.isNotEmpty) {
+      final enrollInfo = enrollRes[0];
+      _student.enrollment.enrollmentStatus = enrollInfo['enrollment_status'];
+      _student.enrollment.academicYear = enrollInfo['academic_year'];
+      _student.enrollment.yearLevel = enrollInfo['year_level'];
+      _student.enrollment.semester = enrollInfo['term'];
+
+      if (enrollInfo['SECTION'] == null) {
+        _student.enrollment.section = "Irregular";
+      } else {
+        _student.enrollment.section = enrollInfo['SECTION']['section_name'];
+      }
+    }
   }
 
   // Create new student account
@@ -55,7 +98,6 @@ class DatabaseProvider extends ChangeNotifier {
       });
       // I am sorry for this abomination -Patio
       await _insertStudentInfo();
-      await _generateSchoolEmail();
     } else {
       debugPrint(
         "This shoud not happen (hopefully)",
@@ -86,22 +128,8 @@ class DatabaseProvider extends ChangeNotifier {
         .eq('student_id', int.parse(_student.studentNo!));
   }
 
-  // Get the studet number for new student (since sa db na generate)
-  Future<String> _getNewStudentNumber() async {
-    final res = await supabase
-        .from("STUDENT")
-        .select('student_id')
-        .eq('personal_email', _student.email!);
-
-    if (res.isNotEmpty) {
-      final studentNumber = res[0]['student_id'];
-      return "0$studentNumber";
-    }
-    return "This should not happen (hopefully)";
-  }
-
   // Get program_id of new student program
-  int _getProgramID() {
+  int get _getProgramID {
     // Get only the program name, remove acronym
     final index = _student.program!.lastIndexOf(' ');
     final programName = _student.program!.substring(0, index);
@@ -113,6 +141,56 @@ class DatabaseProvider extends ChangeNotifier {
         }).toList()[0]['id'];
 
     return programID;
+  }
+
+  // Section information during enrollment
+  List<PostgrestMap> _enrollmentSectionList = [];
+
+  List<String> get enrollSections {
+    List<String> sectionNames = [];
+
+    for (final section in _enrollmentSectionList) {
+      sectionNames.add(section['section_name']);
+    }
+
+    return sectionNames;
+  }
+
+  // Get current sections based on student program and year level
+  void getCurrentSections() {
+    final program = _getProgramID;
+    final yearLevel = _formattedYearLevel;
+
+    _enrollmentSectionList =
+        _sectionList.where((section) {
+          return section['program_id'] == program &&
+              section['year_level'] == yearLevel;
+        }).toList();
+  }
+
+  // Get section_id of section ni student para sa enrollment
+  int get _getSectionID {
+    final id =
+        _enrollmentSectionList.where((section) {
+          return section['section_name'] == student.enrollment.section;
+        }).toList()[0]['section_id'];
+
+    return id;
+  }
+
+  // Para mamatch yung format na nakalagay sa database
+  String get _formattedYearLevel {
+    switch (student.enrollment.yearLevel) {
+      case "1st Year":
+        return "1YR";
+      case "2nd Year":
+        return "2YR";
+      case "3rd Year":
+        return "3YR";
+      case "4th Year":
+        return "4YR";
+    }
+    return "";
   }
 
   // Find email from student number
@@ -153,28 +231,63 @@ class DatabaseProvider extends ChangeNotifier {
   // Insert info ng new student
   Future<void> _insertStudentInfo() async {
     // Personal info
-    await supabase.from("STUDENT").insert({
-      'stud_lname': _student.lastName,
-      'stud_fname': _student.firstName,
-      'stud_mname': _student.middleName,
-      'gender': _student.gender,
-      'birth_date': _student.dateOfBirth,
-      'personal_email': _student.email,
-      'stud_suffix': _student.suffixName,
-      'civil_status': _student.civilStatus,
-      'citizenship': _student.citizenship,
-      'birth_place': _student.birthPlace,
-      'religion': _student.religion,
-      'current_address': _student.currentAddress.fullAddress,
-      'permanent_address': _student.permanentAddress.fullAddress,
-      'telephone': _student.telephone,
-      'mobile': _student.contactNo,
-      'program_id': _getProgramID(),
-    });
+    final studRes = await supabase
+        .from("STUDENT")
+        .insert({
+          'stud_lname': _student.lastName,
+          'stud_fname': _student.firstName,
+          'stud_mname': _student.middleName,
+          'gender': _student.gender,
+          'birth_date': _student.dateOfBirth,
+          'personal_email': _student.email,
+          'stud_suffix': _student.suffixName,
+          'civil_status': _student.civilStatus,
+          'citizenship': _student.citizenship,
+          'birth_place': _student.birthPlace,
+          'religion': _student.religion,
+          'current_address': _student.currentAddress.fullAddress,
+          'permanent_address': _student.permanentAddress.fullAddress,
+          'telephone': _student.telephone,
+          'mobile': _student.contactNo,
+          'program_id': _getProgramID,
+        })
+        .select('student_id');
 
-    // Get student number para sa susunod na inserts
-    _student.studentNo = await _getNewStudentNumber();
-    final studentNumber = int.parse(_student.studentNo!);
+    if (studRes.isEmpty) {
+      return; // This should not happen
+    }
+
+    final studentNumber = studRes[0]['student_id'];
+    _student.studentNo = "0$studentNumber";
+
+    // Generate school email for new student
+    await _generateSchoolEmail();
+
+    // Enrollment
+    final enrollRes = await supabase
+        .from("ENROLLMENT")
+        .insert({
+          'student_id': studentNumber,
+          'enrollment_date': DateTime.now().toIso8601String(),
+          'admit_type': _student.enrollment.admissionType,
+          'academic_status': 'Regular',
+          'enrollment_status': 'Unverified',
+          'academic_year': _student.enrollment.academicYear,
+          'year_level': _student.enrollment.yearLevel,
+          'term': _student.enrollment.semester,
+          'section_id': _getSectionID,
+        })
+        .select('enrollment_id');
+
+    if (enrollRes.isEmpty) {
+      return; // This should not happen
+    }
+
+    // Set the current enrollment of student
+    await supabase
+        .from("STUDENT")
+        .update({'current_enrollment': enrollRes[0]['enrollment_id']})
+        .eq('student_id', studentNumber);
 
     // Academic background info
     final school = _student.currentLastSchool;
@@ -311,12 +424,12 @@ class DatabaseProvider extends ChangeNotifier {
         .from("PROGRAM")
         .select()
         .order('id', ascending: true);
-    _programList = [];
+
     if (res.isNotEmpty) {
-      for (int i = 0; i < res.length; i++) {
-        _programList.add(res[i]);
-      }
+      _programList = res;
       _initializationStatus = true;
+    } else {
+      _programList = [];
     }
   }
 
@@ -330,11 +443,11 @@ class DatabaseProvider extends ChangeNotifier {
         .from("SECTION")
         .select()
         .order('section_id', ascending: true);
-    _sectionList = [];
+
     if (res.isNotEmpty) {
-      for (int i = 0; i < res.length; i++) {
-        _sectionList.add(res[i]);
-      }
+      _sectionList = res;
+    } else {
+      _sectionList = [];
     }
   }
 
@@ -352,11 +465,11 @@ class DatabaseProvider extends ChangeNotifier {
         .from("PROFESSOR")
         .select()
         .order('prof_id', ascending: true);
-    _instructorList = [];
+
     if (res.isNotEmpty) {
-      for (int i = 0; i < res.length; i++) {
-        _instructorList.add(res[i]);
-      }
+      _instructorList = res;
+    } else {
+      _instructorList = [];
     }
   }
 }

@@ -20,9 +20,9 @@ class NewSelectSectionPage extends StatefulWidget {
 }
 
 class _NewSelectSectionPageState extends State<NewSelectSectionPage> {
+  late DatabaseProvider db;
   late Student student;
-  // Temporary values for list of section
-  final List<String> listSection = ["CS401", "CS402"];
+  late final List<String> listSection;
 
   // Values for the Column
   final List<String> columnNames = [
@@ -127,7 +127,9 @@ class _NewSelectSectionPageState extends State<NewSelectSectionPage> {
 
   @override
   void initState() {
-    student = context.read<DatabaseProvider>().student;
+    db = context.read<DatabaseProvider>();
+    student = db.student;
+    listSection = db.enrollSections;
 
     sectionValue = student.enrollment.section ?? "";
     super.initState();
