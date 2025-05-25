@@ -57,7 +57,7 @@ class SubjectTile extends StatelessWidget {
                   const SizedBox(width: 10,),
 
                   Text(
-                    noUnits,
+                    "Units: $noUnits",
                     style: GoogleFonts.roboto(
                       color: AppTheme.colors.primary,
                       fontSize: 14,
