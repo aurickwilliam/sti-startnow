@@ -28,6 +28,7 @@ class _SelectSubjectPageState extends State<SelectSubjectPage> {
     "Instructor",
     "Start Time",
     "End Time",
+    "Day"
     "Section",
     "Room",
     "Add",
@@ -35,10 +36,10 @@ class _SelectSubjectPageState extends State<SelectSubjectPage> {
 
   // Temp Data
   List<List> subjectList = [
-    ["1", "Information Management", "Serr Lorenz", "07:00AM", "10:00AM", "CS401", "402"],
-    ["2", "Information Management", "Serr Lorenz", "07:00AM", "10:00AM", "CS401", "402"],
-    ["3", "Information Management", "Serr Lorenz", "07:00AM", "10:00AM", "CS401", "402"],
-    ["4", "Information Management", "Serr Lorenz", "07:00AM", "10:00AM", "CS401", "402"],
+    ["1", "Information Management", "Serr Lorenz", "07:00AM", "10:00AM", "W", "CS401", "402"],
+    ["2", "Information Management", "Serr Lorenz", "07:00AM", "10:00AM", "W", "CS401", "402"],
+    ["3", "Information Management", "Serr Lorenz", "07:00AM", "10:00AM", "W", "CS401", "402"],
+    ["4", "Information Management", "Serr Lorenz", "07:00AM", "10:00AM", "W", "CS401", "402"],
     
   ];
 
