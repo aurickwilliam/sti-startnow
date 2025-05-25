@@ -75,7 +75,70 @@ class _ReviewedEnrolleePageState extends State<ReviewedEnrolleePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 20),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+
+                        // Logs Button
+                        ElevatedButton.icon(
+                          onPressed: () {}, 
+                          icon: Icon(
+                            Icons.description_rounded,
+                            color: AppTheme.colors.primary,
+                          ),
+                          label: Text(
+                            "Logs",
+                            style: GoogleFonts.roboto(
+                              color: AppTheme.colors.primary,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            backgroundColor: AppTheme.colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: BorderSide(
+                                color: AppTheme.colors.gray,
+                                width: 2.0
+                              )
+                            )
+                          ),
+                        ),
+
+                        // Undo Button
+                        ElevatedButton.icon(
+                          onPressed: () {}, 
+                          icon: Icon(
+                            Icons.undo_rounded,
+                            color: AppTheme.colors.white,
+                          ),
+                          label: Text(
+                            "Undo",
+                            style: GoogleFonts.roboto(
+                              color: AppTheme.colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            backgroundColor: AppTheme.colors.red,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: BorderSide(
+                                color: AppTheme.colors.red,
+                                width: 2.0
+                              )
+                            )
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 10),
 
                     Container(
                       width: double.infinity,
@@ -170,58 +233,6 @@ class _ReviewedEnrolleePageState extends State<ReviewedEnrolleePage> {
                           ],
                         ),
                       ),
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    Divider(),
-
-                    const SizedBox(height: 20),
-
-                    Text(
-                      "Select Status:",
-                      style: GoogleFonts.roboto(
-                        color: AppTheme.colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                      ),
-                    ),
-
-                    const SizedBox(height: 10),
-
-                    OptionBox(
-                      children: [
-                        RadioOptionTile(
-                          text: "Unverified",
-                          selectedValue: enrollmentStatus,
-                          onTap: (value) {
-                            setState(() {
-                              enrollmentStatus = value.toString();
-                            });
-                          },
-                        ),
-
-                        RadioOptionTile(
-                          text: "Verified",
-                          selectedValue: enrollmentStatus,
-                          onTap: (value) {
-                            setState(() {
-                              enrollmentStatus = value.toString();
-                            });
-                          },
-                        ),
-
-                        RadioOptionTile(
-                          text: "Rejected",
-                          selectedValue: enrollmentStatus,
-                          onTap: (value) {
-                            setState(() {
-                              enrollmentStatus = value.toString();
-                            });
-                          },
-                          isLastItem: true,
-                        ),
-                      ],
                     ),
 
                     const SizedBox(height: 20),
