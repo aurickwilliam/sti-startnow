@@ -11,13 +11,10 @@ class DownloadToast extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppTheme.colors.white,
         borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: Color(0x40000000),
-            blurRadius: 4.0,
-            offset: Offset(0, 1),
-          ),
-        ],
+        border: Border.all(
+          color: AppTheme.colors.gray,
+          width: 2.0,
+        )
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
