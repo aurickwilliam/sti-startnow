@@ -38,17 +38,17 @@ class _MainSubjectsPageState extends State<MainSubjectsPage> {
 
   // TEMPORARY DATA for the List of subjects
   final List<List> currentList = [
-    ["Information Management", "COSC1001", "Lorenz Christopher Afan", "assets/img/enrollment_dashboard/courses_img/technology.jpg"],
-    ["Fundamanetals of Mobile Programming", "COSC1001", "Lorenz Christopher Afan", "assets/img/enrollment_dashboard/courses_img/technology.jpg"],
-    ["Design and Analysis of Algorithm", "COSC1001", "Lorenz Christopher Afan", "assets/img/enrollment_dashboard/courses_img/it.jpg"],
-    ["Information Management", "COSC1001", "Lorenz Christopher Afan", "assets/img/enrollment_dashboard/courses_img/technology.jpg"],
-    ["Information Management", "COSC1001", "Lorenz Christopher Afan", "assets/img/enrollment_dashboard/courses_img/technology.jpg"],
+    ["Information Management", "COSC1001", "Lorenz Christopher Afan", "3.00"],
+    ["Fundamanetals of Mobile Programming", "COSC1001", "Lorenz Christopher Afan", "3.00"],
+    ["Design and Analysis of Algorithm", "COSC1001", "Lorenz Christopher Afan", "2.50"],
+    ["Information Management", "COSC1001", "Lorenz Christopher Afan", "1.00"],
+    ["Information Management", "COSC1001", "Lorenz Christopher Afan", "2.00"],
   ];
 
   final List<List> completedList = [
-    ["Computer Programming 3", "COSC1001", "Lorenz Christopher Afan", "assets/img/enrollment_dashboard/courses_img/technology.jpg"],
-    ["Computer Programming 2", "COSC1001", "Cyber Celwin Popanes", "assets/img/enrollment_dashboard/courses_img/technology.jpg"],
-    ["Computer Programming 1", "COSC1001", "Cyber Celwin Popanes", "assets/img/enrollment_dashboard/courses_img/technology.jpg"],
+    ["Computer Programming 3", "COSC1001", "Lorenz Christopher Afan", "3.00"],
+    ["Computer Programming 2", "COSC1001", "Cyber Celwin Popanes", "3.00"],
+    ["Computer Programming 1", "COSC1001", "Cyber Celwin Popanes", "3.00"],
   ];
 
   late List<List> selectedList;
@@ -144,7 +144,7 @@ class _MainSubjectsPageState extends State<MainSubjectsPage> {
                       subjectName: selectedList[index][0],
                       subjectCode: selectedList[index][1],
                       subjectTeacher: selectedList[index][2],
-                      imgPath: selectedList[index][3],
+                      noUnits: selectedList[index][3],
                     );
                   }
                 ),
