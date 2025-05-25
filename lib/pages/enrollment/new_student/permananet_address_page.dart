@@ -60,7 +60,7 @@ class _PermanentAddressPageState extends State<PermananetAddressPage> {
     student.isSameCurrentAddress = isSameWithCurrentAddress;
   }
 
-  void ifSameWithCurrentAddress(){
+  void ifSameWithCurrentAddress() {
     if (isSameWithCurrentAddress) {
       streetNoController.text = student.currentAddress.streetNumber!;
       streetController.text = student.currentAddress.street!;
@@ -69,8 +69,7 @@ class _PermanentAddressPageState extends State<PermananetAddressPage> {
       cityController.text = student.currentAddress.city!;
       provinceController.text = student.currentAddress.province!;
       zipCodeController.text = student.currentAddress.zipCode!;
-    }
-    else {
+    } else {
       streetNoController.text = "";
       streetController.text = "";
       subdivisionController.text = "";
@@ -137,7 +136,7 @@ class _PermanentAddressPageState extends State<PermananetAddressPage> {
                       CheckboxListTile(
                         contentPadding: EdgeInsets.zero,
                         controlAffinity: ListTileControlAffinity.leading,
-                        value: isSameWithCurrentAddress, 
+                        value: isSameWithCurrentAddress,
                         onChanged: (value) {
                           setState(() {
                             isSameWithCurrentAddress = value!;
@@ -146,7 +145,7 @@ class _PermanentAddressPageState extends State<PermananetAddressPage> {
                         },
 
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)
+                          borderRadius: BorderRadius.circular(15),
                         ),
 
                         title: Text(
@@ -154,12 +153,12 @@ class _PermanentAddressPageState extends State<PermananetAddressPage> {
                           style: GoogleFonts.roboto(
                             color: AppTheme.colors.black,
                             fontSize: 16,
-                            fontWeight: FontWeight.w500
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
 
-                      const SizedBox(height: 20,),
+                      const SizedBox(height: 20),
 
                       // Street No / Unit No
                       TextInput(
@@ -254,7 +253,8 @@ class _PermanentAddressPageState extends State<PermananetAddressPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ContactDetailsPage(),
+                                builder:
+                                    (context) => const ContactDetailsPage(),
                               ),
                             );
                           } else {

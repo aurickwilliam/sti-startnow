@@ -36,7 +36,7 @@ class _ValidateDetailsPageState extends State<ValidateDetailsPage> {
   Widget build(BuildContext context) {
     schoolInformationList = [
       ["Campus:", "Caloocan"],
-      ["Preferred Course:", student.course],
+      ["Preferred Course:", student.program],
       ["Section:", student.enrollment.section],
       ["Admit Type:", student.enrollment.admissionType],
       ["Yr Level/Grade Level:", student.enrollment.yearLevel],

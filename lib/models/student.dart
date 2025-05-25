@@ -4,6 +4,7 @@ import 'package:sti_startnow/models/parent_guardian.dart';
 import 'package:sti_startnow/models/school.dart';
 
 class Student {
+  String? studentNo;
   String? course;
   String? firstName;
   String? middleName;
@@ -26,7 +27,6 @@ class Student {
   late ParentGuardian mother;
   late ParentGuardian guardian;
   late Enrollment enrollment;
-  String? studentNo;
   String? academicType;
   String profileImg;
   String? program;

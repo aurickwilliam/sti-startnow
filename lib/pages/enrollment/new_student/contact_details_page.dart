@@ -64,7 +64,7 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
                 step4: false,
                 title: "Personal Information",
               ),
-          
+
               Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: isLandscape ? 200 : 24,
@@ -83,9 +83,9 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                            
+
                       const SizedBox(height: 10),
-                            
+
                       Text(
                         "Fill up the necessary information:",
                         style: GoogleFonts.roboto(
@@ -94,9 +94,9 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                            
+
                       const SizedBox(height: 10),
-                            
+
                       // Telephone No
                       NumberInput(
                         controller: telephoneController,
@@ -105,9 +105,9 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
                         isRequired: false,
                         isEnable: true,
                       ),
-                            
+
                       const SizedBox(height: 10),
-                            
+
                       // Mobile Phone No
                       NumberInput(
                         controller: mobileController,
@@ -118,7 +118,7 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
                         hasFormat: true,
                         invalidCheck: (input) {
                           RegExp mobilePattern = RegExp(r'^09[\d]{9}$');
-                            
+
                           if (mobilePattern.hasMatch(input)) {
                             return false;
                           } else {
@@ -128,9 +128,9 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
                         requiredMessage: "Please enter your mobile no.",
                         invalidMessage: "Please enter a valid mobile no.",
                       ),
-                            
+
                       const SizedBox(height: 10),
-                            
+
                       TextInput(
                         controller: emailController,
                         label: "Email Address:",
@@ -142,19 +142,18 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
                           RegExp emailPattern = RegExp(
                             r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
                           );
-                            
+
                           if (emailPattern.hasMatch(input)) {
                             return false;
                           }
                           return true;
                         },
                         requiredMessage: "Please enter your email address",
-                        invalidMessage:
-                            "Please enter a valid email address",
+                        invalidMessage: "Please enter a valid email address",
                       ),
-                  
+
                       const SizedBox(height: 20),
-                  
+
                       BackNextButton(
                         nextPressed: () {
                           if (_formKey.currentState!.validate()) {
@@ -162,7 +161,7 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => LastSchoolPage(),
+                                builder: (context) => const LastSchoolPage(),
                               ),
                             );
                           } else {
@@ -191,7 +190,7 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
               ),
             ],
           ),
-        )
+        ),
       ),
     );
   }

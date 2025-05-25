@@ -138,7 +138,7 @@ class _MotherInfoPageState extends State<MotherInfoPage> {
                         ),
                       ),
 
-                      const SizedBox(height: 15,),
+                      const SizedBox(height: 15),
 
                       // First Name
                       TextInput(
@@ -163,7 +163,7 @@ class _MotherInfoPageState extends State<MotherInfoPage> {
                         isEnable: true,
                         requiredMessage: "Please enter name or put blank",
                         isParentGuardian: true,
-                        ifOtherInputHasValue: ifOtherInputHasValue
+                        ifOtherInputHasValue: ifOtherInputHasValue,
                       ),
 
                       const SizedBox(height: 10),
@@ -211,7 +211,7 @@ class _MotherInfoPageState extends State<MotherInfoPage> {
                             "Please enter a mobile no. or put blank",
                         invalidMessage: "Please enter a valid mobile no.",
                         isParentGuardian: true,
-                        ifOtherInputHasValue: ifOtherInputHasValue
+                        ifOtherInputHasValue: ifOtherInputHasValue,
                       ),
 
                       const SizedBox(height: 10),
@@ -238,7 +238,7 @@ class _MotherInfoPageState extends State<MotherInfoPage> {
                         requiredMessage: "Please enter an email or put blank",
                         invalidMessage: "Please enter a valid email address",
                         isParentGuardian: true,
-                        ifOtherInputHasValue: ifOtherInputHasValue
+                        ifOtherInputHasValue: ifOtherInputHasValue,
                       ),
 
                       const SizedBox(height: 10),
@@ -261,7 +261,7 @@ class _MotherInfoPageState extends State<MotherInfoPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => GuardianInfoPage(),
+                                builder: (context) => const GuardianInfoPage(),
                               ),
                             );
                           } else {

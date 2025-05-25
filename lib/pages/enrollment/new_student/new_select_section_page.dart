@@ -270,7 +270,8 @@ class _NewSelectSectionPageState extends State<NewSelectSectionPage> {
                                       context,
                                       MaterialPageRoute(
                                         builder:
-                                            (context) => ValidateDetailsPage(),
+                                            (context) =>
+                                                const ValidateDetailsPage(),
                                       ),
                                     );
                                   },

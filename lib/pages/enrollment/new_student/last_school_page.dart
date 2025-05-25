@@ -293,7 +293,7 @@ class _LastSchoolPageState extends State<LastSchoolPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => FatherInfoPage(),
+                                builder: (context) => const FatherInfoPage(),
                               ),
                             );
                           } else {
