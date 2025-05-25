@@ -52,12 +52,6 @@ class Settings extends StatelessWidget {
                         ),
 
                         OptionTile(
-                          text: "Notifications",
-                          icon: Icons.notifications_outlined,
-                          onTap: () {},
-                        ),
-
-                        OptionTile(
                           text: "Sign Out",
                           icon: Icons.logout,
                           onTap: () async {
