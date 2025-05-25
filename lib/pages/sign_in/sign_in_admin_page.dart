@@ -30,7 +30,7 @@ class _SignInAdminPageState extends State<SignInAdminPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  Future<void> handleAdminSignIn() async {
+  Future<void> _handleAdminSignIn() async {
     // Show circular progress indicator
     showDialog(
       context: context,
@@ -80,6 +80,10 @@ class _SignInAdminPageState extends State<SignInAdminPage> {
       if (role != 'student') {
         await db.initializeAdmin(user.email!, role);
         await db.initializePrograms();
+        if (role == 'super_admin') {
+          await db.initializeInstructors();
+        }
+
         if (mounted) {
           Navigator.pop(context);
           switch (role) {
@@ -232,7 +236,7 @@ class _SignInAdminPageState extends State<SignInAdminPage> {
                           ElevatedButton(
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                await handleAdminSignIn();
+                                await _handleAdminSignIn();
                               }
                             },
                             style: ElevatedButton.styleFrom(
@@ -272,7 +276,8 @@ class _SignInAdminPageState extends State<SignInAdminPage> {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => EnrollmentDashboard(),
+                                builder:
+                                    (context) => const EnrollmentDashboard(),
                               ),
                             );
                           },
@@ -284,7 +289,7 @@ class _SignInAdminPageState extends State<SignInAdminPage> {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => SignInStudentPage(),
+                                builder: (context) => const SignInStudentPage(),
                               ),
                             );
                           },

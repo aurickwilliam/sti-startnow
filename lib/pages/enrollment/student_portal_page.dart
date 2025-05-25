@@ -28,7 +28,7 @@ class _StudentPortalPageState extends State<StudentPortalPage> {
   final studentNumberController = TextEditingController();
   final accessCodeController = TextEditingController();
 
-  Future<void> fetchExistingStudent() async {
+  Future<void> _fetchExistingStudent() async {
     // Show circular progress indicator
     showDialog(
       context: context,
@@ -199,7 +199,7 @@ class _StudentPortalPageState extends State<StudentPortalPage> {
             child: BottomButton(
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
-                  await fetchExistingStudent();
+                  await _fetchExistingStudent();
                 }
               },
               text: "Submit",

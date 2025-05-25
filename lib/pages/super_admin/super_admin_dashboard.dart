@@ -107,7 +107,7 @@ class SuperAdminDashboard extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ListStudentsPage(),
+                              builder: (context) => const ListStudentsPage(),
                             ),
                           );
                         },
@@ -119,7 +119,7 @@ class SuperAdminDashboard extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ListInstructorsPage(),
+                              builder: (context) => const ListInstructorsPage(),
                             ),
                           );
                         },
@@ -131,7 +131,7 @@ class SuperAdminDashboard extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ListProgramsPage(),
+                              builder: (context) => const ListProgramsPage(),
                             ),
                           );
                         },
@@ -143,7 +143,7 @@ class SuperAdminDashboard extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ListSubjectsPage(),
+                              builder: (context) => const ListSubjectsPage(),
                             ),
                           );
                         },
@@ -155,7 +155,8 @@ class SuperAdminDashboard extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ListEnrollSchedulePage(),
+                              builder:
+                                  (context) => const ListEnrollSchedulePage(),
                             ),
                           );
                         },

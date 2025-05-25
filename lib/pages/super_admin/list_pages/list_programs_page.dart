@@ -31,18 +31,20 @@ class _ListProgramsPageState extends State<ListProgramsPage> {
   // From database
   void getPrograms(List<Map<String, dynamic>> programs) {
     db.setPrograms = programs;
-    setState(() {
-      values = [];
-      matchedValues = values;
-      for (final program in programs) {
-        values.add([
-          program['id'].toString(),
-          program['program_name'],
-          program['acronym'],
-          program['department'],
-        ]);
-      }
-    });
+    if (mounted) {
+      setState(() {
+        values = [];
+        for (final program in programs) {
+          values.add([
+            program['id'].toString(),
+            program['program_name'],
+            program['acronym'],
+            program['department'],
+          ]);
+        }
+        matchedValues = values;
+      });
+    }
   }
 
   @override
@@ -77,9 +79,11 @@ class _ListProgramsPageState extends State<ListProgramsPage> {
               .toList();
     }
 
-    setState(() {
-      matchedValues = results;
-    });
+    if (mounted) {
+      setState(() {
+        matchedValues = results;
+      });
+    }
   }
 
   @override
@@ -117,7 +121,6 @@ class _ListProgramsPageState extends State<ListProgramsPage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  searchController.clear();
                                   return EditProgramRowPage(rowValues: item);
                                 },
                               ),
@@ -159,10 +162,9 @@ class _ListProgramsPageState extends State<ListProgramsPage> {
       // FAB
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          searchController.clear();
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => AddProgramPage()),
+            MaterialPageRoute(builder: (context) => const AddProgramPage()),
           );
         },
         backgroundColor: AppTheme.colors.white,
