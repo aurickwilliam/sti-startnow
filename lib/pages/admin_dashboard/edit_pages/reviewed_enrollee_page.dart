@@ -46,6 +46,9 @@ class _ReviewedEnrolleePageState extends State<ReviewedEnrolleePage> {
 
     receiptStatus = widget.status == "Verified" ? "Approve" : "Deny";
 
+    String adminName = "Kai Cenat";
+    String dateTime = "05/25/25 HH:MM:SS";
+
     // if is in landscape
     bool isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
@@ -259,6 +262,57 @@ class _ReviewedEnrolleePageState extends State<ReviewedEnrolleePage> {
 
                     const SizedBox(height: 20),
 
+                    // Name of ADMIN
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          receiptStatus == "Deny" ? 
+                            "Denied By: " : "Approved By: ",
+                            style: GoogleFonts.roboto(
+                              color: AppTheme.colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500
+                            ),
+                        ),
+
+                        Text(
+                          adminName,
+                          style: GoogleFonts.roboto(
+                            color: AppTheme.colors.black,
+                            fontSize: 16,
+                          ),
+                        )
+                      ],
+                    ),
+
+                    const SizedBox(height: 10,),
+
+                    // Date of Reviewed
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Date & Time Reviewed:",
+                          style: GoogleFonts.roboto(
+                            color: AppTheme.colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500
+                          ),
+                        ),
+
+                        Text(
+                          dateTime,
+                          style: GoogleFonts.roboto(
+                            color: AppTheme.colors.black,
+                            fontSize: 16,
+                          ),
+                        )
+                      ],
+                    ),
+
+                    const SizedBox(height: 20,),
+
                     Container(
                       decoration: BoxDecoration(
                         color: AppTheme.colors.white,
@@ -298,63 +352,61 @@ class _ReviewedEnrolleePageState extends State<ReviewedEnrolleePage> {
 
                     const SizedBox(height: 20),
 
-                    receiptStatus == "Deny"
-                        ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Reason for Denial:",
-                              style: GoogleFonts.roboto(
-                                color: AppTheme.colors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          receiptStatus == "Deny" ? "Reason for Denial:" : "Approval Note:",
+                          style: GoogleFonts.roboto(
+                            color: AppTheme.colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
+                        ),
+
+                        const SizedBox(height: 10),
+
+                        TextField(
+                          enabled: false,
+                          controller: denyMessageController,
+                          maxLines: 7,
+                          keyboardType: TextInputType.multiline,
+                          decoration: InputDecoration(
+                            hintText: 'Enter a message...',
+                            border: OutlineInputBorder(),
+
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: AppTheme.colors.primary,
+                                width: 2.0,
                               ),
+                              borderRadius: BorderRadius.circular(15),
                             ),
 
-                            const SizedBox(height: 10),
-
-                            TextField(
-                              enabled: false,
-                              controller: denyMessageController,
-                              maxLines: 7,
-                              keyboardType: TextInputType.multiline,
-                              decoration: InputDecoration(
-                                hintText: 'Enter a message...',
-                                border: OutlineInputBorder(),
-
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: AppTheme.colors.primary,
-                                    width: 2.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: AppTheme.colors.gray,
-                                    width: 2.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-
-                                disabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: AppTheme.colors.gray,
-                                    width: 2.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: AppTheme.colors.gray,
+                                width: 2.0,
                               ),
-
-                              style: GoogleFonts.roboto(
-                                color: AppTheme.colors.black,
-                                fontSize: 14,
-                              ),
+                              borderRadius: BorderRadius.circular(15),
                             ),
-                          ],
-                        )
-                        : SizedBox(),
+
+                            disabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: AppTheme.colors.gray,
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          ),
+
+                          style: GoogleFonts.roboto(
+                            color: AppTheme.colors.black,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
 
                     const SizedBox(height: 50),
 
