@@ -30,7 +30,6 @@ class AdminProfilePage extends StatelessWidget {
               children: [
                 AdminProfileCard(
                   name: admin.fullName,
-                  studentNo: "02000123456",
                   profileImg: "assets/img/def_profile.jpg",
                   coverImg: "assets/img/sample_cover.png",
                 ),
