@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:sti_startnow/pages/components/buttons/back_next_button.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
-import 'package:sti_startnow/pages/components/buttons/custom_outline_button.dart';
 import 'package:sti_startnow/pages/components/custom_data_table.dart';
 import 'package:sti_startnow/pages/enrollment/components/add_button_table.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
+import 'package:sti_startnow/pages/enrollment/irregular/verify_subjects_page.dart';
 import 'package:sti_startnow/providers/subject_list_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
@@ -26,15 +25,21 @@ class _SelectSubjectPageState extends State<SelectSubjectPage> {
   List<String> headerList = [
     "#",
     "Subject Name",
-    "Add"
+    "Instructor",
+    "Start Time",
+    "End Time",
+    "Section",
+    "Room",
+    "Add",
   ];
 
   // Temp Data
   List<List> subjectList = [
-    ["1", "Information Management"],
-    ["2", "Information Management"],
-    ["3", "Information Management"],
-    ["4", "Information Management"],
+    ["1", "Information Management", "Serr Lorenz", "07:00AM", "10:00AM", "CS401", "402"],
+    ["2", "Information Management", "Serr Lorenz", "07:00AM", "10:00AM", "CS401", "402"],
+    ["3", "Information Management", "Serr Lorenz", "07:00AM", "10:00AM", "CS401", "402"],
+    ["4", "Information Management", "Serr Lorenz", "07:00AM", "10:00AM", "CS401", "402"],
+    
   ];
 
   @override
@@ -154,7 +159,10 @@ class _SelectSubjectPageState extends State<SelectSubjectPage> {
                     const SizedBox(height: 30,),
 
                     BottomButton(
-                      onPressed: () {}, 
+                      onPressed: () {
+                        Navigator.push(context, 
+                        MaterialPageRoute(builder: (context) => VerifySubjectsPage()));
+                      }, 
                       text: "Submit"
                     )
                   ],
