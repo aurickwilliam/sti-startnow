@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/admin_dashboard/components/enrollees_card.dart';
+import 'package:sti_startnow/pages/admin_dashboard/logs_page.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/enrollment_dashboard.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
@@ -49,26 +50,60 @@ class AdminHomePage extends StatelessWidget {
                               ),
                             ),
 
-                            IconButton(
-                              onPressed: () async {
-                                await supabase.auth.signOut();
-
-                                if (context.mounted) {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder:
-                                          (context) =>
-                                              const EnrollmentDashboard(),
+                            // Logs Button
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ElevatedButton.icon(
+                                  onPressed: () {
+                                    Navigator.push(context, 
+                                    MaterialPageRoute(builder: (context) => LogsPage()));
+                                  }, 
+                                  icon: Icon(
+                                    Icons.description_rounded,
+                                    color: AppTheme.colors.primary,
+                                  ),
+                                  label: Text(
+                                    "Logs",
+                                    style: GoogleFonts.roboto(
+                                      color: AppTheme.colors.primary,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500
                                     ),
-                                  );
-                                }
-                              },
-                              icon: Icon(
-                                Icons.logout_rounded,
-                                color: AppTheme.colors.gold,
-                                size: 30,
-                              ),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0,
+                                    backgroundColor: AppTheme.colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    )
+                                  ),
+                                ),
+
+                                const SizedBox(width: 5,),
+                                
+                                IconButton(
+                                  onPressed: () async {
+                                    await supabase.auth.signOut();
+                                
+                                    if (context.mounted) {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder:
+                                              (context) =>
+                                                  const EnrollmentDashboard(),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  icon: Icon(
+                                    Icons.logout_rounded,
+                                    color: AppTheme.colors.gold,
+                                    size: 30,
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),

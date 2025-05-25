@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/admin_dashboard/admin_dashboard.dart';
 import 'package:sti_startnow/pages/admin_dashboard/components/verify_button.dart';
-import 'package:sti_startnow/pages/admin_dashboard/edit_pages/logs_page.dart';
 import 'package:sti_startnow/pages/components/fullscreen_image_page.dart';
 import 'package:sti_startnow/pages/admin_dashboard/components/receipt_container.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
@@ -78,38 +77,6 @@ class _ReviewedEnrolleePageState extends State<ReviewedEnrolleePage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-
-                        // Logs Button
-                        ElevatedButton.icon(
-                          onPressed: () {
-                            Navigator.push(context, 
-                            MaterialPageRoute(builder: (context) => LogsPage()));
-                          }, 
-                          icon: Icon(
-                            Icons.description_rounded,
-                            color: AppTheme.colors.primary,
-                          ),
-                          label: Text(
-                            "Logs",
-                            style: GoogleFonts.roboto(
-                              color: AppTheme.colors.primary,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500
-                            ),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            elevation: 0,
-                            backgroundColor: AppTheme.colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              side: BorderSide(
-                                color: AppTheme.colors.gray,
-                                width: 2.0
-                              )
-                            )
-                          ),
-                        ),
-
                         // Undo Button
                         ElevatedButton.icon(
                           onPressed: () {}, 
