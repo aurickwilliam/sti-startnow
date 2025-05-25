@@ -5,14 +5,12 @@ import 'package:sti_startnow/theme/app_theme.dart';
 
 class AdminProfileCard extends StatelessWidget {
   final String name;
-  final String studentNo;
   final String profileImg;
   final String coverImg;
 
   const AdminProfileCard({
     super.key,
     required this.name,
-    required this.studentNo,
     required this.profileImg,
     required this.coverImg,
   });
@@ -78,39 +76,32 @@ class AdminProfileCard extends StatelessWidget {
             
                 const SizedBox(width: 20,),
             
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      name,
-                      style: GoogleFonts.roboto(
-                        color: AppTheme.colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
+                SizedBox(
+                  height: 75,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        name,
+                        softWrap: true,
+                        style: GoogleFonts.roboto(
+                          color: AppTheme.colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                    ),
-            
-                    const SizedBox(height: 10,),
-            
-                    Text(
-                      studentNo,
-                      style: GoogleFonts.roboto(
-                        color: AppTheme.colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
+                              
+                      Text(
+                        "STI College Caloocan",
+                        style: GoogleFonts.roboto(
+                          color: AppTheme.colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                    ),
-            
-                    Text(
-                      "STI College Caloocan",
-                      style: GoogleFonts.roboto(
-                        color: AppTheme.colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),
