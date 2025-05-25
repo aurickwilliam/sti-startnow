@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/components/search_box.dart';
 import 'package:sti_startnow/pages/super_admin/add_pages/add_subject_page.dart';
 import 'package:sti_startnow/pages/super_admin/components/list_data_table.dart';
 import 'package:sti_startnow/pages/super_admin/edit_pages/edit_subject_row_page.dart';
+import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class ListSubjectsPage extends StatefulWidget {
@@ -15,67 +18,47 @@ class ListSubjectsPage extends StatefulWidget {
 }
 
 class _ListSubjectsPageState extends State<ListSubjectsPage> {
+  late DatabaseProvider db;
   final TextEditingController searchController = TextEditingController();
 
   // Column values
-  List<String> columnNames = [
-    "#",
-    "Name",
-    "Subject Code",
-    "Units",
-    "Year",
-    "Department",
-  ];
+  List<String> columnNames = ["Course Code", "Name", "Units", "Prerequisites"];
 
-  // Temporary Values for the table
-  List<List> values = [
-    [
-      "1",
-      "Information Management",
-      "COSC1001",
-      "3.00",
-      "2nd Year",
-      "Information Technology",
-    ],
-    [
-      "2",
-      "Fundamental of Mobile Programming",
-      "COSC1001",
-      "3.00",
-      "2nd Year",
-      "Information Technology",
-    ],
-    [
-      "3",
-      "Computer Programming 3",
-      "COSC1001",
-      "3.00",
-      "2nd Year",
-      "Information Technology",
-    ],
-    [
-      "4",
-      "Great Books",
-      "COSC1001",
-      "3.00",
-      "2nd Year",
-      "Information Technology",
-    ],
-    [
-      "5",
-      "Philippine Popular Culture",
-      "COSC1001",
-      "3.00",
-      "2nd Year",
-      "Information Technology",
-    ],
-  ];
-
+  late List<List> values;
   List<List> matchedValues = [];
+
+  void getCourses(List<Map<String, dynamic>> courses) {
+    db.setCourses = courses;
+    if (mounted) {
+      setState(() {
+        values = [];
+        for (final course in courses) {
+          values.add([
+            course['course_code'],
+            course['course_name'],
+            course['units'].toStringAsFixed(1),
+            course['prereq'] ?? "---",
+          ]);
+        }
+        matchedValues = values;
+      });
+    }
+  }
 
   @override
   void initState() {
-    matchedValues = values;
+    db = context.read<DatabaseProvider>();
+    getCourses(db.courses); // Initial courses
+
+    // Listen for changes in the subject database
+    supabase
+        .from("SUBJECT")
+        .stream(primaryKey: ['course_code'])
+        .order('course_code', ascending: true)
+        .listen((courses) {
+          getCourses(courses);
+        });
+
     super.initState();
   }
 
@@ -94,10 +77,11 @@ class _ListSubjectsPageState extends State<ListSubjectsPage> {
               )
               .toList();
     }
-
-    setState(() {
-      matchedValues = results;
-    });
+    if (mounted) {
+      setState(() {
+        matchedValues = results;
+      });
+    }
   }
 
   @override
@@ -108,7 +92,7 @@ class _ListSubjectsPageState extends State<ListSubjectsPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              PageAppBar(title: "Subjects"),
+              PageAppBar(title: "Courses"),
 
               const SizedBox(height: 10),
 
@@ -131,7 +115,7 @@ class _ListSubjectsPageState extends State<ListSubjectsPage> {
                           columnNames: columnNames,
                           dataTableValues: matchedValues,
                           handleNavigation: (item) {
-                            Navigator.push(
+                            Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                 builder:
@@ -141,30 +125,28 @@ class _ListSubjectsPageState extends State<ListSubjectsPage> {
                             );
                           },
                         )
-                        : Container(
-                          child: Center(
-                            child: Column(
-                              children: [
-                                Container(
-                                  width: 200,
-                                  child: Image(
-                                    image: AssetImage(
-                                      "assets/img/not_found_img.png",
-                                    ),
-                                    fit: BoxFit.contain,
+                        : Center(
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                width: 200,
+                                child: Image(
+                                  image: AssetImage(
+                                    "assets/img/not_found_img.png",
                                   ),
+                                  fit: BoxFit.contain,
                                 ),
+                              ),
 
-                                Text(
-                                  "No matches found",
-                                  style: GoogleFonts.roboto(
-                                    color: AppTheme.colors.black,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold
-                                  ),
+                              Text(
+                                "No matches found",
+                                style: GoogleFonts.roboto(
+                                  color: AppTheme.colors.black,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                              ],
-                            )
+                              ),
+                            ],
                           ),
                         ),
                   ],
@@ -180,7 +162,7 @@ class _ListSubjectsPageState extends State<ListSubjectsPage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => AddSubjectPage()),
+            MaterialPageRoute(builder: (context) => const AddSubjectPage()),
           );
         },
         backgroundColor: AppTheme.colors.white,

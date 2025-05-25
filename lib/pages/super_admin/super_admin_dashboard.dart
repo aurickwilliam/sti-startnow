@@ -138,7 +138,7 @@ class SuperAdminDashboard extends StatelessWidget {
                       ),
                       OptionButton(
                         icon: Icons.book_rounded,
-                        title: "Subjects",
+                        title: "Courses",
                         onTap: () {
                           Navigator.push(
                             context,

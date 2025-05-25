@@ -49,6 +49,7 @@ class DatabaseProvider extends ChangeNotifier {
   }
 
   Future<void> initializeCurrentEnroll() async {
+    // Kapag ganto, not enrolled si student
     if (_student.enrollmentID == null) {
       return;
     }
@@ -456,6 +457,7 @@ class DatabaseProvider extends ChangeNotifier {
 
   List<PostgrestMap> get instructors => _instructorList;
 
+  // For superadmin page lang siguro to
   set setInstructors(List<PostgrestMap> newInstructors) {
     _instructorList = newInstructors;
   }
@@ -470,6 +472,29 @@ class DatabaseProvider extends ChangeNotifier {
       _instructorList = res;
     } else {
       _instructorList = [];
+    }
+  }
+
+  // For subject information
+  late List<PostgrestMap> _courseList;
+
+  List<PostgrestMap> get courses => _courseList;
+
+  // For superadmin page lang siguro to
+  set setCourses(List<PostgrestMap> newCourses) {
+    _courseList = newCourses;
+  }
+
+  Future<void> initializeCourses() async {
+    final res = await supabase
+        .from("SUBJECT")
+        .select()
+        .order('course_code', ascending: true);
+
+    if (res.isNotEmpty) {
+      _courseList = res;
+    } else {
+      _courseList = [];
     }
   }
 }

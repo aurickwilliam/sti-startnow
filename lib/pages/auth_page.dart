@@ -63,6 +63,7 @@ class _AuthPageState extends State<AuthPage> {
           await db.initializeAdmin(widget.user.email!, role);
           if (role == 'super_admin') {
             await db.initializeInstructors();
+            await db.initializeCourses();
           }
         case 'student':
           // Initialize student based on student number
