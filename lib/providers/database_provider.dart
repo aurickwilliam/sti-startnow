@@ -100,6 +100,21 @@ class DatabaseProvider extends ChangeNotifier {
     return "This should not happen (hopefully)";
   }
 
+  // Get program_id of new student program
+  int _getProgramID() {
+    // Get only the program name, remove acronym
+    final index = _student.program!.lastIndexOf(' ');
+    final programName = _student.program!.substring(0, index);
+
+    // Find program_id based on program name
+    final programID =
+        _programList.where((program) {
+          return program['program_name'] == programName;
+        }).toList()[0]['id'];
+
+    return programID;
+  }
+
   // Find email from student number
   Future<PostgrestMap?> findStudent(
     String credential, {
@@ -154,6 +169,7 @@ class DatabaseProvider extends ChangeNotifier {
       'permanent_address': _student.permanentAddress.fullAddress,
       'telephone': _student.telephone,
       'mobile': _student.contactNo,
+      'program_id': _getProgramID(),
     });
 
     // Get student number para sa susunod na inserts

@@ -285,7 +285,8 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => CurrentAddressPage(),
+                                builder:
+                                    (context) => const CurrentAddressPage(),
                               ),
                             );
                           } else {

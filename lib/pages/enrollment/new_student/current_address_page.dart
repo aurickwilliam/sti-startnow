@@ -201,7 +201,8 @@ class _CurrentAddressPageState extends State<CurrentAddressPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => PermananetAddressPage(),
+                                builder:
+                                    (context) => const PermananetAddressPage(),
                               ),
                             );
                           } else {

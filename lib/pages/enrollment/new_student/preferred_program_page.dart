@@ -8,6 +8,7 @@ import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart'
 import 'package:sti_startnow/pages/enrollment/new_student/current_term_page.dart';
 import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class PreferredProgramPage extends StatefulWidget {
   const PreferredProgramPage({super.key});
@@ -17,26 +18,24 @@ class PreferredProgramPage extends StatefulWidget {
 }
 
 class _PreferredProgramPageState extends State<PreferredProgramPage> {
+  late DatabaseProvider db;
   late Student student;
 
-  final List<String> courses = [
-    "Bachelor of Science in Computer Science (BSCS)",
-    "Bachelor of Science in Information Technology (BSIT)",
-    "Bachelor of Science in Computer Engineering (BSCpE)",
-    "Bachelor of Science in Business Administration (BSBA)",
-    "Bachelor of Science in Accounting Information System (BSAIS)",
-    "Bachelor of Science in Accountancy (BSA)",
-    "Bachelor of Science in Hospitality Management (BSHM)",
-    "Bachelor of Arts in Communication (BACOMM)",
-    "Bachelor of Multimedia Arts (BMMA)",
-    "Bachelor of Science in Tourism Management (BSTM)",
-  ];
-
+  late final List<String> courses;
   String selectedCourse = "";
+
+  void getCourseChoices(List<PostgrestMap> courseData) {
+    courses = [];
+    for (final course in courseData) {
+      courses.add("${course['program_name']} (${course['acronym']})");
+    }
+  }
 
   @override
   void initState() {
-    student = context.read<DatabaseProvider>().student;
+    db = context.read<DatabaseProvider>();
+    student = db.student;
+    getCourseChoices(db.programs);
     super.initState();
   }
 
@@ -182,11 +181,13 @@ class _PreferredProgramPageState extends State<PreferredProgramPage> {
                               builder: (builder) {
                                 return CustomBottomSheet(
                                   submitFunc: () {
-                                    student.course = selectedCourse;
+                                    student.program = selectedCourse;
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => CurrentTermPage(),
+                                        builder:
+                                            (context) =>
+                                                const CurrentTermPage(),
                                       ),
                                     );
                                   },

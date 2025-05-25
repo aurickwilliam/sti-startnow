@@ -138,7 +138,7 @@ class _FatherInfoPageState extends State<FatherInfoPage> {
                         ),
                       ),
 
-                      const SizedBox(height: 15,),
+                      const SizedBox(height: 15),
 
                       // First Name
                       TextInput(
@@ -146,7 +146,8 @@ class _FatherInfoPageState extends State<FatherInfoPage> {
                         label: "First Name:",
                         hint: "First Name",
                         isRequired: true,
-                        requiredMessage: "Please enter a information or put blank",
+                        requiredMessage:
+                            "Please enter a information or put blank",
                         isParentGuardian: true,
                         ifOtherInputHasValue: ifOtherInputHasValue,
                       ),
@@ -159,7 +160,8 @@ class _FatherInfoPageState extends State<FatherInfoPage> {
                         label: "Last Name:",
                         hint: "Last Name",
                         isRequired: true,
-                        requiredMessage: "Please enter a information or put blank",
+                        requiredMessage:
+                            "Please enter a information or put blank",
                         isParentGuardian: true,
                         ifOtherInputHasValue: ifOtherInputHasValue,
                       ),
@@ -259,7 +261,7 @@ class _FatherInfoPageState extends State<FatherInfoPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => MotherInfoPage(),
+                                builder: (context) => const MotherInfoPage(),
                               ),
                             );
                           } else {

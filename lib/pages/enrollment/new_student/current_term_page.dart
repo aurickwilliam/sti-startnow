@@ -247,7 +247,9 @@ class _CurrentTermPageState extends State<CurrentTermPage> {
                 saveInput();
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => StudentInfoPage()),
+                  MaterialPageRoute(
+                    builder: (context) => const StudentInfoPage(),
+                  ),
                 );
               } else {
                 showModalBottomSheet(

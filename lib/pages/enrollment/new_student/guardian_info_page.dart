@@ -186,8 +186,7 @@ class _GuardianInfoPageState extends State<GuardianInfoPage> {
                             return true;
                           }
                         },
-                        requiredMessage:
-                            "Please enter a mobile no.",
+                        requiredMessage: "Please enter a mobile no.",
                         invalidMessage: "Please enter a valid mobile no.",
                       ),
 
@@ -255,7 +254,8 @@ class _GuardianInfoPageState extends State<GuardianInfoPage> {
                                       context,
                                       MaterialPageRoute(
                                         builder:
-                                            (context) => NewSelectSectionPage(),
+                                            (context) =>
+                                                const NewSelectSectionPage(),
                                       ),
                                     );
                                   },
