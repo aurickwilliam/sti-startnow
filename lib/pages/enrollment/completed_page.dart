@@ -7,7 +7,6 @@ import 'package:sti_startnow/pages/enrollment/components/download_toast.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/main_dashboard/main_dashboard.dart';
 import 'package:sti_startnow/pdf/pre_assessment_api.dart';
-import 'package:sti_startnow/pdf/save_and_open_pdf.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class CompletedPage extends StatefulWidget {
@@ -80,7 +79,8 @@ class _CompletedPageState extends State<CompletedPage> {
                     text: "Download Pre-Assessment Form", 
                     onPressed: () async {
                       // ipasa nalang sa parameter ung object nandoon lahat ng info about sa pre-assessment
-                      final preAssessment = await PreAssessmentApi.generatePreAssessment();
+                      // final preAssessment = await PreAssessmentApi.generatePreAssessment();
+                      await PreAssessmentApi.generatePreAssessment();
 
                       // IF GUSTO IOPEN PAGTAPOS IDOWNLOAD
                       // SaveAndOpenPdf.openPdf(preAssessment);

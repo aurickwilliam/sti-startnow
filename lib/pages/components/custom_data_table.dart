@@ -30,6 +30,9 @@ class CustomDataTable extends StatelessWidget {
                 return DataRow(
                   cells:
                       item.map((value) {
+                        if (value is Widget) {
+                          return DataCell(value);
+                        }
                         return DataCell(Text(value.toString()));
                       }).toList(),
                 );

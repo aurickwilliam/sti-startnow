@@ -115,9 +115,6 @@ class _SelectYearLevelState extends State<SelectYearLevelPage> {
                       return YearLevelTile(
                         year: yearLevel[index],
                         onTap: () {
-                          // setState(() {
-                          //   selectedYearLevel = yearLevel[index];
-                          // });
                           subjectListProvider.changeSeletectedYear(index + 1);
 
                           Navigator.push(
