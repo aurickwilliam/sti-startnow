@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/components/buttons/custom_outline_button.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/enrollment/components/download_toast.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/main_dashboard/main_dashboard.dart';
 import 'package:sti_startnow/pdf/pre_assessment_api.dart';
+import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class CompletedPage extends StatefulWidget {
@@ -17,11 +20,14 @@ class CompletedPage extends StatefulWidget {
 }
 
 class _CompletedPageState extends State<CompletedPage> {
+  late Student student;
   late FToast fToast;
 
   @override
   void initState() {
     super.initState();
+    student = context.read<DatabaseProvider>().student;
+
     fToast = FToast();
     fToast.init(context);
   }
@@ -80,7 +86,7 @@ class _CompletedPageState extends State<CompletedPage> {
                     onPressed: () async {
                       // ipasa nalang sa parameter ung object nandoon lahat ng info about sa pre-assessment
                       // final preAssessment = await PreAssessmentApi.generatePreAssessment();
-                      await PreAssessmentApi.generatePreAssessment();
+                      await PreAssessmentApi.generatePreAssessment(student);
 
                       // IF GUSTO IOPEN PAGTAPOS IDOWNLOAD
                       // SaveAndOpenPdf.openPdf(preAssessment);

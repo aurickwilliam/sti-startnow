@@ -2,14 +2,16 @@
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
+import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pdf/save_and_open_pdf.dart';
 
 class PreAssessmentApi {
   // Method to create the pdf
-  static Future<File> generatePreAssessment() async {
+  static Future<File> generatePreAssessment(Student student) async {
     // Document object
     final pdf = Document();
     
@@ -56,7 +58,7 @@ class PreAssessmentApi {
             SizedBox(height: 10),
 
             // STUDENT INFORMATION
-            studentTable(),
+            studentTable(student),
 
             SizedBox(height: 10),
 
@@ -82,7 +84,14 @@ class PreAssessmentApi {
                 "Contact No."
               ],
               data: [
-                ["CASH", "GCASH", "5290 0466 7", "P5000.00", "", "09600108542"]
+                [
+                  student.enrollment.paymentType, 
+                  student.enrollment.paymentLocation, 
+                  student.enrollment.referenceNo, 
+                  "P${student.enrollment.amountPaid}", 
+                  "", 
+                  student.contactNo
+                ]
               ],
               columnWidths: {
                 0: FlexColumnWidth(1), // Type
@@ -211,7 +220,7 @@ class PreAssessmentApi {
                       SizedBox(width: 5),
 
                       Text(
-                        "05/22/2025",
+                        DateTime.now().toString().substring(0, 10),
                         style: TextStyle(
                           fontSize: 8,
                         )
@@ -268,6 +277,13 @@ class PreAssessmentApi {
   }
 
   static Widget header(Uint8List stiLogo) {
+    String getDateTime(){
+      String date = DateTime.now().toString().substring(0, 10);
+      String time = DateTime.now().toString().substring(11, 19);
+
+      return "$date $time";
+    }
+
     return Row(
       children: [
         Container(
@@ -311,7 +327,10 @@ class PreAssessmentApi {
           child: Align(
             alignment: Alignment.topCenter,
             child: Text(
-              "MM/DD/YYY",
+              getDateTime(),
+              style: TextStyle(
+                fontSize: 10,
+              )
             )
           )
         )
@@ -319,7 +338,7 @@ class PreAssessmentApi {
     );
   }
 
-  static Widget studentTable(){
+  static Widget studentTable(Student student){
     return Container(
       child: Column(
 
@@ -327,9 +346,9 @@ class PreAssessmentApi {
           Row(
             children: [
               tableCell(value: "Student No.:", isBold: true),
-              tableCell(value: "02000123456", ),
+              tableCell(value: student.studentNo!, ),
               tableCell(value: "Student Name:", isBold: true),
-              tableCell(value: "DOE, JOHN", flex: 3),
+              tableCell(value: student.fullName, flex: 3),
               tableCell(value: "Status:", isBold: true),
               tableCell(value: "REGULAR",),
             ]
@@ -339,7 +358,7 @@ class PreAssessmentApi {
               tableCell(value: "Program:", isBold: true),
               tableCell(value: "BSCS",),
               tableCell(value: "Year Level:", isBold: true),
-              tableCell(value: "2Y2",),
+              tableCell(value: student.enrollment.yearLevel!,),
               tableCell(value: "Allowed Units:", isBold: true),
               tableCell(value: "0",),
               tableCell(value: "Student Type:", isBold: true),
