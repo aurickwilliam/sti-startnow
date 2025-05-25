@@ -6,6 +6,7 @@ class Enrollment {
   String? semester;
   String? yearLevel;
   String? section;
+  String? enrollmentStatus;
   String? receiptImg; // File name palang
 
   // Gawa ba model para sa financial statement?

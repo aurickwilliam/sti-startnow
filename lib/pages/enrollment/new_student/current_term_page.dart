@@ -18,15 +18,16 @@ class CurrentTermPage extends StatefulWidget {
 }
 
 class _CurrentTermPageState extends State<CurrentTermPage> {
+  late DatabaseProvider db;
   late Student student;
 
   final List<String> admitTypeChoices = ["New Student", "Transferee"];
 
   final List<String> yearLevelChoices = [
-    "First Year",
-    "Second Year",
-    "Third Year",
-    "Fourth Year",
+    "1st Year",
+    "2nd Year",
+    "3rd Year",
+    "4th Year",
   ];
 
   final List<String> schoolYearChoices = ["2025 - 2026"];
@@ -69,7 +70,8 @@ class _CurrentTermPageState extends State<CurrentTermPage> {
 
   @override
   void initState() {
-    student = context.read<DatabaseProvider>().student;
+    db = context.read<DatabaseProvider>();
+    student = db.student;
 
     admitTypeValue = student.enrollment.admissionType ?? "";
     yearLevelValue = student.enrollment.yearLevel ?? "";
@@ -245,6 +247,7 @@ class _CurrentTermPageState extends State<CurrentTermPage> {
             onPressed: () {
               if (validate()) {
                 saveInput();
+                db.getCurrentSections();
                 Navigator.push(
                   context,
                   MaterialPageRoute(

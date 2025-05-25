@@ -74,6 +74,7 @@ class _AuthPageState extends State<AuthPage> {
           if (studentRes.isNotEmpty) {
             final int studentNumber = studentRes[0]['student_id'];
             await db.initializeExistingStudent(studentNumber);
+            await db.initializeCurrentEnroll();
           }
       }
       // From the bottom of my heart, I apologize for this
