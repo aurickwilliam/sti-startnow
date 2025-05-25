@@ -3,17 +3,17 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class SubjectTile extends StatelessWidget {
-  final String imgPath;
   final String subjectName;
   final String subjectCode;
   final String subjectTeacher;
+  final String noUnits;
 
   const SubjectTile({
     super.key,
-    required this.imgPath,
     required this.subjectName,
     required this.subjectCode,
     required this.subjectTeacher,
+    required this.noUnits,
   });
 
   @override
@@ -34,65 +34,61 @@ class SubjectTile extends StatelessWidget {
         ),
       
         child: Padding(
-          padding: EdgeInsets.all(10),
-          child: Row(
+          padding: EdgeInsets.all(15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                width: 75,
-                height: 75,
-      
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  image: DecorationImage(
-                    image: AssetImage(imgPath),
-                    fit: BoxFit.cover
-                  ) 
-                ),
-              ),
-      
-              const SizedBox(width: 10,),
-      
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                      
-                    // Subject Name
-                    Text(
+                
+              // Subject Name
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
                       subjectName,
                       softWrap: true,
                       style: GoogleFonts.roboto(
                         color: AppTheme.colors.black,
-                        fontSize: 14,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold
                       ),
                     ),
-                      
-                    // Subject Code
-                    Text(
-                      subjectCode,
-                      softWrap: true,
-                      style: GoogleFonts.roboto(
-                        color: AppTheme.colors.black,
-                        fontSize: 14,
-                      ),
+                  ),
+
+                  const SizedBox(width: 10,),
+
+                  Text(
+                    noUnits,
+                    style: GoogleFonts.roboto(
+                      color: AppTheme.colors.primary,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500
                     ),
-                      
-                    Divider(height: 10,),
-                      
-                    // Subject Teacher
-                    Text(
-                      subjectTeacher,
-                      softWrap: true,
-                      style: GoogleFonts.roboto(
-                        color: AppTheme.colors.black,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold
-                      ),
-                    ),
-                  ],
+                  )
+                ],
+              ),
+                
+              // Subject Code
+              Text(
+                subjectCode,
+                softWrap: true,
+                style: GoogleFonts.roboto(
+                  color: AppTheme.colors.black,
+                  fontSize: 14,
                 ),
-              )
+              ),
+                
+              Divider(height: 10,),
+                
+              // Subject Teacher
+              Text(
+                subjectTeacher,
+                softWrap: true,
+                style: GoogleFonts.roboto(
+                  color: AppTheme.colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500
+                ),
+              ),
             ],
           ),
         ),
