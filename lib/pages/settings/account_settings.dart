@@ -5,7 +5,6 @@ import 'package:sti_startnow/pages/components/option_tile.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/settings/change_email.dart';
 import 'package:sti_startnow/pages/settings/change_password.dart';
-import 'package:sti_startnow/pages/settings/settings.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class AccountSettings extends StatelessWidget {
@@ -13,9 +12,11 @@ class AccountSettings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     // if is in landscape
-    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape ? true : false;
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape
+            ? true
+            : false;
 
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
@@ -25,14 +26,8 @@ class AccountSettings extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Settings header
-              PageAppBar(
-                title: "Settings",
-                onPressed: () {
-                  Navigator.push(context, 
-                  MaterialPageRoute(builder: (context) => Settings()));
-                },
-              ),
-          
+              PageAppBar(title: "Settings"),
+
               Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: isLandscape ? 200 : 24,
@@ -41,47 +36,51 @@ class AccountSettings extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 20),
-                        
+
                     // Sub header
                     Text(
                       "Account Settings",
                       style: GoogleFonts.roboto(
-                        fontWeight: FontWeight.w500, 
-                        fontSize: 16
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
                       ),
                     ),
                     const SizedBox(height: 10),
-                        
+
                     // Settings box
                     OptionBox(
                       children: [
                         OptionTile(
-                          text: "Change Password", 
-                          icon: Icons.lock_outline, 
+                          text: "Change Password",
+                          icon: Icons.lock_outline,
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => ChangePassword()),
+                              MaterialPageRoute(
+                                builder: (context) => const ChangePassword(),
+                              ),
                             );
-                          }
+                          },
                         ),
-                              
+
                         OptionTile(
-                          text: "Change Email", 
-                          icon: Icons.email_outlined, 
+                          text: "Change Email",
+                          icon: Icons.email_outlined,
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => ChangeEmail()),
+                              MaterialPageRoute(
+                                builder: (context) => ChangeEmail(),
+                              ),
                             );
                           },
                           isLastItem: true,
                         ),
-                      ]
+                      ],
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),

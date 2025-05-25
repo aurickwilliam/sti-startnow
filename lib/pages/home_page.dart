@@ -34,7 +34,8 @@ class HomePage extends StatelessWidget {
                 authSnapshot.hasData ? authSnapshot.data!.event : null;
 
             if (event == AuthChangeEvent.initialSession ||
-                event == AuthChangeEvent.tokenRefreshed) {
+                event == AuthChangeEvent.tokenRefreshed ||
+                event == AuthChangeEvent.signedIn) {
               final session = authSnapshot.data!.session;
               if (session != null) {
                 return AuthPage(user: session.user);
