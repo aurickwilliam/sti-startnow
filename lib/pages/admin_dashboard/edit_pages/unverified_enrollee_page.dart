@@ -226,56 +226,54 @@ class _UnverifiedEnrolleePageState extends State<UnverifiedEnrolleePage> {
                       ),
                     ),
 
-                    selectedStatus == "Deny"
-                        ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 20),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 20),
 
-                            Text(
-                              "Reason for Denial:",
-                              style: GoogleFonts.roboto(
-                                color: AppTheme.colors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16,
+                        Text(
+                          selectedStatus == "Deny" ? "Reason for Denial:" : "Approval Note:",
+                          style: GoogleFonts.roboto(
+                            color: AppTheme.colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
+                        ),
+
+                        const SizedBox(height: 10),
+
+                        TextField(
+                          controller: denyMessageController,
+                          maxLines: 7,
+                          keyboardType: TextInputType.multiline,
+                          decoration: InputDecoration(
+                            hintText: 'Enter a message...',
+                            border: OutlineInputBorder(),
+
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: AppTheme.colors.primary,
+                                width: 2.0,
                               ),
+                              borderRadius: BorderRadius.circular(15),
                             ),
 
-                            const SizedBox(height: 10),
-
-                            TextField(
-                              controller: denyMessageController,
-                              maxLines: 7,
-                              keyboardType: TextInputType.multiline,
-                              decoration: InputDecoration(
-                                hintText: 'Enter a message...',
-                                border: OutlineInputBorder(),
-
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: AppTheme.colors.primary,
-                                    width: 2.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: AppTheme.colors.gray,
-                                    width: 2.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: AppTheme.colors.gray,
+                                width: 2.0,
                               ),
-
-                              style: GoogleFonts.roboto(
-                                color: AppTheme.colors.black,
-                                fontSize: 14,
-                              ),
+                              borderRadius: BorderRadius.circular(15),
                             ),
-                          ],
-                        )
-                        : SizedBox(),
+                          ),
+
+                          style: GoogleFonts.roboto(
+                            color: AppTheme.colors.black,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
 
                     const SizedBox(height: 50),
 
