@@ -30,15 +30,7 @@ class _ListInstructorsPageState extends State<ListInstructorsPage> {
     "Email Address",
   ];
 
-  // Temporary Values for the table
-  List<List> values = [
-    ["1", "John", "Doe", "Business Management", "doe@gmail.com"],
-    ["2", "Kai", "Cenat", "Information Technology", "doe@gmail.com"],
-    ["3", "Duke", "Dennis", "Tourism Management", "doe@gmail.com"],
-    ["4", "Mario", "Bro", "Information Technology", "doe@gmail.com"],
-    ["5", "Bowser", "Gay", "Tourism Management", "doe@gmail.com"],
-  ];
-
+  late List<List> values;
   List<List> matchedValues = [];
 
   void getInstructors(List<Map<String, dynamic>> instructors) {

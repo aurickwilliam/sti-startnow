@@ -82,6 +82,7 @@ class _SignInAdminPageState extends State<SignInAdminPage> {
         await db.initializePrograms();
         if (role == 'super_admin') {
           await db.initializeInstructors();
+          await db.initializeCourses();
         }
 
         if (mounted) {
