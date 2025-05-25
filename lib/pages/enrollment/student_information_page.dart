@@ -8,7 +8,7 @@ import 'package:sti_startnow/pages/components/number_input.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
-import 'package:sti_startnow/pages/enrollment/irregular/select_year_level_page.dart';
+import 'package:sti_startnow/pages/enrollment/irregular/select_subject_page.dart';
 import 'package:sti_startnow/pages/enrollment/regular/select_section_page.dart';
 import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
@@ -133,7 +133,7 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
     if (widget.studentStatus == "Regular") {
       destination = SelectSectionPage();
     } else if (widget.studentStatus == "Irregular") {
-      destination = SelectYearLevelPage();
+      destination = SelectSubjectPage();
     }
 
     Navigator.push(
