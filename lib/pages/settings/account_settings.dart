@@ -61,19 +61,6 @@ class AccountSettings extends StatelessWidget {
                               ),
                             );
                           },
-                        ),
-
-                        OptionTile(
-                          text: "Change Email",
-                          icon: Icons.email_outlined,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ChangeEmail(),
-                              ),
-                            );
-                          },
                           isLastItem: true,
                         ),
                       ],
