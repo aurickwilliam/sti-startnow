@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/models/student.dart';
+import 'package:sti_startnow/pages/main_dashboard/enrollment_status_page.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class EnrollmentStatusCard extends StatelessWidget {
@@ -40,7 +41,10 @@ class EnrollmentStatusCard extends StatelessWidget {
                 ),
 
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context, 
+                    MaterialPageRoute(builder: (context) => EnrollmentStatusPage(student: student,)));
+                  },
                   icon: Icon(
                     Icons.chevron_right_rounded,
                     color: AppTheme.colors.primary,
