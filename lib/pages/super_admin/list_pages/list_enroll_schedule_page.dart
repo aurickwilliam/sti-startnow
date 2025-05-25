@@ -63,72 +63,78 @@ class _ListEnrollSchedulePageState extends State<ListEnrollSchedulePage> {
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              PageAppBar(title: "Enroll Schedule"),
-
-              const SizedBox(height: 10),
-
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SearchBox(
-                      controller: searchController,
-                      label: "Search:",
-                      hint: "Enter school year",
-                      onChanged: searchValues,
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    matchedValues.isNotEmpty
-                        ? ListDataTable(
-                          columnNames: columnNames,
-                          dataTableValues: matchedValues,
-                          handleNavigation: (item) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder:
-                                    (context) =>
-                                        EditEnrollSchedRowPage(rowValues: item),
-                              ),
-                            );
-                          },
-                        )
-                        : Container(
-                          child: Center(
-                            child: Column(
-                              children: [
-                                Container(
-                                  width: 200,
-                                  child: Image(
-                                    image: AssetImage(
-                                      "assets/img/not_found_img.png",
+        child: Scrollbar(
+          trackVisibility: true,
+          thickness: 5,
+          radius: Radius.circular(10),
+          interactive: true,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                PageAppBar(title: "Enroll Schedule"),
+          
+                const SizedBox(height: 10),
+          
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SearchBox(
+                        controller: searchController,
+                        label: "Search:",
+                        hint: "Enter school year",
+                        onChanged: searchValues,
+                      ),
+          
+                      const SizedBox(height: 20),
+          
+                      matchedValues.isNotEmpty
+                          ? ListDataTable(
+                            columnNames: columnNames,
+                            dataTableValues: matchedValues,
+                            handleNavigation: (item) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) =>
+                                          EditEnrollSchedRowPage(rowValues: item),
+                                ),
+                              );
+                            },
+                          )
+                          : Container(
+                            child: Center(
+                              child: Column(
+                                children: [
+                                  Container(
+                                    width: 200,
+                                    child: Image(
+                                      image: AssetImage(
+                                        "assets/img/not_found_img.png",
+                                      ),
+                                      fit: BoxFit.contain,
                                     ),
-                                    fit: BoxFit.contain,
                                   ),
-                                ),
-
-                                Text(
-                                  "No matches found",
-                                  style: GoogleFonts.roboto(
-                                    color: AppTheme.colors.black,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold
+          
+                                  Text(
+                                    "No matches found",
+                                    style: GoogleFonts.roboto(
+                                      color: AppTheme.colors.black,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold
+                                    ),
                                   ),
-                                ),
-                              ],
-                            )
+                                ],
+                              )
+                            ),
                           ),
-                        ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
