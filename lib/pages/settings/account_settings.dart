@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/pages/components/option_box.dart';
 import 'package:sti_startnow/pages/components/option_tile.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
-import 'package:sti_startnow/pages/settings/change_email.dart';
 import 'package:sti_startnow/pages/settings/change_password.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
