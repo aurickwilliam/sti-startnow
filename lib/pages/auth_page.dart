@@ -61,6 +61,9 @@ class _AuthPageState extends State<AuthPage> {
         case 'super_admin' || 'admin':
           // Initialize super_admin/admin
           await db.initializeAdmin(widget.user.email!, role);
+          if (role == 'super_admin') {
+            await db.initializeInstructors();
+          }
         case 'student':
           // Initialize student based on student number
           final studentRes = await supabase

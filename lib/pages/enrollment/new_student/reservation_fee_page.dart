@@ -41,7 +41,7 @@ class _ReservationFeePageState extends State<ReservationFeePage> {
     });
   }
 
-  Future<void> finishNewStudentEnrollment() async {
+  Future<void> _finishNewStudentEnrollment() async {
     // Show circular progress indicator
     showDialog(
       context: context,
@@ -232,7 +232,7 @@ class _ReservationFeePageState extends State<ReservationFeePage> {
                   builder: (builder) {
                     return CustomBottomSheet(
                       submitFunc: () async {
-                        await finishNewStudentEnrollment();
+                        await _finishNewStudentEnrollment();
                       },
                     );
                   },

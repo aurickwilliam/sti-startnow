@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/components/search_box.dart';
 import 'package:sti_startnow/pages/super_admin/add_pages/add_instructor_page.dart';
 import 'package:sti_startnow/pages/super_admin/components/list_data_table.dart';
 import 'package:sti_startnow/pages/super_admin/edit_pages/edit_instructor_row_page.dart';
+import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class ListInstructorsPage extends StatefulWidget {
@@ -15,6 +18,7 @@ class ListInstructorsPage extends StatefulWidget {
 }
 
 class _ListInstructorsPageState extends State<ListInstructorsPage> {
+  late DatabaseProvider db;
   final TextEditingController searchController = TextEditingController();
 
   // Column values
@@ -37,9 +41,39 @@ class _ListInstructorsPageState extends State<ListInstructorsPage> {
 
   List<List> matchedValues = [];
 
+  void getInstructors(List<Map<String, dynamic>> instructors) {
+    db.setInstructors = instructors;
+    if (mounted) {
+      setState(() {
+        values = [];
+        for (final instructor in instructors) {
+          values.add([
+            instructor['prof_id'].toString(),
+            instructor['prof_fname'],
+            instructor['prof_lname'],
+            instructor['department'],
+            instructor['email'],
+          ]);
+        }
+        matchedValues = values;
+      });
+    }
+  }
+
   @override
   void initState() {
-    matchedValues = values;
+    db = context.read<DatabaseProvider>();
+    getInstructors(db.instructors); // Initial instructors
+
+    // Listen to changes in the professor database
+    supabase
+        .from("PROFESSOR")
+        .stream(primaryKey: ['prof_id'])
+        .order('prof_id', ascending: true)
+        .listen((instructors) {
+          getInstructors(instructors);
+        });
+
     super.initState();
   }
 
@@ -59,9 +93,11 @@ class _ListInstructorsPageState extends State<ListInstructorsPage> {
               .toList();
     }
 
-    setState(() {
-      matchedValues = results;
-    });
+    if (mounted) {
+      setState(() {
+        matchedValues = results;
+      });
+    }
   }
 
   @override
@@ -105,30 +141,28 @@ class _ListInstructorsPageState extends State<ListInstructorsPage> {
                             );
                           },
                         )
-                        : Container(
-                          child: Center(
-                            child: Column(
-                              children: [
-                                Container(
-                                  width: 200,
-                                  child: Image(
-                                    image: AssetImage(
-                                      "assets/img/not_found_img.png",
-                                    ),
-                                    fit: BoxFit.contain,
+                        : Center(
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                width: 200,
+                                child: Image(
+                                  image: AssetImage(
+                                    "assets/img/not_found_img.png",
                                   ),
+                                  fit: BoxFit.contain,
                                 ),
+                              ),
 
-                                Text(
-                                  "No matches found",
-                                  style: GoogleFonts.roboto(
-                                    color: AppTheme.colors.black,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold
-                                  ),
+                              Text(
+                                "No matches found",
+                                style: GoogleFonts.roboto(
+                                  color: AppTheme.colors.black,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                              ],
-                            )
+                              ),
+                            ],
                           ),
                         ),
                   ],
@@ -144,7 +178,7 @@ class _ListInstructorsPageState extends State<ListInstructorsPage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => AddInstructorPage()),
+            MaterialPageRoute(builder: (context) => const AddInstructorPage()),
           );
         },
         backgroundColor: AppTheme.colors.white,

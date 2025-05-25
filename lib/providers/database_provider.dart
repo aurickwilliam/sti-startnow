@@ -319,4 +319,44 @@ class DatabaseProvider extends ChangeNotifier {
       _initializationStatus = true;
     }
   }
+
+  // For section information
+  late List<PostgrestMap> _sectionList;
+
+  List<PostgrestMap> get sections => _sectionList;
+
+  Future<void> initializeSections() async {
+    final res = await supabase
+        .from("SECTION")
+        .select()
+        .order('section_id', ascending: true);
+    _sectionList = [];
+    if (res.isNotEmpty) {
+      for (int i = 0; i < res.length; i++) {
+        _sectionList.add(res[i]);
+      }
+    }
+  }
+
+  // For instructor information
+  late List<PostgrestMap> _instructorList;
+
+  List<PostgrestMap> get instructors => _instructorList;
+
+  set setInstructors(List<PostgrestMap> newInstructors) {
+    _instructorList = newInstructors;
+  }
+
+  Future<void> initializeInstructors() async {
+    final res = await supabase
+        .from("PROFESSOR")
+        .select()
+        .order('prof_id', ascending: true);
+    _instructorList = [];
+    if (res.isNotEmpty) {
+      for (int i = 0; i < res.length; i++) {
+        _instructorList.add(res[i]);
+      }
+    }
+  }
 }

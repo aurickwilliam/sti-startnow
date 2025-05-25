@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:provider/provider.dart';
 import 'package:sti_startnow/pages/chatbot/chatbot.dart';
+import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/drawer/about_page.dart';
 import 'package:sti_startnow/pages/drawer/mission_vision_page.dart';
 import 'package:sti_startnow/pages/enrollment/student_type_page.dart';
@@ -12,10 +15,68 @@ import 'package:sti_startnow/pages/enrollment_dashboard/course_offer_list_page.d
 import 'package:sti_startnow/pages/enrollment_dashboard/requirement_page.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/tuition_fee_advising_page.dart';
 import 'package:sti_startnow/pages/sign_in/sign_in_student_page.dart';
+import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
-class EnrollmentDashboard extends StatelessWidget {
+class EnrollmentDashboard extends StatefulWidget {
   const EnrollmentDashboard({super.key});
+
+  @override
+  State<EnrollmentDashboard> createState() => _EnrollmentDashboardState();
+}
+
+class _EnrollmentDashboardState extends State<EnrollmentDashboard> {
+  late DatabaseProvider db;
+
+  @override
+  void initState() {
+    db = context.read<DatabaseProvider>();
+    super.initState();
+  }
+
+  Future<void> _loadEnrollmentData() async {
+    // Show circular progress indicator
+    showDialog(
+      context: context,
+      builder: (context) {
+        return PopScope(
+          canPop: false,
+          child: Center(child: const CircularProgressIndicator()),
+        );
+      },
+    );
+
+    // Check kung may internet before any interaction
+    final isConnected = await InternetConnection().hasInternetAccess;
+    if (!isConnected) {
+      if (mounted) {
+        Navigator.pop(context);
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return CustomBottomSheet(
+              isError: true,
+              title: "Your Offline",
+              subtitle: "No internet connection, reconnect\nand try again",
+            );
+          },
+        );
+      }
+      return;
+    }
+
+    // Initialize sections
+    await db.initializeSections();
+
+    if (mounted) {
+      Navigator.pop(context);
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const StudentTypePage()),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +99,7 @@ class EnrollmentDashboard extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MissionVisionPage(),
+                      builder: (context) => const MissionVisionPage(),
                     ),
                   );
                 },
@@ -66,7 +127,7 @@ class EnrollmentDashboard extends StatelessWidget {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => SignInStudentPage(),
+                      builder: (context) => const SignInStudentPage(),
                     ),
                   );
                 },
@@ -153,13 +214,8 @@ class EnrollmentDashboard extends StatelessWidget {
 
                 // Enrollment Button
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => StudentTypePage(),
-                      ),
-                    );
+                  onPressed: () async {
+                    await _loadEnrollmentData();
                   },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -190,7 +246,7 @@ class EnrollmentDashboard extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => RequirementPage(),
+                        builder: (context) => const RequirementPage(),
                       ),
                     );
                   },

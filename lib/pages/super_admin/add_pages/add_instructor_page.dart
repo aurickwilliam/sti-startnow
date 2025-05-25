@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
@@ -13,7 +14,6 @@ class AddInstructorPage extends StatefulWidget {
 }
 
 class _AddInstructorPageState extends State<AddInstructorPage> {
-
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController departmentController = TextEditingController();
@@ -21,9 +21,9 @@ class _AddInstructorPageState extends State<AddInstructorPage> {
 
   @override
   Widget build(BuildContext context) {
-    
     // if is in landscape
-    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
     // Content
     Widget content = Column(
@@ -32,14 +32,12 @@ class _AddInstructorPageState extends State<AddInstructorPage> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            PageAppBar(
-              title: "Instructors"
-            ),
-        
+            PageAppBar(title: "Instructors"),
+
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: isLandscape ? 200 : 24,
-                vertical: 10
+                vertical: 10,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,73 +50,79 @@ class _AddInstructorPageState extends State<AddInstructorPage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  
-                  const SizedBox(height: 20,),
-                  
+
+                  const SizedBox(height: 20),
+
                   TextInput(
-                    controller: firstNameController, 
-                    label: "First Name:", 
+                    controller: firstNameController,
+                    label: "First Name:",
                     hint: "Enter First Name",
                   ),
-                  
-                  const SizedBox(height: 10,),
-                  
+
+                  const SizedBox(height: 10),
+
                   TextInput(
-                    controller: lastNameController, 
+                    controller: lastNameController,
                     label: "Last Name:",
                     hint: "Enter Last Name",
                   ),
-                  
-                  const SizedBox(height: 10,),
-                  
+
+                  const SizedBox(height: 10),
+
                   TextInput(
-                    controller: departmentController, 
+                    controller: departmentController,
                     label: "Department:",
                     hint: "Enter Department Name",
                   ),
-                  
-                  const SizedBox(height: 10,),
-                  
+
+                  const SizedBox(height: 10),
+
                   TextInput(
-                    controller: emailAddressController, 
+                    controller: emailAddressController,
                     label: "Email Address:",
                     hint: "example@domain.com",
                   ),
 
-                  const SizedBox(height: 30,),
+                  const SizedBox(height: 30),
                 ],
               ),
-            )
+            ),
           ],
         ),
 
         Padding(
           padding: EdgeInsets.symmetric(
             horizontal: isLandscape ? 200 : 24,
-            vertical: 10
+            vertical: 10,
           ),
           child: BottomButton(
-            onPressed: () {}, 
-            text: "Add New Instructor"
+            onPressed: () async {
+              await supabase.from("PROFESSOR").upsert({
+                'prof_fname': firstNameController.text,
+                'prof_lname': lastNameController.text,
+                'department': departmentController.text,
+                'email': emailAddressController.text,
+              });
+
+              if (context.mounted) {
+                Navigator.pop(context);
+              }
+            },
+            text: "Add New Instructor",
           ),
-        )
+        ),
       ],
     );
 
     // Parent Widget
-    Widget parentWidget = isLandscape
-      ? SingleChildScrollView(
-        child: content,
-      )
-      : Container(
-        child: content,
-      );
+    Widget parentWidget =
+        isLandscape
+            ? SingleChildScrollView(child: content)
+            : Container(child: content);
 
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
-      body: SafeArea(
-        child: parentWidget
-      ),
+      body: SafeArea(child: parentWidget),
     );
   }
 }

@@ -34,7 +34,7 @@ class _SignInStudentPageState extends State<SignInStudentPage> {
   bool usedStudentNumber = false;
   bool usedSchoolEmail = false;
 
-  Future<void> handleStudentSignIn() async {
+  Future<void> _handleStudentSignIn() async {
     // Show circular progress indicator
     showDialog(
       context: context,
@@ -234,7 +234,7 @@ class _SignInStudentPageState extends State<SignInStudentPage> {
                           ElevatedButton(
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                await handleStudentSignIn();
+                                await _handleStudentSignIn();
                               }
                             },
                             style: ElevatedButton.styleFrom(
@@ -273,7 +273,8 @@ class _SignInStudentPageState extends State<SignInStudentPage> {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => EnrollmentDashboard(),
+                                builder:
+                                    (context) => const EnrollmentDashboard(),
                               ),
                             );
                           },
@@ -285,7 +286,7 @@ class _SignInStudentPageState extends State<SignInStudentPage> {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => SignInAdminPage(),
+                                builder: (context) => const SignInAdminPage(),
                               ),
                             );
                           },
