@@ -51,145 +51,159 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
         MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              EnrollmentHeader(
-                step1: true,
-                step2: true,
-                step3: false,
-                step4: false,
-                title: "Personal Information",
-              ),
-
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: isLandscape ? 200 : 24,
-                  vertical: 10,
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.only(
+                  bottom: 20
                 ),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Contact Details",
-                        style: GoogleFonts.roboto(
-                          color: AppTheme.colors.primary,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    EnrollmentHeader(
+                      step1: true,
+                      step2: true,
+                      step3: false,
+                      step4: false,
+                      title: "Personal Information",
+                    ),
+              
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: isLandscape ? 200 : 24,
+                        vertical: 10,
                       ),
-
-                      const SizedBox(height: 10),
-
-                      Text(
-                        "Fill up the necessary information:",
-                        style: GoogleFonts.roboto(
-                          color: AppTheme.colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-
-                      const SizedBox(height: 10),
-
-                      // Telephone No
-                      NumberInput(
-                        controller: telephoneController,
-                        label: "Telephone No.:",
-                        hint: "",
-                        isRequired: false,
-                        isEnable: true,
-                      ),
-
-                      const SizedBox(height: 10),
-
-                      // Mobile Phone No
-                      NumberInput(
-                        controller: mobileController,
-                        label: "Mobile No.:",
-                        hint: "09XXXXXXXXX",
-                        isRequired: true,
-                        isEnable: true,
-                        hasFormat: true,
-                        invalidCheck: (input) {
-                          RegExp mobilePattern = RegExp(r'^09[\d]{9}$');
-
-                          if (mobilePattern.hasMatch(input)) {
-                            return false;
-                          } else {
-                            return true;
-                          }
-                        },
-                        requiredMessage: "Please enter your mobile no.",
-                        invalidMessage: "Please enter a valid mobile no.",
-                      ),
-
-                      const SizedBox(height: 10),
-
-                      TextInput(
-                        controller: emailController,
-                        label: "Email Address:",
-                        hint: "example@domain.com",
-                        isRequired: true,
-                        isEnable: true,
-                        hasFormat: true,
-                        invalidCheck: (input) {
-                          RegExp emailPattern = RegExp(
-                            r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-                          );
-
-                          if (emailPattern.hasMatch(input)) {
-                            return false;
-                          }
-                          return true;
-                        },
-                        requiredMessage: "Please enter your email address",
-                        invalidMessage: "Please enter a valid email address",
-                      ),
-
-                      const SizedBox(height: 20),
-
-                      BackNextButton(
-                        nextPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            saveInput();
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const LastSchoolPage(),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Contact Details",
+                              style: GoogleFonts.roboto(
+                                color: AppTheme.colors.primary,
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
                               ),
-                            );
-                          } else {
-                            showModalBottomSheet(
-                              isScrollControlled: true,
-                              context: context,
-                              builder: (builder) {
-                                return CustomBottomSheet(
-                                  isError: true,
-                                  title: "Missing Information",
-                                  subtitle:
-                                      "Please input all the\nnecessary information",
-                                );
+                            ),
+              
+                            const SizedBox(height: 10),
+              
+                            Text(
+                              "Fill up the necessary information:",
+                              style: GoogleFonts.roboto(
+                                color: AppTheme.colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+              
+                            const SizedBox(height: 10),
+              
+                            // Telephone No
+                            NumberInput(
+                              controller: telephoneController,
+                              label: "Telephone No.:",
+                              hint: "",
+                              isRequired: false,
+                              isEnable: true,
+                            ),
+              
+                            const SizedBox(height: 10),
+              
+                            // Mobile Phone No
+                            NumberInput(
+                              controller: mobileController,
+                              label: "Mobile No.:",
+                              hint: "09XXXXXXXXX",
+                              isRequired: true,
+                              isEnable: true,
+                              hasFormat: true,
+                              invalidCheck: (input) {
+                                RegExp mobilePattern = RegExp(r'^09[\d]{9}$');
+              
+                                if (mobilePattern.hasMatch(input)) {
+                                  return false;
+                                } else {
+                                  return true;
+                                }
                               },
-                            );
-                          }
-                        },
-                        backPressed: () {
-                          saveInput();
-                          Navigator.pop(context);
-                        },
+                              requiredMessage: "Please enter your mobile no.",
+                              invalidMessage: "Please enter a valid mobile no.",
+                            ),
+              
+                            const SizedBox(height: 10),
+              
+                            TextInput(
+                              controller: emailController,
+                              label: "Email Address:",
+                              hint: "example@domain.com",
+                              isRequired: true,
+                              isEnable: true,
+                              hasFormat: true,
+                              invalidCheck: (input) {
+                                RegExp emailPattern = RegExp(
+                                  r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                                );
+              
+                                if (emailPattern.hasMatch(input)) {
+                                  return false;
+                                }
+                                return true;
+                              },
+                              requiredMessage: "Please enter your email address",
+                              invalidMessage: "Please enter a valid email address",
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: isLandscape ? 200 : 24,
+                vertical: 10
+              ),
+              child: BackNextButton(
+                nextPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    saveInput();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LastSchoolPage(),
+                      ),
+                    );
+                  } else {
+                    showModalBottomSheet(
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (builder) {
+                        return CustomBottomSheet(
+                          isError: true,
+                          title: "Missing Information",
+                          subtitle:
+                              "Please input all the\nnecessary information",
+                        );
+                      },
+                    );
+                  }
+                },
+                backPressed: () {
+                  saveInput();
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
