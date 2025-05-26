@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +21,7 @@ class ListInstructorsPage extends StatefulWidget {
 
 class _ListInstructorsPageState extends State<ListInstructorsPage> {
   late DatabaseProvider db;
+  late final StreamSubscription<List<Map<String, dynamic>>> instructorStream;
   final TextEditingController searchController = TextEditingController();
 
   // Column values
@@ -58,7 +61,7 @@ class _ListInstructorsPageState extends State<ListInstructorsPage> {
     getInstructors(db.instructors); // Initial instructors
 
     // Listen to changes in the professor database
-    supabase
+    instructorStream = supabase
         .from("PROFESSOR")
         .stream(primaryKey: ['prof_id'])
         .order('prof_id', ascending: true)
@@ -67,6 +70,12 @@ class _ListInstructorsPageState extends State<ListInstructorsPage> {
         });
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    instructorStream.cancel();
+    super.dispose();
   }
 
   void searchValues(String searchTerm) {
@@ -106,9 +115,9 @@ class _ListInstructorsPageState extends State<ListInstructorsPage> {
             child: Column(
               children: [
                 PageAppBar(title: "List of Instructors"),
-          
+
                 const SizedBox(height: 10),
-          
+
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
                   child: Column(
@@ -120,9 +129,9 @@ class _ListInstructorsPageState extends State<ListInstructorsPage> {
                         hint: "Enter a name",
                         onChanged: searchValues,
                       ),
-          
+
                       const SizedBox(height: 20),
-          
+
                       matchedValues.isNotEmpty
                           ? ListDataTable(
                             columnNames: columnNames,
@@ -132,8 +141,9 @@ class _ListInstructorsPageState extends State<ListInstructorsPage> {
                                 context,
                                 MaterialPageRoute(
                                   builder:
-                                      (context) =>
-                                          EditInstructorRowPage(rowValues: item),
+                                      (context) => EditInstructorRowPage(
+                                        rowValues: item,
+                                      ),
                                 ),
                               );
                             },
@@ -150,7 +160,7 @@ class _ListInstructorsPageState extends State<ListInstructorsPage> {
                                     fit: BoxFit.contain,
                                   ),
                                 ),
-          
+
                                 Text(
                                   "No matches found",
                                   style: GoogleFonts.roboto(

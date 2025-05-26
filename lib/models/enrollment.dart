@@ -14,4 +14,9 @@ class Enrollment {
   String? paymentType;
   String? referenceNo;
   String? amountPaid;
+
+  // Para sa admin
+  String? reviewedBy;
+  String? adminMessage;
+  String? timeOfReview;
 }

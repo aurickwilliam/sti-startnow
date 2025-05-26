@@ -1,17 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:sti_startnow/pages/admin_dashboard/components/no_enrollees_tile.dart';
+import 'package:sti_startnow/providers/enrollee_list_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
-class EnrolleesCard extends StatelessWidget {
-  EnrolleesCard({super.key});
+class EnrolleesCard extends StatefulWidget {
+  const EnrolleesCard({super.key});
 
-  // Temporay data for Number of Enrolless
-  final List<List> noEnrolless = [
-    [999, "Unverified"],
-    [999, "Pending"],
-    [999, "Verified"],
-  ];
+  @override
+  State<EnrolleesCard> createState() => _EnrolleesCardState();
+}
+
+class _EnrolleesCardState extends State<EnrolleesCard> {
+  late EnrolleeListProvider enroll;
+  late final List<List> noEnrolless;
+
+  @override
+  void initState() {
+    enroll = context.read<EnrolleeListProvider>();
+
+    noEnrolless = [
+      [enroll.unverifiedList.length, "Unverified"],
+      [enroll.verifiedList.length, "Verified"],
+      [enroll.rejectedList.length, "Rejected"],
+    ];
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,19 +58,19 @@ class EnrolleesCard extends StatelessWidget {
                   style: GoogleFonts.roboto(
                     color: AppTheme.colors.primary,
                     fontSize: 16,
-                    fontWeight: FontWeight.w500
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
 
                 // Direct to Announcement Page
                 IconButton(
-                  onPressed: () {}, 
+                  onPressed: () {},
                   icon: Icon(
                     Icons.chevron_right_rounded,
                     color: AppTheme.colors.primary,
                     size: 25,
-                  )
-                )
+                  ),
+                ),
               ],
             ),
           ),
@@ -65,15 +81,12 @@ class EnrolleesCard extends StatelessWidget {
             padding: EdgeInsets.all(20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: List.generate(
-                noEnrolless.length, 
-                (index) {
-                  return NoEnrolleesTile(
-                    number: noEnrolless[index][0], 
-                    title: noEnrolless[index][1]
-                  );
-                }
-              ),
+              children: List.generate(noEnrolless.length, (index) {
+                return NoEnrolleesTile(
+                  number: noEnrolless[index][0],
+                  title: noEnrolless[index][1],
+                );
+              }),
             ),
           ),
         ],

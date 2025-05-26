@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/models/student.dart';
-import 'package:sti_startnow/pages/admin_dashboard/admin_dashboard.dart';
 import 'package:sti_startnow/pages/admin_dashboard/components/verify_button.dart';
+import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/components/fullscreen_image_page.dart';
 import 'package:sti_startnow/pages/admin_dashboard/components/receipt_container.dart';
-import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
+import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/providers/enrollee_list_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
@@ -26,26 +28,88 @@ class ReviewedEnrolleePage extends StatefulWidget {
 }
 
 class _ReviewedEnrolleePageState extends State<ReviewedEnrolleePage> {
-  String receiptStatus = "";
-  final denyMessageController = TextEditingController();
+  late DatabaseProvider db;
+  late EnrolleeListProvider enroll;
+  final messageController = TextEditingController();
 
   String enrollmentStatus = "";
+  String receiptStatus = "";
+  String adminName = "";
+  String dateTime = "";
 
   @override
   void initState() {
-    denyMessageController.text = widget.student.denyMessage ?? "";
+    db = context.read<DatabaseProvider>();
+    enroll = context.read<EnrolleeListProvider>();
+    messageController.text = widget.student.enrollment.adminMessage ?? "";
     enrollmentStatus = widget.status;
+    adminName = widget.student.enrollment.reviewedBy!;
+    dateTime = widget.student.enrollment.timeOfReview!.toString();
     super.initState();
+  }
+
+  Future<void> undoReview() async {
+    // Show circular progress indicator
+    showDialog(
+      context: context,
+      builder: (context) {
+        return PopScope(
+          canPop: false,
+          child: Center(child: const CircularProgressIndicator()),
+        );
+      },
+    );
+
+    // Check kung may internet before any interaction
+    final isConnected = await InternetConnection().hasInternetAccess;
+    if (!isConnected) {
+      if (mounted) {
+        Navigator.pop(context);
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return CustomBottomSheet(
+              isError: true,
+              title: "Your Offline",
+              subtitle: "No internet connection, reconnect\nand try again",
+            );
+          },
+        );
+      }
+      return;
+    }
+
+    final status = "Unverified";
+    final time = DateTime.now().toIso8601String(); // Time of undo review
+    enroll.changeStudentStatus(widget.student, status);
+
+    // Update enrollment status of student's current enrollment
+    final enrollmentID = widget.student.enrollmentID;
+    await supabase
+        .from("ENROLLMENT")
+        .update({'enrollment_status': status})
+        .eq('enrollment_id', enrollmentID!);
+
+    // Create log based on earlier interaction
+    await supabase.from("VERIFICATION_LOG").insert({
+      'enrollment_id': enrollmentID,
+      'log_time': time,
+      'status': status,
+      'comment': "Undid review",
+      'admin_name': db.admin.fullName,
+      'student_name': widget.student.fullName,
+      'student_number': int.parse(widget.student.studentNo!),
+    });
+
+    if (mounted) {
+      Navigator.pop(context);
+      Navigator.pop(context);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final students = Provider.of<EnrolleeListProvider>(context);
-
     receiptStatus = widget.status == "Verified" ? "Approve" : "Deny";
-
-    String adminName = "Kai Cenat";
-    String dateTime = "05/25/25 HH:MM:SS";
 
     // if is in landscape
     bool isLandscape =
@@ -79,7 +143,9 @@ class _ReviewedEnrolleePageState extends State<ReviewedEnrolleePage> {
                       children: [
                         // Undo Button
                         ElevatedButton.icon(
-                          onPressed: () {}, 
+                          onPressed: () async {
+                            await undoReview();
+                          },
                           icon: Icon(
                             Icons.undo_rounded,
                             color: AppTheme.colors.white,
@@ -89,7 +155,7 @@ class _ReviewedEnrolleePageState extends State<ReviewedEnrolleePage> {
                             style: GoogleFonts.roboto(
                               color: AppTheme.colors.white,
                               fontSize: 16,
-                              fontWeight: FontWeight.w500
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                           style: ElevatedButton.styleFrom(
@@ -99,9 +165,9 @@ class _ReviewedEnrolleePageState extends State<ReviewedEnrolleePage> {
                               borderRadius: BorderRadius.circular(10),
                               side: BorderSide(
                                 color: AppTheme.colors.red,
-                                width: 2.0
-                              )
-                            )
+                                width: 2.0,
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -164,7 +230,7 @@ class _ReviewedEnrolleePageState extends State<ReviewedEnrolleePage> {
 
                                 // Course
                                 Text(
-                                  widget.student.course!,
+                                  widget.student.programAcronym,
                                   style: GoogleFonts.roboto(
                                     color: AppTheme.colors.black,
                                     fontSize: 15,
@@ -247,13 +313,14 @@ class _ReviewedEnrolleePageState extends State<ReviewedEnrolleePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          receiptStatus == "Deny" ? 
-                            "Denied By: " : "Approved By: ",
-                            style: GoogleFonts.roboto(
-                              color: AppTheme.colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500
-                            ),
+                          receiptStatus == "Deny"
+                              ? "Denied By: "
+                              : "Approved By: ",
+                          style: GoogleFonts.roboto(
+                            color: AppTheme.colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
 
                         Text(
@@ -262,11 +329,11 @@ class _ReviewedEnrolleePageState extends State<ReviewedEnrolleePage> {
                             color: AppTheme.colors.black,
                             fontSize: 16,
                           ),
-                        )
+                        ),
                       ],
                     ),
 
-                    const SizedBox(height: 10,),
+                    const SizedBox(height: 10),
 
                     // Date of Reviewed
                     Column(
@@ -277,7 +344,7 @@ class _ReviewedEnrolleePageState extends State<ReviewedEnrolleePage> {
                           style: GoogleFonts.roboto(
                             color: AppTheme.colors.black,
                             fontSize: 16,
-                            fontWeight: FontWeight.w500
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
 
@@ -287,11 +354,11 @@ class _ReviewedEnrolleePageState extends State<ReviewedEnrolleePage> {
                             color: AppTheme.colors.black,
                             fontSize: 16,
                           ),
-                        )
+                        ),
                       ],
                     ),
 
-                    const SizedBox(height: 20,),
+                    const SizedBox(height: 20),
 
                     Container(
                       decoration: BoxDecoration(
@@ -336,7 +403,9 @@ class _ReviewedEnrolleePageState extends State<ReviewedEnrolleePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          receiptStatus == "Deny" ? "Reason for Denial:" : "Approval Note:",
+                          receiptStatus == "Deny"
+                              ? "Reason for Denial:"
+                              : "Approval Note:",
                           style: GoogleFonts.roboto(
                             color: AppTheme.colors.black,
                             fontWeight: FontWeight.w500,
@@ -348,11 +417,10 @@ class _ReviewedEnrolleePageState extends State<ReviewedEnrolleePage> {
 
                         TextField(
                           enabled: false,
-                          controller: denyMessageController,
+                          controller: messageController,
                           maxLines: 7,
                           keyboardType: TextInputType.multiline,
                           decoration: InputDecoration(
-                            hintText: 'Enter a message...',
                             border: OutlineInputBorder(),
 
                             focusedBorder: OutlineInputBorder(
@@ -386,27 +454,6 @@ class _ReviewedEnrolleePageState extends State<ReviewedEnrolleePage> {
                           ),
                         ),
                       ],
-                    ),
-
-                    const SizedBox(height: 50),
-
-                    BottomButton(
-                      onPressed: () {
-                        if (enrollmentStatus.isNotEmpty) {
-                          students.changeStudentStatus(
-                            widget.student,
-                            enrollmentStatus,
-                          );
-                        }
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder:
-                                (context) => AdminDashboard(selectedIndex: 1),
-                          ),
-                        );
-                      },
-                      text: "Save",
                     ),
                   ],
                 ),

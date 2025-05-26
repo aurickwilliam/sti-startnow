@@ -1,26 +1,65 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/admin_dashboard/components/log_tile.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
+import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class LogsPage extends StatefulWidget {
-  const LogsPage({
-    super.key,
-  });
+  const LogsPage({super.key});
 
   @override
   State<LogsPage> createState() => _LogsPageState();
 }
 
 class _LogsPageState extends State<LogsPage> {
+  late DatabaseProvider db;
+  late final StreamSubscription<List<Map<String, dynamic>>> logStream;
+  late List<List> logList;
 
-  List<List> tempLogList = [
-    ["Rejected", "10", "Caseoh", "05/25/25 HH:MM:SS", "Kai Cenat", "02000123456", "Comment 1"],
-    ["Verified", "10", "Caseoh", "05/25/25 HH:MM:SS", "Kai Cenat", "02000123456", "Comment 2"],
-    ["Verified", "10", "Caseoh", "05/25/25 HH:MM:SS", "Kai Cenat", "02000123456", "Comment 2"],
-    ["Verified", "10", "Caseoh", "05/25/25 HH:MM:SS", "Kai Cenat", "02000123456", "Comment 2"],
-    ["Unverified", "10", "Caseoh", "05/25/25 HH:MM:SS", "Kai Cenat", "02000123456", "Comment 3"],
-  ];
+  void getLogs(List<Map<String, dynamic>> newLogs) {
+    db.setLogs = newLogs;
+    setState(() {
+      logList = [];
+      for (final log in newLogs) {
+        logList.add([
+          log['status'],
+          log['enrollment_id'].toString(),
+          log['admin_name'],
+          log['log_time'].toString(),
+          log['student_name'],
+          "0${log['student_number']}",
+          log['comment'],
+        ]);
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    db = context.read<DatabaseProvider>();
+    getLogs(db.logs); // Initial logs
+
+    // Listen to changes in logs database
+    logStream = supabase
+        .from("VERIFICATION_LOG")
+        .stream(primaryKey: ['log_id'])
+        .order('log_time', ascending: true)
+        .listen((logs) {
+          getLogs(logs);
+        });
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    logStream.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +69,7 @@ class _LogsPageState extends State<LogsPage> {
         child: Column(
           children: [
             PageAppBar(title: "Verification Logs"),
-        
+
             Expanded(
               child: Scrollbar(
                 trackVisibility: true,
@@ -39,31 +78,28 @@ class _LogsPageState extends State<LogsPage> {
                 interactive: true,
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 10
-                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
                     child: Column(
                       children: [
-                        ...List.generate(tempLogList.length, (index) {
+                        ...List.generate(logList.length, (index) {
                           return LogTile(
-                            status: tempLogList[index][0], 
-                            enrollId: tempLogList[index][1], 
-                            adminName: tempLogList[index][2], 
-                            dateTime: tempLogList[index][3], 
-                            studentName: tempLogList[index][4],
-                            studentNo: tempLogList[index][5],
-                            comment: tempLogList[index][6],
+                            status: logList[index][0],
+                            enrollId: logList[index][1],
+                            adminName: logList[index][2],
+                            dateTime: logList[index][3],
+                            studentName: logList[index][4],
+                            studentNo: logList[index][5],
+                            comment: logList[index][6],
                           );
-                        })
+                        }),
                       ],
                     ),
                   ),
                 ),
               ),
-            )
+            ),
           ],
-        )
+        ),
       ),
     );
   }

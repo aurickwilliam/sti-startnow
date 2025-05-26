@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +21,7 @@ class ListSubjectsPage extends StatefulWidget {
 
 class _ListSubjectsPageState extends State<ListSubjectsPage> {
   late DatabaseProvider db;
+  late final StreamSubscription<List<Map<String, dynamic>>> subjectStream;
   final TextEditingController searchController = TextEditingController();
 
   // Column values
@@ -51,7 +54,7 @@ class _ListSubjectsPageState extends State<ListSubjectsPage> {
     getCourses(db.courses); // Initial courses
 
     // Listen for changes in the subject database
-    supabase
+    subjectStream = supabase
         .from("SUBJECT")
         .stream(primaryKey: ['course_code'])
         .order('course_code', ascending: true)
@@ -60,6 +63,12 @@ class _ListSubjectsPageState extends State<ListSubjectsPage> {
         });
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    subjectStream.cancel();
+    super.dispose();
   }
 
   void searchValues(String searchTerm) {
@@ -98,9 +107,9 @@ class _ListSubjectsPageState extends State<ListSubjectsPage> {
             child: Column(
               children: [
                 PageAppBar(title: "Subjects"),
-          
+
                 const SizedBox(height: 10),
-          
+
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
                   child: Column(
@@ -112,9 +121,9 @@ class _ListSubjectsPageState extends State<ListSubjectsPage> {
                         hint: "Enter a subject name",
                         onChanged: searchValues,
                       ),
-          
+
                       const SizedBox(height: 20),
-          
+
                       matchedValues.isNotEmpty
                           ? ListDataTable(
                             columnNames: columnNames,
@@ -142,7 +151,7 @@ class _ListSubjectsPageState extends State<ListSubjectsPage> {
                                     fit: BoxFit.contain,
                                   ),
                                 ),
-          
+
                                 Text(
                                   "No matches found",
                                   style: GoogleFonts.roboto(

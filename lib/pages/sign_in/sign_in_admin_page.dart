@@ -13,6 +13,7 @@ import 'package:sti_startnow/pages/sign_in/components/sign_in_option.dart';
 import 'package:sti_startnow/pages/sign_in/sign_in_student_page.dart';
 import 'package:sti_startnow/pages/super_admin/super_admin_dashboard.dart';
 import 'package:sti_startnow/providers/database_provider.dart';
+import 'package:sti_startnow/providers/enrollee_list_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -25,6 +26,7 @@ class SignInAdminPage extends StatefulWidget {
 
 class _SignInAdminPageState extends State<SignInAdminPage> {
   late DatabaseProvider db;
+  late EnrolleeListProvider enroll;
   final _formKey = GlobalKey<FormState>(); // For input validation
 
   final TextEditingController emailController = TextEditingController();
@@ -85,6 +87,11 @@ class _SignInAdminPageState extends State<SignInAdminPage> {
           await db.initializeCourses();
         }
 
+        if (role == 'admin') {
+          await enroll.initializeEnrollees();
+          await db.initializeLogs();
+          enroll.setCurrentEnrollees();
+        }
         if (mounted) {
           Navigator.pop(context);
           switch (role) {
@@ -140,6 +147,7 @@ class _SignInAdminPageState extends State<SignInAdminPage> {
   @override
   void initState() {
     db = context.read<DatabaseProvider>();
+    enroll = context.read<EnrolleeListProvider>();
     super.initState();
   }
 

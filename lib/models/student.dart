@@ -7,7 +7,6 @@ class Student {
   String? studentNo;
   String? program;
   String? course; // To be removed
-  String? courseAcronym;
   String? firstName;
   String? middleName;
   String? lastName;
@@ -33,20 +32,18 @@ class Student {
   String profileImg;
   final String receiptImg;
 
-  // Temporary
-  String status;
-  String? denyMessage;
-
   bool? isSameCurrentAddress;
 
   Student({
+    this.program,
     this.course,
     this.firstName,
+    this.middleName,
     this.lastName,
+    this.suffixName,
     this.studentNo,
     this.email,
     this.contactNo,
-    this.status = "Unverified",
     this.receiptImg = "assets/img/sample_receipt.jpg",
     this.profileImg = "assets/img/def_profile.jpg",
   }) {
@@ -78,5 +75,12 @@ class Student {
     }
 
     return formattedName;
+  }
+
+  String get programAcronym {
+    final index = program!.lastIndexOf(' ');
+    final acronym = program!.substring(index + 2, program!.length - 1);
+
+    return acronym;
   }
 }
