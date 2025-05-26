@@ -7,7 +7,6 @@ class Student {
   String? studentNo;
   String? program;
   String? course; // To be removed
-  String? courseAcronym;
   String? firstName;
   String? middleName;
   String? lastName;
@@ -78,5 +77,12 @@ class Student {
     }
 
     return formattedName;
+  }
+
+  String get programAcronym {
+    final index = program!.lastIndexOf(' ');
+    final acronym = program!.substring(index + 2, program!.length - 1);
+
+    return acronym;
   }
 }

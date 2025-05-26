@@ -22,16 +22,12 @@ class _PreferredProgramPageState extends State<PreferredProgramPage> {
   late Student student;
 
   late final List<String> courses;
-  late final List<String> acryonym;
   String selectedCourse = "";
-  String selectedAcronym = "";
 
   void getCourseChoices(List<PostgrestMap> courseData) {
     courses = [];
-    acryonym = [];
     for (final course in courseData) {
       courses.add("${course['program_name']} (${course['acronym']})");
-      acryonym.add(course['acronym']);
     }
   }
 
@@ -147,7 +143,6 @@ class _PreferredProgramPageState extends State<PreferredProgramPage> {
                             onChanged: (value) {
                               setState(() {
                                 selectedCourse = value.toString();
-                                selectedAcronym = acryonym[index];
                               });
                             },
 
@@ -187,7 +182,6 @@ class _PreferredProgramPageState extends State<PreferredProgramPage> {
                                 return CustomBottomSheet(
                                   submitFunc: () {
                                     student.program = selectedCourse;
-                                    student.courseAcronym = selectedAcronym;
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
