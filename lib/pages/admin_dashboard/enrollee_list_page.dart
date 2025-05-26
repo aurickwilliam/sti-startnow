@@ -13,39 +13,58 @@ import 'package:sti_startnow/theme/app_theme.dart';
 class EnrolleeListPage extends StatelessWidget {
   EnrolleeListPage({super.key});
 
-  final List<String> listOfStatus = ["Not Enrolled", "Unverified", "Verified", "Rejected"];
+  final List<String> listOfStatus = [
+    "Not Enrolled",
+    "Unverified",
+    "Verified",
+    "Rejected",
+  ];
 
   @override
   Widget build(BuildContext context) {
     final enrolleeListProvider = Provider.of<EnrolleeListProvider>(context);
-
     // Which page is it,
     String status = listOfStatus[enrolleeListProvider.getSelectedStatus - 1];
 
+    List<Student> getEnrolleeList() {
+      switch (status) {
+        case "Not Enrolled":
+          return enrolleeListProvider.notEnrolledList;
+        case "Unverified":
+          return enrolleeListProvider.unverifiedList;
+        case "Verified":
+          return enrolleeListProvider.verifiedList;
+        case "Rejected":
+          return enrolleeListProvider.rejectedList;
+      }
+      return [];
+    }
+
     // List of Enrollees
-    List<Student> listOfEnrolless = enrolleeListProvider.getSelectedStudents;
+    List<Student> listOfEnrollees = getEnrolleeList();
 
     // if is in landscape
-    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
     // Handle navigation to which enrollee edit page
-    void handleNavigation(Student student){
+    void handleNavigation(Student student) {
       Widget destination = SizedBox.shrink();
 
-      if (status == "Not Enrolled"){
+      if (status == "Not Enrolled") {
         destination = NotEnrolledPage(student: student);
-      }
-      else if (status == "Unverified"){
+      } else if (status == "Unverified") {
         destination = UnverifiedEnrolleePage(student: student);
-      }
-      else if (status == "Verified" || status == "Rejected"){
+      } else if (status == "Verified" || status == "Rejected") {
         destination = ReviewedEnrolleePage(student: student, status: status);
       }
-      
-      Navigator.push(context, 
-      MaterialPageRoute(builder: (context) => destination));
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => destination),
+      );
     }
-    
+
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
@@ -80,22 +99,24 @@ class EnrolleeListPage extends StatelessWidget {
 
                     const SizedBox(height: 10),
 
-                    ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: listOfEnrolless.length,
-                      itemBuilder: (context, index) {
-                        return EnrolleeTile(
-                          firstName: listOfEnrolless[index].firstName!,
-                          lastName: listOfEnrolless[index].lastName!,
-                          course: listOfEnrolless[index].course!,
-                          profileImg: listOfEnrolless[index].profileImg,
-                          onTap: () {
-                            handleNavigation(listOfEnrolless[index]);
+                    listOfEnrollees.isNotEmpty
+                        ? ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: listOfEnrollees.length,
+                          itemBuilder: (context, index) {
+                            return EnrolleeTile(
+                              firstName: listOfEnrollees[index].firstName!,
+                              lastName: listOfEnrollees[index].lastName!,
+                              course: listOfEnrollees[index].programAcronym,
+                              profileImg: listOfEnrollees[index].profileImg,
+                              onTap: () {
+                                handleNavigation(listOfEnrollees[index]);
+                              },
+                            );
                           },
-                        );
-                      },
-                    ),
+                        )
+                        : Center(child: Text("No enrollee data")),
 
                     const SizedBox(height: 20),
                   ],

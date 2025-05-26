@@ -7,6 +7,7 @@ import 'package:sti_startnow/pages/internet_check/no_internet_page.dart';
 import 'package:sti_startnow/pages/main_dashboard/main_dashboard.dart';
 import 'package:sti_startnow/pages/super_admin/super_admin_dashboard.dart';
 import 'package:sti_startnow/providers/database_provider.dart';
+import 'package:sti_startnow/providers/enrollee_list_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthPage extends StatefulWidget {
@@ -20,11 +21,13 @@ class AuthPage extends StatefulWidget {
 
 class _AuthPageState extends State<AuthPage> {
   late DatabaseProvider db;
+  late EnrolleeListProvider enroll;
 
   @override
   void initState() {
     super.initState();
     db = context.read<DatabaseProvider>();
+    enroll = context.read<EnrolleeListProvider>();
   }
 
   @override
@@ -64,6 +67,12 @@ class _AuthPageState extends State<AuthPage> {
           if (role == 'super_admin') {
             await db.initializeInstructors();
             await db.initializeCourses();
+          }
+
+          if (role == 'admin') {
+            await enroll.initializeEnrollees();
+            await db.initializeLogs();
+            enroll.setCurrentEnrollees();
           }
         case 'student':
           // Initialize student based on student number

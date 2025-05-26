@@ -501,23 +501,28 @@ class DatabaseProvider extends ChangeNotifier {
     }
   }
 
-  // Enrollee information (for admin)
-  late List<Student> _enrolleeList;
+  // For admin logs page
+  late List<PostgrestMap> _logList;
 
-  List<Student> get enrollees => _enrolleeList;
+  List<PostgrestMap> get logs => _logList;
 
-  Future<void> initializeEnrollees() async {
-    final res = await supabase.from("STUDENT").select('''
-          student_id, 
-          stud_fname, 
-          stud_mname,
-          stud_lname,
-          stud_suffix,
-          personal_email,
-          mobile,
-          term, 
-          PROGRAM(acronym)
-          ENROLLMENT(enrollment_status)
-          ''');
+  // For superadmin page lang siguro to
+  set setLogs(List<PostgrestMap> newLogs) {
+    _logList = newLogs;
+  }
+
+  Future<void> initializeLogs() async {
+    final res = await supabase
+        .from("VERIFICATION_LOG")
+        .select(
+          'status, admin_name, log_time, enrollment_id, comment, student_name, student_number',
+        )
+        .order('log_time', ascending: true);
+
+    if (res.isNotEmpty) {
+      _logList = res;
+    } else {
+      _logList = [];
+    }
   }
 }

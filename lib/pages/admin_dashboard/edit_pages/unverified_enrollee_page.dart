@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/models/student.dart';
-import 'package:sti_startnow/pages/admin_dashboard/admin_dashboard.dart';
 import 'package:sti_startnow/pages/admin_dashboard/components/verify_button.dart';
+import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/components/fullscreen_image_page.dart';
 import 'package:sti_startnow/pages/admin_dashboard/components/receipt_container.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
+import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/providers/enrollee_list_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
@@ -21,12 +24,82 @@ class UnverifiedEnrolleePage extends StatefulWidget {
 }
 
 class _UnverifiedEnrolleePageState extends State<UnverifiedEnrolleePage> {
+  late DatabaseProvider db;
+  late EnrolleeListProvider enroll;
+  final messageController = TextEditingController();
+
   String selectedStatus = "";
-  final denyMessageController = TextEditingController();
+
+  Future<void> changeEnrollmentStatus() async {
+    // Show circular progress indicator
+    showDialog(
+      context: context,
+      builder: (context) {
+        return PopScope(
+          canPop: false,
+          child: Center(child: const CircularProgressIndicator()),
+        );
+      },
+    );
+
+    // Check kung may internet before any interaction
+    final isConnected = await InternetConnection().hasInternetAccess;
+    if (!isConnected) {
+      if (mounted) {
+        Navigator.pop(context);
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return CustomBottomSheet(
+              isError: true,
+              title: "Your Offline",
+              subtitle: "No internet connection, reconnect\nand try again",
+            );
+          },
+        );
+      }
+      return;
+    }
+
+    final status = selectedStatus == "Approve" ? "Verified" : "Rejected";
+    final time = DateTime.now().toIso8601String(); // Time of review
+    enroll.changeStudentStatus(widget.student, status);
+    enroll.setComment(widget.student, messageController.text);
+    enroll.setReviewer(widget.student, db.admin.fullName, time);
+
+    // Update enrollment status of student's current enrollment
+    final enrollmentID = widget.student.enrollmentID;
+    await supabase
+        .from("ENROLLMENT")
+        .update({'enrollment_status': status})
+        .eq('enrollment_id', enrollmentID!);
+
+    // Create log based on earlier interaction
+    await supabase.from("VERIFICATION_LOG").insert({
+      'enrollment_id': enrollmentID,
+      'log_time': time,
+      'status': status,
+      'comment': messageController.text,
+      'admin_name': db.admin.fullName,
+      'student_name': widget.student.fullName,
+      'student_number': int.parse(widget.student.studentNo!),
+    });
+
+    if (mounted) {
+      Navigator.pop(context);
+      Navigator.pop(context);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    db = context.read<DatabaseProvider>();
+    enroll = context.read<EnrolleeListProvider>();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final students = Provider.of<EnrolleeListProvider>(context);
     // if is in landscape
     bool isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
@@ -110,7 +183,7 @@ class _UnverifiedEnrolleePageState extends State<UnverifiedEnrolleePage> {
 
                                 // Course
                                 Text(
-                                  widget.student.course!,
+                                  widget.student.programAcronym,
                                   style: GoogleFonts.roboto(
                                     color: AppTheme.colors.black,
                                     fontSize: 15,
@@ -207,6 +280,7 @@ class _UnverifiedEnrolleePageState extends State<UnverifiedEnrolleePage> {
                             onTap: (value) {
                               setState(() {
                                 selectedStatus = value.toString();
+                                messageController.clear();
                               });
                             },
                             selectedValue: selectedStatus,
@@ -218,6 +292,7 @@ class _UnverifiedEnrolleePageState extends State<UnverifiedEnrolleePage> {
                             onTap: (value) {
                               setState(() {
                                 selectedStatus = value.toString();
+                                messageController.clear();
                               });
                             },
                             selectedValue: selectedStatus,
@@ -226,83 +301,74 @@ class _UnverifiedEnrolleePageState extends State<UnverifiedEnrolleePage> {
                       ),
                     ),
 
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 20),
+                    selectedStatus.isNotEmpty
+                        ? Column(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(height: 20),
 
-                        Text(
-                          selectedStatus == "Deny" ? "Reason for Denial:" : "Approval Note:",
-                          style: GoogleFonts.roboto(
-                            color: AppTheme.colors.black,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16,
-                          ),
-                        ),
+                                Text(
+                                  selectedStatus == "Deny"
+                                      ? "Reason for Denial:"
+                                      : "Approval Note:",
+                                  style: GoogleFonts.roboto(
+                                    color: AppTheme.colors.black,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16,
+                                  ),
+                                ),
 
-                        const SizedBox(height: 10),
+                                const SizedBox(height: 10),
 
-                        TextField(
-                          controller: denyMessageController,
-                          maxLines: 7,
-                          keyboardType: TextInputType.multiline,
-                          decoration: InputDecoration(
-                            hintText: 'Enter a message...',
-                            border: OutlineInputBorder(),
+                                TextField(
+                                  controller: messageController,
+                                  maxLines: 7,
+                                  keyboardType: TextInputType.multiline,
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter a message...',
+                                    border: OutlineInputBorder(),
 
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: AppTheme.colors.primary,
-                                width: 2.0,
-                              ),
-                              borderRadius: BorderRadius.circular(15),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: AppTheme.colors.primary,
+                                        width: 2.0,
+                                      ),
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: AppTheme.colors.gray,
+                                        width: 2.0,
+                                      ),
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                  ),
+
+                                  style: GoogleFonts.roboto(
+                                    color: AppTheme.colors.black,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
                             ),
 
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: AppTheme.colors.gray,
-                                width: 2.0,
-                              ),
-                              borderRadius: BorderRadius.circular(15),
+                            const SizedBox(height: 50),
+
+                            BottomButton(
+                              onPressed: () async {
+                                if (selectedStatus.isNotEmpty &&
+                                    messageController.text.isNotEmpty) {
+                                  await changeEnrollmentStatus();
+                                }
+                              },
+                              text: "Save",
                             ),
-                          ),
-
-                          style: GoogleFonts.roboto(
-                            color: AppTheme.colors.black,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    const SizedBox(height: 50),
-
-                    BottomButton(
-                      onPressed: () {
-                        if (selectedStatus.isNotEmpty) {
-                          final status =
-                              selectedStatus == "Approve"
-                                  ? "Verified"
-                                  : "Rejected";
-
-                          if (status == "Rejected") {
-                            students.setDenyMessage(
-                              widget.student,
-                              denyMessageController.text,
-                            );
-                          }
-                          students.changeStudentStatus(widget.student, status);
-                        }
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder:
-                                (context) => AdminDashboard(selectedIndex: 1),
-                          ),
-                        );
-                      },
-                      text: "Save",
-                    ),
+                          ],
+                        )
+                        : Container(),
                   ],
                 ),
               ),
