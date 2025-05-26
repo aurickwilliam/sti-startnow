@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
+import 'package:sti_startnow/pages/components/custom_dropdown/custom_dropdown_menu.dart';
 import 'package:sti_startnow/pages/components/number_input.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
@@ -22,13 +23,15 @@ class _AddStudentPageState extends State<AddStudentPage> {
   late SharedPreferences pref;
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
-  final TextEditingController programController = TextEditingController();
   final TextEditingController emailAddressController = TextEditingController();
   final TextEditingController mobileController = TextEditingController();
+  String programValue = "";
+  List<String> programAcronyms = [];
 
   @override
   void initState() {
     db = context.read<DatabaseProvider>();
+    programAcronyms = db.getProgramAcronyms();
     super.initState();
   }
 
@@ -51,7 +54,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
           'stud_fname': firstNameController.text,
           'stud_lname': lastNameController.text,
           'personal_email': emailAddressController.text,
-          'program_id': db.getAcronymID(programController.text),
+          'program_id': db.getAcronymID(programValue),
           'mobile': mobileController.text,
         })
         .select('student_id');
@@ -143,10 +146,16 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
                   const SizedBox(height: 10),
 
-                  TextInput(
-                    controller: programController,
-                    label: "Program:",
-                    hint: "Enter Program Name",
+                  CustomDropdownMenu(
+                    listChoices: programAcronyms, 
+                    selectedValue: programValue, 
+                    label: "Program/Course:", 
+                    hint: "Select a Program",
+                    onTap: (index) {
+                      setState(() {
+                        programValue = programAcronyms[index];
+                      });
+                    }
                   ),
 
                   const SizedBox(height: 10),
