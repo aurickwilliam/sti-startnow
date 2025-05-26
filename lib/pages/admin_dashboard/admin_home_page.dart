@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/admin_dashboard/components/enrollees_card.dart';
+import 'package:sti_startnow/pages/admin_dashboard/components/pie_chart_card.dart';
 import 'package:sti_startnow/pages/admin_dashboard/logs_page.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/enrollment_dashboard.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
@@ -134,7 +135,7 @@ class AdminHomePage extends StatelessWidget {
 
                                 const SizedBox(height: 20,),
 
-                                
+                                PieChartCard(),
                               ],
                             ),
                           ),
