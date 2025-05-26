@@ -12,6 +12,7 @@ import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/providers/enrollee_list_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
+import 'package:intl/intl.dart';
 
 class ReviewedEnrolleePage extends StatefulWidget {
   final Student student;
@@ -37,6 +38,12 @@ class _ReviewedEnrolleePageState extends State<ReviewedEnrolleePage> {
   String adminName = "";
   String dateTime = "";
 
+  String getDateTime() {
+    final String timestampString = widget.student.enrollment.timeOfReview!;
+    final DateTime parsedDate = DateTime.parse(timestampString).toLocal();
+    return DateFormat('yyyy-MM-dd HH:mm:ss').format(parsedDate);
+  }
+
   @override
   void initState() {
     db = context.read<DatabaseProvider>();
@@ -44,7 +51,7 @@ class _ReviewedEnrolleePageState extends State<ReviewedEnrolleePage> {
     messageController.text = widget.student.enrollment.adminMessage ?? "";
     enrollmentStatus = widget.status;
     adminName = widget.student.enrollment.reviewedBy!;
-    dateTime = widget.student.enrollment.timeOfReview!.toString();
+    dateTime = getDateTime();
     super.initState();
   }
 

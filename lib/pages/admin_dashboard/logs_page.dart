@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/admin_dashboard/components/log_tile.dart';
@@ -20,6 +21,11 @@ class _LogsPageState extends State<LogsPage> {
   late final StreamSubscription<List<Map<String, dynamic>>> logStream;
   late List<List> logList;
 
+  String getDateTime(String timestampString) {
+    final DateTime parsedDate = DateTime.parse(timestampString).toLocal();
+    return DateFormat('yyyy-MM-dd HH:mm:ss').format(parsedDate);
+  }
+
   void getLogs(List<Map<String, dynamic>> newLogs) {
     db.setLogs = newLogs;
     setState(() {
@@ -29,7 +35,7 @@ class _LogsPageState extends State<LogsPage> {
           log['status'],
           log['enrollment_id'].toString(),
           log['admin_name'],
-          log['log_time'].toString(),
+          getDateTime(log['log_time']),
           log['student_name'],
           "0${log['student_number']}",
           log['comment'],
