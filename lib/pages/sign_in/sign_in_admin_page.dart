@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/admin_dashboard/admin_dashboard.dart';
 import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
@@ -27,6 +28,7 @@ class SignInAdminPage extends StatefulWidget {
 class _SignInAdminPageState extends State<SignInAdminPage> {
   late DatabaseProvider db;
   late EnrolleeListProvider enroll;
+  late SharedPreferences pref;
   final _formKey = GlobalKey<FormState>(); // For input validation
 
   final TextEditingController emailController = TextEditingController();
@@ -83,8 +85,13 @@ class _SignInAdminPageState extends State<SignInAdminPage> {
         await db.initializeAdmin(user.email!, role);
         await db.initializePrograms();
         if (role == 'super_admin') {
+          // I am so sorry for this
+          pref = await SharedPreferences.getInstance();
+          await pref.setString('bad_code', passwordController.text);
+
           await db.initializeInstructors();
           await db.initializeCourses();
+          await db.initializeStudents();
         }
 
         if (role == 'admin') {

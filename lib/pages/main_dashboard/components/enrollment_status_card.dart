@@ -20,7 +20,7 @@ class EnrollmentStatusCard extends StatelessWidget {
         return GoogleFonts.roboto(color: AppTheme.colors.black);
       case 'UNVERIFIED':
         return GoogleFonts.roboto(color: AppTheme.colors.gold);
-      case 'ENROLLED':
+      case 'VERIFIED':
         return GoogleFonts.roboto(color: AppTheme.colors.green);
       case 'REJECTED':
         return GoogleFonts.roboto(color: AppTheme.colors.red);

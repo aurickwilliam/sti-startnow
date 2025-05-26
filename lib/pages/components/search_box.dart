@@ -104,6 +104,7 @@ class _SearchBoxState extends State<SearchBox> {
             ),
           ),
           style: GoogleFonts.roboto(color: AppTheme.colors.black, fontSize: 16),
+          onTapOutside: (event) => focusNode.unfocus(),
         ),
       ],
     );

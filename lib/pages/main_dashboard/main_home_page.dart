@@ -25,7 +25,7 @@ class MainHomePage extends StatefulWidget {
 class _MainHomePageState extends State<MainHomePage> {
   late Student student;
   late String status;
-  late final StreamSubscription<List<Map<String, dynamic>>> enrollmentStatus;
+  late final StreamSubscription enrollmentStatus;
 
   @override
   void initState() {
@@ -50,6 +50,10 @@ class _MainHomePageState extends State<MainHomePage> {
               });
             }
           });
+    } else {
+      enrollmentStatus = Stream.empty().listen(
+        (data) {},
+      ); // Para mawala late init error
     }
     super.initState();
   }
