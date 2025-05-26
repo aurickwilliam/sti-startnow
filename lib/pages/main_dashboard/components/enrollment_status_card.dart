@@ -6,7 +6,27 @@ import 'package:sti_startnow/theme/app_theme.dart';
 
 class EnrollmentStatusCard extends StatelessWidget {
   final Student student;
-  const EnrollmentStatusCard({super.key, required this.student});
+  final String status;
+
+  const EnrollmentStatusCard({
+    super.key,
+    required this.student,
+    required this.status,
+  });
+
+  TextStyle getStatusColor() {
+    switch (status) {
+      case 'NOT ENROLLED':
+        return GoogleFonts.roboto(color: AppTheme.colors.black);
+      case 'UNVERIFIED':
+        return GoogleFonts.roboto(color: AppTheme.colors.gold);
+      case 'ENROLLED':
+        return GoogleFonts.roboto(color: AppTheme.colors.green);
+      case 'REJECTED':
+        return GoogleFonts.roboto(color: AppTheme.colors.red);
+    }
+    return GoogleFonts.roboto(color: AppTheme.colors.gray);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +62,16 @@ class EnrollmentStatusCard extends StatelessWidget {
 
                 IconButton(
                   onPressed: () {
-                    Navigator.push(context, 
-                    MaterialPageRoute(builder: (context) => EnrollmentStatusPage(student: student,)));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (context) => EnrollmentStatusPage(
+                              student: student,
+                              status: status,
+                            ),
+                      ),
+                    );
                   },
                   icon: Icon(
                     Icons.chevron_right_rounded,
@@ -84,14 +112,16 @@ class EnrollmentStatusCard extends StatelessWidget {
                 Divider(height: 10),
 
                 // Term and Year
-                Text(
-                  "3rd Year 1st Term SY. 2025 - 2026",
-                  style: GoogleFonts.roboto(
-                    color: AppTheme.colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+                status != 'NOT ENROLLED'
+                    ? Text(
+                      "${student.enrollment.yearLevel} ${student.enrollment.semester} SY. ${student.enrollment.academicYear}",
+                      style: GoogleFonts.roboto(
+                        color: AppTheme.colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    )
+                    : Container(),
 
                 const SizedBox(height: 10),
 
@@ -106,11 +136,7 @@ class EnrollmentStatusCard extends StatelessWidget {
                       TextSpan(text: "Status: "),
 
                       // Status Text
-                      TextSpan(
-                        // Temporary
-                        text: "PENDING",
-                        style: GoogleFonts.roboto(color: AppTheme.colors.gold),
-                      ),
+                      TextSpan(text: status, style: getStatusColor()),
                     ],
                   ),
                 ),

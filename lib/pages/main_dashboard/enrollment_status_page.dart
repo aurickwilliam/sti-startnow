@@ -1,21 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/models/student.dart';
-import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/information_tile.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
-class EnrollmentStatusPage extends StatefulWidget {
+class EnrollmentStatusPage extends StatelessWidget {
   final Student student;
+  final String status;
 
-  const EnrollmentStatusPage({super.key, required this.student});
+  const EnrollmentStatusPage({
+    super.key,
+    required this.student,
+    required this.status,
+  });
 
-  @override
-  State<EnrollmentStatusPage> createState() => _EnrollmentStatusPageState();
-}
+  TextStyle getStatusColor() {
+    switch (status) {
+      case 'NOT ENROLLED':
+        return GoogleFonts.roboto(color: AppTheme.colors.black);
+      case 'UNVERIFIED':
+        return GoogleFonts.roboto(color: AppTheme.colors.gold);
+      case 'ENROLLED':
+        return GoogleFonts.roboto(color: AppTheme.colors.green);
+      case 'REJECTED':
+        return GoogleFonts.roboto(color: AppTheme.colors.red);
+    }
+    return GoogleFonts.roboto(color: AppTheme.colors.gray);
+  }
 
-class _EnrollmentStatusPageState extends State<EnrollmentStatusPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,16 +55,13 @@ class _EnrollmentStatusPageState extends State<EnrollmentStatusPage> {
 
                     const SizedBox(height: 10),
 
-                    InformationTile(
-                      label: "Name:",
-                      data: widget.student.fullName,
-                    ),
+                    InformationTile(label: "Name:", data: student.fullName),
 
                     const SizedBox(height: 10),
 
                     InformationTile(
                       label: "Student No.:",
-                      data: widget.student.studentNo!,
+                      data: student.studentNo!,
                     ),
 
                     const SizedBox(height: 10),
@@ -59,7 +69,9 @@ class _EnrollmentStatusPageState extends State<EnrollmentStatusPage> {
                     InformationTile(
                       label: "Term and Year:",
                       data:
-                          "${widget.student.enrollment.yearLevel} ${widget.student.enrollment.semester} SY. ${widget.student.enrollment.academicYear}",
+                          status != 'NOT ENROLLED'
+                              ? "${student.enrollment.yearLevel} ${student.enrollment.semester} SY. ${student.enrollment.academicYear}"
+                              : "Not Yet Enrolled",
                     ),
 
                     Divider(height: 30),
@@ -75,20 +87,10 @@ class _EnrollmentStatusPageState extends State<EnrollmentStatusPage> {
                           TextSpan(text: "Status: "),
 
                           // Status Text
-                          TextSpan(
-                            // Temporary
-                            text: "PENDING",
-                            style: GoogleFonts.roboto(
-                              color: AppTheme.colors.gold,
-                            ),
-                          ),
+                          TextSpan(text: status, style: getStatusColor()),
                         ],
                       ),
                     ),
-
-                    const SizedBox(height: 20),
-
-                    BottomButton(onPressed: () {}, text: "Re-Take Enrollment"),
                   ],
                 ),
               ),

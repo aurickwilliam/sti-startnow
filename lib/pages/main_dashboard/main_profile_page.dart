@@ -51,7 +51,7 @@ class MainProfilePage extends StatelessWidget {
                   children: [
                     InformationTile(
                       label: "Academic Level:",
-                      data: student.enrollment.yearLevel!,
+                      data: student.enrollment.yearLevel ?? "Not Yet Enrolled",
                     ),
 
                     const SizedBox(height: 10),
@@ -62,14 +62,14 @@ class MainProfilePage extends StatelessWidget {
 
                     InformationTile(
                       label: "Section:",
-                      data: student.enrollment.section!,
+                      data: student.enrollment.section ?? "Not Yet Enrolled",
                     ),
 
                     const SizedBox(height: 10),
 
                     InformationTile(
                       label: "Email Address:",
-                      data: student.email!,
+                      data: student.schoolEmail!,
                     ),
                   ],
                 ),
