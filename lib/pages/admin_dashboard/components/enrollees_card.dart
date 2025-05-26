@@ -49,29 +49,14 @@ class _EnrolleesCardState extends State<EnrolleesCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Number of Enrollees:",
-                  style: GoogleFonts.roboto(
-                    color: AppTheme.colors.primary,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-
-                // Direct to Announcement Page
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.chevron_right_rounded,
-                    color: AppTheme.colors.primary,
-                    size: 25,
-                  ),
-                ),
-              ],
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+            child: Text(
+              "Number of Enrollees:",
+              style: GoogleFonts.roboto(
+                color: AppTheme.colors.primary,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
 
