@@ -104,7 +104,7 @@ class SuperAdminDashboard extends StatelessWidget {
                         icon: Icons.person,
                         title: "Students",
                         onTap: () {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) => const ListStudentsPage(),

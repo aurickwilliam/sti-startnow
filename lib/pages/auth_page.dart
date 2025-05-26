@@ -67,6 +67,7 @@ class _AuthPageState extends State<AuthPage> {
           if (role == 'super_admin') {
             await db.initializeInstructors();
             await db.initializeCourses();
+            await db.initializeStudents();
           }
 
           if (role == 'admin') {

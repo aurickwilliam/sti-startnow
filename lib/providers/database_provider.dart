@@ -437,6 +437,25 @@ class DatabaseProvider extends ChangeNotifier {
     }
   }
 
+  // Para sa superadmin page
+  String getProgramAcronym(int programID) {
+    final String acronym =
+        _programList
+            .where((program) => program['id'] == programID)
+            .toList()[0]['acronym'];
+    return acronym;
+  }
+
+  // Para sa superadmin page, I am sorry for this
+  int getAcronymID(String acronym) {
+    final int id =
+        _programList
+            .where((program) => program['acronym'] == acronym)
+            .toList()[0]['id'];
+
+    return id;
+  }
+
   // For section information
   late List<PostgrestMap> _sectionList;
 
@@ -498,6 +517,29 @@ class DatabaseProvider extends ChangeNotifier {
       _courseList = res;
     } else {
       _courseList = [];
+    }
+  }
+
+  // For student information for superadmin
+  late List<PostgrestMap> _studentList;
+
+  List<PostgrestMap> get students => _studentList;
+
+  // For superadmin page lang siguro to
+  set setStudents(List<PostgrestMap> newStudents) {
+    _studentList = newStudents;
+  }
+
+  Future<void> initializeStudents() async {
+    final res = await supabase
+        .from("STUDENT")
+        .select('student_id, stud_fname, stud_lname, program_id')
+        .order('student_id', ascending: true);
+
+    if (res.isNotEmpty) {
+      _studentList = res;
+    } else {
+      _studentList = [];
     }
   }
 

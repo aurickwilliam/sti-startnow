@@ -64,13 +64,13 @@ class Student {
   String get fullName {
     String formattedName = firstName!;
 
-    if (middleName!.isNotEmpty) {
+    if (middleName != null && middleName!.isNotEmpty) {
       formattedName += ' ${middleName![0]}.';
     }
 
     formattedName += ' $lastName';
 
-    if (suffixName!.isNotEmpty) {
+    if (suffixName != null && suffixName!.isNotEmpty) {
       formattedName += ' $suffixName';
     }
 

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
+import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class AddStudentPage extends StatefulWidget {
@@ -13,19 +17,84 @@ class AddStudentPage extends StatefulWidget {
 }
 
 class _AddStudentPageState extends State<AddStudentPage> {
-
+  late DatabaseProvider db;
+  late SharedPreferences pref;
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController programController = TextEditingController();
   final TextEditingController emailAddressController = TextEditingController();
-  final TextEditingController termController = TextEditingController();
-  final TextEditingController yearLevelController = TextEditingController();
+
+  @override
+  void initState() {
+    db = context.read<DatabaseProvider>();
+    super.initState();
+  }
+
+  Future<void> addStudent() async {
+    // Show circular progress indicator
+    showDialog(
+      context: context,
+      builder: (context) {
+        return PopScope(
+          canPop: false,
+          child: Center(child: const CircularProgressIndicator()),
+        );
+      },
+    );
+
+    // Get ready for this abomination
+    final res = await supabase
+        .from("STUDENT")
+        .insert({
+          'stud_fname': firstNameController.text,
+          'stud_lname': lastNameController.text,
+          'personal_email': emailAddressController.text,
+          'program_id': db.getAcronymID(programController.text),
+        })
+        .select('student_id');
+
+    final studentNumber = res[0]['student_id'].toString();
+    final schoolEmail =
+        "${lastNameController.text.toLowerCase()}.${studentNumber.substring(4)}@caloocan.sti.edu.ph";
+
+    await supabase
+        .from("STUDENT")
+        .update({'school_email': schoolEmail})
+        .eq('student_id', int.parse(studentNumber));
+
+    final studentPassword = "${lastNameController.text}12345";
+    await supabase.auth.signUp(
+      email: emailAddressController.text,
+      password: studentPassword,
+    );
+
+    final user = supabase.auth.currentUser;
+    await supabase.from('USER_ROLES').insert({
+      'user_id': user!.id,
+      'role': 'student',
+    });
+
+    await supabase.auth.signOut();
+
+    pref = await SharedPreferences.getInstance();
+    final adminPassword = pref.getString('bad_code');
+
+    await supabase.auth.signInWithPassword(
+      email: db.admin.email,
+      password: adminPassword!,
+    );
+
+    if (mounted) {
+      Navigator.pop(context);
+      Navigator.pop(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-
     // if is in landscape
-    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
     // Content
     Widget content = Column(
@@ -34,14 +103,12 @@ class _AddStudentPageState extends State<AddStudentPage> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            PageAppBar(
-              title: "Students"
-            ),
-        
+            PageAppBar(title: "Students"),
+
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: isLandscape ? 200 : 24,
-                vertical: 10
+                vertical: 10,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,56 +121,38 @@ class _AddStudentPageState extends State<AddStudentPage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  
-                  const SizedBox(height: 20,),
-                  
+
+                  const SizedBox(height: 20),
+
                   TextInput(
-                    controller: firstNameController, 
-                    label: "First Name:", 
+                    controller: firstNameController,
+                    label: "First Name:",
                     hint: "Enter First Name",
                   ),
-                  
-                  const SizedBox(height: 10,),
-                  
+
+                  const SizedBox(height: 10),
+
                   TextInput(
-                    controller: lastNameController, 
+                    controller: lastNameController,
                     label: "Last Name:",
                     hint: "Enter Last Name",
                   ),
-                  
-                  const SizedBox(height: 10,),
-                  
+
+                  const SizedBox(height: 10),
+
                   TextInput(
-                    controller: programController, 
+                    controller: programController,
                     label: "Program:",
                     hint: "Enter Program Name",
                   ),
-                  
-                  const SizedBox(height: 10,),
-                  
+
+                  const SizedBox(height: 10),
+
                   TextInput(
-                    controller: emailAddressController, 
+                    controller: emailAddressController,
                     label: "Email Address:",
                     hint: "example@domain.com",
                   ),
-
-                  const SizedBox(height: 10,),
-                  
-                  TextInput(
-                    controller: termController, 
-                    label: "Term:",
-                    hint: "Enter Current Term",
-                  ),
-
-                  const SizedBox(height: 10,),
-                  
-                  TextInput(
-                    controller: yearLevelController, 
-                    label: "Year Level:",
-                    hint: "Enter Year Level",
-                  ),
-
-                  const SizedBox(height: 30,),
                 ],
               ),
             ),
@@ -113,26 +162,27 @@ class _AddStudentPageState extends State<AddStudentPage> {
         Padding(
           padding: EdgeInsets.symmetric(
             horizontal: isLandscape ? 200 : 24,
-            vertical: 10
+            vertical: 10,
           ),
           child: BottomButton(
-            onPressed: () {}, 
-            text: "Add New Student"
+            onPressed: () async {
+              await addStudent();
+            },
+            text: "Add New Student",
           ),
-        )
+        ),
       ],
     );
 
     // Choosing the parent widget
-    Widget parentWidget = isLandscape
-      ? SingleChildScrollView(child: content,)
-      : Container(child: content,);
+    Widget parentWidget =
+        isLandscape
+            ? SingleChildScrollView(child: content)
+            : Container(child: content);
 
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
-      body: SafeArea(
-        child: parentWidget
-      ),
+      body: SafeArea(child: parentWidget),
     );
   }
 }
