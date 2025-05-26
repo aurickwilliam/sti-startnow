@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/buttons/delete_button.dart';
+import 'package:sti_startnow/pages/components/custom_dropdown/custom_dropdown_menu.dart';
 import 'package:sti_startnow/pages/components/number_input.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
@@ -21,20 +22,23 @@ class EditStudentRowPage extends StatefulWidget {
 class _EditStudentRowPageState extends State<EditStudentRowPage> {
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
-  final TextEditingController programController = TextEditingController();
   final TextEditingController mobileController = TextEditingController();
   late final int studentNumber;
   late DatabaseProvider db;
+
+  String programValue = "";
+  List<String> listOfAcronyms = [];
 
   @override
   void initState() {
     studentNumber = int.parse(widget.rowValues[0]);
     firstNameController.text = widget.rowValues[1];
     lastNameController.text = widget.rowValues[2];
-    programController.text = widget.rowValues[3];
+    programValue = widget.rowValues[3];
     mobileController.text = widget.rowValues[4];
     super.initState();
     db = context.read<DatabaseProvider>();
+    listOfAcronyms = db.getProgramAcronyms();
   }
 
   @override
@@ -72,7 +76,16 @@ class _EditStudentRowPageState extends State<EditStudentRowPage> {
 
                   const SizedBox(height: 10),
 
-                  TextInput(controller: programController, label: "Program:"),
+                  CustomDropdownMenu(
+                    listChoices: listOfAcronyms, 
+                    selectedValue: programValue, 
+                    label: "Program/Course:", 
+                    onTap: (index) {
+                      setState(() {
+                        programValue = listOfAcronyms[index];
+                      });
+                    }
+                  ),
 
                   const SizedBox(height: 10),
 
@@ -100,7 +113,7 @@ class _EditStudentRowPageState extends State<EditStudentRowPage> {
                       .update({
                         'stud_fname': firstNameController.text,
                         'stud_lname': lastNameController.text,
-                        'program_id': db.getAcronymID(programController.text),
+                        'program_id': db.getAcronymID(programValue),
                         'mobile': mobileController.text,
                       })
                       .eq('student_id', studentNumber);

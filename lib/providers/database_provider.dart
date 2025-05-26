@@ -446,6 +446,16 @@ class DatabaseProvider extends ChangeNotifier {
     return acronym;
   }
 
+  List<String> getProgramAcronyms(){
+    List<String> listOfAcronyms = [];
+
+    for (var record in _programList) {
+      listOfAcronyms.add(record['acronym']);
+    }
+
+    return listOfAcronyms;
+  }
+
   // Para sa superadmin page, I am sorry for this
   int getAcronymID(String acronym) {
     final int id =
