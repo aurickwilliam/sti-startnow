@@ -7,6 +7,7 @@ class Student {
   String? studentNo;
   String? program;
   String? course; // To be removed
+  String? courseAcronym;
   String? firstName;
   String? middleName;
   String? lastName;

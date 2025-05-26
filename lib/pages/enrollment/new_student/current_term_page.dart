@@ -128,7 +128,7 @@ class _CurrentTermPageState extends State<CurrentTermPage> {
                         TextSpan(text: "You have chosen "),
 
                         TextSpan(
-                          text: "BSCS",
+                          text: student.courseAcronym,
                           style: GoogleFonts.roboto(
                             color: AppTheme.colors.primary,
                             textStyle: TextStyle(
