@@ -17,6 +17,7 @@ class NoEnrolleesTile extends StatelessWidget {
     return Column(
       children: [
         Container(
+          width: 70,
           decoration: BoxDecoration(
             color: AppTheme.colors.white,
             border: Border.all(

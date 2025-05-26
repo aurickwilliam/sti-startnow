@@ -131,6 +131,10 @@ class AdminHomePage extends StatelessWidget {
                               children: [
                                 // Enrollees Card
                                 EnrolleesCard(),
+
+                                const SizedBox(height: 20,),
+
+                                
                               ],
                             ),
                           ),
