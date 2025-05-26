@@ -1,3 +1,5 @@
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/pages/chatbot/components/chat_bubble.dart';
@@ -32,7 +34,7 @@ class _ChatbotState extends State<Chatbot> {
           children: [
 
             PageAppBar(
-              title: "ChatBot"
+              title: "StartNow ChatBot"
             ),
             
             Expanded(
@@ -106,7 +108,47 @@ class _ChatbotState extends State<Chatbot> {
                         ),
                             
                         IconButton(
-                          onPressed: () {}, 
+                          onPressed: () async {
+                            final userInput = messageController.text.trim();
+                            if (userInput.isEmpty) return;
+
+                            setState(() {
+                              messages.add([userInput, true]);
+                              messageController.clear();
+                            });
+
+                            try{
+                              //ping si render para magising server
+                              final pingCheck = await http.get(Uri.parse("https://sti-startnow.onrender.com/ping"));
+                              if (pingCheck.statusCode != 200) {
+                                setState(() {
+                                  messages.add(["Server not ready. Please try again later.", false]);
+                                });
+                                return;
+                              }
+
+                              final response = await http.post(
+                                  Uri.parse('https://sti-startnow.onrender.com/chat'),
+                                  headers: {'Content-Type': 'application/json'},
+                                  body: jsonEncode({'userInput': userInput}),
+                              );
+
+                              if (response.statusCode == 200) {
+                                final botReply = jsonDecode(response.body)['response'];
+                                setState(() {
+                                  messages.add([botReply, false]);
+                                });
+                              } else {
+                                setState(() {
+                                  messages.add(["Error: ${response.statusCode}", false]);
+                                });
+                              }
+                            } catch(e){
+                              setState(() {
+                                messages.add(["Failed to connect to server.", false]);
+                              });
+                            }
+                          }, 
                           icon: Icon(
                             Icons.send_rounded,
                             color: AppTheme.colors.primary,
