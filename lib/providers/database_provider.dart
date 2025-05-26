@@ -285,9 +285,12 @@ class DatabaseProvider extends ChangeNotifier {
     }
 
     // Set the current enrollment of student
+    _student.enrollmentID = enrollRes[0]['enrollment_id'];
+    _student.enrollment.enrollmentStatus = "Unverified";
+
     await supabase
         .from("STUDENT")
-        .update({'current_enrollment': enrollRes[0]['enrollment_id']})
+        .update({'current_enrollment': _student.enrollmentID})
         .eq('student_id', studentNumber);
 
     // Academic background info
@@ -496,5 +499,25 @@ class DatabaseProvider extends ChangeNotifier {
     } else {
       _courseList = [];
     }
+  }
+
+  // Enrollee information (for admin)
+  late List<Student> _enrolleeList;
+
+  List<Student> get enrollees => _enrolleeList;
+
+  Future<void> initializeEnrollees() async {
+    final res = await supabase.from("STUDENT").select('''
+          student_id, 
+          stud_fname, 
+          stud_mname,
+          stud_lname,
+          stud_suffix,
+          personal_email,
+          mobile,
+          term, 
+          PROGRAM(acronym)
+          ENROLLMENT(enrollment_status)
+          ''');
   }
 }

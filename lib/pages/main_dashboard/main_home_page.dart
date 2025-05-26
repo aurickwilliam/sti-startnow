@@ -1,24 +1,67 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:sti_startnow/main.dart';
+import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/schedule_card.dart';
 import 'package:sti_startnow/pages/drawer/about_page.dart';
 import 'package:sti_startnow/pages/drawer/mission_vision_page.dart';
-import 'package:sti_startnow/pages/enrollment/student_type_page.dart';
+import 'package:sti_startnow/pages/enrollment/student_status_page.dart';
 import 'package:sti_startnow/pages/components/drawer_tile.dart';
 import 'package:sti_startnow/pages/main_dashboard/components/enrollment_status_card.dart';
 import 'package:sti_startnow/pages/settings/settings.dart';
 import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
-class MainHomePage extends StatelessWidget {
+class MainHomePage extends StatefulWidget {
   const MainHomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final student = Provider.of<DatabaseProvider>(context).student;
+  State<MainHomePage> createState() => _MainHomePageState();
+}
 
+class _MainHomePageState extends State<MainHomePage> {
+  late Student student;
+  late String status;
+  late final StreamSubscription<List<Map<String, dynamic>>> enrollmentStatus;
+
+  @override
+  void initState() {
+    student = context.read<DatabaseProvider>().student;
+
+    if (student.enrollment.enrollmentStatus != null) {
+      status = student.enrollment.enrollmentStatus!.toUpperCase();
+    } else {
+      status = 'NOT ENROLLED';
+    }
+
+    // Listen to changes in student's enrollment status if meron
+    if (student.enrollmentID != null) {
+      enrollmentStatus = supabase
+          .from("ENROLLMENT")
+          .stream(primaryKey: ['enrollment_id'])
+          .eq('enrollment_id', student.enrollmentID!)
+          .listen((data) {
+            if (mounted) {
+              setState(() {
+                status = data[0]['enrollment_status'].toUpperCase();
+              });
+            }
+          });
+    }
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    enrollmentStatus.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     // if is in landscape
     bool isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape
@@ -157,32 +200,42 @@ class MainHomePage extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  "New Semester for SY 2025 - 2026",
-                                  style: GoogleFonts.roboto(
-                                    color: AppTheme.colors.primary,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                status == 'NOT ENROLLED'
+                                    ? Column(
+                                      children: [
+                                        Text(
+                                          "New Semester for SY 2025 - 2026",
+                                          style: GoogleFonts.roboto(
+                                            color: AppTheme.colors.primary,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+
+                                        const SizedBox(height: 10),
+
+                                        BottomButton(
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder:
+                                                    (context) =>
+                                                        const StudentStatusPage(),
+                                              ),
+                                            );
+                                          },
+                                          text: "Enroll Now!",
+                                        ),
+
+                                        const SizedBox(height: 20),
+                                      ],
+                                    )
+                                    : Container(),
+                                EnrollmentStatusCard(
+                                  student: student,
+                                  status: status,
                                 ),
-
-                                const SizedBox(height: 10),
-
-                                BottomButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => StudentTypePage(),
-                                      ),
-                                    );
-                                  },
-                                  text: "Enroll Now!",
-                                ),
-
-                                const SizedBox(height: 20),
-
-                                EnrollmentStatusCard(student: student),
 
                                 const SizedBox(height: 20),
 
