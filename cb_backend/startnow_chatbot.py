@@ -9,6 +9,10 @@ load_dotenv()
 app = FastAPI()
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
+@app.get("/ping")
+async def ping():
+    return {"message": "pong"}
+
 class Message(BaseModel):
     userInput: str
 
@@ -135,7 +139,7 @@ async def chat(msg: Message):
             messages = [
                 {"role": "system",
                 "content": (
-                    "You are a friendly and helpful STI Start Now assistant. "
+                    "You are a friendly, helpful, and fun STI Start Now assistant. "
                     "If you don't know the answer to a question, reply with: "
                     "'I'm sorry, I couldn’t find that in our records. Please try rephrasing or ask about something else.'")
                 },
