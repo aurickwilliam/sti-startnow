@@ -102,107 +102,107 @@ class _AddStudentPageState extends State<AddStudentPage> {
     bool isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
 
-    // Content
-    Widget content = Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      backgroundColor: AppTheme.colors.white,
+      body: SafeArea(
+        child: Column(
           children: [
-            PageAppBar(title: "Students"),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.only(
+                  bottom: 20
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    PageAppBar(title: "Students"),
+
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: isLandscape ? 200 : 24,
+                        vertical: 10,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Add New Student",
+                            style: GoogleFonts.roboto(
+                              color: AppTheme.colors.primary,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+
+                          const SizedBox(height: 20),
+
+                          TextInput(
+                            controller: firstNameController,
+                            label: "First Name:",
+                            hint: "Enter First Name",
+                          ),
+
+                          const SizedBox(height: 10),
+
+                          TextInput(
+                            controller: lastNameController,
+                            label: "Last Name:",
+                            hint: "Enter Last Name",
+                          ),
+
+                          const SizedBox(height: 10),
+
+                          CustomDropdownMenu(
+                            listChoices: programAcronyms, 
+                            selectedValue: programValue, 
+                            label: "Program/Course:", 
+                            hint: "Select a Program",
+                            onTap: (index) {
+                              setState(() {
+                                programValue = programAcronyms[index];
+                              });
+                            }
+                          ),
+
+                          const SizedBox(height: 10),
+
+                          TextInput(
+                            controller: emailAddressController,
+                            label: "Email Address:",
+                            hint: "example@domain.com",
+                          ),
+
+                          const SizedBox(height: 10),
+
+                          NumberInput(
+                            controller: mobileController,
+                            label: "Contact Number:",
+                            hint: "09XXXXXXXXX",
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ),
 
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: isLandscape ? 200 : 24,
                 vertical: 10,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Add New Student",
-                    style: GoogleFonts.roboto(
-                      color: AppTheme.colors.primary,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  TextInput(
-                    controller: firstNameController,
-                    label: "First Name:",
-                    hint: "Enter First Name",
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  TextInput(
-                    controller: lastNameController,
-                    label: "Last Name:",
-                    hint: "Enter Last Name",
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  CustomDropdownMenu(
-                    listChoices: programAcronyms, 
-                    selectedValue: programValue, 
-                    label: "Program/Course:", 
-                    hint: "Select a Program",
-                    onTap: (index) {
-                      setState(() {
-                        programValue = programAcronyms[index];
-                      });
-                    }
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  TextInput(
-                    controller: emailAddressController,
-                    label: "Email Address:",
-                    hint: "example@domain.com",
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  NumberInput(
-                    controller: mobileController,
-                    label: "Contact Number:",
-                    hint: "09XXXXXXXXX",
-                  ),
-                ],
+              child: BottomButton(
+                onPressed: () async {
+                  await addStudent();
+                },
+                text: "Add New Student",
               ),
             ),
           ],
-        ),
-
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: isLandscape ? 200 : 24,
-            vertical: 10,
-          ),
-          child: BottomButton(
-            onPressed: () async {
-              await addStudent();
-            },
-            text: "Add New Student",
-          ),
-        ),
-      ],
-    );
-
-    // Choosing the parent widget
-    Widget parentWidget =
-        isLandscape
-            ? SingleChildScrollView(child: content)
-            : Container(child: content);
-
-    return Scaffold(
-      backgroundColor: AppTheme.colors.white,
-      body: SafeArea(child: parentWidget),
+        )
+      ),
     );
   }
 }

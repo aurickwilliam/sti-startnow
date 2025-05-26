@@ -25,104 +25,104 @@ class _AddInstructorPageState extends State<AddInstructorPage> {
     bool isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
 
-    // Content
-    Widget content = Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      backgroundColor: AppTheme.colors.white,
+      body: SafeArea(
+        child: Column(
           children: [
-            PageAppBar(title: "Instructors"),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.only(
+                  bottom: 20
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    PageAppBar(title: "Instructors"),
+
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: isLandscape ? 200 : 24,
+                        vertical: 10,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Add New Instructor",
+                            style: GoogleFonts.roboto(
+                              color: AppTheme.colors.primary,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+
+                          const SizedBox(height: 20),
+
+                          TextInput(
+                            controller: firstNameController,
+                            label: "First Name:",
+                            hint: "Enter First Name",
+                          ),
+
+                          const SizedBox(height: 10),
+
+                          TextInput(
+                            controller: lastNameController,
+                            label: "Last Name:",
+                            hint: "Enter Last Name",
+                          ),
+
+                          const SizedBox(height: 10),
+
+                          TextInput(
+                            controller: departmentController,
+                            label: "Department:",
+                            hint: "Enter Department Name",
+                          ),
+
+                          const SizedBox(height: 10),
+
+                          TextInput(
+                            controller: emailAddressController,
+                            label: "Email Address:",
+                            hint: "example@domain.com",
+                          ),
+
+                          const SizedBox(height: 30),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ),
 
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: isLandscape ? 200 : 24,
                 vertical: 10,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Add New Instructor",
-                    style: GoogleFonts.roboto(
-                      color: AppTheme.colors.primary,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+              child: BottomButton(
+                onPressed: () async {
+                  await supabase.from("PROFESSOR").upsert({
+                    'prof_fname': firstNameController.text,
+                    'prof_lname': lastNameController.text,
+                    'department': departmentController.text,
+                    'email': emailAddressController.text,
+                  });
 
-                  const SizedBox(height: 20),
-
-                  TextInput(
-                    controller: firstNameController,
-                    label: "First Name:",
-                    hint: "Enter First Name",
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  TextInput(
-                    controller: lastNameController,
-                    label: "Last Name:",
-                    hint: "Enter Last Name",
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  TextInput(
-                    controller: departmentController,
-                    label: "Department:",
-                    hint: "Enter Department Name",
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  TextInput(
-                    controller: emailAddressController,
-                    label: "Email Address:",
-                    hint: "example@domain.com",
-                  ),
-
-                  const SizedBox(height: 30),
-                ],
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                  }
+                },
+                text: "Add New Instructor",
               ),
             ),
           ],
-        ),
-
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: isLandscape ? 200 : 24,
-            vertical: 10,
-          ),
-          child: BottomButton(
-            onPressed: () async {
-              await supabase.from("PROFESSOR").upsert({
-                'prof_fname': firstNameController.text,
-                'prof_lname': lastNameController.text,
-                'department': departmentController.text,
-                'email': emailAddressController.text,
-              });
-
-              if (context.mounted) {
-                Navigator.pop(context);
-              }
-            },
-            text: "Add New Instructor",
-          ),
-        ),
-      ],
-    );
-
-    // Parent Widget
-    Widget parentWidget =
-        isLandscape
-            ? SingleChildScrollView(child: content)
-            : Container(child: content);
-
-    return Scaffold(
-      backgroundColor: AppTheme.colors.white,
-      body: SafeArea(child: parentWidget),
+        )
+      ),
     );
   }
 }
