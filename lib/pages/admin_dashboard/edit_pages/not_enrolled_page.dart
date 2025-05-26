@@ -7,26 +7,22 @@ import 'package:sti_startnow/theme/app_theme.dart';
 class NotEnrolledPage extends StatefulWidget {
   final Student student;
 
-  const NotEnrolledPage({
-    super.key,
-    required this.student,
-  });
+  const NotEnrolledPage({super.key, required this.student});
 
   @override
   State<NotEnrolledPage> createState() => _NotEnrolledPageState();
 }
 
 class _NotEnrolledPageState extends State<NotEnrolledPage> {
-
   String selectedStatus = "";
   final denyMessageController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-
     // if is in landscape
-    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
-    
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
@@ -35,22 +31,22 @@ class _NotEnrolledPageState extends State<NotEnrolledPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               PageAppBar(
-                title: "Enrollee Information", 
+                title: "Enrollee Information",
                 onPressed: () {
                   Navigator.pop(context);
-                }
+                },
               ),
-                    
+
               Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: isLandscape ? 200 : 24,
-                  vertical: 10
+                  vertical: 10,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 20,),
-                          
+                    const SizedBox(height: 20),
+
                     Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
@@ -64,7 +60,7 @@ class _NotEnrolledPageState extends State<NotEnrolledPage> {
                           ),
                         ],
                       ),
-                          
+
                       child: Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: Row(
@@ -77,21 +73,20 @@ class _NotEnrolledPageState extends State<NotEnrolledPage> {
                                 shape: BoxShape.circle,
                                 border: Border.all(
                                   color: AppTheme.colors.primary,
-                                  width: 3.0
+                                  width: 3.0,
                                 ),
                                 image: DecorationImage(
                                   image: AssetImage(widget.student.profileImg),
                                   fit: BoxFit.cover,
-                                )
+                                ),
                               ),
                             ),
-                        
-                            const SizedBox(width: 20,),
-                        
+
+                            const SizedBox(width: 20),
+
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                        
                                 // Enrollee Name
                                 Text(
                                   "${widget.student.firstName} ${widget.student.lastName}",
@@ -102,18 +97,18 @@ class _NotEnrolledPageState extends State<NotEnrolledPage> {
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                        
-                                const SizedBox(height: 10,),
-                        
+
+                                const SizedBox(height: 10),
+
                                 // Course
                                 Text(
-                                  widget.student.course!,
+                                  widget.student.programAcronym,
                                   style: GoogleFonts.roboto(
                                     color: AppTheme.colors.black,
                                     fontSize: 15,
                                   ),
                                 ),
-                        
+
                                 // Student Number
                                 Text(
                                   widget.student.studentNo!,
@@ -122,7 +117,7 @@ class _NotEnrolledPageState extends State<NotEnrolledPage> {
                                     fontSize: 15,
                                   ),
                                 ),
-                        
+
                                 // Email Address
                                 Text(
                                   widget.student.email!,
@@ -131,7 +126,7 @@ class _NotEnrolledPageState extends State<NotEnrolledPage> {
                                     fontSize: 15,
                                   ),
                                 ),
-                        
+
                                 // Contact Number
                                 Text(
                                   widget.student.contactNo!,
@@ -141,19 +136,19 @@ class _NotEnrolledPageState extends State<NotEnrolledPage> {
                                   ),
                                 ),
                               ],
-                            )
+                            ),
                           ],
                         ),
                       ),
                     ),
-                          
-                    const SizedBox(height: 20,),
+
+                    const SizedBox(height: 20),
 
                     Divider(),
-                    
-                    const SizedBox(height: 20,),
 
-                    Container(
+                    const SizedBox(height: 20),
+
+                    SizedBox(
                       height: 300,
                       child: Center(
                         child: Text(
@@ -161,14 +156,14 @@ class _NotEnrolledPageState extends State<NotEnrolledPage> {
                           style: GoogleFonts.roboto(
                             color: AppTheme.colors.black,
                             fontSize: 30,
-                            fontWeight: FontWeight.bold
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),

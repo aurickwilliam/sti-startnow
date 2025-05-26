@@ -533,7 +533,7 @@ class DatabaseProvider extends ChangeNotifier {
   Future<void> initializeStudents() async {
     final res = await supabase
         .from("STUDENT")
-        .select('student_id, stud_fname, stud_lname, program_id')
+        .select('student_id, stud_fname, stud_lname, program_id, mobile')
         .order('student_id', ascending: true);
 
     if (res.isNotEmpty) {

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/buttons/delete_button.dart';
+import 'package:sti_startnow/pages/components/number_input.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/providers/database_provider.dart';
@@ -21,6 +22,7 @@ class _EditStudentRowPageState extends State<EditStudentRowPage> {
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController programController = TextEditingController();
+  final TextEditingController mobileController = TextEditingController();
   late final int studentNumber;
   late DatabaseProvider db;
 
@@ -30,6 +32,7 @@ class _EditStudentRowPageState extends State<EditStudentRowPage> {
     firstNameController.text = widget.rowValues[1];
     lastNameController.text = widget.rowValues[2];
     programController.text = widget.rowValues[3];
+    mobileController.text = widget.rowValues[4];
     super.initState();
     db = context.read<DatabaseProvider>();
   }
@@ -70,6 +73,13 @@ class _EditStudentRowPageState extends State<EditStudentRowPage> {
                   const SizedBox(height: 10),
 
                   TextInput(controller: programController, label: "Program:"),
+
+                  const SizedBox(height: 10),
+
+                  NumberInput(
+                    controller: mobileController,
+                    label: "Contact Number:",
+                  ),
                 ],
               ),
             ),
@@ -91,6 +101,7 @@ class _EditStudentRowPageState extends State<EditStudentRowPage> {
                         'stud_fname': firstNameController.text,
                         'stud_lname': lastNameController.text,
                         'program_id': db.getAcronymID(programController.text),
+                        'mobile': mobileController.text,
                       })
                       .eq('student_id', studentNumber);
 

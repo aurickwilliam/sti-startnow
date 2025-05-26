@@ -31,6 +31,7 @@ class _ListStudentsPageState extends State<ListStudentsPage> {
     "First Name",
     "Last Name",
     "Program",
+    "Contact No.",
   ];
 
   late List<List> values;
@@ -46,6 +47,7 @@ class _ListStudentsPageState extends State<ListStudentsPage> {
           student['stud_fname'],
           student['stud_lname'],
           db.getProgramAcronym(student['program_id']),
+          student['mobile'],
         ]);
       }
       matchedValues = values;
