@@ -31,6 +31,10 @@ class EnrollmentStatusPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // if it is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
@@ -40,7 +44,10 @@ class EnrollmentStatusPage extends StatelessWidget {
               PageAppBar(title: "Enrollment Status"),
 
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                padding: EdgeInsets.symmetric(
+                  horizontal: isLandscape ? 200 : 24, 
+                  vertical: 10
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -91,6 +98,8 @@ class EnrollmentStatusPage extends StatelessWidget {
                         ],
                       ),
                     ),
+
+                    const SizedBox(height: 50,),
                   ],
                 ),
               ),
