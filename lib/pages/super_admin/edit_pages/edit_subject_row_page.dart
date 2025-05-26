@@ -42,24 +42,75 @@ class _EditSubjectRowPageState extends State<EditSubjectRowPage> {
     bool isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
 
-    // Content
-    Widget content = Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      backgroundColor: AppTheme.colors.white,
+      body: SafeArea(
+        child: Column(
           children: [
-            PageAppBar(
-              title: "Edit Information",
-              onPressed:
-                  () => Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ListSubjectsPage(),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.only(
+                  bottom: 20
+                ),
+                child: Column(
+                  children: [
+                    PageAppBar(
+                      title: "Edit Information",
+                      onPressed:
+                          () => Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ListSubjectsPage(),
+                            ),
+                          ),
                     ),
-                  ),
-            ),
 
-            const SizedBox(height: 20),
+                    const SizedBox(height: 10),
+
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: isLandscape ? 200 : 24,
+                        vertical: 10,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextInput(
+                            controller: subjectNameController,
+                            label: "Course Name:",
+                          ),
+
+                          const SizedBox(height: 10),
+
+                          TextInput(
+                            controller: subjectCodeController,
+                            label: "Course Code:",
+                          ),
+
+                          const SizedBox(height: 10),
+
+                          NumberInput(
+                            controller: subjectUnitsController,
+                            label: "Units:",
+                          ),
+
+                          const SizedBox(height: 10),
+
+                          TextInput(
+                            controller: subjectPrerequisitesController,
+                            label: "Course Prerequisites:",
+                            hint: "Enter Course Prerequisites",
+                          ),
+
+                          const SizedBox(height: 10),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ),
 
             Padding(
               padding: EdgeInsets.symmetric(
@@ -67,111 +118,60 @@ class _EditSubjectRowPageState extends State<EditSubjectRowPage> {
                 vertical: 10,
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TextInput(
-                    controller: subjectNameController,
-                    label: "Course Name:",
+                  BottomButton(
+                    onPressed: () async {
+                      await supabase
+                          .from("SUBJECT")
+                          .update({
+                            'course_code': subjectCodeController.text,
+                            'course_name': subjectNameController.text,
+                            'units': double.parse(subjectUnitsController.text),
+                            'prereq':
+                                subjectPrerequisitesController.text.isEmpty
+                                    ? null
+                                    : subjectPrerequisitesController.text,
+                          })
+                          .eq('course_code', originalCode);
+
+                      if (context.mounted) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ListSubjectsPage(),
+                          ),
+                        );
+                      }
+                    },
+                    text: "Save",
                   ),
 
                   const SizedBox(height: 10),
 
-                  TextInput(
-                    controller: subjectCodeController,
-                    label: "Course Code:",
+                  DeleteButton(
+                    onPressed: () async {
+                      await supabase
+                          .from("SUBJECT")
+                          .delete()
+                          .eq('course_code', originalCode);
+
+                      if (context.mounted) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ListSubjectsPage(),
+                          ),
+                        );
+                      }
+                    },
+                    text: "Delete",
                   ),
-
-                  const SizedBox(height: 10),
-
-                  NumberInput(
-                    controller: subjectUnitsController,
-                    label: "Units:",
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  TextInput(
-                    controller: subjectPrerequisitesController,
-                    label: "Course Prerequisites:",
-                    hint: "Enter Course Prerequisites",
-                  ),
-
-                  const SizedBox(height: 10),
                 ],
               ),
             ),
           ],
-        ),
-
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: isLandscape ? 200 : 24,
-            vertical: 10,
-          ),
-          child: Column(
-            children: [
-              BottomButton(
-                onPressed: () async {
-                  await supabase
-                      .from("SUBJECT")
-                      .update({
-                        'course_code': subjectCodeController.text,
-                        'course_name': subjectNameController.text,
-                        'units': double.parse(subjectUnitsController.text),
-                        'prereq':
-                            subjectPrerequisitesController.text.isEmpty
-                                ? null
-                                : subjectPrerequisitesController.text,
-                      })
-                      .eq('course_code', originalCode);
-
-                  if (context.mounted) {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ListSubjectsPage(),
-                      ),
-                    );
-                  }
-                },
-                text: "Save",
-              ),
-
-              const SizedBox(height: 10),
-
-              DeleteButton(
-                onPressed: () async {
-                  await supabase
-                      .from("SUBJECT")
-                      .delete()
-                      .eq('course_code', originalCode);
-
-                  if (context.mounted) {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ListSubjectsPage(),
-                      ),
-                    );
-                  }
-                },
-                text: "Delete",
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-
-    // Choosing the parent widget
-    Widget parentWidget =
-        isLandscape
-            ? SingleChildScrollView(child: content)
-            : Container(child: content);
-
-    return Scaffold(
-      backgroundColor: AppTheme.colors.white,
-      body: SafeArea(child: parentWidget),
+        )
+      ),
     );
   }
 }

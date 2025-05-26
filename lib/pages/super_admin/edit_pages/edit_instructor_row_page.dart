@@ -37,15 +37,65 @@ class _EditInstructorRowPageState extends State<EditInstructorRowPage> {
     bool isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
 
-    // Content
-    Widget content = Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      backgroundColor: AppTheme.colors.white,
+      body: SafeArea(
+        child: Column(
           children: [
-            PageAppBar(title: "Edit Information"),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.only(
+                  bottom: 20
+                ),
+                child: Column(
+                  children: [
+                    PageAppBar(title: "Edit Information"),
 
-            const SizedBox(height: 20),
+                    const SizedBox(height: 10),
+
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: isLandscape ? 200 : 24,
+                        vertical: 10,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextInput(
+                            controller: firstNameController,
+                            label: "First Name:",
+                          ),
+
+                          const SizedBox(height: 10),
+
+                          TextInput(
+                            controller: lastNameController,
+                            label: "Last Name:",
+                          ),
+
+                          const SizedBox(height: 10),
+
+                          TextInput(
+                            controller: departmentController,
+                            label: "Department:",
+                          ),
+
+                          const SizedBox(height: 10),
+
+                          TextInput(
+                            controller: emailAddressController,
+                            label: "Email Address:",
+                          ),
+
+                          const SizedBox(height: 10),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ),
 
             Padding(
               padding: EdgeInsets.symmetric(
@@ -53,97 +103,47 @@ class _EditInstructorRowPageState extends State<EditInstructorRowPage> {
                 vertical: 10,
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TextInput(
-                    controller: firstNameController,
-                    label: "First Name:",
+                  BottomButton(
+                    onPressed: () async {
+                      await supabase
+                          .from("PROFESSOR")
+                          .update({
+                            'prof_fname': firstNameController.text,
+                            'prof_lname': lastNameController.text,
+                            'department': departmentController.text,
+                            'email': emailAddressController.text,
+                          })
+                          .eq('prof_id', profID);
+
+                      if (context.mounted) {
+                        Navigator.pop(context);
+                      }
+                    },
+                    text: "Save",
                   ),
 
                   const SizedBox(height: 10),
 
-                  TextInput(
-                    controller: lastNameController,
-                    label: "Last Name:",
+                  DeleteButton(
+                    onPressed: () async {
+                      await supabase
+                          .from("PROFESSOR")
+                          .delete()
+                          .eq('prof_id', profID);
+
+                      if (context.mounted) {
+                        Navigator.pop(context);
+                      }
+                    },
+                    text: "Delete",
                   ),
-
-                  const SizedBox(height: 10),
-
-                  TextInput(
-                    controller: departmentController,
-                    label: "Department:",
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  TextInput(
-                    controller: emailAddressController,
-                    label: "Email Address:",
-                  ),
-
-                  const SizedBox(height: 10),
                 ],
               ),
             ),
           ],
-        ),
-
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: isLandscape ? 200 : 24,
-            vertical: 10,
-          ),
-          child: Column(
-            children: [
-              BottomButton(
-                onPressed: () async {
-                  await supabase
-                      .from("PROFESSOR")
-                      .update({
-                        'prof_fname': firstNameController.text,
-                        'prof_lname': lastNameController.text,
-                        'department': departmentController.text,
-                        'email': emailAddressController.text,
-                      })
-                      .eq('prof_id', profID);
-
-                  if (context.mounted) {
-                    Navigator.pop(context);
-                  }
-                },
-                text: "Save",
-              ),
-
-              const SizedBox(height: 10),
-
-              DeleteButton(
-                onPressed: () async {
-                  await supabase
-                      .from("PROFESSOR")
-                      .delete()
-                      .eq('prof_id', profID);
-
-                  if (context.mounted) {
-                    Navigator.pop(context);
-                  }
-                },
-                text: "Delete",
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-
-    // Parent Widget
-    Widget parentWidget =
-        isLandscape
-            ? SingleChildScrollView(child: content)
-            : Container(child: content);
-
-    return Scaffold(
-      backgroundColor: AppTheme.colors.white,
-      body: SafeArea(child: parentWidget),
+        )
+      ),
     );
   }
 }

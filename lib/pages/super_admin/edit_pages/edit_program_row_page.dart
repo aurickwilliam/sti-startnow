@@ -35,15 +35,63 @@ class _EditProgramRowPageState extends State<EditProgramRowPage> {
     bool isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
 
-    // Content
-    Widget content = Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      backgroundColor: AppTheme.colors.white,
+      body: SafeArea(
+        child: Column(
           children: [
-            PageAppBar(title: "Edit Information"),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.only(
+                  bottom: 20
+                ),
+                child: Column(
+                  children: [
+                    PageAppBar(title: "Edit Information"),
 
-            const SizedBox(height: 20),
+                    const SizedBox(height: 10),
+
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: isLandscape ? 200 : 24,
+                        vertical: 10,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TextInput(
+                                controller: programNameController,
+                                label: "Program Name:",
+                              ),
+
+                              const SizedBox(height: 10),
+
+                              TextInput(
+                                controller: acronymController,
+                                label: "Acronym:",
+                              ),
+
+                              const SizedBox(height: 10),
+
+                              TextInput(
+                                controller: departmentController,
+                                label: "Department:",
+                              ),
+
+                              const SizedBox(height: 10),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ),
 
             Padding(
               padding: EdgeInsets.symmetric(
@@ -51,92 +99,44 @@ class _EditProgramRowPageState extends State<EditProgramRowPage> {
                 vertical: 10,
               ),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextInput(
-                        controller: programNameController,
-                        label: "Program Name:",
-                      ),
+                  BottomButton(
+                    // Edit button
+                    onPressed: () async {
+                      await supabase
+                          .from("PROGRAM")
+                          .update({
+                            'program_name': programNameController.text,
+                            'acronym': acronymController.text,
+                            'department': departmentController.text,
+                          })
+                          .eq('id', id);
 
-                      const SizedBox(height: 10),
+                      if (context.mounted) {
+                        Navigator.pop(context);
+                      }
+                    },
+                    text: "Save",
+                  ),
 
-                      TextInput(
-                        controller: acronymController,
-                        label: "Acronym:",
-                      ),
+                  const SizedBox(height: 10),
 
-                      const SizedBox(height: 10),
+                  DeleteButton(
+                    onPressed: () async {
+                      await supabase.from("PROGRAM").delete().eq('id', id);
 
-                      TextInput(
-                        controller: departmentController,
-                        label: "Department:",
-                      ),
-
-                      const SizedBox(height: 10),
-                    ],
+                      if (context.mounted) {
+                        Navigator.pop(context);
+                      }
+                    },
+                    text: "Delete",
                   ),
                 ],
               ),
             ),
           ],
-        ),
-
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: isLandscape ? 200 : 24,
-            vertical: 10,
-          ),
-          child: Column(
-            children: [
-              BottomButton(
-                // Edit button
-                onPressed: () async {
-                  await supabase
-                      .from("PROGRAM")
-                      .update({
-                        'program_name': programNameController.text,
-                        'acronym': acronymController.text,
-                        'department': departmentController.text,
-                      })
-                      .eq('id', id);
-
-                  if (context.mounted) {
-                    Navigator.pop(context);
-                  }
-                },
-                text: "Save",
-              ),
-
-              const SizedBox(height: 10),
-
-              DeleteButton(
-                onPressed: () async {
-                  await supabase.from("PROGRAM").delete().eq('id', id);
-
-                  if (context.mounted) {
-                    Navigator.pop(context);
-                  }
-                },
-                text: "Delete",
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-
-    // Choosing the parent widget
-    Widget parentWidget =
-        isLandscape
-            ? SingleChildScrollView(child: content)
-            : Container(child: content);
-
-    return Scaffold(
-      backgroundColor: AppTheme.colors.white,
-      body: SafeArea(child: parentWidget),
+        )
+      ),
     );
   }
 }

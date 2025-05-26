@@ -47,114 +47,114 @@ class _EditStudentRowPageState extends State<EditStudentRowPage> {
     bool isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
 
-    // Content
-    Widget content = Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      backgroundColor: AppTheme.colors.white,
+      body: SafeArea(
+        child: Column(
           children: [
-            PageAppBar(title: "Edit Information"),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.only(
+                  bottom: 20
+                ),
+                child: Column(
+                  children: [
+                    PageAppBar(title: "Edit Information"),
 
-            const SizedBox(height: 20),
+                    const SizedBox(height: 20),
+
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: isLandscape ? 200 : 24),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextInput(
+                            controller: firstNameController,
+                            label: "First Name:",
+                          ),
+
+                          const SizedBox(height: 10),
+
+                          TextInput(
+                            controller: lastNameController,
+                            label: "Last Name:",
+                          ),
+
+                          const SizedBox(height: 10),
+
+                          CustomDropdownMenu(
+                            listChoices: listOfAcronyms, 
+                            selectedValue: programValue, 
+                            label: "Program/Course:", 
+                            onTap: (index) {
+                              setState(() {
+                                programValue = listOfAcronyms[index];
+                              });
+                            }
+                          ),
+
+                          const SizedBox(height: 10),
+
+                          NumberInput(
+                            controller: mobileController,
+                            label: "Contact Number:",
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ),
 
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: isLandscape ? 200 : 24),
+              padding: EdgeInsets.symmetric(
+                horizontal: isLandscape ? 200 : 24,
+                vertical: 10,
+              ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TextInput(
-                    controller: firstNameController,
-                    label: "First Name:",
+                  BottomButton(
+                    onPressed: () async {
+                      await supabase
+                          .from("STUDENT")
+                          .update({
+                            'stud_fname': firstNameController.text,
+                            'stud_lname': lastNameController.text,
+                            'program_id': db.getAcronymID(programValue),
+                            'mobile': mobileController.text,
+                          })
+                          .eq('student_id', studentNumber);
+
+                      if (context.mounted) {
+                        Navigator.pop(context);
+                      }
+                    },
+                    text: "Save",
                   ),
 
                   const SizedBox(height: 10),
 
-                  TextInput(
-                    controller: lastNameController,
-                    label: "Last Name:",
-                  ),
+                  DeleteButton(
+                    onPressed: () async {
+                      await supabase
+                          .from("STUDENT")
+                          .delete()
+                          .eq('student_id', studentNumber);
 
-                  const SizedBox(height: 10),
-
-                  CustomDropdownMenu(
-                    listChoices: listOfAcronyms, 
-                    selectedValue: programValue, 
-                    label: "Program/Course:", 
-                    onTap: (index) {
-                      setState(() {
-                        programValue = listOfAcronyms[index];
-                      });
-                    }
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  NumberInput(
-                    controller: mobileController,
-                    label: "Contact Number:",
+                      if (context.mounted) {
+                        Navigator.pop(context);
+                      }
+                    },
+                    text: "Delete",
                   ),
                 ],
               ),
             ),
           ],
-        ),
-
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: isLandscape ? 200 : 24,
-            vertical: 10,
-          ),
-          child: Column(
-            children: [
-              BottomButton(
-                onPressed: () async {
-                  await supabase
-                      .from("STUDENT")
-                      .update({
-                        'stud_fname': firstNameController.text,
-                        'stud_lname': lastNameController.text,
-                        'program_id': db.getAcronymID(programValue),
-                        'mobile': mobileController.text,
-                      })
-                      .eq('student_id', studentNumber);
-
-                  if (context.mounted) {
-                    Navigator.pop(context);
-                  }
-                },
-                text: "Save",
-              ),
-
-              const SizedBox(height: 10),
-
-              DeleteButton(
-                onPressed: () async {
-                  await supabase
-                      .from("STUDENT")
-                      .delete()
-                      .eq('student_id', studentNumber);
-
-                  if (context.mounted) {
-                    Navigator.pop(context);
-                  }
-                },
-                text: "Delete",
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-
-    // Choosing the parent widget
-    Widget parentWidget =
-        isLandscape
-            ? SingleChildScrollView(child: content)
-            : Container(child: content);
-
-    return Scaffold(
-      backgroundColor: AppTheme.colors.white,
-      body: SafeArea(child: parentWidget),
+        )
+      ),
     );
   }
 }
