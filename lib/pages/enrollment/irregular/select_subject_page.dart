@@ -74,103 +74,118 @@ class _SelectSubjectPageState extends State<SelectSubjectPage> {
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              EnrollmentHeader(
-                step1: true, 
-                step2: true, 
-                step3: true, 
-                step4: false, 
-                title: "Enrollment"
-              ),
-          
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: isLandscape ? 200 : 24, 
-                  vertical: 10
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.only(
+                  bottom: 20
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                          
-                        Expanded(
-                          child: Text(
-                            "Select a Subject/s:",
-                            style: GoogleFonts.roboto(
-                              color: AppTheme.colors.primary,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                          
-                        Container(
-                          decoration: BoxDecoration(
-                            color: AppTheme.colors.primary,
-                            borderRadius: BorderRadius.circular(10)
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                Text(
-                                  "Count:",
+                    EnrollmentHeader(
+                      step1: true, 
+                      step2: true, 
+                      step3: true, 
+                      step4: false, 
+                      title: "Enrollment"
+                    ),
+                
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: isLandscape ? 200 : 24, 
+                        vertical: 10
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                                
+                              Expanded(
+                                child: Text(
+                                  "Select a Subject/s:",
                                   style: GoogleFonts.roboto(
-                                    color: AppTheme.colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500
+                                    color: AppTheme.colors.primary,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                            
-                                const SizedBox(width: 10,),
-                            
-                                Container(
-                                  width: 30,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: AppTheme.colors.white
+                              ),
+                                
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: AppTheme.colors.primary,
+                                  borderRadius: BorderRadius.circular(10)
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        "Count:",
+                                        style: GoogleFonts.roboto(
+                                          color: AppTheme.colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500
+                                        ),
+                                      ),
+                                  
+                                      const SizedBox(width: 10,),
+                                  
+                                      Container(
+                                        width: 30,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(5),
+                                          color: AppTheme.colors.white
+                                        ),
+                                        child: Text(
+                                          subjectListProvider.allSelectedSubjects.length.toString(),
+                                          style: GoogleFonts.roboto(
+                                            color: AppTheme.colors.black,
+                                            fontSize: 16,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      )
+                                    ],
                                   ),
-                                  child: Text(
-                                    subjectListProvider.allSelectedSubjects.length.toString(),
-                                    style: GoogleFonts.roboto(
-                                      color: AppTheme.colors.black,
-                                      fontSize: 16,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                )
-                              ],
-                            ),
+                                ),
+                              ),
+                                
+                            ],
                           ),
-                        ),
-                          
-                      ],
-                    ),
-
-                    // Table
-                    CustomDataTable(
-                      columnNames: headerList, 
-                      dataTableValues: subjectList
-                    ),
-
-                    const SizedBox(height: 30,),
-
-                    BottomButton(
-                      onPressed: () {
-                        Navigator.push(context, 
-                        MaterialPageRoute(builder: (context) => VerifySubjectsPage()));
-                      }, 
-                      text: "Submit"
+              
+                          // Table
+                          CustomDataTable(
+                            columnNames: headerList, 
+                            dataTableValues: subjectList
+                          ),
+              
+                          const SizedBox(height: 20,),
+                        ],
+                      ),
                     )
                   ],
                 ),
-              )
-            ],
-          ),
+              ),
+            ),
+
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: isLandscape ? 200 : 24,
+                vertical: 10
+              ),
+              child: BottomButton(
+                onPressed: () {
+                  Navigator.push(context, 
+                  MaterialPageRoute(builder: (context) => VerifySubjectsPage()));
+                }, 
+                text: "Submit"
+              ),
+            )
+          ],
         ),
       ),
     );
