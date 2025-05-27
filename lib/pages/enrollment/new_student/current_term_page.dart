@@ -194,6 +194,8 @@ class _CurrentTermPageState extends State<CurrentTermPage> {
                       setState(() {
                         yearLevelValue = yearLevelChoices[index];
                         yearLevelEmpty = false;
+                        student.enrollment.section = null;
+                        student.enrollment.subjectList = null;
                       });
                     },
                     isError: yearLevelEmpty,
