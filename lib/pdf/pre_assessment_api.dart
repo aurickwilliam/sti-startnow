@@ -2,7 +2,6 @@
 import 'dart:io';
 
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
@@ -19,20 +18,33 @@ class PreAssessmentApi {
     final stiLogo = (await rootBundle.load("assets/img/sti_caloocan_logo.png")).buffer.asUint8List();
 
     // DUMMY ARRAY FOR SCHEDULE
-    final List<List> data = [
-      [1 , 2175, "GEDC1009", "Ethics", "CS401", 3, "07:00AM", "10:00AM", "F", "402"],
-      [2 , 1753, "COSC1010", "Fundamentals of Mobile Programming (LEC)", "CS401", 2, "09:00AM", "11:00AM", "TH", "402"],
-      [3 , 2517, "GEDC1041", "Philippine Popular Culture", "CS401", 3, "010:00AM", "01:00PM", "T", "402"],
-      [4 , 1749, "COSC1007", "Human-Computer Interaction(LAB)", "CS401", 1, "11:30AM", "01:00PM", "TH", "601"],
-      [5 , 1709, "CITE1011", "Information Management (LAB)", "CS401", 1, "07:00AM", "10:00AM", "W", "603"],
-      [6 , 1749, "COSC1007", "Human-Computer Interaction (LEC)", "CS401", 2, "07:00AM", "09:00AM", "TH", "402"],
-      [7 , 1709, "CITE1011", "Information Management (LEC)", "CS401", 2, "07:00AM", "10:00AM", "S", "402"],
-      [8 , 2811, "INTE1023", "Computer Systems Architecture", "CS401", 3, "09:00AM", "11:00AM", "S", "402"],
-      [9 , 2536, "GEDC1045", "Great Books", "CS401", 3, "07:00AM", "10:00AM", "T", "402"],
-      [10 , 1751, "COSC1009", "Design and Analysis of Algorithms", "CS401", 3, "10:00AM", "01:00PM", "F", "402"],
-      [11 , 3065, "PHED1008", "P.E./PATHFIT 4: Team Sports", "CS401", 2, "11:00AM", "01:00PM", "S", "BC-4"],
-      [12 , 1753, "COSC1010", "Fundamentals of Mobile Programming (LAB)", "CS401", 1, "10:00AM", "01:00PM", "W", "603"],
-    ];
+    final List<List> data = [];
+
+    student.enrollment.subjectList?.asMap().forEach((index, innerList) {
+      data.add(
+        [
+          index + 1, 
+          innerList.subjectCode,
+          innerList.subject,
+          innerList.section,
+          innerList.units,
+          innerList.startTime,
+          innerList.endTime,
+          innerList.day,
+          innerList.room,
+        ]
+      );
+    });
+
+    double totalUnits(){
+      double total = 0;
+
+      student.enrollment.subjectList?.forEach((innerList) {
+        total += innerList.units;
+      });
+
+      return total;
+    }
 
     pdf.addPage(
       Page(
@@ -74,7 +86,14 @@ class PreAssessmentApi {
             SizedBox(height: 10),
 
             // PAYMENT INFORMATION
-            TableHelper.fromTextArray(
+            student.enrollment.admissionType == "New Student" 
+            ? Text(
+              "Refer to OneSti site for details",
+              style: TextStyle(
+                fontSize: 10,
+              )
+            ) 
+            : TableHelper.fromTextArray(
               headers: [
                 "Type of Payment:", 
                 "Payment Location:", 
@@ -140,7 +159,6 @@ class PreAssessmentApi {
                   TableHelper.fromTextArray(
                     headers: [
                       "#",
-                      "CLS#",
                       "CODE", 
                       "COURSE DESC",
                       "SECTION", 
@@ -152,6 +170,18 @@ class PreAssessmentApi {
                     ],
                     data: data,
                     border: null,
+
+                    columnWidths: {
+                      0: FlexColumnWidth(1),
+                      1: FlexColumnWidth(2),
+                      2: FlexColumnWidth(5),
+                      3: FlexColumnWidth(1),
+                      4: FlexColumnWidth(1),
+                      5: FlexColumnWidth(1),
+                      6: FlexColumnWidth(1),
+                      7: FlexColumnWidth(1),
+                      8: FlexColumnWidth(1),
+                    },
 
                     // HEADERS
                     headerStyle: TextStyle(
@@ -170,15 +200,13 @@ class PreAssessmentApi {
                     cellAlignments: {
                       0: Alignment.center,
                       1: Alignment.center,
-                      2: Alignment.center,
-                      3: Alignment.centerLeft,
+                      2: Alignment.centerLeft,
+                      3: Alignment.center,
                       4: Alignment.center,
                       5: Alignment.center,
                       6: Alignment.center,
                       7: Alignment.center,
                       8: Alignment.center,
-                      9: Alignment.center,
-                      10: Alignment.center,
                     }
                   ),
 
@@ -197,7 +225,7 @@ class PreAssessmentApi {
                       SizedBox(width: 5),
 
                       Text(
-                        "23",
+                        totalUnits().toString(),
                         style: TextStyle(
                           fontSize: 8,
                         )
@@ -273,7 +301,7 @@ class PreAssessmentApi {
       )
     );
 
-    return SaveAndOpenPdf.savePdf(name: "pre-assessment-surname.pdf", pdf: pdf);
+    return SaveAndOpenPdf.savePdf(name: "pre-assessment-${student.lastName?.toLowerCase()}.pdf", pdf: pdf);
   }
 
   static Widget header(Uint8List stiLogo) {
@@ -350,19 +378,19 @@ class PreAssessmentApi {
               tableCell(value: "Student Name:", isBold: true),
               tableCell(value: student.fullName, flex: 3),
               tableCell(value: "Status:", isBold: true),
-              tableCell(value: "REGULAR",),
+              tableCell(value: student.enrollment.academicStatus ?? ' No Status',),
             ]
           ),
           Row(
             children: [
               tableCell(value: "Program:", isBold: true),
-              tableCell(value: "BSCS",),
+              tableCell(value: student.programAcronym,),
               tableCell(value: "Year Level:", isBold: true),
               tableCell(value: student.enrollment.yearLevel!,),
               tableCell(value: "Allowed Units:", isBold: true),
               tableCell(value: "0",),
               tableCell(value: "Student Type:", isBold: true),
-              tableCell(value: "OLD STUDENT",),
+              tableCell(value: student.enrollment.admissionType!,),
             ]
           )
         ]
