@@ -23,7 +23,7 @@ class _CurrentTermPageState extends State<CurrentTermPage> {
 
   final List<String> admitTypeChoices = ["New Student", "Transferee"];
 
-  final List<String> yearLevelChoices = [
+  List<String> yearLevelChoices = [
     "1st Year",
     "2nd Year",
     "3rd Year",
@@ -178,6 +178,18 @@ class _CurrentTermPageState extends State<CurrentTermPage> {
                         admitTypeValue = admitTypeChoices[index];
                         admitTypeEmpty = false;
                       });
+
+                      if (admitTypeValue == admitTypeChoices[0]) {
+                        yearLevelChoices = [yearLevelChoices[0]];
+                      } 
+                      else {
+                        yearLevelChoices = [
+                          "1st Year",
+                          "2nd Year",
+                          "3rd Year",
+                          "4th Year",
+                        ];
+                      }
                     },
                     isError: admitTypeEmpty,
                   ),
