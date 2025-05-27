@@ -1,4 +1,3 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -76,7 +75,7 @@ class _PieChartCardState extends State<PieChartCard> {
             Padding(
               padding: EdgeInsets.all(15),
               child: Wrap(
-                alignment: WrapAlignment.start,
+                alignment: WrapAlignment.center,
                 spacing: 20,
                 runSpacing: 20,
                 children: [

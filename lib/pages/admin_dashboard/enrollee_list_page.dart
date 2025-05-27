@@ -116,7 +116,30 @@ class EnrolleeListPage extends StatelessWidget {
                             );
                           },
                         )
-                        : Center(child: Text("No enrollee data")),
+                        : Center(
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                width: 200,
+                                child: Image(
+                                  image: AssetImage(
+                                    "assets/img/not_found_img.png",
+                                  ),
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+
+                              Text(
+                                "No Enrollees Data",
+                                style: GoogleFonts.roboto(
+                                  color: AppTheme.colors.black,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
 
                     const SizedBox(height: 20),
                   ],
