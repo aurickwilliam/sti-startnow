@@ -143,6 +143,8 @@ class _PreferredProgramPageState extends State<PreferredProgramPage> {
                             onChanged: (value) {
                               setState(() {
                                 selectedCourse = value.toString();
+                                student.enrollment.section = null;
+                                student.enrollment.subjectList = null;
                               });
                             },
 

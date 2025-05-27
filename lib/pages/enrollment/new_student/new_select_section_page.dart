@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:sti_startnow/models/class_schedule.dart';
 import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
@@ -33,96 +34,30 @@ class _NewSelectSectionPageState extends State<NewSelectSectionPage> {
     "Room",
   ];
 
-  // Temporary value for total units
-  final double totalUnits = 23.0;
-
-  // Temporay values for the Data Table
-  final List<List> dataTableValues = [
-    [
-      "COSC1001",
-      "Information Management",
-      "3.00",
-      "7:00AM - 9:00AM",
-      "S",
-      "512",
-    ],
-    [
-      "COSC1001",
-      "Information Management",
-      "3.00",
-      "7:00AM - 10:00AM",
-      "W",
-      "603",
-    ],
-    [
-      "COSC1001",
-      "Fundamentals of Mobile Programming",
-      "3.00",
-      "9:00AM - 11:00AM",
-      "TH",
-      "402",
-    ],
-    [
-      "COSC1001",
-      "Fundamentals of Mobile Programming",
-      "3.00",
-      "10:00AM - 1:00PM",
-      "W",
-      "603",
-    ],
-    [
-      "COSC1001",
-      "Human-Computer Interaction",
-      "3.50",
-      "7:00AM - 9:00AM",
-      "TH",
-      "402",
-    ],
-    [
-      "COSC1001",
-      "Human-Computer Interaction",
-      "3.50",
-      "11:30AM - 1:00PM",
-      "TH",
-      "601",
-    ],
-    ["COSC1001", "Ethics", "3.00", "7:00AM - 10:00AM", "F", "410"],
-    [
-      "COSC1001",
-      "Design and Analysis of Algorithms",
-      "3.00",
-      "10:00AM - 1:00PM",
-      "F",
-      "402",
-    ],
-    [
-      "COSC1001",
-      "Computer Systems Architecture",
-      "3.00",
-      "9:00AM - 12:00PM",
-      "S",
-      "509",
-    ],
-    ["COSC1001", "Great Books", "3.00", "7:00AM - 10:00AM", "T", "P"],
-    [
-      "COSC1001",
-      "Philippine Popular Culture",
-      "3.00",
-      "10:00AM - 1:00PM",
-      "T",
-      "402",
-    ],
-    [
-      "COSC1001",
-      "P.E./PATHFIT 4: Team Sports",
-      "3.00",
-      "1:00PM - 3:00PM",
-      "TH",
-      "COURT",
-    ],
-  ];
+  late double totalUnits;
+  late List<List> dataTableValues;
 
   String sectionValue = "";
+
+  void getSectionSched(List<ClassSchedule>? sectionSched) {
+    dataTableValues = [];
+    totalUnits = 0;
+    if (sectionSched != null) {
+      setState(() {
+        for (final sched in sectionSched) {
+          totalUnits += sched.units;
+          dataTableValues.add([
+            sched.subjectCode,
+            sched.subject,
+            sched.units.toStringAsFixed(2),
+            sched.fullTime,
+            sched.day,
+            sched.room,
+          ]);
+        }
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -130,6 +65,7 @@ class _NewSelectSectionPageState extends State<NewSelectSectionPage> {
     student = db.student;
     listSection = db.enrollSections;
     sectionValue = student.enrollment.section ?? "";
+    getSectionSched(student.enrollment.subjectList);
 
     super.initState();
   }
@@ -191,6 +127,8 @@ class _NewSelectSectionPageState extends State<NewSelectSectionPage> {
                             onTap: (index) {
                               setState(() {
                                 sectionValue = listSection[index];
+                                db.setSectionSched(sectionValue);
+                                getSectionSched(student.enrollment.subjectList);
                               });
                             },
                           ),
@@ -200,43 +138,46 @@ class _NewSelectSectionPageState extends State<NewSelectSectionPage> {
 
                     const SizedBox(height: 30),
 
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 24),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    dataTableValues.isNotEmpty
+                        ? Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 24),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "Schedule:",
-                                style: GoogleFonts.roboto(
-                                  color: AppTheme.colors.primary,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Schedule:",
+                                    style: GoogleFonts.roboto(
+                                      color: AppTheme.colors.primary,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+
+                                  Text(
+                                    "Units: $totalUnits",
+                                    style: GoogleFonts.roboto(
+                                      color: AppTheme.colors.primary,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
                               ),
 
-                              Text(
-                                "Units: $totalUnits",
-                                style: GoogleFonts.roboto(
-                                  color: AppTheme.colors.primary,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              Divider(height: 10),
+
+                              CustomDataTable(
+                                columnNames: columnNames,
+                                dataTableValues: dataTableValues,
                               ),
                             ],
                           ),
-
-                          Divider(height: 10),
-
-                          CustomDataTable(
-                            columnNames: columnNames,
-                            dataTableValues: dataTableValues,
-                          ),
-                        ],
-                      ),
-                    ),
+                        )
+                        : Container(),
 
                     const SizedBox(height: 50),
 
