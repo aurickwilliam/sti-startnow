@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sti_startnow/models/student.dart';
@@ -130,8 +129,8 @@ class _NewSelectSectionPageState extends State<NewSelectSectionPage> {
     db = context.read<DatabaseProvider>();
     student = db.student;
     listSection = db.enrollSections;
-
     sectionValue = student.enrollment.section ?? "";
+
     super.initState();
   }
 

@@ -83,11 +83,6 @@ class _StudentPortalPageState extends State<StudentPortalPage> {
         }
         return;
       }
-      // Code quality is decreasing every day, I am sorry
-      // Ginagawa ko to kasi kapag sinara ni user app after this page
-      // Tas binuksan nya ulit, mapupunta sya sa MainDashboard nya
-      await supabase.auth.signOut();
-
       if (mounted) {
         Navigator.pop(context);
 

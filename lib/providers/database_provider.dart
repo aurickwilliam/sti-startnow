@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/models/admin.dart';
+import 'package:sti_startnow/models/class_schedule.dart';
 import 'package:sti_startnow/models/student.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -81,6 +82,41 @@ class DatabaseProvider extends ChangeNotifier {
         _student.enrollment.section = enrollInfo['SECTION']['section_name'];
       }
     }
+  }
+
+  // Create new enrollment
+  Future<void> createNewEnrollment() async {
+    // Enrollment
+    _student.enrollment.enrollmentStatus = "Unverified";
+    final enrollRes = await supabase
+        .from("ENROLLMENT")
+        .insert({
+          'student_id': int.parse(_student.studentNo!),
+          'enrollment_date': DateTime.now().toIso8601String(),
+          'admit_type': _student.enrollment.admissionType,
+          'academic_status': _student.enrollment.academicStatus,
+          'enrollment_status': _student.enrollment.enrollmentStatus,
+          'academic_year': "2025 - 2026",
+          'year_level': _student.enrollment.yearLevel,
+          'term': _student.enrollment.semester,
+          'section_id': _getSectionID,
+        })
+        .select('enrollment_id');
+
+    if (enrollRes.isEmpty) {
+      return; // This should not happen
+    }
+
+    // Set the current enrollment of student
+    _student.enrollmentID = enrollRes[0]['enrollment_id'];
+
+    await supabase
+        .from("STUDENT")
+        .update({
+          'current_enrollment': _student.enrollmentID,
+          'mobile': _student.contactNo,
+        })
+        .eq('student_id', int.parse(_student.studentNo!));
   }
 
   // Create new student account
@@ -171,7 +207,11 @@ class DatabaseProvider extends ChangeNotifier {
   }
 
   // Get section_id of section ni student para sa enrollment
-  int get _getSectionID {
+  int? get _getSectionID {
+    if (student.enrollment.section == null) {
+      return null;
+    }
+
     final id =
         _enrollmentSectionList.where((section) {
           return section['section_name'] == student.enrollment.section;
@@ -193,6 +233,19 @@ class DatabaseProvider extends ChangeNotifier {
         return "4YR";
     }
     return "";
+  }
+
+  // Set schedule ni student based on section
+  void setSectionSched(String sectionName) {
+    _student.enrollment.subjectList = [];
+
+    if (sectionName.isNotEmpty) {
+      for (final schedule in _scheduleList) {
+        if (schedule.section == sectionName) {
+          _student.enrollment.subjectList!.add(schedule);
+        }
+      }
+    }
   }
 
   // Find email from student number
@@ -486,8 +539,49 @@ class DatabaseProvider extends ChangeNotifier {
   }
 
   // For schedule information
+  late List<ClassSchedule> _scheduleList;
+
+  List<ClassSchedule> get schedules => _scheduleList;
+
   Future<void> initializeSchedules() async {
-    final res = await supabase.from("SCHEDULE").select();
+    final res = await supabase.from("SCHEDULE").select('''
+          SUBJECT(course_code ,course_name, units), 
+          start_time, 
+          end_time,
+          day,
+          room,
+          SECTION(section_name),
+          PROFESSOR(prof_fname, prof_lname)
+          ''');
+    _scheduleList = [];
+    if (res.isNotEmpty) {
+      for (final schedule in res) {
+        final subjectCode = schedule['SUBJECT']['course_code'];
+        final subject = schedule['SUBJECT']['course_name'];
+        final units = schedule['SUBJECT']['units'].toDouble();
+        final startTime = schedule['start_time'].substring(0, 5);
+        final endTime = schedule['end_time'].substring(0, 5);
+        final day = schedule['day'];
+        final room = schedule['room'];
+        final section = schedule['SECTION']['section_name'];
+        final prof =
+            "${schedule['PROFESSOR']['prof_fname']} ${schedule['PROFESSOR']['prof_lname']}";
+
+        final classSched = ClassSchedule(
+          subjectCode: subjectCode,
+          subject: subject,
+          units: units,
+          startTime: startTime,
+          endTime: endTime,
+          day: day,
+          room: room,
+          section: section,
+          prof: prof,
+        );
+
+        _scheduleList.add(classSched);
+      }
+    }
   }
 
   // For instructor information
