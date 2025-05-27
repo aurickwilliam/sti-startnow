@@ -124,6 +124,15 @@ knowledge_base = {
 
     #intent: System/App Details
     ("how does the app work", "features of the application"): "STI StartNow provides information about schedules, requirements, deadlines, and FAQs, as well as a convenient enrollment application without the need for any desktop devices. All official transactions are processed at the campus.",
+
+    #easter eggs
+    ("mija", "mateo"): "Where have you buried your best days? Have you lived or not? Look, one says to oneself, look how cold the world is growing. - Fyodor Dostoyevsky, White Nights.",
+    ("julius", "patio"): "Lead Programmer. Goated since birth.",
+    ("aurick", "lorenzo"): "Lead UI designer. Goat from the heavens.",
+    ("paul", "pol", "caligagan", "caligenggeng"): "Documentationist. Repo master.",
+    ("gwen", "wyona"): "Ehh",
+    ("serr", "serr lorenz"): "Thesis Advisor. Our goat. We labyu serr.",
+    ("carnites", "pogi"): "Mr. STI",
 }
 
 @app.post("/chat")
