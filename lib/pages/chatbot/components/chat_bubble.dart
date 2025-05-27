@@ -15,9 +15,6 @@ class ChatBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    // If it is in landscape
-    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
-
     // For User
     Widget userBubble = Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,24 +22,22 @@ class ChatBubble extends StatelessWidget {
       children: [
         Container(
           constraints: BoxConstraints(
-            maxWidth: isLandscape ? 500 : 300
+            maxWidth: MediaQuery.of(context).size.width * 0.65
           ),
           decoration: BoxDecoration(
             color: AppTheme.colors.primary,
-            borderRadius: BorderRadius.circular(25),
+            borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: AppTheme.colors.primary,
               width: 2.0
             ),
           ),
           child: Padding(
-            padding: EdgeInsets.all(13),
+            padding: EdgeInsets.all(10),
             child: Text(
               message,
               style: GoogleFonts.roboto(
                 color: AppTheme.colors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.w500
               ),
             ),
           ),
@@ -97,28 +92,26 @@ class ChatBubble extends StatelessWidget {
 
         Container(
           constraints: BoxConstraints(
-            maxWidth: isLandscape ? 500 : 300
+            // 65% ng width ng screen ung haba ng message
+            maxWidth: MediaQuery.of(context).size.width * 0.65,
           ),
           decoration: BoxDecoration(
             color: AppTheme.colors.white,
-            borderRadius: BorderRadius.circular(25),
+            borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: AppTheme.colors.gray,
               width: 2.0
             ),
           ),
           child: Padding(
-            padding: EdgeInsets.all(13),
+            padding: const EdgeInsets.all(10.0),
             child: Text(
               message,
-              softWrap: true,
               style: GoogleFonts.roboto(
                 color: AppTheme.colors.black,
-                fontSize: 14,
-                fontWeight: FontWeight.w500
               ),
             ),
-          ),
+          )
         ),
       ],
     );
