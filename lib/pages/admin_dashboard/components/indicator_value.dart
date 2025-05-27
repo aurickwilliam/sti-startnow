@@ -32,7 +32,7 @@ class IndicatorValue extends StatelessWidget {
           label,
           style: GoogleFonts.roboto(
             color: AppTheme.colors.black,
-            fontSize: 16,
+            fontSize: 14,
             fontWeight: FontWeight.w500
           ),
         )
