@@ -16,9 +16,7 @@ class Chatbot extends StatefulWidget {
 class _ChatbotState extends State<Chatbot> {
 
   final List<List> messages = [
-    ["Hello Chatbot", true],
-    ["Good afternoon, what can I help you today?", false],
-    ["Thank you", true],
+    ["Welcome to STI StartNow Chatbot!", false],
   ];
 
   final TextEditingController messageController = TextEditingController();
