@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:sti_startnow/models/class_schedule.dart';
+import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/main_dashboard/components/category_button.dart';
 import 'package:sti_startnow/pages/main_dashboard/components/subject_tile.dart';
+import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class MainSubjectsPage extends StatefulWidget {
@@ -12,6 +16,7 @@ class MainSubjectsPage extends StatefulWidget {
 }
 
 class _MainSubjectsPageState extends State<MainSubjectsPage> {
+  late Student student;
 
   bool isCurrentSelected = true;
   bool isCompletedSelected = false;
@@ -36,41 +41,51 @@ class _MainSubjectsPageState extends State<MainSubjectsPage> {
     });
   }
 
-  // TEMPORARY DATA for the List of subjects
-  final List<List> currentList = [
-    ["Information Management", "COSC1001", "Lorenz Christopher Afan", "3.00"],
-    ["Fundamanetals of Mobile Programming", "COSC1001", "Lorenz Christopher Afan", "3.00"],
-    ["Design and Analysis of Algorithm", "COSC1001", "Lorenz Christopher Afan", "2.50"],
-    ["Information Management", "COSC1001", "Lorenz Christopher Afan", "1.00"],
-    ["Information Management", "COSC1001", "Lorenz Christopher Afan", "2.00"],
-  ];
+  late List<List> currentList;
 
-  final List<List> completedList = [
-    ["Computer Programming 3", "COSC1001", "Lorenz Christopher Afan", "3.00"],
-    ["Computer Programming 2", "COSC1001", "Cyber Celwin Popanes", "3.00"],
-    ["Computer Programming 1", "COSC1001", "Cyber Celwin Popanes", "3.00"],
-  ];
+  final List<List> completedList = [];
 
   late List<List> selectedList;
 
+  void getCurrentSubjects(List<ClassSchedule> subjects) {
+    currentList = [];
+    for (final subject in subjects) {
+      currentList.add([
+        subject.subject,
+        subject.subjectCode,
+        subject.prof,
+        subject.units.toStringAsFixed(2),
+      ]);
+    }
+  }
+
   @override
   void initState() {
+    student = context.read<DatabaseProvider>().student;
+
+    if (student.enrollmentID == null) {
+      currentList = [];
+    } else {
+      getCurrentSubjects(student.enrollment.subjectList!);
+    }
+
     super.initState();
     selectedList = currentList;
   }
 
   @override
   Widget build(BuildContext context) {
-
     // if is in landscape
-    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape ? true : false;
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape
+            ? true
+            : false;
 
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
         child: Column(
           children: [
-            
             // App Bar
             Column(
               children: [
@@ -84,35 +99,30 @@ class _MainSubjectsPageState extends State<MainSubjectsPage> {
                         color: AppTheme.colors.gold,
                         size: 35,
                       ),
-                      
-                      const SizedBox(width: 10,),
-                      
+
+                      const SizedBox(width: 10),
+
                       Text(
                         "Subjects",
                         style: GoogleFonts.roboto(
                           color: AppTheme.colors.primary,
                           fontSize: 28,
-                          fontWeight: FontWeight.bold
+                          fontWeight: FontWeight.bold,
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
-                    
-                Divider(
-                  height: 10,
-                  thickness: 3,
-                )
+
+                Divider(height: 10, thickness: 3),
               ],
             ),
-                
-            const SizedBox(height: 10,),
-                
+
+            const SizedBox(height: 10),
+
             // Categories button
             Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: isLandscape ? 200 : 24, 
-              ),
+              padding: EdgeInsets.symmetric(horizontal: isLandscape ? 200 : 24),
               child: Row(
                 children: [
                   CategoryButton(
@@ -120,7 +130,7 @@ class _MainSubjectsPageState extends State<MainSubjectsPage> {
                     onPressed: handleCurrentChange,
                     isSelected: isCurrentSelected,
                   ),
-                  
+
                   CategoryButton(
                     text: "Completed",
                     onPressed: handleCompletedChange,
@@ -129,29 +139,35 @@ class _MainSubjectsPageState extends State<MainSubjectsPage> {
                 ],
               ),
             ),
-                
-            
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: isLandscape ? 200 : 24,
+
+            selectedList.isNotEmpty
+                ? Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: isLandscape ? 200 : 24,
+                    ),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: selectedList.length,
+                      itemBuilder: (context, index) {
+                        return SubjectTile(
+                          subjectName: selectedList[index][0],
+                          subjectCode: selectedList[index][1],
+                          subjectTeacher: selectedList[index][2],
+                          noUnits: selectedList[index][3],
+                        );
+                      },
+                    ),
+                  ),
+                )
+                : Center(
+                  child:
+                      isCurrentSelected
+                          ? Text('Not Yet Enrolled')
+                          : Text('No Completed Subjects'),
                 ),
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: selectedList.length,
-                  itemBuilder: (context, index) {
-                    return SubjectTile(
-                      subjectName: selectedList[index][0],
-                      subjectCode: selectedList[index][1],
-                      subjectTeacher: selectedList[index][2],
-                      noUnits: selectedList[index][3],
-                    );
-                  }
-                ),
-              ),
-            ),
           ],
-        )
+        ),
       ),
     );
   }

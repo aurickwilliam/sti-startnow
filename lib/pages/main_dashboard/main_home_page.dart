@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
+import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/components/schedule_card.dart';
 import 'package:sti_startnow/pages/drawer/about_page.dart';
 import 'package:sti_startnow/pages/drawer/mission_vision_page.dart';
@@ -23,13 +25,15 @@ class MainHomePage extends StatefulWidget {
 }
 
 class _MainHomePageState extends State<MainHomePage> {
+  late DatabaseProvider db;
   late Student student;
   late String status;
   late final StreamSubscription enrollmentStatus;
 
   @override
   void initState() {
-    student = context.read<DatabaseProvider>().student;
+    db = context.read<DatabaseProvider>();
+    student = db.student;
 
     if (student.enrollment.enrollmentStatus != null) {
       status = student.enrollment.enrollmentStatus!.toUpperCase();
@@ -219,15 +223,8 @@ class _MainHomePageState extends State<MainHomePage> {
                                         const SizedBox(height: 10),
 
                                         BottomButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder:
-                                                    (context) =>
-                                                        const StudentStatusPage(),
-                                              ),
-                                            );
+                                          onPressed: () async {
+                                            await _loadEnrollmentData();
                                           },
                                           text: "Enroll Now!",
                                         ),
@@ -243,7 +240,7 @@ class _MainHomePageState extends State<MainHomePage> {
 
                                 const SizedBox(height: 20),
 
-                                ScheduleCard(),
+                                const ScheduleCard(),
                               ],
                             ),
                           ),
@@ -258,5 +255,50 @@ class _MainHomePageState extends State<MainHomePage> {
         },
       ),
     );
+  }
+
+  Future<void> _loadEnrollmentData() async {
+    // Show circular progress indicator
+    showDialog(
+      context: context,
+      builder: (context) {
+        return PopScope(
+          canPop: false,
+          child: Center(child: const CircularProgressIndicator()),
+        );
+      },
+    );
+
+    // Check kung may internet before any interaction
+    final isConnected = await InternetConnection().hasInternetAccess;
+    if (!isConnected) {
+      if (mounted) {
+        Navigator.pop(context);
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return CustomBottomSheet(
+              isError: true,
+              title: "Your Offline",
+              subtitle: "No internet connection, reconnect\nand try again",
+            );
+          },
+        );
+      }
+      return;
+    }
+
+    // Initialize sections
+    await db.initializeSections();
+    await db.initializeSchedules();
+
+    if (mounted) {
+      Navigator.pop(context);
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const StudentStatusPage()),
+      );
+    }
   }
 }

@@ -66,7 +66,7 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
     "4th Year-1st Term",
   ];
 
-  // Choices for Paymnet location
+  // Choices for Payment location
   final List<String> paymentLocation = [
     "School",
     "GCash",

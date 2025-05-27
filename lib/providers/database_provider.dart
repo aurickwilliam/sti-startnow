@@ -64,7 +64,7 @@ class DatabaseProvider extends ChangeNotifier {
           academic_year, 
           year_level,
           term, 
-          SECTION(section_name)
+          SECTION(section_id ,section_name)
           ''')
         .eq('enrollment_id', _student.enrollmentID!);
 
@@ -80,6 +80,50 @@ class DatabaseProvider extends ChangeNotifier {
         _student.enrollment.section = "Irregular";
       } else {
         _student.enrollment.section = enrollInfo['SECTION']['section_name'];
+      }
+
+      if (_student.enrollment.section != "Irregular") {
+        // Load subjects/schedules based on current enrollment
+        final scheduleInfo = await supabase
+            .from("SCHEDULE")
+            .select('''
+          SUBJECT(course_code ,course_name, units), 
+          start_time, 
+          end_time,
+          day,
+          room,
+          SECTION(section_name),
+          PROFESSOR(prof_fname, prof_lname)
+          ''')
+            .eq('section_id', enrollInfo['SECTION']['section_id']);
+
+        _student.enrollment.subjectList = [];
+
+        for (final schedule in scheduleInfo) {
+          final subjectCode = schedule['SUBJECT']['course_code'];
+          final subject = schedule['SUBJECT']['course_name'];
+          final units = schedule['SUBJECT']['units'].toDouble();
+          final startTime = schedule['start_time'].substring(0, 5);
+          final endTime = schedule['end_time'].substring(0, 5);
+          final day = schedule['day'];
+          final room = schedule['room'];
+          final section = schedule['SECTION']['section_name'];
+          final prof =
+              "${schedule['PROFESSOR']['prof_fname']} ${schedule['PROFESSOR']['prof_lname']}";
+
+          final classSched = ClassSchedule(
+            subjectCode: subjectCode,
+            subject: subject,
+            units: units,
+            startTime: startTime,
+            endTime: endTime,
+            day: day,
+            room: room,
+            section: section,
+            prof: prof,
+          );
+          _student.enrollment.subjectList!.add(classSched);
+        }
       }
     }
   }
@@ -318,15 +362,17 @@ class DatabaseProvider extends ChangeNotifier {
     // Generate school email for new student
     await _generateSchoolEmail();
 
-    // Enrollment
+    // Enrollment (matik Regular si new student)
+    _student.enrollment.academicStatus = "Regular";
+    _student.enrollment.enrollmentStatus = "Unverified";
     final enrollRes = await supabase
         .from("ENROLLMENT")
         .insert({
           'student_id': studentNumber,
           'enrollment_date': DateTime.now().toIso8601String(),
           'admit_type': _student.enrollment.admissionType,
-          'academic_status': 'Regular',
-          'enrollment_status': 'Unverified',
+          'academic_status': _student.enrollment.academicStatus,
+          'enrollment_status': _student.enrollment.enrollmentStatus,
           'academic_year': _student.enrollment.academicYear,
           'year_level': _student.enrollment.yearLevel,
           'term': _student.enrollment.semester,
@@ -340,7 +386,6 @@ class DatabaseProvider extends ChangeNotifier {
 
     // Set the current enrollment of student
     _student.enrollmentID = enrollRes[0]['enrollment_id'];
-    _student.enrollment.enrollmentStatus = "Unverified";
 
     await supabase
         .from("STUDENT")
