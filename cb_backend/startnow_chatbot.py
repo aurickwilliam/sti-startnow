@@ -139,7 +139,7 @@ async def chat(msg: Message):
             messages = [
                 {"role": "system",
                 "content": (
-                    "You are a friendly, helpful, and fun STI Start Now assistant. "
+                    "You are a friendly, helpful, and fun Start Now assistant. "
                     "If you don't know the answer to a question, reply with: "
                     "'I'm sorry, I couldn’t find that in our records. Please try rephrasing or ask about something else.'")
                 },
