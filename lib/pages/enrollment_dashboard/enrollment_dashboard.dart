@@ -67,6 +67,7 @@ class _EnrollmentDashboardState extends State<EnrollmentDashboard> {
 
     // Initialize sections
     await db.initializeSections();
+    await db.initializeSchedules();
 
     if (mounted) {
       Navigator.pop(context);

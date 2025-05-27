@@ -29,7 +29,7 @@ class DatabaseProvider extends ChangeNotifier {
           personal_email, 
           school_email, 
           current_enrollment, 
-          PROGRAM(program_name)
+          PROGRAM(program_name, acronym)
           ''')
         .eq('student_id', studentNumber);
 
@@ -42,7 +42,8 @@ class DatabaseProvider extends ChangeNotifier {
       _student.email = studentInfo['personal_email'];
       _student.schoolEmail = studentInfo['school_email'];
       _student.enrollmentID = studentInfo['current_enrollment'];
-      _student.program = studentInfo['PROGRAM']['program_name'];
+      _student.program =
+          "${studentInfo['PROGRAM']['program_name']} (${studentInfo['PROGRAM']['acronym']})";
       return true; // success
     }
     return false; // fail
@@ -446,7 +447,7 @@ class DatabaseProvider extends ChangeNotifier {
     return acronym;
   }
 
-  List<String> getProgramAcronyms(){
+  List<String> getProgramAcronyms() {
     List<String> listOfAcronyms = [];
 
     for (var record in _programList) {
@@ -482,6 +483,11 @@ class DatabaseProvider extends ChangeNotifier {
     } else {
       _sectionList = [];
     }
+  }
+
+  // For schedule information
+  Future<void> initializeSchedules() async {
+    final res = await supabase.from("SCHEDULE").select();
   }
 
   // For instructor information

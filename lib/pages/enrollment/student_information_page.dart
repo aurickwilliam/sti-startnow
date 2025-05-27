@@ -11,18 +11,18 @@ import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/pages/enrollment/irregular/select_subject_page.dart';
 import 'package:sti_startnow/pages/enrollment/regular/select_section_page.dart';
 import 'package:sti_startnow/providers/database_provider.dart';
+import 'package:sti_startnow/providers/enrollee_list_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class StudentInformationPage extends StatefulWidget {
-  final String studentStatus;
-
-  const StudentInformationPage({super.key, required this.studentStatus});
+  const StudentInformationPage({super.key});
 
   @override
   State<StudentInformationPage> createState() => _StudentInformationPageState();
 }
 
 class _StudentInformationPageState extends State<StudentInformationPage> {
+  late EnrolleeListProvider enroll;
   late Student student;
 
   final _formKey = GlobalKey<FormState>(); // For input validation
@@ -107,33 +107,13 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
     return valid;
   }
 
-  void checkIfHasInput() {
-    if (widget.studentStatus == "") {
-      debugPrint("Select a Status");
-    } else {
-      showModalBottomSheet(
-        isScrollControlled: true,
-        context: context,
-        builder: (builder) {
-          return CustomBottomSheet(
-            submitFunc: () {
-              handleNavigation();
-            },
-          );
-        },
-      );
-    }
-  }
-
-  // Temporary
-  // Remove Prop drilling
   void handleNavigation() {
     Widget destination = SizedBox.shrink();
 
-    if (widget.studentStatus == "Regular") {
-      destination = SelectSectionPage();
-    } else if (widget.studentStatus == "Irregular") {
-      destination = SelectSubjectPage();
+    if (studentAcademicTypeController.text == "Regular") {
+      destination = const SelectSectionPage();
+    } else {
+      destination = const SelectSubjectPage();
     }
 
     Navigator.push(
@@ -144,6 +124,7 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
 
   @override
   void initState() {
+    enroll = context.read<EnrolleeListProvider>();
     student = context.read<DatabaseProvider>().student;
 
     admissionTypeValue = student.enrollment.admissionType ?? "";
@@ -156,6 +137,9 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
 
     studentNoController.text = student.studentNo!;
     studentNameController.text = student.fullName;
+
+    programController.text = student.programAcronym;
+    studentAcademicTypeController.text = enroll.enrollingStatus!;
     super.initState();
   }
 
@@ -171,10 +155,6 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Assinging of value to the textfield
-    programController.text = program;
-    studentAcademicTypeController.text = widget.studentStatus;
-
     // if is in landscape
     bool isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
@@ -384,7 +364,7 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
                           onPressed: () {
                             if (validate()) {
                               saveInput();
-                              checkIfHasInput();
+                              handleNavigation();
                             } else {
                               showModalBottomSheet(
                                 isScrollControlled: true,

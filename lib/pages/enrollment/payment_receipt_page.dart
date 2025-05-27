@@ -14,8 +14,7 @@ import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class PaymentReceiptPage extends StatefulWidget {
-  final String studentStatus;
-  const PaymentReceiptPage({super.key, required this.studentStatus});
+  const PaymentReceiptPage({super.key});
 
   @override
   State<PaymentReceiptPage> createState() => _PaymentReceiptPageState();
@@ -154,9 +153,7 @@ class _PaymentReceiptPageState extends State<PaymentReceiptPage> {
                           context,
                           MaterialPageRoute(
                             builder:
-                                (context) => StudentInformationPage(
-                                  studentStatus: widget.studentStatus,
-                                ),
+                                (context) => const StudentInformationPage(),
                           ),
                         );
                       },

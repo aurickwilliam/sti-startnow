@@ -145,4 +145,7 @@ class EnrolleeListProvider extends ChangeNotifier {
       }
     }
   }
+
+  // Para maremove prop drilling istore nalang dito ang enrolling status ni student
+  String? enrollingStatus;
 }
