@@ -22,6 +22,7 @@ class StudentInformationPage extends StatefulWidget {
 }
 
 class _StudentInformationPageState extends State<StudentInformationPage> {
+  late DatabaseProvider db;
   late EnrolleeListProvider enroll;
   late Student student;
 
@@ -59,7 +60,11 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
 
   // Temporary Choices for New Year Level
   // Same choices sa tuition fee adivising
-  final List<String> newYearLevel = ["1Y2", "2Y2", "3Y2", "4Y2"];
+  final List<String> newYearLevel = [
+    "2nd Year-1st Term",
+    "3rd Year-1st Term",
+    "4th Year-1st Term",
+  ];
 
   // Choices for Paymnet location
   final List<String> paymentLocation = [
@@ -110,11 +115,20 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
   void handleNavigation() {
     Widget destination = SizedBox.shrink();
 
+    // list of student's new year and term
+    final yearTerm = newYearLevelValue.split('-');
+
+    student.enrollment.yearLevel = yearTerm[0];
+    student.enrollment.semester = yearTerm[1];
+
     if (studentAcademicTypeController.text == "Regular") {
+      db.getCurrentSections();
       destination = const SelectSectionPage();
     } else {
       destination = const SelectSubjectPage();
     }
+
+    student.enrollment.academicStatus = studentAcademicTypeController.text;
 
     Navigator.push(
       context,
@@ -124,8 +138,9 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
 
   @override
   void initState() {
+    db = context.read<DatabaseProvider>();
     enroll = context.read<EnrolleeListProvider>();
-    student = context.read<DatabaseProvider>().student;
+    student = db.student;
 
     admissionTypeValue = student.enrollment.admissionType ?? "";
     newYearLevelValue = student.enrollment.yearLevel ?? "";
@@ -274,6 +289,8 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
                             setState(() {
                               newYearLevelValue = newYearLevel[index];
                               newYearLevelEmpty = false;
+                              student.enrollment.section = null;
+                              student.enrollment.subjectList = null;
                             });
                           },
                           isError: newYearLevelEmpty,

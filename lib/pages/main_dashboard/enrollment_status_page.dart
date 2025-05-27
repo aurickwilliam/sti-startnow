@@ -31,9 +31,9 @@ class EnrollmentStatusPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     // if it is in landscape
-    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
@@ -45,8 +45,8 @@ class EnrollmentStatusPage extends StatelessWidget {
 
               Padding(
                 padding: EdgeInsets.symmetric(
-                  horizontal: isLandscape ? 200 : 24, 
-                  vertical: 10
+                  horizontal: isLandscape ? 200 : 24,
+                  vertical: 10,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,7 +77,7 @@ class EnrollmentStatusPage extends StatelessWidget {
                       label: "Term and Year:",
                       data:
                           status != 'NOT ENROLLED'
-                              ? "${student.enrollment.yearLevel} ${student.enrollment.semester} SY. ${student.enrollment.academicYear}"
+                              ? "${student.enrollment.yearLevel} ${student.enrollment.semester} SY. 2025 - 2026"
                               : "Not Yet Enrolled",
                     ),
 
@@ -99,7 +99,7 @@ class EnrollmentStatusPage extends StatelessWidget {
                       ),
                     ),
 
-                    const SizedBox(height: 50,),
+                    const SizedBox(height: 50),
                   ],
                 ),
               ),

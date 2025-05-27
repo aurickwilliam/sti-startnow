@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:sti_startnow/models/class_schedule.dart';
 import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/components/custom_dropdown/custom_dropdown_menu.dart';
@@ -19,9 +21,9 @@ class SelectSectionPage extends StatefulWidget {
 }
 
 class _SelectSectionPageState extends State<SelectSectionPage> {
+  late DatabaseProvider db;
   late Student student;
-  // Temporary values for list of section
-  final List<String> listSection = ["CS401", "CS402", "CS403", "CS404"];
+  late final List<String> listSection;
 
   // Values for the Column
   final List<String> columnNames = [
@@ -33,104 +35,85 @@ class _SelectSectionPageState extends State<SelectSectionPage> {
     "Room",
   ];
 
-  // Temporary value for total units
-  final double totalUnits = 23.0;
-
-  // Temporay values for the Data Table
-  final List<List> dataTableValues = [
-    [
-      "COSC1001",
-      "Information Management",
-      "3.00",
-      "7:00AM - 9:00AM",
-      "S",
-      "512",
-    ],
-    [
-      "COSC1001",
-      "Information Management",
-      "3.00",
-      "7:00AM - 10:00AM",
-      "W",
-      "603",
-    ],
-    [
-      "COSC1001",
-      "Fundamentals of Mobile Programming",
-      "3.00",
-      "9:00AM - 11:00AM",
-      "TH",
-      "402",
-    ],
-    [
-      "COSC1001",
-      "Fundamentals of Mobile Programming",
-      "3.00",
-      "10:00AM - 1:00PM",
-      "W",
-      "603",
-    ],
-    [
-      "COSC1001",
-      "Human-Computer Interaction",
-      "3.50",
-      "7:00AM - 9:00AM",
-      "TH",
-      "402",
-    ],
-    [
-      "COSC1001",
-      "Human-Computer Interaction",
-      "3.50",
-      "11:30AM - 1:00PM",
-      "TH",
-      "601",
-    ],
-    ["COSC1001", "Ethics", "3.00", "7:00AM - 10:00AM", "F", "410"],
-    [
-      "COSC1001",
-      "Design and Analysis of Algorithms",
-      "3.00",
-      "10:00AM - 1:00PM",
-      "F",
-      "402",
-    ],
-    [
-      "COSC1001",
-      "Computer Systems Architecture",
-      "3.00",
-      "9:00AM - 12:00PM",
-      "S",
-      "509",
-    ],
-    ["COSC1001", "Great Books", "3.00", "7:00AM - 10:00AM", "T", "P"],
-    [
-      "COSC1001",
-      "Philippine Popular Culture",
-      "3.00",
-      "10:00AM - 1:00PM",
-      "T",
-      "402",
-    ],
-    [
-      "COSC1001",
-      "P.E./PATHFIT 4: Team Sports",
-      "3.00",
-      "1:00PM - 3:00PM",
-      "TH",
-      "COURT",
-    ],
-  ];
+  late double totalUnits;
+  late List<List> dataTableValues;
 
   String sectionValue = "";
 
+  void getSectionSched(List<ClassSchedule>? sectionSched) {
+    dataTableValues = [];
+    totalUnits = 0;
+    if (sectionSched != null) {
+      setState(() {
+        for (final sched in sectionSched) {
+          totalUnits += sched.units;
+          dataTableValues.add([
+            sched.subjectCode,
+            sched.subject,
+            sched.units.toStringAsFixed(2),
+            sched.fullTime,
+            sched.day,
+            sched.room,
+          ]);
+        }
+      });
+    }
+  }
+
   @override
   void initState() {
-    student = context.read<DatabaseProvider>().student;
-
+    db = context.read<DatabaseProvider>();
+    student = db.student;
+    listSection = db.enrollSections;
     sectionValue = student.enrollment.section ?? "";
+    getSectionSched(student.enrollment.subjectList);
 
     super.initState();
+  }
+
+  Future<void> registerNewEnrollment() async {
+    // Show circular progress indicator
+    showDialog(
+      context: context,
+      builder: (context) {
+        return PopScope(
+          canPop: false,
+          child: Center(child: const CircularProgressIndicator()),
+        );
+      },
+    );
+
+    // Check kung may internet before any interaction
+    final isConnected = await InternetConnection().hasInternetAccess;
+    if (!isConnected) {
+      if (mounted) {
+        Navigator.pop(context);
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return CustomBottomSheet(
+              isError: true,
+              title: "Your Offline",
+              subtitle: "No internet connection, reconnect\nand try again",
+            );
+          },
+        );
+      }
+      return;
+    }
+
+    // Insert new enrollment to database
+    await db.createNewEnrollment();
+
+    if (mounted) {
+      Navigator.pop(context);
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const CompletedPage()),
+        (context) => false,
+      );
+    }
   }
 
   @override
@@ -190,6 +173,8 @@ class _SelectSectionPageState extends State<SelectSectionPage> {
                             onTap: (index) {
                               setState(() {
                                 sectionValue = listSection[index];
+                                db.setSectionSched(sectionValue);
+                                getSectionSched(student.enrollment.subjectList);
                               });
                             },
                           ),
@@ -199,43 +184,46 @@ class _SelectSectionPageState extends State<SelectSectionPage> {
 
                     const SizedBox(height: 30),
 
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 24),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    dataTableValues.isNotEmpty
+                        ? Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 24),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "Schedule:",
-                                style: GoogleFonts.roboto(
-                                  color: AppTheme.colors.primary,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Schedule:",
+                                    style: GoogleFonts.roboto(
+                                      color: AppTheme.colors.primary,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+
+                                  Text(
+                                    "Units: $totalUnits",
+                                    style: GoogleFonts.roboto(
+                                      color: AppTheme.colors.primary,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
                               ),
 
-                              Text(
-                                "Units: $totalUnits",
-                                style: GoogleFonts.roboto(
-                                  color: AppTheme.colors.primary,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              Divider(height: 10),
+
+                              CustomDataTable(
+                                columnNames: columnNames,
+                                dataTableValues: dataTableValues,
                               ),
                             ],
                           ),
-
-                          Divider(height: 10),
-
-                          CustomDataTable(
-                            columnNames: columnNames,
-                            dataTableValues: dataTableValues,
-                          ),
-                        ],
-                      ),
-                    ),
+                        )
+                        : Container(),
 
                     const SizedBox(height: 50),
 
@@ -265,13 +253,8 @@ class _SelectSectionPageState extends State<SelectSectionPage> {
                               context: context,
                               builder: (builder) {
                                 return CustomBottomSheet(
-                                  submitFunc: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => CompletedPage(),
-                                      ),
-                                    );
+                                  submitFunc: () async {
+                                    await registerNewEnrollment();
                                   },
                                 );
                               },

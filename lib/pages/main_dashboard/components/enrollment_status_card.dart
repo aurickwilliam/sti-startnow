@@ -114,7 +114,7 @@ class EnrollmentStatusCard extends StatelessWidget {
                 // Term and Year
                 status != 'NOT ENROLLED'
                     ? Text(
-                      "${student.enrollment.yearLevel} ${student.enrollment.semester} SY. ${student.enrollment.academicYear}",
+                      "${student.enrollment.yearLevel} ${student.enrollment.semester} SY. 2025 - 2026",
                       style: GoogleFonts.roboto(
                         color: AppTheme.colors.black,
                         fontSize: 16,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/buttons/custom_outline_button.dart';
@@ -21,6 +22,7 @@ class PaymentReceiptPage extends StatefulWidget {
 }
 
 class _PaymentReceiptPageState extends State<PaymentReceiptPage> {
+  late DatabaseProvider db;
   late Student student;
   late final String name;
 
@@ -41,7 +43,9 @@ class _PaymentReceiptPageState extends State<PaymentReceiptPage> {
 
   @override
   void initState() {
-    student = context.read<DatabaseProvider>().student;
+    db = context.read<DatabaseProvider>();
+    student = db.student;
+    student.enrollment.yearLevel = null; // I am sorry for this
     name = student.fullName;
     super.initState();
   }
@@ -187,8 +191,11 @@ class _PaymentReceiptPageState extends State<PaymentReceiptPage> {
               context: context,
               builder: (builder) {
                 return CustomBottomSheet(
-                  submitFunc: () {
-                    Navigator.of(context).pop(true);
+                  submitFunc: () async {
+                    await supabase.auth.signOut();
+                    if (context.mounted) {
+                      Navigator.of(context).pop(true);
+                    }
                   },
                   subtitle: "All of your entered information\nwill be deleted",
                 );
