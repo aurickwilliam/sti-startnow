@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/enrollment/components/multiple_choice_card.dart';
 import 'package:sti_startnow/pages/enrollment/irregular/checklist_page.dart';
+import 'package:sti_startnow/pages/enrollment/payment_receipt_page.dart';
 import 'package:sti_startnow/pages/enrollment/student_portal_page.dart';
 import 'package:sti_startnow/providers/enrollee_list_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
@@ -66,6 +68,16 @@ class _StudentStatusPageState extends State<StudentStatusPage> {
     }
 
     enroll.enrollingStatus = selectedStatus;
+
+    if (supabase.auth.currentSession != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const PaymentReceiptPage(isNotEnrolled: true),
+        ),
+      );
+      return;
+    }
 
     Navigator.push(
       context,

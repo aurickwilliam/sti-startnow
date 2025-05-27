@@ -15,7 +15,8 @@ import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class PaymentReceiptPage extends StatefulWidget {
-  const PaymentReceiptPage({super.key});
+  final bool isNotEnrolled; // Kapag mula homepage nag enroll
+  const PaymentReceiptPage({super.key, this.isNotEnrolled = false});
 
   @override
   State<PaymentReceiptPage> createState() => _PaymentReceiptPageState();
@@ -43,11 +44,11 @@ class _PaymentReceiptPageState extends State<PaymentReceiptPage> {
 
   @override
   void initState() {
+    super.initState();
     db = context.read<DatabaseProvider>();
     student = db.student;
     student.enrollment.yearLevel = null; // I am sorry for this
     name = student.fullName;
-    super.initState();
   }
 
   @override
@@ -192,7 +193,9 @@ class _PaymentReceiptPageState extends State<PaymentReceiptPage> {
               builder: (builder) {
                 return CustomBottomSheet(
                   submitFunc: () async {
-                    await supabase.auth.signOut();
+                    if (!widget.isNotEnrolled) {
+                      await supabase.auth.signOut();
+                    }
                     if (context.mounted) {
                       Navigator.of(context).pop(true);
                     }
