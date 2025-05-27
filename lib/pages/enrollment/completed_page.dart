@@ -85,7 +85,7 @@ class _CompletedPageState extends State<CompletedPage> {
                     text: "Download Pre-Assessment Form", 
                     onPressed: () async {
                       // ipasa nalang sa parameter ung object nandoon lahat ng info about sa pre-assessment
-                      // final preAssessment = await PreAssessmentApi.generatePreAssessment();
+                      // final preAssessment = await PreAssessmentApi.generatePreAssessment(student);
                       await PreAssessmentApi.generatePreAssessment(student);
 
                       // IF GUSTO IOPEN PAGTAPOS IDOWNLOAD

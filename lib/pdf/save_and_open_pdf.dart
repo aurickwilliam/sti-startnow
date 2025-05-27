@@ -23,8 +23,19 @@ class SaveAndOpenPdf {
       directory = await getApplicationDocumentsDirectory();
     }
     
+    String baseName = name;
+    String fileName = baseName;
+    int count = 1;
+
+    // Check if nag eexist na sa download folder ung file na un
+    while (File('${directory.path}/$fileName').existsSync()) {
+      final nameWithoutExtension = baseName.replaceAll(RegExp(r'\.pdf$'), '');
+      fileName = '$nameWithoutExtension($count).pdf';
+      count++;
+    }
+
     // Specify kung saan isasave tas ung name niya
-    final file = File('${directory.path}/$name');
+    final file = File('${directory.path}/$fileName');
 
     // Save ung file, iwrite na ung bytes
     await file.writeAsBytes(await pdf.save());
