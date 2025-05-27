@@ -28,7 +28,7 @@ class _SelectSubjectPageState extends State<SelectSubjectPage> {
     "Instructor",
     "Start Time",
     "End Time",
-    "Day"
+    "Day",
     "Section",
     "Room",
     "Add",
