@@ -27,7 +27,7 @@ knowledge_base = {
     ("enrollment date", "enrollment period", "when is the enrollment"): "Enrollment is open from May 1st and ends on August 30th.",
 
     #intent: Enrollment Requirement
-    ("what are the requirements", "what do I need for enrollment" ): (
+    ("what are the requirements", "what do I need for enrollment", "requirements"): (
         "If you are a College Freshman:\n"
         "- Original Form 138 / SF9-SHS\n"
         "- Original Form 137 / SF10-SHS\n"
@@ -47,7 +47,7 @@ knowledge_base = {
     ("where can i submit my requirements", "where to submit my documents", "submission of requirements"): "All document requirements are to be submitted personally at the school’s admission desk or registrar office.",
 
     #intent: Enrollment Process
-    ("how do i enroll", "how to resgister my enrollment", "how does enrollment work", "enrollment process"): (
+    ("how do i enroll", "how to resgister my enrollment", "how does enrollment work", "enrollment process", "enrollment"): (
         "Here are the steps to proceed with the enrollment using our application:\n"
         "- Go to the Main Dashboard and click on the ‘Enroll Now’ button.\n"
         "- For new students, enter your desired course.\n"
@@ -105,7 +105,7 @@ knowledge_base = {
     ("where to view my grades", "view my grades", "how can i check my grades online"): "You may view your grades through the OneSTI portal.",
 
     #intent: Tuition Fee
-    ("how much is the tuition", "tuition fee"): "Tuition fee vary by course or the number of units taken. You may visit the 'Tuition Fee Advising Page' for an estimate.",
+    ("how much is the tuition", "tuition fee", "tuition"): "Tuition fee vary by course or the number of units taken. You may visit the 'Tuition Fee Advising Page' for an estimate.",
 
     #intent: Remaining Balance
     ("remaining balance", "standing balance"): "You may view any remaining balance through the OneSTI portal or requirest a statement of account at the Cashier’s Office.",
@@ -117,7 +117,7 @@ knowledge_base = {
     ("how to pay tuition fee", "where can i pay", "Does the school accept online payments", "payment process"): "All payments must be made in person at the Cashier’s Office. Online payments methods such as Gcash are available.",
 
     #intent: Scholarship and Discounts
-    ("available scholarships", "available discounts"): "The school offers various financial assistant programs such as subsidy and voucher, government educational assistance, and open scholarships.", 
+    ("available scholarships", "available discounts", "scholarship"): "The school offers various financial assistant programs such as subsidy and voucher, government educational assistance, and open scholarships.", 
 
     #intent: Scholarship and Discounts Details
     ("how to apply for financial assistance", "where to submit my scholarship requirements", "application for scholarship"): "You may apply for STI’s scholarship, voucher, and financial assistance programs by coordinating directly with the campus. Application forms and requirements are provided onsite.",
