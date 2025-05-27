@@ -13,9 +13,7 @@ import 'package:sti_startnow/theme/app_theme.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class StudentPortalPage extends StatefulWidget {
-  final String studentStatus;
-
-  const StudentPortalPage({super.key, required this.studentStatus});
+  const StudentPortalPage({super.key});
 
   @override
   State<StudentPortalPage> createState() => _StudentPortalPageState();
@@ -95,11 +93,7 @@ class _StudentPortalPageState extends State<StudentPortalPage> {
 
         Navigator.push(
           context,
-          MaterialPageRoute(
-            builder:
-                (context) =>
-                    PaymentReceiptPage(studentStatus: widget.studentStatus),
-          ),
+          MaterialPageRoute(builder: (context) => const PaymentReceiptPage()),
         );
       }
     } else {

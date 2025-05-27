@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
 import 'package:sti_startnow/pages/enrollment/components/multiple_choice_card.dart';
 import 'package:sti_startnow/pages/enrollment/irregular/checklist_page.dart';
 import 'package:sti_startnow/pages/enrollment/student_portal_page.dart';
+import 'package:sti_startnow/providers/enrollee_list_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class StudentStatusPage extends StatefulWidget {
@@ -16,6 +18,7 @@ class StudentStatusPage extends StatefulWidget {
 }
 
 class _StudentStatusPageState extends State<StudentStatusPage> {
+  late EnrolleeListProvider enroll;
   List<String> statusStudent = ["Regular", "Irregular"];
   String selectedStatus = "";
 
@@ -53,21 +56,27 @@ class _StudentStatusPageState extends State<StudentStatusPage> {
     }
   }
 
-  // Refactor kapag nandyan na ung DB
-  // Remove the prop drilling
   void handleNavigation() {
     Widget destination = SizedBox.shrink();
 
-    if (selectedStatus == statusStudent[0]) {
-      destination = StudentPortalPage(studentStatus: selectedStatus);
-    } else if (selectedStatus == statusStudent[1]) {
-      destination = ChecklistPage(studentStatus: selectedStatus);
+    if (selectedStatus == "Regular") {
+      destination = const StudentPortalPage();
+    } else {
+      destination = const ChecklistPage();
     }
+
+    enroll.enrollingStatus = selectedStatus;
 
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => destination),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    enroll = context.read<EnrolleeListProvider>();
   }
 
   @override
@@ -153,7 +162,7 @@ class _StudentStatusPageState extends State<StudentStatusPage> {
         Padding(
           padding: EdgeInsets.symmetric(
             horizontal: isLandscape ? 200 : 24,
-            vertical: 10
+            vertical: 10,
           ),
           child: BottomButton(
             onPressed: () {
