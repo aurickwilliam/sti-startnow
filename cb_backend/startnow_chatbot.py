@@ -18,7 +18,7 @@ class Message(BaseModel):
 
 knowledge_base = {
     #intent: Greeting
-    ("hi", "hello", "hey", "sup", "ayo"): "Hello! Welcome to STI Start Now. How can I assist you today?",
+    ("hi", "hello", "hey", "sup", "ayo"): "Hello! How can I assist you today?",
 
     #intent: Farewell/Thanks
     ("bye", "thanks", "thank you"): "You’re welcome!  Feel free to message again for any inquiries.",
