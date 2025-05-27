@@ -86,7 +86,14 @@ class PreAssessmentApi {
             SizedBox(height: 10),
 
             // PAYMENT INFORMATION
-            TableHelper.fromTextArray(
+            student.enrollment.admissionType == "New Student" 
+            ? Text(
+              "Refer to OneSti site for details",
+              style: TextStyle(
+                fontSize: 10,
+              )
+            ) 
+            : TableHelper.fromTextArray(
               headers: [
                 "Type of Payment:", 
                 "Payment Location:", 
