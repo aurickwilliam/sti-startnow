@@ -15,27 +15,34 @@ class ChatBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    // If it is in landscape
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
     // For User
     Widget userBubble = Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Container(
+          constraints: BoxConstraints(
+            maxWidth: isLandscape ? 500 : 300
+          ),
           decoration: BoxDecoration(
-            color: AppTheme.colors.gold,
-            borderRadius: BorderRadius.circular(5),
+            color: AppTheme.colors.primary,
+            borderRadius: BorderRadius.circular(25),
             border: Border.all(
-              color: AppTheme.colors.gold,
+              color: AppTheme.colors.primary,
               width: 2.0
             ),
           ),
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            padding: EdgeInsets.all(13),
             child: Text(
               message,
               style: GoogleFonts.roboto(
                 color: AppTheme.colors.white,
                 fontSize: 14,
+                fontWeight: FontWeight.w500
               ),
             ),
           ),
@@ -88,25 +95,27 @@ class ChatBubble extends StatelessWidget {
 
         const SizedBox(width: 5,),
 
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              color: AppTheme.colors.white,
-              borderRadius: BorderRadius.circular(5),
-              border: Border.all(
-                color: AppTheme.colors.gray,
-                width: 2.0
-              ),
+        Container(
+          constraints: BoxConstraints(
+            maxWidth: isLandscape ? 500 : 300
+          ),
+          decoration: BoxDecoration(
+            color: AppTheme.colors.white,
+            borderRadius: BorderRadius.circular(25),
+            border: Border.all(
+              color: AppTheme.colors.gray,
+              width: 2.0
             ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              child: Text(
-                message,
-                softWrap: true,
-                style: GoogleFonts.roboto(
-                  color: AppTheme.colors.black,
-                  fontSize: 14,
-                ),
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(13),
+            child: Text(
+              message,
+              softWrap: true,
+              style: GoogleFonts.roboto(
+                color: AppTheme.colors.black,
+                fontSize: 14,
+                fontWeight: FontWeight.w500
               ),
             ),
           ),
