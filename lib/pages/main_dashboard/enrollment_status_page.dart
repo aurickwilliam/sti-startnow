@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/models/student.dart';
+import 'package:sti_startnow/pages/components/buttons/custom_outline_button.dart';
 import 'package:sti_startnow/pages/components/information_tile.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
@@ -51,43 +52,11 @@ class EnrollmentStatusPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Student Information:",
-                      style: GoogleFonts.roboto(
-                        color: AppTheme.colors.primary,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-
-                    const SizedBox(height: 10),
-
-                    InformationTile(label: "Name:", data: student.fullName),
-
-                    const SizedBox(height: 10),
-
-                    InformationTile(
-                      label: "Student No.:",
-                      data: student.studentNo!,
-                    ),
-
-                    const SizedBox(height: 10),
-
-                    InformationTile(
-                      label: "Term and Year:",
-                      data:
-                          status != 'NOT ENROLLED'
-                              ? "${student.enrollment.yearLevel} ${student.enrollment.semester} SY. 2025 - 2026"
-                              : "Not Yet Enrolled",
-                    ),
-
-                    Divider(height: 30),
-
                     RichText(
                       text: TextSpan(
                         style: GoogleFonts.roboto(
                           color: AppTheme.colors.primary,
-                          fontSize: 20,
+                          fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
                         children: [
@@ -99,7 +68,74 @@ class EnrollmentStatusPage extends StatelessWidget {
                       ),
                     ),
 
-                    const SizedBox(height: 50),
+                    const SizedBox(height: 20,),
+
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(
+                          color: AppTheme.colors.gray,
+                          width: 2.0
+                        )
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text(
+                              "Student Information:",
+                              style: GoogleFonts.roboto(
+                                color: AppTheme.colors.primary,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+
+                          Divider(),
+
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              children: [
+                                InformationTile(
+                                  label: "Name:", 
+                                  data: student.fullName
+                                ),
+
+                                const SizedBox(height: 10),
+
+                                InformationTile(
+                                  label: "Student No.:",
+                                  data: student.studentNo!,
+                                ),
+
+                                const SizedBox(height: 10),
+
+                                InformationTile(
+                                  label: "Term and Year:",
+                                  data:
+                                      status != 'NOT ENROLLED'
+                                          ? "${student.enrollment.yearLevel} ${student.enrollment.semester} SY. 2025 - 2026"
+                                          : "Not Yet Enrolled",
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    CustomOutlineButton(
+                      text: "Download Pre-Assessment", 
+                      onPressed: () async {
+
+                      }
+                    ),
                   ],
                 ),
               ),
