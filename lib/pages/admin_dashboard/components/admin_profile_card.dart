@@ -42,10 +42,11 @@ class AdminProfileCard extends StatelessWidget {
               widthFactor: 1.0,
               child: Container(
                 decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(coverImg),
-                    fit: BoxFit.cover
-                  )
+                  // image: DecorationImage(
+                  //   image: AssetImage(coverImg),
+                  //   fit: BoxFit.cover
+                  // )
+                  color: AppTheme.colors.primary,
                 ),
               ),
             ),
