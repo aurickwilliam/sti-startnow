@@ -75,46 +75,6 @@ class MainProfilePage extends StatelessWidget {
                 ),
 
                 const SizedBox(height: 20),
-
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          "Verified TOR:",
-                          style: GoogleFonts.roboto(
-                            color: AppTheme.colors.primary,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-
-                        const SizedBox(width: 10),
-
-                        Icon(
-                          // isTORVerified ? Icons.check_circle_rounded : Icons.cancel,
-                          Icons.check_circle_rounded,
-                          // color: isTORVerified ? AppTheme.colors.green : AppTheme.colors.red,
-                          color: AppTheme.colors.green,
-                        ),
-                      ],
-                    ),
-
-                    const SizedBox(height: 10),
-
-                    CustomOutlineButton(
-                      text: "View Transcript of Records",
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ListTorPage(),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
               ],
             ),
           ),
