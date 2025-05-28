@@ -44,10 +44,11 @@ class MainProfileCard extends StatelessWidget {
               widthFactor: 1.0,
               child: Container(
                 decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(coverImg),
-                    fit: BoxFit.cover
-                  )
+                  // image: DecorationImage(
+                  //   image: AssetImage(coverImg),
+                  //   fit: BoxFit.cover
+                  // )
+                  color: AppTheme.colors.gold
                 ),
               ),
             ),
@@ -86,7 +87,7 @@ class MainProfileCard extends StatelessWidget {
                       name,
                       style: GoogleFonts.roboto(
                         color: AppTheme.colors.white,
-                        fontSize: 18,
+                        fontSize: 16,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -97,7 +98,7 @@ class MainProfileCard extends StatelessWidget {
                       studentNo,
                       style: GoogleFonts.roboto(
                         color: AppTheme.colors.black,
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -106,7 +107,7 @@ class MainProfileCard extends StatelessWidget {
                       "STI College Caloocan",
                       style: GoogleFonts.roboto(
                         color: AppTheme.colors.black,
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
