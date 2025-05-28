@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/enrollment_dashboard.dart';
 import 'package:sti_startnow/pages/super_admin/components/option_button.dart';
-import 'package:sti_startnow/pages/super_admin/list_pages/list_enroll_schedule_page.dart';
 import 'package:sti_startnow/pages/super_admin/list_pages/list_instructors_page.dart';
 import 'package:sti_startnow/pages/super_admin/list_pages/list_programs_page.dart';
 import 'package:sti_startnow/pages/super_admin/list_pages/list_students_page.dart';
@@ -144,19 +143,6 @@ class SuperAdminDashboard extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => const ListSubjectsPage(),
-                            ),
-                          );
-                        },
-                      ),
-                      OptionButton(
-                        icon: Icons.date_range_rounded,
-                        title: "Enroll Schedule",
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder:
-                                  (context) => const ListEnrollSchedulePage(),
                             ),
                           );
                         },
