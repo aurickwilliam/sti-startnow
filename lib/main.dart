@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sti_startnow/dependency_injection.dart';
 import 'package:sti_startnow/pages/home_page.dart';
 import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/providers/enrollee_list_provider.dart';
-import 'package:sti_startnow/providers/subject_list_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -21,7 +22,16 @@ Future<void> main() async {
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVodWRxaXphZXllY3FrZnRjeHlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc3OTc4MTMsImV4cCI6MjA2MzM3MzgxM30._590W8qSdRFd-NeVeKW41GY43T8bJJLKyISqUD-apyo',
   );
 
-  runApp(const MyApp());
+  DependencyInjection.init();
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => EnrolleeListProvider()),
+        ChangeNotifierProvider(create: (context) => DatabaseProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 late final bool isFirstLaunch;
@@ -32,18 +42,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => SubjectListProvider()),
-        ChangeNotifierProvider(create: (context) => EnrolleeListProvider()),
-        ChangeNotifierProvider(create: (context) => DatabaseProvider()),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        builder: FToastBuilder(),
-        theme: AppTheme.define(),
-        home: HomePage(),
-      ),
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      builder: FToastBuilder(),
+      theme: AppTheme.define(),
+      home: HomePage(),
     );
   }
 }

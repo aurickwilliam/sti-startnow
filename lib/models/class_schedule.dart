@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 
 class ClassSchedule {
+  final int schedID;
   final String subjectCode;
   final String subject;
   final double units;
@@ -12,6 +13,7 @@ class ClassSchedule {
   final String prof;
 
   ClassSchedule({
+    required this.schedID,
     required this.subjectCode,
     required this.subject,
     required this.units,

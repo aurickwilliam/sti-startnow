@@ -49,10 +49,8 @@ class _PreferredProgramPageState extends State<PreferredProgramPage> {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) async {
-        bool userPop = false;
-
         if (!didPop) {
-          userPop = await showModalBottomSheet(
+          await showModalBottomSheet(
             isScrollControlled: true,
             context: context,
             builder: (builder) {
@@ -64,10 +62,6 @@ class _PreferredProgramPageState extends State<PreferredProgramPage> {
               );
             },
           );
-        }
-
-        if (userPop && context.mounted) {
-          Navigator.pop(context);
         }
       },
       child: Scaffold(
@@ -144,7 +138,7 @@ class _PreferredProgramPageState extends State<PreferredProgramPage> {
                               setState(() {
                                 selectedCourse = value.toString();
                                 student.enrollment.section = null;
-                                student.enrollment.subjectList = null;
+                                student.enrollment.subjectList = [];
                               });
                             },
 

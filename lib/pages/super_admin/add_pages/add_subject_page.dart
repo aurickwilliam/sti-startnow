@@ -15,6 +15,7 @@ class AddSubjectPage extends StatefulWidget {
 }
 
 class _AddSubjectPageState extends State<AddSubjectPage> {
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController subjectNameController = TextEditingController();
   final TextEditingController subjectCodeController = TextEditingController();
   final TextEditingController subjectUnitsController = TextEditingController();
@@ -31,102 +32,120 @@ class _AddSubjectPageState extends State<AddSubjectPage> {
       resizeToAvoidBottomInset: true,
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.only(
-                  bottom: 20,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    
-                    PageAppBar(title: "Courses"),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.only(bottom: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      PageAppBar(title: "Courses"),
 
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: isLandscape ? 200 : 24,
-                        vertical: 10,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Add New Course",
-                            style: GoogleFonts.roboto(
-                              color: AppTheme.colors.primary,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: isLandscape ? 200 : 24,
+                          vertical: 10,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Add New Course",
+                              style: GoogleFonts.roboto(
+                                color: AppTheme.colors.primary,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                          
-                          const SizedBox(height: 20),
-                          
-                          TextInput(
-                            controller: subjectNameController,
-                            label: "Course Name:",
-                            hint: "Enter Course Name",
-                          ),
-                          
-                          const SizedBox(height: 10),
-                          
-                          TextInput(
-                            controller: subjectCodeController,
-                            label: "Course Code:",
-                            hint: "Enter Course Code",
-                          ),
-                          
-                          const SizedBox(height: 10),
-                          
-                          NumberInput(
-                            controller: subjectUnitsController,
-                            label: "Units:",
-                            hint: "Enter Course Units",
-                          ),
-                          
-                          const SizedBox(height: 10),
-                          
-                          TextInput(
-                            controller: subjectPrerequisitesController,
-                            label: "Course Prerequisites:",
-                            hint: "Enter Course Prerequisites",
-                          ),
-                          
-                          const SizedBox(height: 20),
-                        ],
+
+                            const SizedBox(height: 20),
+
+                            TextInput(
+                              controller: subjectNameController,
+                              label: "Course Name:",
+                              hint: "Enter Course Name",
+                              isRequired: true,
+                            ),
+
+                            const SizedBox(height: 10),
+
+                            TextInput(
+                              controller: subjectCodeController,
+                              label: "Course Code:",
+                              hint: "Enter Course Code",
+                              isRequired: true,
+                            ),
+
+                            const SizedBox(height: 10),
+
+                            NumberInput(
+                              controller: subjectUnitsController,
+                              label: "Units:",
+                              hint: "Enter Course Units",
+                              isRequired: true,
+                            ),
+
+                            const SizedBox(height: 10),
+
+                            TextInput(
+                              controller: subjectPrerequisitesController,
+                              label: "Course Prerequisites:",
+                              hint: "Enter Course Prerequisites",
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
 
-            // 🔹 Fixed bottom button
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: isLandscape ? 200 : 24,
-                vertical: 10,
-              ),
-              child: BottomButton(
-                onPressed: () async {
-                  await supabase.from("SUBJECT").insert({
-                    'course_code': subjectCodeController.text,
-                    'course_name': subjectNameController.text,
-                    'units': double.parse(subjectUnitsController.text),
-                    'prereq': subjectPrerequisitesController.text.isEmpty
-                        ? null
-                        : subjectPrerequisitesController.text,
-                  });
+              // 🔹 Fixed bottom button
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: isLandscape ? 200 : 24,
+                  vertical: 10,
+                ),
+                child: BottomButton(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      // Show circular progress indicator
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return PopScope(
+                            canPop: false,
+                            child: Center(
+                              child: const CircularProgressIndicator(),
+                            ),
+                          );
+                        },
+                      );
 
-                  if (context.mounted) {
-                    Navigator.pop(context);
-                  }
-                },
-                text: "Add New Subject",
+                      await supabase.from("SUBJECT").insert({
+                        'course_code': subjectCodeController.text,
+                        'course_name': subjectNameController.text,
+                        'units': double.parse(subjectUnitsController.text),
+                        'prereq':
+                            subjectPrerequisitesController.text.isEmpty
+                                ? null
+                                : subjectPrerequisitesController.text,
+                      });
+
+                      if (context.mounted) {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      }
+                    }
+                  },
+                  text: "Add New Subject",
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

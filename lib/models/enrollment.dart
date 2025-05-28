@@ -9,7 +9,7 @@ class Enrollment {
   String? yearLevel;
   String? section;
   String? enrollmentStatus;
-  List<ClassSchedule>? subjectList;
+  List<ClassSchedule> subjectList = [];
   String? receiptImg; // File name palang
 
   // Gawa ba model para sa financial statement?

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:sti_startnow/pages/chatbot/chatbot.dart';
-import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/drawer/about_page.dart';
 import 'package:sti_startnow/pages/drawer/mission_vision_page.dart';
 import 'package:sti_startnow/pages/enrollment/student_type_page.dart';
@@ -46,33 +44,14 @@ class _EnrollmentDashboardState extends State<EnrollmentDashboard> {
       },
     );
 
-    // Check kung may internet before any interaction
-    final isConnected = await InternetConnection().hasInternetAccess;
-    if (!isConnected) {
-      if (mounted) {
-        Navigator.pop(context);
-        showModalBottomSheet(
-          context: context,
-          builder: (context) {
-            return CustomBottomSheet(
-              isError: true,
-              title: "Your Offline",
-              subtitle: "No internet connection, reconnect\nand try again",
-            );
-          },
-        );
-      }
-      return;
-    }
-
-    // Initialize sections
+    // Initialize sections and schedules
     await db.initializeSections();
     await db.initializeSchedules();
 
     if (mounted) {
       Navigator.pop(context);
 
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const StudentTypePage()),
       );

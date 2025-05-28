@@ -1,10 +1,10 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/auth_page.dart';
 import 'package:sti_startnow/pages/initialization.dart';
-import 'package:sti_startnow/pages/internet_check/no_internet_page.dart';
+import 'package:sti_startnow/pages/internet_check/loading_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomePage extends StatelessWidget {
@@ -13,21 +13,21 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: InternetConnection().onStatusChange,
+      stream: Connectivity().onConnectivityChanged,
       builder: (context, netSnapshot) {
         return StreamBuilder(
           stream: supabase.auth.onAuthStateChange,
           builder: (context, authSnapshot) {
             if (authSnapshot.connectionState == ConnectionState.waiting ||
                 netSnapshot.connectionState == ConnectionState.waiting) {
-              return Container();
+              return const LoadingPage();
             }
 
             final status = netSnapshot.hasData ? netSnapshot.data! : null;
 
-            if (status == InternetStatus.disconnected) {
+            if (status != null && status.contains(ConnectivityResult.none)) {
               FlutterNativeSplash.remove();
-              return const NoInternetPage();
+              return const LoadingPage();
             }
 
             final event =

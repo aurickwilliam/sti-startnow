@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/admin_dashboard/components/verify_button.dart';
-import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/components/fullscreen_image_page.dart';
 import 'package:sti_startnow/pages/admin_dashboard/components/receipt_container.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
@@ -66,25 +64,6 @@ class _ReviewedEnrolleePageState extends State<ReviewedEnrolleePage> {
         );
       },
     );
-
-    // Check kung may internet before any interaction
-    final isConnected = await InternetConnection().hasInternetAccess;
-    if (!isConnected) {
-      if (mounted) {
-        Navigator.pop(context);
-        showModalBottomSheet(
-          context: context,
-          builder: (context) {
-            return CustomBottomSheet(
-              isError: true,
-              title: "Your Offline",
-              subtitle: "No internet connection, reconnect\nand try again",
-            );
-          },
-        );
-      }
-      return;
-    }
 
     final status = "Unverified";
     final time = DateTime.now().toIso8601String(); // Time of undo review

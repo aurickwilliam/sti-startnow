@@ -34,75 +34,64 @@ class _PieChartCardState extends State<PieChartCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: AppTheme.colors.white,
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: [
-            BoxShadow(
-              color: Color(0x40000000),
-              blurRadius: 4.0,
-              offset: Offset(0, 1),
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: AppTheme.colors.white,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Color(0x40000000),
+            blurRadius: 4.0,
+            offset: Offset(0, 1),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(15),
+            child: Text(
+              "Enrollees Graph:",
+              style: GoogleFonts.roboto(
+                color: AppTheme.colors.primary,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
             ),
-          ]
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          ),
 
-            Padding(
-              padding: const EdgeInsets.all(15),
-              child: Text(
-                "Enrollees Graph:",
-                style: GoogleFonts.roboto(
-                  color: AppTheme.colors.primary,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500
+          Divider(),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 30),
+            child: PieGraph(dataList: noEnrolless),
+          ),
+
+          Padding(
+            padding: EdgeInsets.all(15),
+            child: Wrap(
+              alignment: WrapAlignment.start,
+              spacing: 20,
+              runSpacing: 20,
+              children: [
+                IndicatorValue(
+                  color: AppTheme.colors.gray,
+                  label: "Not Enrolled",
                 ),
-              ),
+
+                IndicatorValue(
+                  color: AppTheme.colors.primary,
+                  label: "Unverified",
+                ),
+
+                IndicatorValue(color: AppTheme.colors.green, label: "Verified"),
+
+                IndicatorValue(color: AppTheme.colors.red, label: "Rejected"),
+              ],
             ),
-
-            Divider(),
-
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 30),
-              child: PieGraph(
-                dataList: noEnrolless,
-              ),
-            ),
-
-            Padding(
-              padding: EdgeInsets.all(15),
-              child: Wrap(
-                alignment: WrapAlignment.center,
-                spacing: 20,
-                runSpacing: 20,
-                children: [
-                  IndicatorValue(
-                    color: AppTheme.colors.gray, 
-                    label: "Not Enrolled"
-                  ),
-              
-                  IndicatorValue(
-                    color: AppTheme.colors.primary, 
-                    label: "Unverified"
-                  ),
-              
-                  IndicatorValue(
-                    color: AppTheme.colors.green, 
-                    label: "Verified"
-                  ),
-              
-                  IndicatorValue(
-                    color: AppTheme.colors.red, 
-                    label: "Rejected"
-                  )
-                ],
-              ),
-            )
-          ],
-        )
+          ),
+        ],
       ),
     );
   }

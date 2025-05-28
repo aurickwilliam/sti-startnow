@@ -47,7 +47,6 @@ class _PaymentReceiptPageState extends State<PaymentReceiptPage> {
     super.initState();
     db = context.read<DatabaseProvider>();
     student = db.student;
-    student.enrollment.yearLevel = null; // I am sorry for this
     name = student.fullName;
   }
 
@@ -184,10 +183,8 @@ class _PaymentReceiptPageState extends State<PaymentReceiptPage> {
       body: PopScope(
         canPop: false,
         onPopInvokedWithResult: (didPop, result) async {
-          bool userPop = false;
-
           if (!didPop) {
-            userPop = await showModalBottomSheet(
+            await showModalBottomSheet(
               isScrollControlled: true,
               context: context,
               builder: (builder) {
@@ -195,7 +192,18 @@ class _PaymentReceiptPageState extends State<PaymentReceiptPage> {
                   submitFunc: () async {
                     if (!widget.isNotEnrolled) {
                       await supabase.auth.signOut();
+                    } else {
+                      student.enrollment.admissionType = null;
+                      student.enrollment.yearLevel = null;
+                      student.enrollment.paymentLocation = null;
+                      student.enrollment.paymentType = null;
+                      student.enrollment.referenceNo = null;
+                      student.enrollment.amountPaid = null;
+                      student.contactNo = null;
+                      student.enrollment.section = null;
+                      student.enrollment.subjectList = [];
                     }
+
                     if (context.mounted) {
                       Navigator.of(context).pop(true);
                     }
@@ -204,10 +212,6 @@ class _PaymentReceiptPageState extends State<PaymentReceiptPage> {
                 );
               },
             );
-          }
-
-          if (userPop && context.mounted) {
-            Navigator.of(context).pop(result);
           }
         },
         child: SafeArea(child: parentWidget),

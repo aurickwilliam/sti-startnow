@@ -66,7 +66,7 @@ class _MainSubjectsPageState extends State<MainSubjectsPage> {
     if (student.enrollmentID == null) {
       currentList = [];
     } else {
-      getCurrentSubjects(student.enrollment.subjectList!);
+      getCurrentSubjects(student.enrollment.subjectList);
     }
 
     super.initState();

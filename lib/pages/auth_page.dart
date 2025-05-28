@@ -3,7 +3,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/admin_dashboard/admin_dashboard.dart';
-import 'package:sti_startnow/pages/internet_check/no_internet_page.dart';
+import 'package:sti_startnow/pages/internet_check/loading_page.dart';
 import 'package:sti_startnow/pages/main_dashboard/main_dashboard.dart';
 import 'package:sti_startnow/pages/super_admin/super_admin_dashboard.dart';
 import 'package:sti_startnow/providers/database_provider.dart';
@@ -46,7 +46,7 @@ class _AuthPageState extends State<AuthPage> {
               return const MainDashboard();
           }
         }
-        return NoInternetPage();
+        return const LoadingPage();
       },
     );
   }
@@ -60,10 +60,12 @@ class _AuthPageState extends State<AuthPage> {
     if (res.isNotEmpty) {
       final role = res[0]['role'];
 
+      if (db.userInitialized) {
+        return role;
+      }
+
       switch (role) {
         case 'super_admin' || 'admin':
-          // Initialize super_admin/admin
-          await db.initializeAdmin(widget.user.email!, role);
           if (role == 'super_admin') {
             await db.initializeInstructors();
             await db.initializeCourses();
@@ -75,6 +77,8 @@ class _AuthPageState extends State<AuthPage> {
             await db.initializeLogs();
             enroll.setCurrentEnrollees();
           }
+          // Initialize super_admin/admin
+          await db.initializeAdmin(widget.user.email!, role);
         case 'student':
           // Initialize student based on student number
           final studentRes = await supabase

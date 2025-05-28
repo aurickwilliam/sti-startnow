@@ -14,6 +14,7 @@ class AddProgramPage extends StatefulWidget {
 }
 
 class _AddProgramPageState extends State<AddProgramPage> {
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController programNameController = TextEditingController();
   final TextEditingController acronymController = TextEditingController();
   final TextEditingController departmentController = TextEditingController();
@@ -28,90 +29,108 @@ class _AddProgramPageState extends State<AddProgramPage> {
       resizeToAvoidBottomInset: true,
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.only(
-                  bottom: 20
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    PageAppBar(title: "Programs"),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.only(bottom: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      PageAppBar(title: "Programs"),
 
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: isLandscape ? 200 : 24,
-                        vertical: 10,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Add New Program",
-                            style: GoogleFonts.roboto(
-                              color: AppTheme.colors.primary,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: isLandscape ? 200 : 24,
+                          vertical: 10,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Add New Program",
+                              style: GoogleFonts.roboto(
+                                color: AppTheme.colors.primary,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
 
-                          const SizedBox(height: 20),
+                            const SizedBox(height: 20),
 
-                          TextInput(
-                            controller: programNameController,
-                            label: "Program Name:",
-                            hint: "Enter Program Name",
-                          ),
+                            TextInput(
+                              controller: programNameController,
+                              label: "Program Name:",
+                              hint: "Enter Program Name",
+                              isRequired: true,
+                            ),
 
-                          const SizedBox(height: 10),
+                            const SizedBox(height: 10),
 
-                          TextInput(
-                            controller: acronymController,
-                            label: "Acronym:",
-                            hint: "Enter Program Acronym",
-                          ),
+                            TextInput(
+                              controller: acronymController,
+                              label: "Acronym:",
+                              hint: "Enter Program Acronym",
+                              isRequired: true,
+                            ),
 
-                          const SizedBox(height: 10),
+                            const SizedBox(height: 10),
 
-                          TextInput(
-                            controller: departmentController,
-                            label: "Department:",
-                            hint: "Enter Department Name",
-                          ),
-
-                          const SizedBox(height: 30),
-                        ],
+                            TextInput(
+                              controller: departmentController,
+                              label: "Department:",
+                              hint: "Enter Department Name",
+                              isRequired: true,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              )
-            ),
-
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: isLandscape ? 200 : 24,
-                vertical: 10,
               ),
-              child: BottomButton(
-                onPressed: () async {
-                  await supabase.from("PROGRAM").insert({
-                    'program_name': programNameController.text,
-                    'acronym': acronymController.text,
-                    'department': departmentController.text,
-                  });
 
-                  if (context.mounted) {
-                    Navigator.pop(context);
-                  }
-                },
-                text: "Add New Program",
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: isLandscape ? 200 : 24,
+                  vertical: 10,
+                ),
+                child: BottomButton(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      // Show circular progress indicator
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return PopScope(
+                            canPop: false,
+                            child: Center(
+                              child: const CircularProgressIndicator(),
+                            ),
+                          );
+                        },
+                      );
+
+                      await supabase.from("PROGRAM").insert({
+                        'program_name': programNameController.text,
+                        'acronym': acronymController.text,
+                        'department': departmentController.text,
+                      });
+
+                      if (context.mounted) {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      }
+                    }
+                  },
+                  text: "Add New Program",
+                ),
               ),
-            ),
-          ],
-        )
+            ],
+          ),
+        ),
       ),
     );
   }

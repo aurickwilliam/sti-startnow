@@ -6,6 +6,7 @@ class TextInput extends StatefulWidget {
   final TextEditingController controller;
   final String label;
   final String hint;
+  final bool isEmail; // Kapag email, huwag iapply ang text capitalization
   final bool isRequired;
   final bool isEnable;
   final bool hasFormat; // Kapag may specific format ang field (e.g. Email)
@@ -21,12 +22,13 @@ class TextInput extends StatefulWidget {
     required this.controller,
     required this.label,
     this.hint = "",
+    this.isEmail = false,
     this.isRequired = false,
     this.isEnable = true,
     this.hasFormat = false,
     this.invalidCheck,
     this.requiredMessage,
-    this.invalidMessage,    
+    this.invalidMessage,
     this.isParentGuardian = false,
     this.ifOtherInputHasValue,
   }) {
@@ -90,7 +92,10 @@ class _TextInputState extends State<TextInput> {
           focusNode: focusNode,
           enabled: widget.isEnable,
           controller: widget.controller,
-
+          textCapitalization:
+              widget.isEmail
+                  ? TextCapitalization.none
+                  : TextCapitalization.sentences,
           decoration: InputDecoration(
             border: OutlineInputBorder(),
             focusedBorder: OutlineInputBorder(
@@ -145,7 +150,9 @@ class _TextInputState extends State<TextInput> {
                     bool isInvalid;
                     String message;
 
-                    if (widget.isRequired && widget.isParentGuardian && !widget.ifOtherInputHasValue!()) {
+                    if (widget.isRequired &&
+                        widget.isParentGuardian &&
+                        !widget.ifOtherInputHasValue!()) {
                       return null;
                     }
 

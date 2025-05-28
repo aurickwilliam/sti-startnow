@@ -16,6 +16,7 @@ class EditProgramRowPage extends StatefulWidget {
 }
 
 class _EditProgramRowPageState extends State<EditProgramRowPage> {
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController programNameController = TextEditingController();
   final TextEditingController acronymController = TextEditingController();
   final TextEditingController departmentController = TextEditingController();
@@ -39,103 +40,134 @@ class _EditProgramRowPageState extends State<EditProgramRowPage> {
       resizeToAvoidBottomInset: true,
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.only(
-                  bottom: 20
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.only(bottom: 20),
+                  child: Column(
+                    children: [
+                      PageAppBar(title: "Edit Information"),
+
+                      const SizedBox(height: 10),
+
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: isLandscape ? 200 : 24,
+                          vertical: 10,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                TextInput(
+                                  controller: programNameController,
+                                  label: "Program Name:",
+                                  isRequired: true,
+                                ),
+
+                                const SizedBox(height: 10),
+
+                                TextInput(
+                                  controller: acronymController,
+                                  label: "Acronym:",
+                                  isRequired: true,
+                                ),
+
+                                const SizedBox(height: 10),
+
+                                TextInput(
+                                  controller: departmentController,
+                                  label: "Department:",
+                                  isRequired: true,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: isLandscape ? 200 : 24,
+                  vertical: 10,
                 ),
                 child: Column(
                   children: [
-                    PageAppBar(title: "Edit Information"),
+                    BottomButton(
+                      // Edit button
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          // Show circular progress indicator
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return PopScope(
+                                canPop: false,
+                                child: Center(
+                                  child: const CircularProgressIndicator(),
+                                ),
+                              );
+                            },
+                          );
+                          await supabase
+                              .from("PROGRAM")
+                              .update({
+                                'program_name': programNameController.text,
+                                'acronym': acronymController.text,
+                                'department': departmentController.text,
+                              })
+                              .eq('id', id);
+
+                          if (context.mounted) {
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                          }
+                        }
+                      },
+                      text: "Save",
+                    ),
 
                     const SizedBox(height: 10),
 
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: isLandscape ? 200 : 24,
-                        vertical: 10,
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TextInput(
-                                controller: programNameController,
-                                label: "Program Name:",
+                    DeleteButton(
+                      onPressed: () async {
+                        // Show circular progress indicator
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return PopScope(
+                              canPop: false,
+                              child: Center(
+                                child: const CircularProgressIndicator(),
                               ),
+                            );
+                          },
+                        );
 
-                              const SizedBox(height: 10),
+                        await supabase.from("PROGRAM").delete().eq('id', id);
 
-                              TextInput(
-                                controller: acronymController,
-                                label: "Acronym:",
-                              ),
-
-                              const SizedBox(height: 10),
-
-                              TextInput(
-                                controller: departmentController,
-                                label: "Department:",
-                              ),
-
-                              const SizedBox(height: 10),
-                            ],
-                          ),
-                        ],
-                      ),
+                        if (context.mounted) {
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        }
+                      },
+                      text: "Delete",
                     ),
                   ],
                 ),
-              )
-            ),
-
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: isLandscape ? 200 : 24,
-                vertical: 10,
               ),
-              child: Column(
-                children: [
-                  BottomButton(
-                    // Edit button
-                    onPressed: () async {
-                      await supabase
-                          .from("PROGRAM")
-                          .update({
-                            'program_name': programNameController.text,
-                            'acronym': acronymController.text,
-                            'department': departmentController.text,
-                          })
-                          .eq('id', id);
-
-                      if (context.mounted) {
-                        Navigator.pop(context);
-                      }
-                    },
-                    text: "Save",
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  DeleteButton(
-                    onPressed: () async {
-                      await supabase.from("PROGRAM").delete().eq('id', id);
-
-                      if (context.mounted) {
-                        Navigator.pop(context);
-                      }
-                    },
-                    text: "Delete",
-                  ),
-                ],
-              ),
-            ),
-          ],
-        )
+            ],
+          ),
+        ),
       ),
     );
   }

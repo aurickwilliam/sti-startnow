@@ -31,6 +31,8 @@ dependencies:
   internet_connection_checker_plus: ^2.7.2
   fluttertoast: ^8.2.12
   fl_chart: ^1.0.0
+  get: ^4.7.2
+  connectivity_plus: ^6.1.4
   
 dev_dependencies:
   flutter_test:
