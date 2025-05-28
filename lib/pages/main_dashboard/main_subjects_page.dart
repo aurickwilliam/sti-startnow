@@ -166,10 +166,10 @@ class _MainSubjectsPageState extends State<MainSubjectsPage> {
                     ),
 
                     Text(
-                      "No Enrollees Data",
+                      "No Current Subjects",
                       style: GoogleFonts.roboto(
                         color: AppTheme.colors.black,
-                        fontSize: 20,
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
