@@ -1,3 +1,4 @@
+import 'package:image_picker/image_picker.dart';
 import 'package:sti_startnow/models/class_schedule.dart';
 
 class Enrollment {
@@ -10,7 +11,8 @@ class Enrollment {
   String? section;
   String? enrollmentStatus;
   List<ClassSchedule> subjectList = [];
-  String? receiptImg; // File name palang
+  XFile? receiptImg; // During enrollment
+  String? receiptUrl; // Grab from enrollment db
 
   // Gawa ba model para sa financial statement?
   String? paymentLocation;

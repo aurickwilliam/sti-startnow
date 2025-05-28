@@ -219,6 +219,29 @@ class DatabaseProvider extends ChangeNotifier {
       }
       _student.enrollment.section = "Irregular";
     }
+
+    // Upload receipt image
+    final bytes = await _student.enrollment.receiptImg!.readAsBytes();
+    final fileExt = _student.enrollment.receiptImg!.path.split('.').last;
+    final fileName = '${_student.enrollmentID}.$fileExt';
+    final filePath = 'receipts/$fileName';
+    await supabase.storage
+        .from('startnow')
+        .uploadBinary(
+          filePath,
+          bytes,
+          fileOptions: FileOptions(
+            contentType: _student.enrollment.receiptImg!.mimeType,
+          ),
+        );
+    _student.enrollment.receiptUrl = await supabase.storage
+        .from('startnow')
+        .createSignedUrl(filePath, 60 * 60 * 24 * 365 * 10);
+
+    await supabase
+        .from("ENROLLMENT")
+        .update({'receipt_url': _student.enrollment.receiptUrl})
+        .eq('enrollment_id', _student.enrollmentID!);
   }
 
   // Create new student account
@@ -480,6 +503,29 @@ class DatabaseProvider extends ChangeNotifier {
         .from("STUDENT")
         .update({'current_enrollment': _student.enrollmentID})
         .eq('student_id', studentNumber);
+
+    // Upload receipt image
+    final bytes = await _student.enrollment.receiptImg!.readAsBytes();
+    final fileExt = _student.enrollment.receiptImg!.path.split('.').last;
+    final fileName = '${_student.enrollmentID}.$fileExt';
+    final filePath = 'receipts/$fileName';
+    await supabase.storage
+        .from('startnow')
+        .uploadBinary(
+          filePath,
+          bytes,
+          fileOptions: FileOptions(
+            contentType: _student.enrollment.receiptImg!.mimeType,
+          ),
+        );
+    _student.enrollment.receiptUrl = await supabase.storage
+        .from('startnow')
+        .createSignedUrl(filePath, 60 * 60 * 24 * 365 * 10);
+
+    await supabase
+        .from("ENROLLMENT")
+        .update({'receipt_url': _student.enrollment.receiptUrl})
+        .eq('enrollment_id', _student.enrollmentID!);
 
     // Academic background info
     final school = _student.currentLastSchool;
