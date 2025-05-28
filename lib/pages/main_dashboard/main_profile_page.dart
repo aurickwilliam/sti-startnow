@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:sti_startnow/pages/components/buttons/custom_outline_button.dart';
 import 'package:sti_startnow/pages/components/information_tile.dart';
 import 'package:sti_startnow/pages/main_dashboard/components/main_profile_card.dart';
 import 'package:sti_startnow/pages/main_dashboard/components/main_profile_information_card.dart';
-import 'package:sti_startnow/pages/main_dashboard/list_tor_page.dart';
 import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
