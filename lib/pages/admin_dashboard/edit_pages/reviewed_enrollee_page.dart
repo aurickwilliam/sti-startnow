@@ -283,12 +283,14 @@ class _ReviewedEnrolleePageState extends State<ReviewedEnrolleePage> {
                             builder:
                                 (context) => FullscreenImagePage(
                                   imgPath: widget.student.receiptImg,
+                                  imgUrl: widget.student.enrollment.receiptUrl,
                                 ),
                           ),
                         );
                       },
                       child: ReceiptContainer(
                         imgPath: widget.student.receiptImg,
+                        imgUrl: widget.student.enrollment.receiptUrl,
                       ),
                     ),
 

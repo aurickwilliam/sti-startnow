@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/buttons/custom_outline_button.dart';
 import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
@@ -23,34 +24,58 @@ class ReservationFeePage extends StatefulWidget {
 
 class _ReservationFeePageState extends State<ReservationFeePage> {
   late DatabaseProvider db;
+  late Student student;
 
-  File? reservationImg;
+  XFile? reservationImg;
   File? reservationImgName;
 
   // Asynchronous Function to access the gallery and return an image
   // Reservation Photo
   Future pickReservationPhotoFromGallery() async {
-    final returnedImage = await ImagePicker().pickImage(
-      source: ImageSource.gallery,
-    );
+    reservationImg = await ImagePicker().pickImage(source: ImageSource.gallery);
 
-    setState(() {
-      reservationImg = File(returnedImage!.path);
-      reservationImgName = File(returnedImage.name);
-    });
+    if (reservationImg != null) {
+      setState(() {
+        reservationImgName = File(reservationImg!.name);
+      });
+    }
   }
 
   Future<void> _finishNewStudentEnrollment() async {
-    // Show circular progress indicator
-    showDialog(
-      context: context,
-      builder: (context) {
-        return PopScope(
-          canPop: false,
-          child: Center(child: const CircularProgressIndicator()),
+    // Check image file size
+    int fileSize = await reservationImg!.length(); // bytes toh
+    const int maxSizeInBytes = 10 * 1024 * 1024;
+
+    if (fileSize > maxSizeInBytes) {
+      if (mounted) {
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return CustomBottomSheet(
+              isError: true,
+              title: "File Size",
+              subtitle: "Image needs to be below 10MB",
+            );
+          },
         );
-      },
-    );
+      }
+      return;
+    }
+
+    student.enrollment.receiptImg = reservationImg;
+
+    if (mounted) {
+      // Show circular progress indicator
+      showDialog(
+        context: context,
+        builder: (context) {
+          return PopScope(
+            canPop: false,
+            child: Center(child: const CircularProgressIndicator()),
+          );
+        },
+      );
+    }
 
     // Create student account
     try {
@@ -87,7 +112,7 @@ class _ReservationFeePageState extends State<ReservationFeePage> {
   @override
   void initState() {
     db = context.read<DatabaseProvider>();
-
+    student = db.student;
     super.initState();
   }
 

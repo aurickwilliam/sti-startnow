@@ -230,12 +230,14 @@ class _UnverifiedEnrolleePageState extends State<UnverifiedEnrolleePage> {
                             builder:
                                 (context) => FullscreenImagePage(
                                   imgPath: widget.student.receiptImg,
+                                  imgUrl: widget.student.enrollment.receiptUrl,
                                 ),
                           ),
                         );
                       },
                       child: ReceiptContainer(
                         imgPath: widget.student.receiptImg,
+                        imgUrl: widget.student.enrollment.receiptUrl,
                       ),
                     ),
 

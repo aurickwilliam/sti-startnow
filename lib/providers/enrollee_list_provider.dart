@@ -104,7 +104,7 @@ class EnrolleeListProvider extends ChangeNotifier {
           personal_email,
           mobile,
           PROGRAM(program_name, acronym),
-          ENROLLMENT!STUDENT_current_enrollment_fkey(enrollment_id ,enrollment_status, VERIFICATION_LOG(log_time, admin_name, comment))
+          ENROLLMENT!STUDENT_current_enrollment_fkey(enrollment_id, enrollment_status, receipt_url,VERIFICATION_LOG(log_time, admin_name, comment))
           ''');
 
     _enrolleeList = [];
@@ -126,7 +126,7 @@ class EnrolleeListProvider extends ChangeNotifier {
           student.enrollmentID = enrollee['ENROLLMENT']['enrollment_id'];
           student.enrollment.enrollmentStatus =
               enrollee['ENROLLMENT']['enrollment_status'];
-
+          student.enrollment.receiptUrl = enrollee['ENROLLMENT']['receipt_url'];
           if (enrollee['ENROLLMENT']['VERIFICATION_LOG'].isNotEmpty &&
               student.enrollment.enrollmentStatus != "Unverified") {
             // Get only the latest verification log data

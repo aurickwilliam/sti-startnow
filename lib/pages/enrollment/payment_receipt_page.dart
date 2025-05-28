@@ -27,19 +27,18 @@ class _PaymentReceiptPageState extends State<PaymentReceiptPage> {
   late Student student;
   late final String name;
 
-  File? selectedImage;
+  XFile? selectedImage;
   File? selectedImageName;
 
   // Asynchronous Function to access the gallery and return an image
   Future pickImageFromGallery() async {
-    final returnedImage = await ImagePicker().pickImage(
-      source: ImageSource.gallery,
-    );
+    selectedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
 
-    setState(() {
-      selectedImage = File(returnedImage!.path);
-      selectedImageName = File(returnedImage.name);
-    });
+    if (selectedImage != null) {
+      setState(() {
+        selectedImageName = File(selectedImage!.name);
+      });
+    }
   }
 
   @override
@@ -48,6 +47,38 @@ class _PaymentReceiptPageState extends State<PaymentReceiptPage> {
     db = context.read<DatabaseProvider>();
     student = db.student;
     name = student.fullName;
+  }
+
+  // Check file size ng selected image
+  Future<void> checkImageSize() async {
+    // Check image file size
+    int fileSize = await selectedImage!.length(); // bytes toh
+    const int maxSizeInBytes = 10 * 1024 * 1024;
+
+    if (fileSize > maxSizeInBytes) {
+      if (mounted) {
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return CustomBottomSheet(
+              isError: true,
+              title: "File Size",
+              subtitle: "Image needs to be below 10MB",
+            );
+          },
+        );
+      }
+      return;
+    }
+
+    student.enrollment.receiptImg = selectedImage;
+
+    if (mounted) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const StudentInformationPage()),
+      );
+    }
   }
 
   @override
@@ -152,14 +183,8 @@ class _PaymentReceiptPageState extends State<PaymentReceiptPage> {
                   context: context,
                   builder: (builder) {
                     return CustomBottomSheet(
-                      submitFunc: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder:
-                                (context) => const StudentInformationPage(),
-                          ),
-                        );
+                      submitFunc: () async {
+                        await checkImageSize();
                       },
                     );
                   },
