@@ -100,7 +100,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
           labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
           backgroundColor: AppTheme.colors.white,
           indicatorColor: Colors.transparent,
-          height: 40,
+          height: 50,
         ),
       ),
 
