@@ -10,24 +10,23 @@ class EnrollmentSchedule extends StatefulWidget {
 }
 
 class _EnrollmentScheduleState extends State<EnrollmentSchedule> {
-
   bool isRegular = true;
   bool isIrregular = false;
-  
-  String regularFrom = "mm/dd/yy";
-  String regularTo = "mm/dd/yy";
 
-  String irregularFrom = "00/11/22";
-  String irregularTo = "00/11/22";
+  String regularFrom = "05/29/25";
+  String regularTo = "06/02/25";
 
-  void changeToRegular(){
+  String irregularFrom = "05/29/25";
+  String irregularTo = "05/31/25";
+
+  void changeToRegular() {
     setState(() {
       isRegular = true;
       isIrregular = false;
     });
   }
 
-  void changeToIrregular(){
+  void changeToIrregular() {
     setState(() {
       isRegular = false;
       isIrregular = true;
@@ -51,16 +50,14 @@ class _EnrollmentScheduleState extends State<EnrollmentSchedule> {
       width: double.infinity,
       child: Column(
         children: [
-          
           // Buttons for switching from regular to irregular
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             child: Row(
               children: [
-            
                 // Regular
                 TextButton(
-                  onPressed: changeToRegular, 
+                  onPressed: changeToRegular,
                   style: TextButton.styleFrom(
                     backgroundColor: isRegular ? AppTheme.colors.primary : null,
                     shape: RoundedRectangleBorder(
@@ -70,18 +67,22 @@ class _EnrollmentScheduleState extends State<EnrollmentSchedule> {
                   child: Text(
                     "Regular",
                     style: GoogleFonts.roboto(
-                      color: isRegular ? AppTheme.colors.white : AppTheme.colors.primary,
+                      color:
+                          isRegular
+                              ? AppTheme.colors.white
+                              : AppTheme.colors.primary,
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),
-                  )
+                  ),
                 ),
-            
+
                 // Irregular
                 TextButton(
-                  onPressed: changeToIrregular, 
+                  onPressed: changeToIrregular,
                   style: TextButton.styleFrom(
-                    backgroundColor: isIrregular ? AppTheme.colors.primary : null,
+                    backgroundColor:
+                        isIrregular ? AppTheme.colors.primary : null,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -89,9 +90,12 @@ class _EnrollmentScheduleState extends State<EnrollmentSchedule> {
                   child: Text(
                     "Irregular",
                     style: GoogleFonts.roboto(
-                      color: isIrregular ? AppTheme.colors.white : AppTheme.colors.primary,
+                      color:
+                          isIrregular
+                              ? AppTheme.colors.white
+                              : AppTheme.colors.primary,
                       fontSize: 16,
-                      fontWeight: FontWeight.w500
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
@@ -106,7 +110,6 @@ class _EnrollmentScheduleState extends State<EnrollmentSchedule> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-            
                 // Start of Enrollment
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,10 +154,9 @@ class _EnrollmentScheduleState extends State<EnrollmentSchedule> {
                     ),
                   ],
                 ),
-            
               ],
             ),
-          )
+          ),
         ],
       ),
     );
