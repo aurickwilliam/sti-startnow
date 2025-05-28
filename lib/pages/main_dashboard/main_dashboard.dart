@@ -91,7 +91,7 @@ class _MainDashboardState extends State<MainDashboard> {
           labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
           backgroundColor: AppTheme.colors.white,
           indicatorColor: Colors.transparent,
-          height: 40,
+          height: 50,
         ),
       ),
 

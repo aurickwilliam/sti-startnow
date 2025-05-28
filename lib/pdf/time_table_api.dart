@@ -172,11 +172,11 @@ class TimeTableApi {
                 final height = getHeight(schedule.startTime, schedule.endTime);
 
                 
-                print("SHIBALL: ${schedule.subject}");
-                print("SHIBALL: ${schedule.startTime}");
-                print("SHIBALL: ${schedule.endTime}");
-                print("SHIBALL: ${schedule.day}");
-                print("");
+                // print("SHIBALL: ${schedule.subject}");
+                // print("SHIBALL: ${schedule.startTime}");
+                // print("SHIBALL: ${schedule.endTime}");
+                // print("SHIBALL: ${schedule.day}");
+                // print("");
 
 
                 return Positioned(
