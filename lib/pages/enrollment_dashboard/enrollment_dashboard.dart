@@ -175,9 +175,9 @@ class _EnrollmentDashboardState extends State<EnrollmentDashboard> {
                             "Welcome Future STIer's",
                             style: GoogleFonts.roboto(
                               color: AppTheme.colors.primary,
-                              fontSize: 24,
+                              fontSize: 22,
                               fontWeight: FontWeight.bold,
-                            ),
+                            )
                           ),
 
                           // Hamburger Menu for the Drawer

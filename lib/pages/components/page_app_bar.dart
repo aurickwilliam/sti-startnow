@@ -21,7 +21,7 @@ class PageAppBar extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             child: Row(
               children: [
                 hasBackButton
@@ -49,7 +49,7 @@ class PageAppBar extends StatelessWidget {
               ],
             ),
           ),
-          Divider(height: 10, thickness: 3),
+          Divider(height: 5, thickness: 3),
         ],
       ),
     );
