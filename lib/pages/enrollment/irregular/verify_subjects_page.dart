@@ -95,84 +95,93 @@ class _VerifySubjectsPageState extends State<VerifySubjectsPage> {
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              EnrollmentHeader(
-                step1: true,
-                step2: true,
-                step3: true,
-                step4: false,
-                title: "Enrollment",
-              ),
-
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-                    child: Column(
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.only(
+                  bottom: 20
+                ),
+                child: Column(
+                  children: [
+                    EnrollmentHeader(
+                      step1: true,
+                      step2: true,
+                      step3: true,
+                      step4: false,
+                      title: "Enrollment",
+                    ),
+              
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Schedule:",
-                              style: GoogleFonts.roboto(
-                                color: AppTheme.colors.primary,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Schedule:",
+                                    style: GoogleFonts.roboto(
+                                      color: AppTheme.colors.primary,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+              
+                                  Text(
+                                    "Units: $totalUnits",
+                                    style: GoogleFonts.roboto(
+                                      color: AppTheme.colors.primary,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-
-                            Text(
-                              "Units: $totalUnits",
-                              style: GoogleFonts.roboto(
-                                color: AppTheme.colors.primary,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+              
+                              Divider(height: 10),
+              
+                              CustomDataTable(
+                                columnNames: columnNames,
+                                dataTableValues: dataTableValues,
                               ),
-                            ),
-                          ],
+              
+                              const SizedBox(height: 50),
+                            ],
+                          ),
                         ),
-
-                        Divider(height: 10),
-
-                        CustomDataTable(
-                          columnNames: columnNames,
-                          dataTableValues: dataTableValues,
-                        ),
-
-                        const SizedBox(height: 50),
                       ],
                     ),
-                  ),
-
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: isLandscape ? 200 : 24,
-                      vertical: 10,
-                    ),
-                    child: BackNextButton(
-                      nextPressed: () {
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (builder) {
-                            return CustomBottomSheet(
-                              submitFunc: () async {
-                                await registerNewEnrollment();
-                              },
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ],
-          ),
+            ),
+
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: isLandscape ? 200 : 24,
+                vertical: 10,
+              ),
+              child: BackNextButton(
+                nextPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (builder) {
+                      return CustomBottomSheet(
+                        submitFunc: () async {
+                          await registerNewEnrollment();
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
