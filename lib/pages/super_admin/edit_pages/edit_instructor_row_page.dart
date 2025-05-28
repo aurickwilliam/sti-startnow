@@ -16,6 +16,7 @@ class EditInstructorRowPage extends StatefulWidget {
 }
 
 class _EditInstructorRowPageState extends State<EditInstructorRowPage> {
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController departmentController = TextEditingController();
@@ -41,108 +42,156 @@ class _EditInstructorRowPageState extends State<EditInstructorRowPage> {
       resizeToAvoidBottomInset: true,
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.only(
-                  bottom: 20
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.only(bottom: 20),
+                  child: Column(
+                    children: [
+                      PageAppBar(title: "Edit Information"),
+
+                      const SizedBox(height: 10),
+
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: isLandscape ? 200 : 24,
+                          vertical: 10,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextInput(
+                              controller: firstNameController,
+                              label: "First Name:",
+                              isRequired: true,
+                            ),
+
+                            const SizedBox(height: 10),
+
+                            TextInput(
+                              controller: lastNameController,
+                              label: "Last Name:",
+                              isRequired: true,
+                            ),
+
+                            const SizedBox(height: 10),
+
+                            TextInput(
+                              controller: departmentController,
+                              label: "Department:",
+                              isRequired: true,
+                            ),
+
+                            const SizedBox(height: 10),
+
+                            TextInput(
+                              controller: emailAddressController,
+                              label: "Email Address:",
+                              isEmail: true,
+                              isRequired: true,
+                              hasFormat: true,
+                              invalidCheck: (input) {
+                                RegExp emailPattern = RegExp(
+                                  r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                                );
+
+                                if (emailPattern.hasMatch(input)) {
+                                  return false;
+                                }
+                                return true;
+                              },
+                              requiredMessage: "Please enter an email address",
+                              invalidMessage:
+                                  "Please enter a valid email address",
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: isLandscape ? 200 : 24,
+                  vertical: 10,
                 ),
                 child: Column(
                   children: [
-                    PageAppBar(title: "Edit Information"),
+                    BottomButton(
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          // Show circular progress indicator
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return PopScope(
+                                canPop: false,
+                                child: Center(
+                                  child: const CircularProgressIndicator(),
+                                ),
+                              );
+                            },
+                          );
+
+                          await supabase
+                              .from("PROFESSOR")
+                              .update({
+                                'prof_fname': firstNameController.text,
+                                'prof_lname': lastNameController.text,
+                                'department': departmentController.text,
+                                'email': emailAddressController.text,
+                              })
+                              .eq('prof_id', profID);
+
+                          if (context.mounted) {
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                          }
+                        }
+                      },
+                      text: "Save",
+                    ),
 
                     const SizedBox(height: 10),
 
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: isLandscape ? 200 : 24,
-                        vertical: 10,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          TextInput(
-                            controller: firstNameController,
-                            label: "First Name:",
-                          ),
+                    DeleteButton(
+                      onPressed: () async {
+                        // Show circular progress indicator
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return PopScope(
+                              canPop: false,
+                              child: Center(
+                                child: const CircularProgressIndicator(),
+                              ),
+                            );
+                          },
+                        );
 
-                          const SizedBox(height: 10),
+                        await supabase
+                            .from("PROFESSOR")
+                            .delete()
+                            .eq('prof_id', profID);
 
-                          TextInput(
-                            controller: lastNameController,
-                            label: "Last Name:",
-                          ),
-
-                          const SizedBox(height: 10),
-
-                          TextInput(
-                            controller: departmentController,
-                            label: "Department:",
-                          ),
-
-                          const SizedBox(height: 10),
-
-                          TextInput(
-                            controller: emailAddressController,
-                            label: "Email Address:",
-                          ),
-
-                          const SizedBox(height: 10),
-                        ],
-                      ),
+                        if (context.mounted) {
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        }
+                      },
+                      text: "Delete",
                     ),
                   ],
                 ),
-              )
-            ),
-
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: isLandscape ? 200 : 24,
-                vertical: 10,
               ),
-              child: Column(
-                children: [
-                  BottomButton(
-                    onPressed: () async {
-                      await supabase
-                          .from("PROFESSOR")
-                          .update({
-                            'prof_fname': firstNameController.text,
-                            'prof_lname': lastNameController.text,
-                            'department': departmentController.text,
-                            'email': emailAddressController.text,
-                          })
-                          .eq('prof_id', profID);
-
-                      if (context.mounted) {
-                        Navigator.pop(context);
-                      }
-                    },
-                    text: "Save",
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  DeleteButton(
-                    onPressed: () async {
-                      await supabase
-                          .from("PROFESSOR")
-                          .delete()
-                          .eq('prof_id', profID);
-
-                      if (context.mounted) {
-                        Navigator.pop(context);
-                      }
-                    },
-                    text: "Delete",
-                  ),
-                ],
-              ),
-            ),
-          ],
-        )
+            ],
+          ),
+        ),
       ),
     );
   }

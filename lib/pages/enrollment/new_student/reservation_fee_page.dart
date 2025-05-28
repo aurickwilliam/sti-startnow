@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/buttons/custom_outline_button.dart';
@@ -52,25 +51,6 @@ class _ReservationFeePageState extends State<ReservationFeePage> {
         );
       },
     );
-
-    // Check kung may internet before any interaction
-    final isConnected = await InternetConnection().hasInternetAccess;
-    if (!isConnected) {
-      if (mounted) {
-        Navigator.pop(context);
-        showModalBottomSheet(
-          context: context,
-          builder: (context) {
-            return CustomBottomSheet(
-              isError: true,
-              title: "Your Offline",
-              subtitle: "No internet connection, reconnect\nand try again",
-            );
-          },
-        );
-      }
-      return;
-    }
 
     // Create student account
     try {

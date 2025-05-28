@@ -14,6 +14,7 @@ class AddInstructorPage extends StatefulWidget {
 }
 
 class _AddInstructorPageState extends State<AddInstructorPage> {
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController departmentController = TextEditingController();
@@ -29,99 +30,133 @@ class _AddInstructorPageState extends State<AddInstructorPage> {
       resizeToAvoidBottomInset: true,
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.only(
-                  bottom: 20
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    PageAppBar(title: "Instructors"),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.only(bottom: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      PageAppBar(title: "Instructors"),
 
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: isLandscape ? 200 : 24,
-                        vertical: 10,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Add New Instructor",
-                            style: GoogleFonts.roboto(
-                              color: AppTheme.colors.primary,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: isLandscape ? 200 : 24,
+                          vertical: 10,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Add New Instructor",
+                              style: GoogleFonts.roboto(
+                                color: AppTheme.colors.primary,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
 
-                          const SizedBox(height: 20),
+                            const SizedBox(height: 20),
 
-                          TextInput(
-                            controller: firstNameController,
-                            label: "First Name:",
-                            hint: "Enter First Name",
-                          ),
+                            TextInput(
+                              controller: firstNameController,
+                              label: "First Name:",
+                              hint: "Enter First Name",
+                              isRequired: true,
+                            ),
 
-                          const SizedBox(height: 10),
+                            const SizedBox(height: 10),
 
-                          TextInput(
-                            controller: lastNameController,
-                            label: "Last Name:",
-                            hint: "Enter Last Name",
-                          ),
+                            TextInput(
+                              controller: lastNameController,
+                              label: "Last Name:",
+                              hint: "Enter Last Name",
+                              isRequired: true,
+                            ),
 
-                          const SizedBox(height: 10),
+                            const SizedBox(height: 10),
 
-                          TextInput(
-                            controller: departmentController,
-                            label: "Department:",
-                            hint: "Enter Department Name",
-                          ),
+                            TextInput(
+                              controller: departmentController,
+                              label: "Department:",
+                              hint: "Enter Department Name",
+                              isRequired: true,
+                            ),
 
-                          const SizedBox(height: 10),
+                            const SizedBox(height: 10),
 
-                          TextInput(
-                            controller: emailAddressController,
-                            label: "Email Address:",
-                            hint: "example@domain.com",
-                          ),
+                            TextInput(
+                              controller: emailAddressController,
+                              label: "Email Address:",
+                              hint: "example@domain.com",
+                              isEmail: true,
+                              isRequired: true,
+                              hasFormat: true,
+                              invalidCheck: (input) {
+                                RegExp emailPattern = RegExp(
+                                  r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                                );
 
-                          const SizedBox(height: 30),
-                        ],
+                                if (emailPattern.hasMatch(input)) {
+                                  return false;
+                                }
+                                return true;
+                              },
+                              requiredMessage: "Please enter an email address",
+                              invalidMessage:
+                                  "Please enter a valid email address",
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              )
-            ),
-
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: isLandscape ? 200 : 24,
-                vertical: 10,
               ),
-              child: BottomButton(
-                onPressed: () async {
-                  await supabase.from("PROFESSOR").upsert({
-                    'prof_fname': firstNameController.text,
-                    'prof_lname': lastNameController.text,
-                    'department': departmentController.text,
-                    'email': emailAddressController.text,
-                  });
 
-                  if (context.mounted) {
-                    Navigator.pop(context);
-                  }
-                },
-                text: "Add New Instructor",
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: isLandscape ? 200 : 24,
+                  vertical: 10,
+                ),
+                child: BottomButton(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      // Show circular progress indicator
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return PopScope(
+                            canPop: false,
+                            child: Center(
+                              child: const CircularProgressIndicator(),
+                            ),
+                          );
+                        },
+                      );
+
+                      await supabase.from("PROFESSOR").insert({
+                        'prof_fname': firstNameController.text,
+                        'prof_lname': lastNameController.text,
+                        'department': departmentController.text,
+                        'email': emailAddressController.text,
+                      });
+
+                      if (context.mounted) {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      }
+                    }
+                  },
+                  text: "Add New Instructor",
+                ),
               ),
-            ),
-          ],
-        )
+            ],
+          ),
+        ),
       ),
     );
   }

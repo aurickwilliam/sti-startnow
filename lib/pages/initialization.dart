@@ -3,7 +3,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/enrollment_dashboard.dart';
-import 'package:sti_startnow/pages/internet_check/no_internet_page.dart';
+import 'package:sti_startnow/pages/internet_check/loading_page.dart';
 import 'package:sti_startnow/pages/welcome/welcome_page.dart';
 import 'package:sti_startnow/providers/database_provider.dart';
 
@@ -40,7 +40,7 @@ class _InitializationState extends State<Initialization> {
                     : const EnrollmentDashboard();
               }
             }
-            return NoInternetPage();
+            return const LoadingPage();
           },
         );
   }
@@ -49,7 +49,6 @@ class _InitializationState extends State<Initialization> {
   Future<bool> _initialize() async {
     try {
       await db.initializePrograms();
-
       return true; // success
     } catch (error) {
       return false; // failure

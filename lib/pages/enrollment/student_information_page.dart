@@ -125,10 +125,11 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
       db.getCurrentSections();
       destination = const SelectSectionPage();
     } else {
+      db.getProgramSections();
       destination = const SelectSubjectPage();
     }
 
-    student.enrollment.academicStatus = studentAcademicTypeController.text;
+    student.enrollment.academicStatus = enroll.enrollingStatus;
 
     Navigator.push(
       context,
@@ -289,8 +290,10 @@ class _StudentInformationPageState extends State<StudentInformationPage> {
                             setState(() {
                               newYearLevelValue = newYearLevel[index];
                               newYearLevelEmpty = false;
-                              student.enrollment.section = null;
-                              student.enrollment.subjectList = null;
+                              if (enroll.enrollingStatus == 'Regular') {
+                                student.enrollment.section = null;
+                                student.enrollment.subjectList = [];
+                              }
                             });
                           },
                           isError: newYearLevelEmpty,

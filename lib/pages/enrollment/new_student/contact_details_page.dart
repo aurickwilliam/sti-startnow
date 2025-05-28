@@ -58,9 +58,7 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
           children: [
             Expanded(
               child: SingleChildScrollView(
-                padding: EdgeInsets.only(
-                  bottom: 20
-                ),
+                padding: EdgeInsets.only(bottom: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -71,7 +69,7 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
                       step4: false,
                       title: "Personal Information",
                     ),
-              
+
                     Padding(
                       padding: EdgeInsets.symmetric(
                         horizontal: isLandscape ? 200 : 24,
@@ -90,9 +88,9 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-              
+
                             const SizedBox(height: 10),
-              
+
                             Text(
                               "Fill up the necessary information:",
                               style: GoogleFonts.roboto(
@@ -101,9 +99,9 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-              
+
                             const SizedBox(height: 10),
-              
+
                             // Telephone No
                             NumberInput(
                               controller: telephoneController,
@@ -112,9 +110,9 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
                               isRequired: false,
                               isEnable: true,
                             ),
-              
+
                             const SizedBox(height: 10),
-              
+
                             // Mobile Phone No
                             NumberInput(
                               controller: mobileController,
@@ -125,7 +123,7 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
                               hasFormat: true,
                               invalidCheck: (input) {
                                 RegExp mobilePattern = RegExp(r'^09[\d]{9}$');
-              
+
                                 if (mobilePattern.hasMatch(input)) {
                                   return false;
                                 } else {
@@ -135,13 +133,14 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
                               requiredMessage: "Please enter your mobile no.",
                               invalidMessage: "Please enter a valid mobile no.",
                             ),
-              
+
                             const SizedBox(height: 10),
-              
+
                             TextInput(
                               controller: emailController,
                               label: "Email Address:",
                               hint: "example@domain.com",
+                              isEmail: true,
                               isRequired: true,
                               isEnable: true,
                               hasFormat: true,
@@ -149,14 +148,16 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
                                 RegExp emailPattern = RegExp(
                                   r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
                                 );
-              
+
                                 if (emailPattern.hasMatch(input)) {
                                   return false;
                                 }
                                 return true;
                               },
-                              requiredMessage: "Please enter your email address",
-                              invalidMessage: "Please enter a valid email address",
+                              requiredMessage:
+                                  "Please enter your email address",
+                              invalidMessage:
+                                  "Please enter a valid email address",
                             ),
                           ],
                         ),
@@ -170,7 +171,7 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: isLandscape ? 200 : 24,
-                vertical: 10
+                vertical: 10,
               ),
               child: BackNextButton(
                 nextPressed: () {

@@ -221,6 +221,7 @@ class _MotherInfoPageState extends State<MotherInfoPage> {
                         controller: emailController,
                         label: "Email Address:",
                         hint: "example@domain.com",
+                        isEmail: true,
                         isRequired: true,
                         isEnable: true,
                         hasFormat: true,

@@ -15,6 +15,11 @@ class DatabaseProvider extends ChangeNotifier {
     _student = Student();
   }
 
+  // Para isang beses lang ma-initialize ang user information sa umpisa ng app
+  bool _userStatus = false; // Hindi pa initialized sa umpisa
+
+  bool get userInitialized => _userStatus;
+
   Future<bool> initializeExistingStudent(int studentNumber) async {
     _student = Student();
     _student.studentNo = "0$studentNumber";
@@ -45,6 +50,8 @@ class DatabaseProvider extends ChangeNotifier {
       _student.enrollmentID = studentInfo['current_enrollment'];
       _student.program =
           "${studentInfo['PROGRAM']['program_name']} (${studentInfo['PROGRAM']['acronym']})";
+
+      _userStatus = true;
       return true; // success
     }
     return false; // fail
@@ -88,6 +95,7 @@ class DatabaseProvider extends ChangeNotifier {
             .from("SCHEDULE")
             .select('''
           SUBJECT(course_code ,course_name, units), 
+          sched_id,
           start_time, 
           end_time,
           day,
@@ -100,6 +108,7 @@ class DatabaseProvider extends ChangeNotifier {
         _student.enrollment.subjectList = [];
 
         for (final schedule in scheduleInfo) {
+          final schedID = schedule['sched_id'];
           final subjectCode = schedule['SUBJECT']['course_code'];
           final subject = schedule['SUBJECT']['course_name'];
           final units = schedule['SUBJECT']['units'].toDouble();
@@ -112,6 +121,7 @@ class DatabaseProvider extends ChangeNotifier {
               "${schedule['PROFESSOR']['prof_fname']} ${schedule['PROFESSOR']['prof_lname']}";
 
           final classSched = ClassSchedule(
+            schedID: schedID,
             subjectCode: subjectCode,
             subject: subject,
             units: units,
@@ -122,7 +132,44 @@ class DatabaseProvider extends ChangeNotifier {
             section: section,
             prof: prof,
           );
-          _student.enrollment.subjectList!.add(classSched);
+          _student.enrollment.subjectList.add(classSched);
+        }
+      } else {
+        final scheduleInfo = await supabase
+            .from("TIME_TABLE")
+            .select(
+              'SCHEDULE(sched_id, SUBJECT(course_code, course_name, units), start_time, end_time, day, room, SECTION(section_name), PROFESSOR(prof_fname, prof_lname))',
+            )
+            .eq('enrollment_id', _student.enrollmentID!);
+
+        _student.enrollment.subjectList = [];
+
+        for (final schedule in scheduleInfo) {
+          final schedID = schedule['SCHEDULE']['sched_id'];
+          final subjectCode = schedule['SCHEDULE']['SUBJECT']['course_code'];
+          final subject = schedule['SCHEDULE']['SUBJECT']['course_name'];
+          final units = schedule['SCHEDULE']['SUBJECT']['units'].toDouble();
+          final startTime = schedule['SCHEDULE']['start_time'].substring(0, 5);
+          final endTime = schedule['SCHEDULE']['end_time'].substring(0, 5);
+          final day = schedule['SCHEDULE']['day'];
+          final room = schedule['SCHEDULE']['room'];
+          final section = schedule['SCHEDULE']['SECTION']['section_name'];
+          final prof =
+              "${schedule['SCHEDULE']['PROFESSOR']['prof_fname']} ${schedule['SCHEDULE']['PROFESSOR']['prof_lname']}";
+
+          final classSched = ClassSchedule(
+            schedID: schedID,
+            subjectCode: subjectCode,
+            subject: subject,
+            units: units,
+            startTime: startTime,
+            endTime: endTime,
+            day: day,
+            room: room,
+            section: section,
+            prof: prof,
+          );
+          _student.enrollment.subjectList.add(classSched);
         }
       }
     }
@@ -161,6 +208,17 @@ class DatabaseProvider extends ChangeNotifier {
           'mobile': _student.contactNo,
         })
         .eq('student_id', int.parse(_student.studentNo!));
+
+    // Insert irregular student schedule into time table
+    if (_getSectionID == null) {
+      for (final schedule in _student.enrollment.subjectList) {
+        await supabase.from("TIME_TABLE").insert({
+          'sched_id': schedule.schedID,
+          'enrollment_id': _student.enrollmentID,
+        });
+      }
+      _student.enrollment.section = "Irregular";
+    }
   }
 
   // Create new student account
@@ -250,6 +308,16 @@ class DatabaseProvider extends ChangeNotifier {
         }).toList();
   }
 
+  // Get current sections based only on student program (for irregular)
+  void getProgramSections() {
+    final program = _getProgramID;
+
+    _enrollmentSectionList =
+        _sectionList.where((section) {
+          return section['program_id'] == program;
+        }).toList();
+  }
+
   // Get section_id of section ni student para sa enrollment
   int? get _getSectionID {
     if (student.enrollment.section == null) {
@@ -286,9 +354,30 @@ class DatabaseProvider extends ChangeNotifier {
     if (sectionName.isNotEmpty) {
       for (final schedule in _scheduleList) {
         if (schedule.section == sectionName) {
-          _student.enrollment.subjectList!.add(schedule);
+          _student.enrollment.subjectList.add(schedule);
         }
       }
+    }
+  }
+
+  // Set schedules ni irregular student
+  List<ClassSchedule> getIrregSchedules() {
+    List<ClassSchedule> irregSched = [];
+
+    for (final schedule in _scheduleList) {
+      if (enrollSections.contains(schedule.section)) {
+        irregSched.add(schedule);
+      }
+    }
+    return irregSched;
+  }
+
+  // Modify irreg student subject/sched list
+  void modifyIrregSchedule(ClassSchedule sched, bool isAdded) {
+    if (isAdded) {
+      _student.enrollment.subjectList.add(sched);
+    } else {
+      _student.enrollment.subjectList.remove(sched);
     }
   }
 
@@ -504,6 +593,8 @@ class DatabaseProvider extends ChangeNotifier {
       } else {
         _admin.role = adminInfo['role'];
       }
+
+      _userStatus = true;
     }
   }
 
@@ -513,9 +604,9 @@ class DatabaseProvider extends ChangeNotifier {
   List<PostgrestMap> get programs => _programList;
 
   // Para isang beses lang ma-initialize ang program information sa umpisa ng app
-  bool _initializationStatus = false;
+  bool _programStatus = false;
 
-  bool get programsInitialized => _initializationStatus;
+  bool get programsInitialized => _programStatus;
 
   // For superadmin page lang siguro to
   set setPrograms(List<PostgrestMap> newPrograms) {
@@ -530,7 +621,7 @@ class DatabaseProvider extends ChangeNotifier {
 
     if (res.isNotEmpty) {
       _programList = res;
-      _initializationStatus = true;
+      _programStatus = true;
     } else {
       _programList = [];
     }
@@ -591,6 +682,7 @@ class DatabaseProvider extends ChangeNotifier {
   Future<void> initializeSchedules() async {
     final res = await supabase.from("SCHEDULE").select('''
           SUBJECT(course_code ,course_name, units), 
+          sched_id,
           start_time, 
           end_time,
           day,
@@ -601,6 +693,7 @@ class DatabaseProvider extends ChangeNotifier {
     _scheduleList = [];
     if (res.isNotEmpty) {
       for (final schedule in res) {
+        final schedID = schedule['sched_id'];
         final subjectCode = schedule['SUBJECT']['course_code'];
         final subject = schedule['SUBJECT']['course_name'];
         final units = schedule['SUBJECT']['units'].toDouble();
@@ -613,6 +706,7 @@ class DatabaseProvider extends ChangeNotifier {
             "${schedule['PROFESSOR']['prof_fname']} ${schedule['PROFESSOR']['prof_lname']}";
 
         final classSched = ClassSchedule(
+          schedID: schedID,
           subjectCode: subjectCode,
           subject: subject,
           units: units,

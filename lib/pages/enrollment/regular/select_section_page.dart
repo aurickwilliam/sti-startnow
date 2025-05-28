@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:sti_startnow/models/class_schedule.dart';
 import 'package:sti_startnow/models/student.dart';
@@ -82,25 +81,6 @@ class _SelectSectionPageState extends State<SelectSectionPage> {
         );
       },
     );
-
-    // Check kung may internet before any interaction
-    final isConnected = await InternetConnection().hasInternetAccess;
-    if (!isConnected) {
-      if (mounted) {
-        Navigator.pop(context);
-        showModalBottomSheet(
-          context: context,
-          builder: (context) {
-            return CustomBottomSheet(
-              isError: true,
-              title: "Your Offline",
-              subtitle: "No internet connection, reconnect\nand try again",
-            );
-          },
-        );
-      }
-      return;
-    }
 
     // Insert new enrollment to database
     await db.createNewEnrollment();

@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
-class NoInternetPage extends StatelessWidget {
-  const NoInternetPage({super.key});
+class LoadingPage extends StatelessWidget {
+  const LoadingPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
       body: SafeArea(
-        child: Container(
+        child: SizedBox(
           width: double.infinity,
           height: double.infinity,
           child: Padding(
@@ -19,35 +19,23 @@ class NoInternetPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
+                SizedBox(
                   width: 150,
-                  child: Image(
-                    image: AssetImage("assets/img/no_connection_img.png"),
-                    fit: BoxFit.contain,
-                  ),
-                ),
-            
-                const SizedBox(height: 40,),
-            
-                Text(
-                  "You're Offline",
-                  style: GoogleFonts.roboto(
-                    color: AppTheme.colors.black,
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold
-                  ),
+                  child: Center(child: CircularProgressIndicator()),
                 ),
 
-                const SizedBox(height: 10,),
-            
+                const SizedBox(height: 40),
+
                 Text(
-                  "It looks like you lost connection. Reconnect to continue.",
-                  textAlign: TextAlign.center,
+                  "Loading Dashboard...",
                   style: GoogleFonts.roboto(
                     color: AppTheme.colors.black,
                     fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
-                )
+                ),
+
+                const SizedBox(height: 10),
               ],
             ),
           ),

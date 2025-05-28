@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:sti_startnow/models/class_schedule.dart';
+import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/components/buttons/back_next_button.dart';
 import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/enrollment/completed_page.dart';
 import 'package:sti_startnow/pages/components/custom_data_table.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
-import 'package:sti_startnow/providers/subject_list_provider.dart';
+import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
-class VerifySubjectsPage extends StatelessWidget {
-  VerifySubjectsPage({super.key});
+class VerifySubjectsPage extends StatefulWidget {
+  const VerifySubjectsPage({super.key});
+
+  @override
+  State<VerifySubjectsPage> createState() => _VerifySubjectsPageState();
+}
+
+class _VerifySubjectsPageState extends State<VerifySubjectsPage> {
+  late DatabaseProvider db;
+  late Student student;
 
   // Values for the Column
   final List<String> columnNames = [
@@ -22,98 +32,62 @@ class VerifySubjectsPage extends StatelessWidget {
     "Room",
   ];
 
-  /* Temporay values for the Data Table
-  final List<List> dataTableValues = [
-    [
-      "COSC1001",
-      "Information Management",
-      "3.00",
-      "7:00AM - 9:00AM",
-      "S",
-      "512",
-    ],
-    [
-      "COSC1001",
-      "Information Management",
-      "3.00",
-      "7:00AM - 10:00AM",
-      "W",
-      "603",
-    ],
-    [
-      "COSC1001",
-      "Fundamentals of Mobile Programming",
-      "3.00",
-      "9:00AM - 11:00AM",
-      "TH",
-      "402",
-    ],
-    [
-      "COSC1001",
-      "Fundamentals of Mobile Programming",
-      "3.00",
-      "10:00AM - 1:00PM",
-      "W",
-      "603",
-    ],
-    [
-      "COSC1001",
-      "Human-Computer Interaction",
-      "3.50",
-      "7:00AM - 9:00AM",
-      "TH",
-      "402",
-    ],
-    [
-      "COSC1001",
-      "Human-Computer Interaction",
-      "3.50",
-      "11:30AM - 1:00PM",
-      "TH",
-      "601",
-    ],
-    ["COSC1001", "Ethics", "3.00", "7:00AM - 10:00AM", "F", "410"],
-    [
-      "COSC1001",
-      "Design and Analysis of Algorithms",
-      "3.00",
-      "10:00AM - 1:00PM",
-      "F",
-      "402",
-    ],
-    [
-      "COSC1001",
-      "Computer Systems Architecture",
-      "3.00",
-      "9:00AM - 12:00PM",
-      "S",
-      "509",
-    ],
-    ["COSC1001", "Great Books", "3.00", "7:00AM - 10:00AM", "T", "P"],
-    [
-      "COSC1001",
-      "Philippine Popular Culture",
-      "3.00",
-      "10:00AM - 1:00PM",
-      "T",
-      "402",
-    ],
-    [
-      "COSC1001",
-      "P.E./PATHFIT 4: Team Sports",
-      "3.00",
-      "1:00PM - 3:00PM",
-      "TH",
-      "COURT",
-    ],
-  ];
-  */
+  late double totalUnits;
+  late List<List> dataTableValues;
+
+  void getIrregSchedule(List<ClassSchedule> schedules) {
+    dataTableValues = [];
+    totalUnits = 0;
+    for (final schedule in schedules) {
+      totalUnits += schedule.units;
+      dataTableValues.add([
+        schedule.subjectCode,
+        schedule.subject,
+        schedule.units,
+        schedule.fullTime,
+        schedule.day,
+        schedule.room,
+      ]);
+    }
+  }
+
+  @override
+  void initState() {
+    db = context.read<DatabaseProvider>();
+    student = db.student;
+    getIrregSchedule(student.enrollment.subjectList);
+
+    super.initState();
+  }
+
+  Future<void> registerNewEnrollment() async {
+    // Show circular progress indicator
+    showDialog(
+      context: context,
+      builder: (context) {
+        return PopScope(
+          canPop: false,
+          child: Center(child: const CircularProgressIndicator()),
+        );
+      },
+    );
+
+    // Insert new enrollment to database
+    await db.createNewEnrollment();
+
+    if (mounted) {
+      Navigator.pop(context);
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const CompletedPage()),
+        (context) => false,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final subjectListProvider = Provider.of<SubjectListProvider>(context);
-    final totalUnits = subjectListProvider.getTotalUnitsSelectedSubjects();
-
     // if is in landscape
     bool isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
@@ -167,8 +141,7 @@ class VerifySubjectsPage extends StatelessWidget {
 
                         CustomDataTable(
                           columnNames: columnNames,
-                          dataTableValues:
-                              subjectListProvider.allSelectedSubjects,
+                          dataTableValues: dataTableValues,
                         ),
 
                         const SizedBox(height: 50),
@@ -187,13 +160,8 @@ class VerifySubjectsPage extends StatelessWidget {
                           context: context,
                           builder: (builder) {
                             return CustomBottomSheet(
-                              submitFunc: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => CompletedPage(),
-                                  ),
-                                );
+                              submitFunc: () async {
+                                await registerNewEnrollment();
                               },
                             );
                           },

@@ -181,8 +181,7 @@ class _CurrentTermPageState extends State<CurrentTermPage> {
 
                       if (admitTypeValue == admitTypeChoices[0]) {
                         yearLevelChoices = [yearLevelChoices[0]];
-                      } 
-                      else {
+                      } else {
                         yearLevelChoices = [
                           "1st Year",
                           "2nd Year",
@@ -207,7 +206,7 @@ class _CurrentTermPageState extends State<CurrentTermPage> {
                         yearLevelValue = yearLevelChoices[index];
                         yearLevelEmpty = false;
                         student.enrollment.section = null;
-                        student.enrollment.subjectList = null;
+                        student.enrollment.subjectList = [];
                       });
                     },
                     isError: yearLevelEmpty,

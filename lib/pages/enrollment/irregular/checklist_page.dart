@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart';
+import 'package:sti_startnow/pages/enrollment/payment_receipt_page.dart';
 import 'package:sti_startnow/pages/enrollment/student_portal_page.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
@@ -68,6 +70,18 @@ class ChecklistPage extends StatelessWidget {
           ),
           child: BottomButton(
             onPressed: () {
+              if (supabase.auth.currentSession != null) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder:
+                        (context) =>
+                            const PaymentReceiptPage(isNotEnrolled: true),
+                  ),
+                );
+                return;
+              }
+
               Navigator.push(
                 context,
                 MaterialPageRoute(

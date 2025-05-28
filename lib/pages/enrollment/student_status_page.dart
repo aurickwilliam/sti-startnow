@@ -63,21 +63,14 @@ class _StudentStatusPageState extends State<StudentStatusPage> {
 
     if (selectedStatus == "Regular") {
       destination = const StudentPortalPage();
+      if (supabase.auth.currentSession != null) {
+        destination = const PaymentReceiptPage(isNotEnrolled: true);
+      }
     } else {
       destination = const ChecklistPage();
     }
 
     enroll.enrollingStatus = selectedStatus;
-
-    if (supabase.auth.currentSession != null) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const PaymentReceiptPage(isNotEnrolled: true),
-        ),
-      );
-      return;
-    }
 
     Navigator.push(
       context,

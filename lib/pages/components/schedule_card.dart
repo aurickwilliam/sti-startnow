@@ -66,7 +66,7 @@ class _ScheduleCardState extends State<ScheduleCard> {
     if (student.enrollmentID == null) {
       scheduleData = [];
     } else {
-      getScheduleToday(student.enrollment.subjectList!);
+      getScheduleToday(student.enrollment.subjectList);
     }
 
     super.initState();

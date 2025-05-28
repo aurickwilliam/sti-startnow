@@ -7,6 +7,7 @@ import 'package:sti_startnow/pages/enrollment/components/enrollment_header.dart'
 import 'package:sti_startnow/pages/enrollment/components/multiple_choice_card.dart';
 import 'package:sti_startnow/pages/enrollment/new_student/preferred_program_page.dart';
 import 'package:sti_startnow/pages/enrollment/student_status_page.dart';
+import 'package:sti_startnow/pages/enrollment_dashboard/enrollment_dashboard.dart';
 import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
@@ -68,7 +69,7 @@ class _StudentTypePageState extends State<StudentTypePage> {
         listen: false,
       ).initializeNewStudent();
     } else if (selectedItem == typeStudent[1]) {
-      destination = StudentStatusPage();
+      destination = const StudentStatusPage();
     }
 
     Navigator.push(
@@ -147,9 +148,19 @@ class _StudentTypePageState extends State<StudentTypePage> {
             ? SingleChildScrollView(child: content)
             : Container(child: content);
 
-    return Scaffold(
-      backgroundColor: AppTheme.colors.white,
-      body: SafeArea(child: parentWidget),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult:
+          (didPop, result) => Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const EnrollmentDashboard(),
+            ),
+          ),
+      child: Scaffold(
+        backgroundColor: AppTheme.colors.white,
+        body: SafeArea(child: parentWidget),
+      ),
     );
   }
 }

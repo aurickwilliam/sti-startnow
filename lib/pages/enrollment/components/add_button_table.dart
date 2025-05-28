@@ -2,37 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
+// ignore: must_be_immutable
 class AddButtonTable extends StatefulWidget {
-  final Function() onPressed;
+  bool isClicked;
+  final Function(bool) onPressed;
 
-  const AddButtonTable({
-    super.key,
-    required this.onPressed,
-  });
+  AddButtonTable({super.key, required this.onPressed, this.isClicked = false});
 
   @override
   State<AddButtonTable> createState() => _AddButtonTableState();
 }
 
 class _AddButtonTableState extends State<AddButtonTable> {
-  String text = "Select";
-  bool isClicked = false;
-
   @override
   Widget build(BuildContext context) {
+    String text = widget.isClicked ? "Selected" : "Select";
     return ElevatedButton(
       onPressed: () {
-        widget.onPressed();
         setState(() {
-          text =  isClicked ? "Selected" : "Select";
-          isClicked = !isClicked;
+          widget.isClicked = !widget.isClicked;
+          text = widget.isClicked ? "Selected" : "Select";
         });
-      }, 
+        widget.onPressed(widget.isClicked);
+      },
       style: ElevatedButton.styleFrom(
         backgroundColor: AppTheme.colors.green,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -41,10 +36,10 @@ class _AddButtonTableState extends State<AddButtonTable> {
           style: GoogleFonts.roboto(
             color: AppTheme.colors.white,
             fontSize: 14,
-            fontWeight: FontWeight.w500
+            fontWeight: FontWeight.w500,
           ),
         ),
-      )
+      ),
     );
   }
 }

@@ -7,19 +7,16 @@ class CustomBottomSheet extends StatelessWidget {
   final String? title;
   final String? subtitle;
   final bool isError; // Kapag user error
+  final bool noNet; // Kapag offline si user
 
-  CustomBottomSheet({
+  const CustomBottomSheet({
     super.key,
     this.submitFunc,
     this.title,
     this.subtitle,
     this.isError = false,
-  }) {
-    if (!isError) {
-      assert(submitFunc != null);
-      // Kapag hindi naman error, dapat may submitFunc
-    }
-  }
+    this.noNet = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -66,54 +63,27 @@ class CustomBottomSheet extends StatelessWidget {
 
             const SizedBox(height: 30),
 
-            Row(
-              children: [
-                Expanded(
-                  child: FilledButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    style: FilledButton.styleFrom(
-                      backgroundColor:
-                          isError
-                              ? AppTheme.colors.green
-                              : AppTheme.colors.gray,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-
-                    child: Text(
-                      isError ? "Confirm" : "Cancel",
-                      style: GoogleFonts.roboto(
-                        color: AppTheme.colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(width: 20),
-
-                // Isa lang button kapag user error, goods lang ba?
-                isError
-                    ? Container()
-                    : Expanded(
+            noNet
+                ? Container()
+                : Row(
+                  children: [
+                    Expanded(
                       child: FilledButton(
                         onPressed: () {
                           Navigator.pop(context);
-                          submitFunc!();
                         },
                         style: FilledButton.styleFrom(
-                          backgroundColor: AppTheme.colors.green,
+                          backgroundColor:
+                              isError
+                                  ? AppTheme.colors.green
+                                  : AppTheme.colors.gray,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
 
                         child: Text(
-                          "Yes, I'm sure",
+                          isError ? "Confirm" : "Cancel",
                           style: GoogleFonts.roboto(
                             color: AppTheme.colors.white,
                             fontSize: 16,
@@ -122,8 +92,37 @@ class CustomBottomSheet extends StatelessWidget {
                         ),
                       ),
                     ),
-              ],
-            ),
+
+                    const SizedBox(width: 20),
+
+                    // Isa lang button kapag user error, goods lang ba?
+                    isError
+                        ? Container()
+                        : Expanded(
+                          child: FilledButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              submitFunc!();
+                            },
+                            style: FilledButton.styleFrom(
+                              backgroundColor: AppTheme.colors.green,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+
+                            child: Text(
+                              "Yes, I'm sure",
+                              style: GoogleFonts.roboto(
+                                color: AppTheme.colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
+                  ],
+                ),
           ],
         ),
       ),
