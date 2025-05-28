@@ -28,7 +28,7 @@ class _TuitionFeeCoursePageState extends State<TuitionFeeCoursePage> {
     "Tourism Management",
   ];
 
-  static List<String> yearLevelList = ["1Y2", "2Y2", "3Y2", "4Y2"];
+  static List<String> yearLevelList = ["1Y1", "2Y1", "3Y1", "4Y1"];
 
   // TextEditingController yearLevelController = TextEditingController();
 
@@ -90,7 +90,7 @@ class _TuitionFeeCoursePageState extends State<TuitionFeeCoursePage> {
                       softWrap: true,
                       textAlign: TextAlign.left,
                       style: GoogleFonts.roboto(
-                        color: AppTheme.colors.black,
+                        color: AppTheme.colors.primary,
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),

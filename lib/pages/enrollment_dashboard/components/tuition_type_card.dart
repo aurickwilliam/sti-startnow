@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sti_startnow/pages/components/custom_data_table.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class TuitionTypeCard extends StatefulWidget {
@@ -37,6 +38,57 @@ class _TuitionTypeCardState extends State<TuitionTypeCard> {
       isLowMonthly = false;
     });
   }
+
+  List<String> breakDownHeader = ["Description", "Amount"];
+
+  // example
+  List<List> breakDownData = [
+    ["Tuition Fees", "10000"],
+    ["Miscellaneous Fees", "5000"],
+    ["Other School Fees", "5000"],
+    [
+      Text(
+        "Total:",
+        style: GoogleFonts.roboto(
+          color: AppTheme.colors.primary,
+          fontWeight: FontWeight.bold
+        ),
+      ), 
+      Text(
+        "35000",
+        style: GoogleFonts.roboto(
+          color: AppTheme.colors.primary,
+          fontWeight: FontWeight.bold
+        ),
+      ), 
+    ],
+  ];
+
+  List<String> paymentScheduleHeader = ["Payment Schedule", "Amount"];
+
+  List<List> paymentScheduleData = [
+    ["1st: Upon Enrollment", "7877"],
+    ["2nd: Prelims", "7877"],
+    ["3rd: Midterms", "7877"],
+    ["4th: Prefinals", "7877"],
+    ["5th: Finals", "7877"],
+    [
+      Text(
+        "Total:",
+        style: GoogleFonts.roboto(
+          color: AppTheme.colors.primary,
+          fontWeight: FontWeight.bold
+        ),
+      ), 
+      Text(
+        "36000",
+        style: GoogleFonts.roboto(
+          color: AppTheme.colors.primary,
+          fontWeight: FontWeight.bold
+        ),
+      ), 
+    ],
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -134,152 +186,27 @@ class _TuitionTypeCardState extends State<TuitionTypeCard> {
           Divider(),
 
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Tuition Fees",
-                      style: GoogleFonts.roboto(
-                        color: AppTheme.colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-
-                    Text(
-                      "P 18,365.00",
-                      style: GoogleFonts.roboto(
-                        color: AppTheme.colors.black,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
-
-                Divider(color: AppTheme.colors.black, height: 10, thickness: 1),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Other School Fees",
-                      style: GoogleFonts.roboto(
-                        color: AppTheme.colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-
-                    Text(
-                      "P 7,286.00",
-                      style: GoogleFonts.roboto(
-                        color: AppTheme.colors.black,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
-
-                Divider(color: AppTheme.colors.black, height: 10, thickness: 1),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Miscellaneous Fees",
-                      style: GoogleFonts.roboto(
-                        color: AppTheme.colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-
-                    Text(
-                      "P 1,845.00",
-                      style: GoogleFonts.roboto(
-                        color: AppTheme.colors.black,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
-
-                Divider(color: AppTheme.colors.black, height: 10, thickness: 1),
-              ],
-            ),
-          ),
-
-          const SizedBox(height: 50),
-
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+            padding: EdgeInsets.all(8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Payment Schedule:",
-                  style: GoogleFonts.roboto(
-                    color: AppTheme.colors.black,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                  ),
+                // For break down of tuition
+                CustomDataTable(
+                  columnNames: breakDownHeader,
+                  dataTableValues: breakDownData
                 ),
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "1st Upon Enrollment",
-                      style: GoogleFonts.roboto(
-                        color: AppTheme.colors.black,
-                        fontSize: 16,
-                      ),
-                    ),
+                const SizedBox(height: 20,),
 
-                    Text(
-                      "P 18,365.00",
-                      style: GoogleFonts.roboto(
-                        color: AppTheme.colors.black,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
+                // For payment Schedule
+                CustomDataTable(
+                  columnNames: paymentScheduleHeader, 
+                  dataTableValues: paymentScheduleData
                 ),
 
-                Divider(height: 10),
+                const SizedBox(height: 20,),
               ],
-            ),
-          ),
-
-          const SizedBox(height: 20,),
-
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical:10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Total:",
-                  style: GoogleFonts.roboto(
-                    color: AppTheme.colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold
-                  ),
-                ),
-            
-                Text(
-                  "P 27,496.00",
-                  style: GoogleFonts.roboto(
-                    color: AppTheme.colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
+            )
           ),
         ],
       ),

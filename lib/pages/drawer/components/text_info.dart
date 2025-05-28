@@ -14,28 +14,30 @@ class TextInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             topic,
             style: GoogleFonts.roboto(
-              color: AppTheme.colors.gold,
+              color: AppTheme.colors.primary,
               fontSize: 16,
               fontWeight: FontWeight.bold
             ),
           ),
       
-          const SizedBox(height: 5,),
+          const SizedBox(height: 3,),
       
           Padding(
             padding: const EdgeInsets.only(left: 20),
             child: Text(
-              "- $info",
+              "• $info",
+              textAlign: TextAlign.justify,
               style: GoogleFonts.roboto(
                 color: AppTheme.colors.black,
-                fontSize: 16
+                fontSize: 14,
+                height: 1.5
               ),
             ),
           )

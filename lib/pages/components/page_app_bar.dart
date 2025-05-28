@@ -42,7 +42,7 @@ class PageAppBar extends StatelessWidget {
                   softWrap: true,
                   style: GoogleFonts.roboto(
                     color: AppTheme.colors.primary,
-                    fontSize: 28,
+                    fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

@@ -175,7 +175,7 @@ class PreAssessmentApi {
                       0: FlexColumnWidth(1),
                       1: FlexColumnWidth(2),
                       2: FlexColumnWidth(5),
-                      3: FlexColumnWidth(1),
+                      3: FlexColumnWidth(2),
                       4: FlexColumnWidth(1),
                       5: FlexColumnWidth(1),
                       6: FlexColumnWidth(1),
@@ -199,7 +199,7 @@ class PreAssessmentApi {
                     ),
                     cellAlignments: {
                       0: Alignment.center,
-                      1: Alignment.center,
+                      1: Alignment.centerLeft,
                       2: Alignment.centerLeft,
                       3: Alignment.center,
                       4: Alignment.center,
@@ -390,7 +390,7 @@ class PreAssessmentApi {
               tableCell(value: "Allowed Units:", isBold: true),
               tableCell(value: "0",),
               tableCell(value: "Student Type:", isBold: true),
-              tableCell(value: student.enrollment.admissionType!,),
+              tableCell(value: student.enrollment.admissionType ?? "No Type",),
             ]
           )
         ]

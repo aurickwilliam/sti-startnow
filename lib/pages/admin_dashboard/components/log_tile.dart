@@ -67,29 +67,29 @@ class _LogTileState extends State<LogTile> {
                     widget.enrollId,
                     style: GoogleFonts.roboto(
                       color: AppTheme.colors.black,
-                      fontSize: 18,
+                      fontSize: 16,
                     ),
                   )
                 ],
               ),
       
               Divider(
-                height: 20,
+                height: 15,
               ),
-      
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    widget.adminName,
+                    widget.studentName,
                     style: GoogleFonts.roboto(
                       color: AppTheme.colors.black,
                       fontSize: 14,
                     ),
                   ),
-      
+    
                   Text(
-                    widget.dateTime,
+                    widget.studentNo,
                     style: GoogleFonts.roboto(
                       color: AppTheme.colors.black,
                       fontSize: 14,
@@ -97,6 +97,59 @@ class _LogTileState extends State<LogTile> {
                   )
                 ],
               ),
+
+              const SizedBox(height: 20,),
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Admin:",
+                        style: GoogleFonts.roboto(
+                          color: AppTheme.colors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500
+                        ),
+                      ),
+          
+                      Text(
+                        "Date & Time:",
+                        style: GoogleFonts.roboto(
+                          color: AppTheme.colors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500
+                        ),
+                      )
+                    ],
+                  ),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        widget.adminName,
+                        style: GoogleFonts.roboto(
+                          color: AppTheme.colors.black,
+                          fontSize: 14,
+                        ),
+                      ),
+          
+                      Text(
+                        widget.dateTime,
+                        style: GoogleFonts.roboto(
+                          color: AppTheme.colors.black,
+                          fontSize: 14,
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+
+              
 
               const SizedBox(height: 8,),
       
@@ -120,30 +173,6 @@ class _LogTileState extends State<LogTile> {
                     fontSize: 14,
                   ),
                 ) : SizedBox(),
-
-                const SizedBox(height: 5,),
-      
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      widget.studentName,
-                      style: GoogleFonts.roboto(
-                        color: AppTheme.colors.black,
-                        fontSize: 14,
-                      ),
-                    ),
-      
-                    Text(
-                      widget.studentNo,
-                      style: GoogleFonts.roboto(
-                        color: AppTheme.colors.black,
-                        fontSize: 14,
-                      ),
-                    )
-                  ],
-                )
-      
             ],
           )
         ),
