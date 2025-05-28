@@ -20,16 +20,7 @@ class ScheduleCard extends StatefulWidget {
 class _ScheduleCardState extends State<ScheduleCard> {
   late Student student;
   late final String day;
-
-  // Temporary Schedule data
-  List<List> scheduleData = [
-    ["Information Mangement", "Lorenz Christopher Afan", "7:00AM - 10:00AM"],
-    [
-      "Fundamentals of Mobile Programming",
-      "Lorenz Christopher Afan",
-      "10:00AM - 1:00PM",
-    ],
-  ];
+  late List<List> scheduleData;
 
   void getScheduleToday(List<ClassSchedule> studSched) {
     scheduleData = [];
@@ -76,7 +67,7 @@ class _ScheduleCardState extends State<ScheduleCard> {
 
   @override
   Widget build(BuildContext context) {
-    return scheduleData.isNotEmpty
+    return student.enrollmentID != null
         ? Container(
           width: double.infinity,
           decoration: BoxDecoration(
@@ -115,9 +106,10 @@ class _ScheduleCardState extends State<ScheduleCard> {
                     // Button for download
                     IconButton(
                       onPressed: () async {
-                        final timeTable = await TimeTableApi.generateTimeTablePdf(student);
+                        final timeTable =
+                            await TimeTableApi.generateTimeTablePdf(student);
 
-                        SaveAndOpenPdf.openPdf(timeTable);
+                        //SaveAndOpenPdf.openPdf(timeTable);
                       },
                       icon: Icon(
                         Icons.file_download_outlined,
@@ -135,11 +127,11 @@ class _ScheduleCardState extends State<ScheduleCard> {
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
                 child: Text(
-                  day,
+                  scheduleData.isNotEmpty ? day : "No Schedule Today",
                   style: GoogleFonts.roboto(
                     color: AppTheme.colors.primary,
                     fontWeight: FontWeight.bold,
-                    fontSize: 32,
+                    fontSize: scheduleData.isNotEmpty ? 32 : 24,
                   ),
                 ),
               ),
