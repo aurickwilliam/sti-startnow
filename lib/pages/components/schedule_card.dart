@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:sti_startnow/models/class_schedule.dart';
 import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/components/schedule_tile.dart';
+import 'package:sti_startnow/pdf/save_and_open_pdf.dart';
+import 'package:sti_startnow/pdf/time_table_api.dart';
 import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
@@ -112,7 +114,11 @@ class _ScheduleCardState extends State<ScheduleCard> {
 
                     // Button for download
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        final timeTable = await TimeTableApi.generateTimeTablePdf(student);
+
+                        SaveAndOpenPdf.openPdf(timeTable);
+                      },
                       icon: Icon(
                         Icons.file_download_outlined,
                         color: AppTheme.colors.primary,

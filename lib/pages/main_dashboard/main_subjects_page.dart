@@ -77,9 +77,7 @@ class _MainSubjectsPageState extends State<MainSubjectsPage> {
   Widget build(BuildContext context) {
     // if is in landscape
     bool isLandscape =
-        MediaQuery.of(context).orientation == Orientation.landscape
-            ? true
-            : false;
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
       backgroundColor: AppTheme.colors.white,
@@ -130,12 +128,6 @@ class _MainSubjectsPageState extends State<MainSubjectsPage> {
                     onPressed: handleCurrentChange,
                     isSelected: isCurrentSelected,
                   ),
-
-                  CategoryButton(
-                    text: "Completed",
-                    onPressed: handleCompletedChange,
-                    isSelected: isCompletedSelected,
-                  ),
                 ],
               ),
             ),
@@ -161,11 +153,29 @@ class _MainSubjectsPageState extends State<MainSubjectsPage> {
                   ),
                 )
                 : Center(
-                  child:
-                      isCurrentSelected
-                          ? Text('Not Yet Enrolled')
-                          : Text('No Completed Subjects'),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      width: 200,
+                      child: Image(
+                        image: AssetImage(
+                          "assets/img/not_found_img.png",
+                        ),
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+
+                    Text(
+                      "No Current Subjects",
+                      style: GoogleFonts.roboto(
+                        color: AppTheme.colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
+              ),
           ],
         ),
       ),

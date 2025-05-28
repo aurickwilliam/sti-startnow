@@ -111,143 +111,152 @@ class _SelectSectionPageState extends State<SelectSectionPage> {
       child: Scaffold(
         backgroundColor: AppTheme.colors.white,
         body: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                EnrollmentHeader(
-                  step1: true,
-                  step2: true,
-                  step3: true,
-                  step4: false,
-                  title: "Enrollment",
-                ),
-
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: isLandscape ? 200 : 24,
-                        vertical: 10,
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.only(
+                    bottom: 20
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      EnrollmentHeader(
+                        step1: true,
+                        step2: true,
+                        step3: true,
+                        step4: false,
+                        title: "Enrollment",
                       ),
-                      child: Column(
+                
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Select a Section",
-                            style: GoogleFonts.roboto(
-                              color: AppTheme.colors.primary,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: isLandscape ? 200 : 24,
+                              vertical: 10,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Select a Section",
+                                  style: GoogleFonts.roboto(
+                                    color: AppTheme.colors.primary,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                
+                                const SizedBox(height: 20),
+                
+                                CustomDropdownMenu(
+                                  listChoices: listSection,
+                                  label: "Available Sections:",
+                                  hint: "Select a section",
+                                  selectedValue: sectionValue,
+                                  onTap: (index) {
+                                    setState(() {
+                                      sectionValue = listSection[index];
+                                      db.setSectionSched(sectionValue);
+                                      getSectionSched(student.enrollment.subjectList);
+                                    });
+                                  },
+                                ),
+                              ],
                             ),
                           ),
-
+                
+                          const SizedBox(height: 30),
+                
+                          dataTableValues.isNotEmpty
+                              ? Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 24),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Schedule:",
+                                          style: GoogleFonts.roboto(
+                                            color: AppTheme.colors.primary,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                
+                                        Text(
+                                          "Units: $totalUnits",
+                                          style: GoogleFonts.roboto(
+                                            color: AppTheme.colors.primary,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                
+                                    Divider(height: 10),
+                
+                                    CustomDataTable(
+                                      columnNames: columnNames,
+                                      dataTableValues: dataTableValues,
+                                    ),
+                                  ],
+                                ),
+                              )
+                              : Container(),
+                
                           const SizedBox(height: 20),
-
-                          CustomDropdownMenu(
-                            listChoices: listSection,
-                            label: "Available Sections:",
-                            hint: "Select a section",
-                            selectedValue: sectionValue,
-                            onTap: (index) {
-                              setState(() {
-                                sectionValue = listSection[index];
-                                db.setSectionSched(sectionValue);
-                                getSectionSched(student.enrollment.subjectList);
-                              });
-                            },
-                          ),
                         ],
                       ),
-                    ),
-
-                    const SizedBox(height: 30),
-
-                    dataTableValues.isNotEmpty
-                        ? Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 24),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Schedule:",
-                                    style: GoogleFonts.roboto(
-                                      color: AppTheme.colors.primary,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-
-                                  Text(
-                                    "Units: $totalUnits",
-                                    style: GoogleFonts.roboto(
-                                      color: AppTheme.colors.primary,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-
-                              Divider(height: 10),
-
-                              CustomDataTable(
-                                columnNames: columnNames,
-                                dataTableValues: dataTableValues,
-                              ),
-                            ],
-                          ),
-                        )
-                        : Container(),
-
-                    const SizedBox(height: 50),
-
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: isLandscape ? 200 : 24,
-                        vertical: 10,
-                      ),
-                      child: BottomButton(
-                        onPressed: () {
-                          if (sectionValue.isEmpty) {
-                            showModalBottomSheet(
-                              isScrollControlled: true,
-                              context: context,
-                              builder: (builder) {
-                                return CustomBottomSheet(
-                                  isError: true,
-                                  title: "Your Section",
-                                  subtitle: "Please select your section",
-                                );
-                              },
-                            );
-                          } else {
-                            student.enrollment.section = sectionValue;
-                            showModalBottomSheet(
-                              isScrollControlled: true,
-                              context: context,
-                              builder: (builder) {
-                                return CustomBottomSheet(
-                                  submitFunc: () async {
-                                    await registerNewEnrollment();
-                                  },
-                                );
-                              },
-                            );
-                          }
-                        },
-                        text: "Submit",
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ],
-            ),
+              ),
+
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: isLandscape ? 200 : 24,
+                  vertical: 10,
+                ),
+                child: BottomButton(
+                  onPressed: () {
+                    if (sectionValue.isEmpty) {
+                      showModalBottomSheet(
+                        isScrollControlled: true,
+                        context: context,
+                        builder: (builder) {
+                          return CustomBottomSheet(
+                            isError: true,
+                            title: "Your Section",
+                            subtitle: "Please select your section",
+                          );
+                        },
+                      );
+                    } else {
+                      student.enrollment.section = sectionValue;
+                      showModalBottomSheet(
+                        isScrollControlled: true,
+                        context: context,
+                        builder: (builder) {
+                          return CustomBottomSheet(
+                            submitFunc: () async {
+                              await registerNewEnrollment();
+                            },
+                          );
+                        },
+                      );
+                    }
+                  },
+                  text: "Submit",
+                ),
+              ),
+            ],
           ),
         ),
       ),

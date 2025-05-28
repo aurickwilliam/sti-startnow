@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/models/student.dart';
+import 'package:sti_startnow/pages/components/buttons/custom_outline_button.dart';
 import 'package:sti_startnow/pages/components/information_tile.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
+import 'package:sti_startnow/pages/enrollment/components/download_toast.dart';
+import 'package:sti_startnow/pdf/pre_assessment_api.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
-class EnrollmentStatusPage extends StatelessWidget {
+class EnrollmentStatusPage extends StatefulWidget {
   final Student student;
   final String status;
 
@@ -15,8 +19,13 @@ class EnrollmentStatusPage extends StatelessWidget {
     required this.status,
   });
 
+  @override
+  State<EnrollmentStatusPage> createState() => _EnrollmentStatusPageState();
+}
+
+class _EnrollmentStatusPageState extends State<EnrollmentStatusPage> {
   TextStyle getStatusColor() {
-    switch (status) {
+    switch (widget.status) {
       case 'NOT ENROLLED':
         return GoogleFonts.roboto(color: AppTheme.colors.black);
       case 'UNVERIFIED':
@@ -27,6 +36,26 @@ class EnrollmentStatusPage extends StatelessWidget {
         return GoogleFonts.roboto(color: AppTheme.colors.red);
     }
     return GoogleFonts.roboto(color: AppTheme.colors.gray);
+  }
+
+  late FToast fToast;
+
+    @override
+  void initState() {
+    super.initState();
+
+    fToast = FToast();
+    fToast.init(context);
+  }
+
+  _showToast(){
+    Widget toast = DownloadToast();
+
+    fToast.showToast(
+      child: toast,
+      gravity: ToastGravity.CENTER,
+      toastDuration: const Duration(seconds: 2),
+    );
   }
 
   @override
@@ -51,55 +80,92 @@ class EnrollmentStatusPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Student Information:",
-                      style: GoogleFonts.roboto(
-                        color: AppTheme.colors.primary,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-
-                    const SizedBox(height: 10),
-
-                    InformationTile(label: "Name:", data: student.fullName),
-
-                    const SizedBox(height: 10),
-
-                    InformationTile(
-                      label: "Student No.:",
-                      data: student.studentNo!,
-                    ),
-
-                    const SizedBox(height: 10),
-
-                    InformationTile(
-                      label: "Term and Year:",
-                      data:
-                          status != 'NOT ENROLLED'
-                              ? "${student.enrollment.yearLevel} ${student.enrollment.semester} SY. 2025 - 2026"
-                              : "Not Yet Enrolled",
-                    ),
-
-                    Divider(height: 30),
-
                     RichText(
                       text: TextSpan(
                         style: GoogleFonts.roboto(
                           color: AppTheme.colors.primary,
-                          fontSize: 20,
+                          fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
                         children: [
                           TextSpan(text: "Status: "),
 
                           // Status Text
-                          TextSpan(text: status, style: getStatusColor()),
+                          TextSpan(text: widget.status, style: getStatusColor()),
                         ],
                       ),
                     ),
 
-                    const SizedBox(height: 50),
+                    const SizedBox(height: 20,),
+
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(
+                          color: AppTheme.colors.gray,
+                          width: 2.0
+                        )
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text(
+                              "Student Information:",
+                              style: GoogleFonts.roboto(
+                                color: AppTheme.colors.primary,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+
+                          Divider(),
+
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              children: [
+                                InformationTile(
+                                  label: "Name:", 
+                                  data: widget.student.fullName
+                                ),
+
+                                const SizedBox(height: 10),
+
+                                InformationTile(
+                                  label: "Student No.:",
+                                  data: widget.student.studentNo!,
+                                ),
+
+                                const SizedBox(height: 10),
+
+                                InformationTile(
+                                  label: "Term and Year:",
+                                  data:
+                                      widget.status != 'NOT ENROLLED'
+                                          ? "${widget.student.enrollment.yearLevel} ${widget.student.enrollment.semester} SY. 2025 - 2026"
+                                          : "Not Yet Enrolled",
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // widget.status != 'NOT ENROLLED' ? CustomOutlineButton(
+                    //   text: "Download Pre-Assessment", 
+                    //   onPressed: () async {
+                    //     await PreAssessmentApi.generatePreAssessment(widget.student);
+                    //     _showToast();
+                    //   }
+                    // )
+                    // : SizedBox(),
                   ],
                 ),
               ),

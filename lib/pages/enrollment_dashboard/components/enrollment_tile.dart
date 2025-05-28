@@ -44,16 +44,20 @@ class EnrollmentTile extends StatelessWidget {
                 title,
                 style: GoogleFonts.roboto(
                   color: AppTheme.colors.black,
-                  fontSize: 24,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
+
+              const SizedBox(width: 20,),
       
               // Image of the Tile
-              Container(
-                height: 100,
-                width: 100,
-                child: Image.asset(imgPath),
+              Flexible(
+                child: Container(
+                  height: 100,
+                  width: 100,
+                  child: Image.asset(imgPath),
+                ),
               )
             ],
           ),

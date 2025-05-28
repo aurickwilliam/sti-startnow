@@ -21,7 +21,7 @@ class PageAppBar extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             child: Row(
               children: [
                 hasBackButton
@@ -42,14 +42,14 @@ class PageAppBar extends StatelessWidget {
                   softWrap: true,
                   style: GoogleFonts.roboto(
                     color: AppTheme.colors.primary,
-                    fontSize: 28,
+                    fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ],
             ),
           ),
-          Divider(height: 10, thickness: 3),
+          Divider(height: 5, thickness: 3),
         ],
       ),
     );

@@ -29,7 +29,7 @@ class PieGraph extends StatelessWidget {
               showTitle: true,
               titleStyle: GoogleFonts.roboto(
                 color: AppTheme.colors.black,
-                fontSize: 16,
+                fontSize: 12,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -38,11 +38,11 @@ class PieGraph extends StatelessWidget {
             PieChartSectionData(
               value: dataList[1][0].toDouble(),
               title: "${dataList[1][1]}: ${dataList[1][0]}",
-              color: AppTheme.colors.primary,
+              color: Colors.blueAccent,
               showTitle: true,
               titleStyle: GoogleFonts.roboto(
-                color: AppTheme.colors.white,
-                fontSize: 16,
+                color: AppTheme.colors.black,
+                fontSize: 12,
                 fontWeight: FontWeight.bold,
                 shadows: [
                   Shadow(
@@ -60,15 +60,9 @@ class PieGraph extends StatelessWidget {
               color: AppTheme.colors.green,
               showTitle: true,
               titleStyle: GoogleFonts.roboto(
-                color: AppTheme.colors.white,
-                fontSize: 16,
+                color: AppTheme.colors.black,
+                fontSize: 12,
                 fontWeight: FontWeight.bold,
-                shadows: [
-                  Shadow(
-                    color: AppTheme.colors.black, 
-                    blurRadius: 2
-                  )
-                ]
               )
             ),
             
@@ -76,18 +70,12 @@ class PieGraph extends StatelessWidget {
             PieChartSectionData(
               value: dataList[3][0].toDouble(),
               title: "${dataList[3][1]}: ${dataList[3][0]}",
-              color: AppTheme.colors.red,
+              color: Colors.redAccent,
               showTitle: true,
               titleStyle: GoogleFonts.roboto(
-                color: AppTheme.colors.white,
-                fontSize: 16,
+                color: AppTheme.colors.black,
+                fontSize: 12,
                 fontWeight: FontWeight.bold,
-                shadows: [
-                  Shadow(
-                    color: AppTheme.colors.black, 
-                    blurRadius: 2
-                  )
-                ]
               )
             )
           ]
