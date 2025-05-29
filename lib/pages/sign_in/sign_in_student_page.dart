@@ -1,3 +1,4 @@
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -106,6 +107,15 @@ class _SignInStudentPageState extends State<SignInStudentPage> {
   void initState() {
     db = context.read<DatabaseProvider>();
     super.initState();
+    pingCloud();
+  }
+
+  Future<void> pingCloud() async {
+    try{
+      await http.get(Uri.parse("https://sti-startnow.onrender.com/ping"));
+    } catch (e) {
+      print("Server ping failed: $e");
+    }
   }
 
   @override

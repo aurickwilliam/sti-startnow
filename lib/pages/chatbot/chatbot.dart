@@ -121,13 +121,13 @@ class _ChatbotState extends State<Chatbot> {
                       
                       try{
                         //ping si render para magising server
-                        final pingCheck = await http.get(Uri.parse("https://sti-startnow.onrender.com/ping"));
+                        /*final pingCheck = await http.get(Uri.parse("https://sti-startnow.onrender.com/ping"));
                         if (pingCheck.statusCode != 200) {
                           setState(() {
                             messages.add(["Server not ready. Please try again later.", false]);
                           });
                           return;
-                        }
+                        }*/
                       
                         final response = await http.post(
                             Uri.parse('https://sti-startnow.onrender.com/chat'),
