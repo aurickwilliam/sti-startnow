@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:sti_startnow/pages/components/custom_data_table.dart';
+import 'package:sti_startnow/providers/tuition_fee_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class TuitionTypeCard extends StatefulWidget {
@@ -13,82 +15,56 @@ class TuitionTypeCard extends StatefulWidget {
 class _TuitionTypeCardState extends State<TuitionTypeCard> {
   bool isCash = true;
   bool isLowDown = false;
-  bool isLowMonthly = false;
+
+  late TuitionFeeProvider tuition;
+  List<List> tuitionList = [];
 
   void changeToCash(){
+    tuition.changeSeletectedType("Cash");
+
     setState(() {
       isCash = true;
       isLowDown = false;
-      isLowMonthly = false;
+      tuitionList = tuition.tuitionType;
     });
-  }
 
-  void changeToLowMonthly(){
-    setState(() {
-      isCash = false;
-      isLowDown = false;
-      isLowMonthly = true;
-    });
+
+    debugPrint(tuition.tuitionType.toString());
   }
 
   void changeToLowDown(){
+    tuition.changeSeletectedType("Low Down");
+
     setState(() {
       isCash = false;
       isLowDown = true;
-      isLowMonthly = false;
+      tuitionList = tuition.tuitionType;
     });
+
+
+    debugPrint(tuition.tuitionType.toString());
   }
 
   List<String> breakDownHeader = ["Description", "Amount"];
 
-  // example
-  List<List> breakDownData = [
-    ["Tuition Fees", "10000"],
-    ["Miscellaneous Fees", "5000"],
-    ["Other School Fees", "5000"],
-    [
-      Text(
-        "Total:",
-        style: GoogleFonts.roboto(
-          color: AppTheme.colors.primary,
-          fontWeight: FontWeight.bold
-        ),
-      ), 
-      Text(
-        "35000",
-        style: GoogleFonts.roboto(
-          color: AppTheme.colors.primary,
-          fontWeight: FontWeight.bold
-        ),
-      ), 
-    ],
-  ];
-
   List<String> paymentScheduleHeader = ["Payment Schedule", "Amount"];
 
-  List<List> paymentScheduleData = [
-    ["1st: Upon Enrollment", "7877"],
-    ["2nd: Prelims", "7877"],
-    ["3rd: Midterms", "7877"],
-    ["4th: Prefinals", "7877"],
-    ["5th: Finals", "7877"],
-    [
-      Text(
-        "Total:",
-        style: GoogleFonts.roboto(
-          color: AppTheme.colors.primary,
-          fontWeight: FontWeight.bold
-        ),
-      ), 
-      Text(
-        "36000",
-        style: GoogleFonts.roboto(
-          color: AppTheme.colors.primary,
-          fontWeight: FontWeight.bold
-        ),
-      ), 
-    ],
-  ];
+
+  @override
+  void initState() {
+    tuition = context.read<TuitionFeeProvider>();
+
+    debugPrint(tuition.tuitionType.toString());
+
+    setState(() {
+      tuitionList = tuition.tuitionType;
+    });
+
+
+    super.initState();
+  }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -155,30 +131,6 @@ class _TuitionTypeCardState extends State<TuitionTypeCard> {
                     ),
                   ),
                 ),
-
-                const SizedBox(width: 5),
-
-                TextButton(
-                  onPressed: changeToLowMonthly,
-                  style: TextButton.styleFrom(
-                    backgroundColor:
-                        isLowMonthly ? AppTheme.colors.primary : null,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: Text(
-                    "Low Monthly",
-                    style: GoogleFonts.roboto(
-                      color:
-                          isLowMonthly
-                              ? AppTheme.colors.white
-                              : AppTheme.colors.primary,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
@@ -193,7 +145,7 @@ class _TuitionTypeCardState extends State<TuitionTypeCard> {
                 // For break down of tuition
                 CustomDataTable(
                   columnNames: breakDownHeader,
-                  dataTableValues: breakDownData
+                  dataTableValues: tuition.breakDown
                 ),
 
                 const SizedBox(height: 20,),
@@ -201,7 +153,7 @@ class _TuitionTypeCardState extends State<TuitionTypeCard> {
                 // For payment Schedule
                 CustomDataTable(
                   columnNames: paymentScheduleHeader, 
-                  dataTableValues: paymentScheduleData
+                  dataTableValues: tuition.paymentSched
                 ),
 
                 const SizedBox(height: 20,),

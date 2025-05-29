@@ -117,23 +117,23 @@ class MainProfileCard extends StatelessWidget {
             ),
           ),
 
-          Align(
-            alignment: Alignment.topRight,
-            child: IconButton(
-              onPressed: () {
-                Navigator.push(context, 
-                MaterialPageRoute(builder: (context) => 
-                MainProfileEditPage(
-                  profileImg: profileImg,
-                  coverImg: coverImg,
-                )));
-              }, 
-              icon: Icon(
-                Icons.edit,
-                color: AppTheme.colors.white,
-              ),
-            ),
-          )
+          // Align(
+          //   alignment: Alignment.topRight,
+          //   child: IconButton(
+          //     onPressed: () {
+          //       Navigator.push(context, 
+          //       MaterialPageRoute(builder: (context) => 
+          //       MainProfileEditPage(
+          //         profileImg: profileImg,
+          //         coverImg: coverImg,
+          //       )));
+          //     }, 
+          //     icon: Icon(
+          //       Icons.edit,
+          //       color: AppTheme.colors.white,
+          //     ),
+          //   ),
+          // )
         ],
       ),
     );

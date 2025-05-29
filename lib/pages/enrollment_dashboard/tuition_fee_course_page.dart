@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:sti_startnow/pages/components/custom_dropdown/custom_dropdown_menu.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/enrollment_dashboard/components/tuition_type_card.dart';
+import 'package:sti_startnow/providers/tuition_fee_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class TuitionFeeCoursePage extends StatefulWidget {
@@ -15,6 +17,9 @@ class TuitionFeeCoursePage extends StatefulWidget {
 }
 
 class _TuitionFeeCoursePageState extends State<TuitionFeeCoursePage> {
+  late TuitionFeeProvider tuition;
+  String units = "";
+
   final List<String> courses = [
     "Computer Science",
     "Information Technology",
@@ -45,6 +50,11 @@ class _TuitionFeeCoursePageState extends State<TuitionFeeCoursePage> {
     setState(() {
       yearLevelValue = yearLevelList[index];
     });
+
+    tuition.changeSeletectedYear(yearLevelValue);
+    units = tuition.units;
+
+    debugPrint(tuition.tuitionSelectedYear.toString());
   }
 
   // @override
@@ -55,6 +65,12 @@ class _TuitionFeeCoursePageState extends State<TuitionFeeCoursePage> {
   // }
 
   String yearLevelValue = "";
+
+  @override
+  void initState() {
+    super.initState();
+    tuition = context.read<TuitionFeeProvider>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,26 +121,29 @@ class _TuitionFeeCoursePageState extends State<TuitionFeeCoursePage> {
                       hint: "Select a Year Level",
                       selectedValue: yearLevelValue,
                       onTap: (index) {
-                        setState(() {
-                          yearLevelValue = yearLevelList[index];
-                        });
+                        handleYearLevelChange(index);
                       },
                     ),
 
                     const SizedBox(height: 20),
 
-                    Text(
-                      "Units: 23",
-                      style: GoogleFonts.roboto(
-                        color: AppTheme.colors.black,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-
-                    const SizedBox(height: 10),
-
-                    TuitionTypeCard(),
+                    yearLevelValue != "" ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Units: $units",
+                          style: GoogleFonts.roboto(
+                            color: AppTheme.colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        
+                        const SizedBox(height: 10),
+                        
+                        TuitionTypeCard(),
+                      ],
+                    ) : SizedBox(),
 
                     const SizedBox(height: 30),
                   ],
