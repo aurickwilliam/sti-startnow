@@ -44,7 +44,7 @@ class _WelcomePageState extends State<WelcomePage> {
         padding: const EdgeInsets.only(bottom: 60),
         child: PageView(
           controller: controller,
-          scrollDirection: isLandscape ? Axis.vertical : Axis.horizontal,
+          scrollDirection: Axis.horizontal,
 
           onPageChanged: (value) {
             setState(() {
