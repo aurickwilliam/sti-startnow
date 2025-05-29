@@ -8,13 +8,17 @@ import 'package:permission_handler/permission_handler.dart';
 
 class SaveAndOpenPdf {
   static Future<File> savePdf({required String name, required Document pdf}) async {
+
     // To check whether permission is given for this app or not.
     var status = await Permission.storage.status;
+
     if (!status.isGranted) {
       // If not we will ask for permission first
       await Permission.storage.request(); 
     }
+
     Directory directory = Directory("");
+    
     if (Platform.isAndroid) {
        // Redirects it to download folder in android
       directory = Directory("/storage/emulated/0/Download");
