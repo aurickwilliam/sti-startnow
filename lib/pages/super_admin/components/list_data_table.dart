@@ -16,12 +16,14 @@ class ListDataTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      child: Scrollbar(
-        thickness: 5,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
+    return Scrollbar(
+      thickness: 5,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minWidth: MediaQuery.of(context).size.width,
+          ),
           child: DataTable(
             headingTextStyle: GoogleFonts.roboto(
               color: AppTheme.colors.primary,

@@ -46,7 +46,7 @@ class SuperAdminProfileCard extends StatelessWidget {
                   //   image: AssetImage(coverImg),
                   //   fit: BoxFit.cover
                   // )
-                  color: AppTheme.colors.secondary
+                  color: AppTheme.colors.red
                 ),
               ),
             ),
