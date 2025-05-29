@@ -99,6 +99,16 @@ class _EnrollmentStatusPageState extends State<EnrollmentStatusPage> {
                       ),
                     ),
 
+                    const SizedBox(height: 10,),
+
+                    widget.status == "REJECTED" ? Text(
+                      "Please visit our campus to handle your enrollment issues.",
+                      style: GoogleFonts.roboto(
+                        color: AppTheme.colors.red,
+                        fontSize: 14,
+                      ),
+                    ) : SizedBox(),
+
                     const SizedBox(height: 20,),
 
                     Container(
@@ -151,7 +161,7 @@ class _EnrollmentStatusPageState extends State<EnrollmentStatusPage> {
                                       widget.status != 'NOT ENROLLED'
                                           ? "${widget.student.enrollment.yearLevel} ${widget.student.enrollment.semester} SY. 2025 - 2026"
                                           : "Not Yet Enrolled",
-                                ),
+                                ),                                
                               ],
                             ),
                           )
