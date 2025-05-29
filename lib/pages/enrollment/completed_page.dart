@@ -33,8 +33,11 @@ class _CompletedPageState extends State<CompletedPage> {
     fToast.init(context);
   }
 
-  _showToast() {
-    Widget toast = DownloadToast();
+  _showToast(String message, bool isSuccess) {
+    Widget toast = DownloadToast(
+      message: message,
+      isSuccess: isSuccess,
+    );
 
     fToast.showToast(
       child: toast,
@@ -86,12 +89,19 @@ class _CompletedPageState extends State<CompletedPage> {
                     text: "Download Pre-Assessment Form",
                     onPressed: () async {
                       // ipasa nalang sa parameter ung object nandoon lahat ng info about sa pre-assessment
-                      // final preAssessment = await PreAssessmentApi.generatePreAssessment(student);
-                      await PreAssessmentApi.generatePreAssessment(student);
+                      final preAssessment = await PreAssessmentApi.generatePreAssessment(student);
+                      // await PreAssessmentApi.generatePreAssessment(student);
+
+                      if (preAssessment != null){
+                        _showToast("Downloaded", true);
+                      }
+                      else {
+                        _showToast("Error", false);
+                      }
 
                       // IF GUSTO IOPEN PAGTAPOS IDOWNLOAD
                       // SaveAndOpenPdf.openPdf(preAssessment);
-                      _showToast();
+                      
                     },
                   ),
                 ],

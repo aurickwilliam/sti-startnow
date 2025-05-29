@@ -3,7 +3,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 
 class DownloadToast extends StatelessWidget {
-  const DownloadToast({super.key});
+  final String message;
+  final bool isSuccess;
+
+  const DownloadToast({
+    super.key,
+    required this.message,
+    required this.isSuccess,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +31,9 @@ class DownloadToast extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image(
-              image: AssetImage("assets/img/enrollment/check-mark.png"),
+              image: AssetImage(
+                isSuccess ? "assets/img/enrollment/check-mark.png" : "assets/img/enrollment/error.png"
+              ),
               fit: BoxFit.contain,
               width: 50,
             ),

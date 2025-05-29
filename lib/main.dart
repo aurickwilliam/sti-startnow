@@ -7,6 +7,7 @@ import 'package:sti_startnow/dependency_injection.dart';
 import 'package:sti_startnow/pages/home_page.dart';
 import 'package:sti_startnow/providers/database_provider.dart';
 import 'package:sti_startnow/providers/enrollee_list_provider.dart';
+import 'package:sti_startnow/providers/tuition_fee_provider.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -28,6 +29,7 @@ Future<void> main() async {
       providers: [
         ChangeNotifierProvider(create: (context) => EnrolleeListProvider()),
         ChangeNotifierProvider(create: (context) => DatabaseProvider()),
+        ChangeNotifierProvider(create: (context) => TuitionFeeProvider()),
       ],
       child: const MyApp(),
     ),

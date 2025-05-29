@@ -48,8 +48,11 @@ class _EnrollmentStatusPageState extends State<EnrollmentStatusPage> {
     fToast.init(context);
   }
 
-  _showToast(){
-    Widget toast = DownloadToast();
+  _showToast(String message, bool isSuccess){
+    Widget toast = DownloadToast(
+      message: message,
+      isSuccess: isSuccess,
+    );
 
     fToast.showToast(
       child: toast,

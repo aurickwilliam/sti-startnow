@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sti_startnow/models/class_schedule.dart';
 import 'package:sti_startnow/models/student.dart';
 import 'package:sti_startnow/pages/components/schedule_tile.dart';
+import 'package:sti_startnow/pages/enrollment/components/download_toast.dart';
 import 'package:sti_startnow/pdf/save_and_open_pdf.dart';
 import 'package:sti_startnow/pdf/time_table_api.dart';
 import 'package:sti_startnow/providers/database_provider.dart';
@@ -21,6 +23,7 @@ class _ScheduleCardState extends State<ScheduleCard> {
   late Student student;
   late final String day;
   late List<List> scheduleData;
+  late FToast fToast;
 
   void getScheduleToday(List<ClassSchedule> studSched) {
     scheduleData = [];
@@ -63,6 +66,21 @@ class _ScheduleCardState extends State<ScheduleCard> {
     }
 
     super.initState();
+    fToast = FToast();
+    fToast.init(context);
+  }
+
+  _showToast(String message, bool isSuccess) {
+    Widget toast = DownloadToast(
+      message: message,
+      isSuccess: isSuccess,
+    );
+
+    fToast.showToast(
+      child: toast,
+      gravity: ToastGravity.CENTER,
+      toastDuration: const Duration(seconds: 2),
+    );
   }
 
   @override
@@ -108,8 +126,22 @@ class _ScheduleCardState extends State<ScheduleCard> {
                       onPressed: () async {
                         final timeTable =
                             await TimeTableApi.generateTimeTablePdf(student);
+                          
 
                         //SaveAndOpenPdf.openPdf(timeTable);
+                        if (timeTable != null) {
+                          _showToast(
+                            "Downloaded",
+                            true
+                          );
+                        }
+                        else {
+                          _showToast(
+                            "Error",
+                            false
+                          );
+                        }
+                        
                       },
                       icon: Icon(
                         Icons.file_download_outlined,
