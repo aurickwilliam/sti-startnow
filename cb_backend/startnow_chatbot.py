@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from groq import Groq
 import os
+import re
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -98,7 +99,7 @@ knowledge_base = {
     ("drop subject", "dropping of subjects", "add or drop a subject after enrollment"): "You may add or drop subjects through our app only during a specific adjustment period from September August 30th – September 10th.",
 
     #intent: Class Schedule
-    ("when do classes start", "class schedule", "first day of class", "start of school"): "Classes officially starts on September 1. Your class schedule is visible on your account page after your enrollment is successful.",
+    ("when do classes start", "class schedule", "first day of class", "start of school", "class starts"): "Classes officially starts on September 1. Your class schedule is visible on your account page after your enrollment is successful.",
 
     #intent: Section Picking
     ("can i pick my own section", "can i choose my own section"): "You may pick your section based on the available schedules offered.",
@@ -137,12 +138,16 @@ knowledge_base = {
     ("carnites", "pogi"): "Mr. STI",
 }
 
+def cleanInput(text):
+    return re.findall(r'\b\w+\b', text.lower())
+
 @app.post("/chat")
 async def chat(msg: Message):
     user_msg = msg.userInput.lower()
+    words = cleanInput(user_msg)
 
     for keywords, response in knowledge_base.items():
-        if any(keyword in user_msg for keyword in keywords):
+        if any(keyword in user_msg for keyword in keywords) or any(keyword in words for keyword in keywords):
             return {"response": response}
 
     try:
