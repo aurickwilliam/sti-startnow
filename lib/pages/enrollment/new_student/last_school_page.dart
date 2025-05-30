@@ -36,7 +36,7 @@ class _LastSchoolPageState extends State<LastSchoolPage> {
     "High School",
     "Junior High School",
     "Alternative Learning System (ALS)",
-    "Collge",
+    "College",
     "Masteral",
     "Doctoral",
   ];
@@ -46,6 +46,8 @@ class _LastSchoolPageState extends State<LastSchoolPage> {
     "2023 - 2024",
     "2022 - 2023",
     "2021 - 2022",
+    "2020 - 2021",
+    "2019 - 2020",
   ];
 
   final List<String> termChoices = ["1st Term", "2nd Term", "Summer"];
