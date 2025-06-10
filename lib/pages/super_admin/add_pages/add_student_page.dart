@@ -263,9 +263,19 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   vertical: 10,
                 ),
                 child: BottomButton(
-                  onPressed: () async {
+                  onPressed: () {
                     if (validate()) {
-                      await addStudent();
+                      showModalBottomSheet(
+                        context: context, 
+                        builder: (context) {
+                          return CustomBottomSheet(
+                            subtitle: "Adding a New Student.",
+                            submitFunc: () async {
+                              await addStudent();
+                            },
+                          );
+                        }
+                      );
                     }
                   },
                   text: "Add New Student",
