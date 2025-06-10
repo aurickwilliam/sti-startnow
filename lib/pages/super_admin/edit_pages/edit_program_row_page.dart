@@ -3,6 +3,7 @@ import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/buttons/delete_button.dart';
 import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
+import 'package:sti_startnow/pages/components/custom_dropdown/custom_dropdown_menu.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
@@ -20,13 +21,23 @@ class _EditProgramRowPageState extends State<EditProgramRowPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController programNameController = TextEditingController();
   final TextEditingController acronymController = TextEditingController();
-  final TextEditingController departmentController = TextEditingController();
   late final int id; // id ng program sa database
+  
+  String departmentValue = "";
+  List<String> listOfDepartments = [
+    "Information Technology",
+    "Engineering",
+    "Business & Management",
+    "Hospitality Management",
+    "Arts & Sciences",
+    "Tourism Management",
+  ];
+
   @override
   void initState() {
     programNameController.text = widget.rowValues[1];
     acronymController.text = widget.rowValues[2];
-    departmentController.text = widget.rowValues[3];
+    departmentValue = widget.rowValues[3];
     id = int.parse(widget.rowValues[0]);
     super.initState();
   }
@@ -81,11 +92,16 @@ class _EditProgramRowPageState extends State<EditProgramRowPage> {
 
                                 const SizedBox(height: 10),
 
-                                TextInput(
-                                  controller: departmentController,
-                                  label: "Department:",
-                                  isRequired: true,
-                                ),
+                                CustomDropdownMenu(
+                                  listChoices: listOfDepartments, 
+                                  selectedValue:departmentValue, 
+                                  label: "Department:", 
+                                  onTap: (index) {
+                                    setState(() {
+                                      departmentValue = listOfDepartments[index];
+                                    });
+                                  }
+                                )
                               ],
                             ),
                           ],
@@ -130,7 +146,7 @@ class _EditProgramRowPageState extends State<EditProgramRowPage> {
                                       .update({
                                         'program_name': programNameController.text,
                                         'acronym': acronymController.text,
-                                        'department': departmentController.text,
+                                        'department': departmentValue,
                                       })
                                       .eq('id', id);
 
