@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
+import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
@@ -123,32 +124,41 @@ class _AddInstructorPageState extends State<AddInstructorPage> {
                   vertical: 10,
                 ),
                 child: BottomButton(
-                  onPressed: () async {
+                  onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      // Show circular progress indicator
-                      showDialog(
-                        context: context,
+                      showModalBottomSheet(
+                        context: context, 
                         builder: (context) {
-                          return PopScope(
-                            canPop: false,
-                            child: Center(
-                              child: const CircularProgressIndicator(),
-                            ),
+                          return CustomBottomSheet(
+                            submitFunc: () async {
+                              // Show circular progress indicator
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return PopScope(
+                                    canPop: false,
+                                    child: Center(
+                                      child: const CircularProgressIndicator(),
+                                    ),
+                                  );
+                                },
+                              );
+
+                              await supabase.from("PROFESSOR").insert({
+                                'prof_fname': firstNameController.text,
+                                'prof_lname': lastNameController.text,
+                                'department': departmentController.text,
+                                'email': emailAddressController.text,
+                              });
+
+                              if (context.mounted) {
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                              }
+                            },
                           );
-                        },
-                      );
-
-                      await supabase.from("PROFESSOR").insert({
-                        'prof_fname': firstNameController.text,
-                        'prof_lname': lastNameController.text,
-                        'department': departmentController.text,
-                        'email': emailAddressController.text,
-                      });
-
-                      if (context.mounted) {
-                        Navigator.pop(context);
-                        Navigator.pop(context);
-                      }
+                        }
+                      );         
                     }
                   },
                   text: "Add New Instructor",

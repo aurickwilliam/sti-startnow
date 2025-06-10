@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
+import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/components/custom_dropdown/custom_dropdown_menu.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
@@ -131,31 +132,41 @@ class _AddProgramPageState extends State<AddProgramPage> {
                   vertical: 10,
                 ),
                 child: BottomButton(
-                  onPressed: () async {
+                  onPressed: () {
                     if (validate()) {
-                      // Show circular progress indicator
-                      showDialog(
-                        context: context,
+                      showModalBottomSheet(
+                        context: context, 
                         builder: (context) {
-                          return PopScope(
-                            canPop: false,
-                            child: Center(
-                              child: const CircularProgressIndicator(),
-                            ),
+                          return CustomBottomSheet(
+                            subtitle: "Adding a New Program.",
+                            submitFunc: () async {
+                              // Show circular progress indicator
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return PopScope(
+                                    canPop: false,
+                                    child: Center(
+                                      child: const CircularProgressIndicator(),
+                                    ),
+                                  );
+                                },
+                              );
+
+                              await supabase.from("PROGRAM").insert({
+                                'program_name': programNameController.text,
+                                'acronym': acronymController.text,
+                                'department': departmentValue,
+                              });
+
+                              if (context.mounted) {
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                              }
+                            },
                           );
-                        },
+                        }
                       );
-
-                      await supabase.from("PROGRAM").insert({
-                        'program_name': programNameController.text,
-                        'acronym': acronymController.text,
-                        'department': departmentValue,
-                      });
-
-                      if (context.mounted) {
-                        Navigator.pop(context);
-                        Navigator.pop(context);
-                      }
                     }
                   },
                   text: "Add New Program",
