@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/buttons/delete_button.dart';
+import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
@@ -104,34 +105,44 @@ class _EditProgramRowPageState extends State<EditProgramRowPage> {
                   children: [
                     BottomButton(
                       // Edit button
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          // Show circular progress indicator
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return PopScope(
-                                canPop: false,
-                                child: Center(
-                                  child: const CircularProgressIndicator(),
-                                ),
-                              );
-                            },
-                          );
-                          await supabase
-                              .from("PROGRAM")
-                              .update({
-                                'program_name': programNameController.text,
-                                'acronym': acronymController.text,
-                                'department': departmentController.text,
-                              })
-                              .eq('id', id);
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context, 
+                          builder: (context) {
+                            return CustomBottomSheet(
+                              subtitle: "Changing the information at the database.",
+                              submitFunc: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  // Show circular progress indicator
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return PopScope(
+                                        canPop: false,
+                                        child: Center(
+                                          child: const CircularProgressIndicator(),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                  await supabase
+                                      .from("PROGRAM")
+                                      .update({
+                                        'program_name': programNameController.text,
+                                        'acronym': acronymController.text,
+                                        'department': departmentController.text,
+                                      })
+                                      .eq('id', id);
 
-                          if (context.mounted) {
-                            Navigator.pop(context);
-                            Navigator.pop(context);
+                                  if (context.mounted) {
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                  }
+                                }
+                              },
+                            );
                           }
-                        }
+                        );
                       },
                       text: "Save",
                     ),
@@ -139,26 +150,36 @@ class _EditProgramRowPageState extends State<EditProgramRowPage> {
                     const SizedBox(height: 10),
 
                     DeleteButton(
-                      onPressed: () async {
-                        // Show circular progress indicator
-                        showDialog(
+                      onPressed: () {
+                        showModalBottomSheet(
                           context: context,
                           builder: (context) {
-                            return PopScope(
-                              canPop: false,
-                              child: Center(
-                                child: const CircularProgressIndicator(),
-                              ),
+                            return CustomBottomSheet(
+                              subtitle: "Permanently deleting a record.",
+                              submitFunc: () async {
+                                // Show circular progress indicator
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return PopScope(
+                                      canPop: false,
+                                      child: Center(
+                                        child: const CircularProgressIndicator(),
+                                      ),
+                                    );
+                                  },
+                                );
+
+                                await supabase.from("PROGRAM").delete().eq('id', id);
+
+                                if (context.mounted) {
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                }
+                              },
                             );
-                          },
+                          }
                         );
-
-                        await supabase.from("PROGRAM").delete().eq('id', id);
-
-                        if (context.mounted) {
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                        }
                       },
                       text: "Delete",
                     ),
