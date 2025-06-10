@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/buttons/delete_button.dart';
+import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/components/custom_dropdown/custom_dropdown_menu.dart';
 import 'package:sti_startnow/pages/components/number_input.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
@@ -135,36 +136,46 @@ class _EditStudentRowPageState extends State<EditStudentRowPage> {
                 child: Column(
                   children: [
                     BottomButton(
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          // Show circular progress indicator
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return PopScope(
-                                canPop: false,
-                                child: Center(
-                                  child: const CircularProgressIndicator(),
-                                ),
-                              );
-                            },
-                          );
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context, 
+                          builder: (context) {
+                            return CustomBottomSheet(
+                              subtitle: "Changing the information at the database.",
+                              submitFunc: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  // Show circular progress indicator
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return PopScope(
+                                        canPop: false,
+                                        child: Center(
+                                          child: const CircularProgressIndicator(),
+                                        ),
+                                      );
+                                    },
+                                  );
 
-                          await supabase
-                              .from("STUDENT")
-                              .update({
-                                'stud_fname': firstNameController.text,
-                                'stud_lname': lastNameController.text,
-                                'program_id': db.getAcronymID(programValue),
-                                'mobile': mobileController.text,
-                              })
-                              .eq('student_id', studentNumber);
+                                  await supabase
+                                      .from("STUDENT")
+                                      .update({
+                                        'stud_fname': firstNameController.text,
+                                        'stud_lname': lastNameController.text,
+                                        'program_id': db.getAcronymID(programValue),
+                                        'mobile': mobileController.text,
+                                      })
+                                      .eq('student_id', studentNumber);
 
-                          if (context.mounted) {
-                            Navigator.pop(context);
-                            Navigator.pop(context);
+                                  if (context.mounted) {
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                  }
+                                }
+                              },
+                            );
                           }
-                        }
+                        );
                       },
                       text: "Save",
                     ),
@@ -172,29 +183,39 @@ class _EditStudentRowPageState extends State<EditStudentRowPage> {
                     const SizedBox(height: 10),
 
                     DeleteButton(
-                      onPressed: () async {
-                        // Show circular progress indicator
-                        showDialog(
+                      onPressed: () {
+                        showModalBottomSheet(
                           context: context,
                           builder: (context) {
-                            return PopScope(
-                              canPop: false,
-                              child: Center(
-                                child: const CircularProgressIndicator(),
-                              ),
+                            return CustomBottomSheet(
+                              subtitle: "Permanently deleting a record.",
+                              submitFunc: () async {
+                                // Show circular progress indicator
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return PopScope(
+                                      canPop: false,
+                                      child: Center(
+                                        child: const CircularProgressIndicator(),
+                                      ),
+                                    );
+                                  },
+                                );
+
+                                await supabase
+                                    .from("STUDENT")
+                                    .delete()
+                                    .eq('student_id', studentNumber);
+
+                                if (context.mounted) {
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                }
+                              },
                             );
-                          },
+                          }
                         );
-
-                        await supabase
-                            .from("STUDENT")
-                            .delete()
-                            .eq('student_id', studentNumber);
-
-                        if (context.mounted) {
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                        }
                       },
                       text: "Delete",
                     ),
