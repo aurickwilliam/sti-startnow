@@ -124,14 +124,14 @@ class _EditSubjectRowPageState extends State<EditSubjectRowPage> {
                   children: [
                     BottomButton(
                       onPressed: () {
-                        showModalBottomSheet(
-                          isScrollControlled: true,
-                          context: context,
-                          builder: (context) {
-                            return CustomBottomSheet(
-                              subtitle: "Changing the information at the database",
-                              submitFunc: () async {
-                                if (_formKey.currentState!.validate()) {
+                        if (_formKey.currentState!.validate()) {
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (context) {
+                              return CustomBottomSheet(
+                                subtitle: "Changing the information at the database",
+                                submitFunc: () async {
                                   // Show circular progress indicator
                                   showDialog(
                                     context: context,
@@ -169,11 +169,11 @@ class _EditSubjectRowPageState extends State<EditSubjectRowPage> {
                                       ),
                                     );
                                   }
-                                }
-                              },
-                            );
-                          },
-                        );
+                                },
+                              );
+                            },
+                          );         
+                        }
                       },
                       text: "Save",
                     ),

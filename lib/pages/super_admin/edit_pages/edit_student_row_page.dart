@@ -93,6 +93,7 @@ class _EditStudentRowPageState extends State<EditStudentRowPage> {
                               listChoices: listOfAcronyms,
                               selectedValue: programValue,
                               label: "Program/Course:",
+                              isRequired: true,
                               onTap: (index) {
                                 setState(() {
                                   programValue = listOfAcronyms[index];
@@ -137,13 +138,13 @@ class _EditStudentRowPageState extends State<EditStudentRowPage> {
                   children: [
                     BottomButton(
                       onPressed: () {
-                        showModalBottomSheet(
-                          context: context, 
-                          builder: (context) {
-                            return CustomBottomSheet(
-                              subtitle: "Changing the information at the database.",
-                              submitFunc: () async {
-                                if (_formKey.currentState!.validate()) {
+                        if (_formKey.currentState!.validate()) {
+                          showModalBottomSheet(
+                            context: context, 
+                            builder: (context) {
+                              return CustomBottomSheet(
+                                subtitle: "Changing the information at the database.",
+                                submitFunc: () async {
                                   // Show circular progress indicator
                                   showDialog(
                                     context: context,
@@ -171,11 +172,11 @@ class _EditStudentRowPageState extends State<EditStudentRowPage> {
                                     Navigator.pop(context);
                                     Navigator.pop(context);
                                   }
-                                }
-                              },
-                            );
-                          }
-                        );
+                                },
+                              );
+                            }
+                          );         
+                        }
                       },
                       text: "Save",
                     ),

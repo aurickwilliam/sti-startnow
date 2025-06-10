@@ -122,13 +122,13 @@ class _EditProgramRowPageState extends State<EditProgramRowPage> {
                     BottomButton(
                       // Edit button
                       onPressed: () {
-                        showModalBottomSheet(
-                          context: context, 
-                          builder: (context) {
-                            return CustomBottomSheet(
-                              subtitle: "Changing the information at the database.",
-                              submitFunc: () async {
-                                if (_formKey.currentState!.validate()) {
+                        if (_formKey.currentState!.validate()) {
+                          showModalBottomSheet(
+                            context: context, 
+                            builder: (context) {
+                              return CustomBottomSheet(
+                                subtitle: "Changing the information at the database.",
+                                submitFunc: () async {
                                   // Show circular progress indicator
                                   showDialog(
                                     context: context,
@@ -154,11 +154,11 @@ class _EditProgramRowPageState extends State<EditProgramRowPage> {
                                     Navigator.pop(context);
                                     Navigator.pop(context);
                                   }
-                                }
-                              },
-                            );
-                          }
-                        );
+                                },
+                              );
+                            }
+                          );         
+                        }
                       },
                       text: "Save",
                     ),
