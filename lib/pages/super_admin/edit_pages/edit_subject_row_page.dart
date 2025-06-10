@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/buttons/delete_button.dart';
+import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
 import 'package:sti_startnow/pages/components/number_input.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
@@ -122,46 +123,57 @@ class _EditSubjectRowPageState extends State<EditSubjectRowPage> {
                 child: Column(
                   children: [
                     BottomButton(
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          // Show circular progress indicator
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return PopScope(
-                                canPop: false,
-                                child: Center(
-                                  child: const CircularProgressIndicator(),
-                                ),
-                              );
-                            },
-                          );
+                      onPressed: () {
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          context: context,
+                          builder: (context) {
+                            return CustomBottomSheet(
+                              subtitle: "Changing the information at the database",
+                              submitFunc: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  // Show circular progress indicator
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return PopScope(
+                                        canPop: false,
+                                        child: Center(
+                                          child: const CircularProgressIndicator(),
+                                        ),
+                                      );
+                                    },
+                                  );
 
-                          await supabase
-                              .from("SUBJECT")
-                              .update({
-                                'course_code': subjectCodeController.text,
-                                'course_name': subjectNameController.text,
-                                'units': double.parse(
-                                  subjectUnitsController.text,
-                                ),
-                                'prereq':
-                                    subjectPrerequisitesController.text.isEmpty
-                                        ? null
-                                        : subjectPrerequisitesController.text,
-                              })
-                              .eq('course_code', originalCode);
+                                  await supabase
+                                      .from("SUBJECT")
+                                      .update({
+                                        'course_code': subjectCodeController.text,
+                                        'course_name': subjectNameController.text,
+                                        'units': double.parse(
+                                          subjectUnitsController.text,
+                                        ),
+                                        'prereq':
+                                            subjectPrerequisitesController.text.isEmpty
+                                                ? null
+                                                : subjectPrerequisitesController.text,
+                                      })
+                                      .eq('course_code', originalCode);
 
-                          if (context.mounted) {
-                            Navigator.pop(context);
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ListSubjectsPage(),
-                              ),
+                                  if (context.mounted) {
+                                    Navigator.pop(context);
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const ListSubjectsPage(),
+                                      ),
+                                    );
+                                  }
+                                }
+                              },
                             );
-                          }
-                        }
+                          },
+                        );
                       },
                       text: "Save",
                     ),
@@ -169,34 +181,45 @@ class _EditSubjectRowPageState extends State<EditSubjectRowPage> {
                     const SizedBox(height: 10),
 
                     DeleteButton(
-                      onPressed: () async {
-                        // Show circular progress indicator
-                        showDialog(
+                      onPressed: () {
+                         showModalBottomSheet(
+                          isScrollControlled: true,
                           context: context,
                           builder: (context) {
-                            return PopScope(
-                              canPop: false,
-                              child: Center(
-                                child: const CircularProgressIndicator(),
-                              ),
+                            return CustomBottomSheet(
+                              subtitle: "Permanently deleting a record.",
+                              submitFunc: () async {
+                                // Show circular progress indicator
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return PopScope(
+                                      canPop: false,
+                                      child: Center(
+                                        child: const CircularProgressIndicator(),
+                                      ),
+                                    );
+                                  },
+                                );
+
+                                await supabase
+                                    .from("SUBJECT")
+                                    .delete()
+                                    .eq('course_code', originalCode);
+
+                                if (context.mounted) {
+                                  Navigator.pop(context);
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const ListSubjectsPage(),
+                                    ),
+                                  );
+                                }
+                              },
                             );
-                          },
+                          }
                         );
-
-                        await supabase
-                            .from("SUBJECT")
-                            .delete()
-                            .eq('course_code', originalCode);
-
-                        if (context.mounted) {
-                          Navigator.pop(context);
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ListSubjectsPage(),
-                            ),
-                          );
-                        }
                       },
                       text: "Delete",
                     ),
