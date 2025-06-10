@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
+import 'package:sti_startnow/pages/components/custom_dropdown/custom_dropdown_menu.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
@@ -17,7 +18,31 @@ class _AddProgramPageState extends State<AddProgramPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController programNameController = TextEditingController();
   final TextEditingController acronymController = TextEditingController();
-  final TextEditingController departmentController = TextEditingController();
+
+  String departmentValue = "";
+  List<String> listOfDepartments = [
+    "Information Technology",
+    "Engineering",
+    "Business & Management",
+    "Hospitality Management",
+    "Arts & Sciences",
+    "Tourism Management",
+  ];
+  bool isDepartmentEmpty = false;
+
+  bool validate() {
+    bool valid = _formKey.currentState!.validate();
+    setState(() {
+      if (departmentValue.isEmpty) {
+        isDepartmentEmpty = true;
+      }
+    });
+
+    if (isDepartmentEmpty) {
+      return false;
+    }
+    return valid;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,12 +103,20 @@ class _AddProgramPageState extends State<AddProgramPage> {
 
                             const SizedBox(height: 10),
 
-                            TextInput(
-                              controller: departmentController,
-                              label: "Department:",
-                              hint: "Enter Department Name",
+                            CustomDropdownMenu(
+                              listChoices: listOfDepartments, 
+                              selectedValue: departmentValue, 
+                              label: "Department:", 
+                              hint: "Enter Program Department",
                               isRequired: true,
-                            ),
+                              onTap: (index) {
+                                setState(() {
+                                  departmentValue = listOfDepartments[index];
+                                  isDepartmentEmpty = false;
+                                });
+                              },
+                              isError: isDepartmentEmpty,
+                            )
                           ],
                         ),
                       ),
@@ -99,7 +132,7 @@ class _AddProgramPageState extends State<AddProgramPage> {
                 ),
                 child: BottomButton(
                   onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
+                    if (validate()) {
                       // Show circular progress indicator
                       showDialog(
                         context: context,
@@ -116,7 +149,7 @@ class _AddProgramPageState extends State<AddProgramPage> {
                       await supabase.from("PROGRAM").insert({
                         'program_name': programNameController.text,
                         'acronym': acronymController.text,
-                        'department': departmentController.text,
+                        'department': departmentValue,
                       });
 
                       if (context.mounted) {
