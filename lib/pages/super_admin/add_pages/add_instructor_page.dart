@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
+import 'package:sti_startnow/pages/components/custom_dropdown/custom_dropdown_menu.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
@@ -20,6 +21,31 @@ class _AddInstructorPageState extends State<AddInstructorPage> {
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController departmentController = TextEditingController();
   final TextEditingController emailAddressController = TextEditingController();
+
+  String departmentValue = "";
+  bool isDepartmentEmpty = false;
+  List<String> listOfDepartments = [
+    "Information Technology",
+    "Engineering",
+    "Business & Management",
+    "Hospitality Management",
+    "Arts & Sciences",
+    "Tourism Management",
+  ];
+
+  bool validate() {
+    bool valid = _formKey.currentState!.validate();
+    setState(() {
+      if (departmentValue.isEmpty) {
+        isDepartmentEmpty = true;
+      }
+    });
+
+    if (isDepartmentEmpty) {
+      return false;
+    }
+    return valid;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,11 +106,19 @@ class _AddInstructorPageState extends State<AddInstructorPage> {
 
                             const SizedBox(height: 10),
 
-                            TextInput(
-                              controller: departmentController,
-                              label: "Department:",
+                            CustomDropdownMenu(
+                              listChoices: listOfDepartments, 
+                              selectedValue: departmentValue, 
+                              label: "Department:", 
                               hint: "Enter Department Name",
                               isRequired: true,
+                              onTap: (index) {
+                                setState(() {
+                                  departmentValue = listOfDepartments[index];
+                                  isDepartmentEmpty = false;
+                                });
+                              },
+                              isError: isDepartmentEmpty,
                             ),
 
                             const SizedBox(height: 10),
@@ -125,11 +159,12 @@ class _AddInstructorPageState extends State<AddInstructorPage> {
                 ),
                 child: BottomButton(
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {
+                    if (validate()) {
                       showModalBottomSheet(
                         context: context, 
                         builder: (context) {
                           return CustomBottomSheet(
+                            subtitle: "Adding a New Instructor.",
                             submitFunc: () async {
                               // Show circular progress indicator
                               showDialog(

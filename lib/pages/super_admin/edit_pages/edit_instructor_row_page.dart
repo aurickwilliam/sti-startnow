@@ -3,6 +3,7 @@ import 'package:sti_startnow/main.dart';
 import 'package:sti_startnow/pages/components/buttons/bottom_button.dart';
 import 'package:sti_startnow/pages/components/buttons/delete_button.dart';
 import 'package:sti_startnow/pages/components/custom_bottom_sheet.dart';
+import 'package:sti_startnow/pages/components/custom_dropdown/custom_dropdown_menu.dart';
 import 'package:sti_startnow/pages/components/page_app_bar.dart';
 import 'package:sti_startnow/pages/components/text_input.dart';
 import 'package:sti_startnow/theme/app_theme.dart';
@@ -20,14 +21,39 @@ class _EditInstructorRowPageState extends State<EditInstructorRowPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
-  final TextEditingController departmentController = TextEditingController();
   final TextEditingController emailAddressController = TextEditingController();
   late final int profID; // id ng instructor sa database
+
+  String departmentValue = "";
+  bool isDepartmentEmpty = false;
+  List<String> listOfDepartments = [
+    "Information Technology",
+    "Engineering",
+    "Business & Management",
+    "Hospitality Management",
+    "Arts & Sciences",
+    "Tourism Management",
+  ];
+
+  bool validate() {
+    bool valid = _formKey.currentState!.validate();
+    setState(() {
+      if (departmentValue.isEmpty) {
+        isDepartmentEmpty = true;
+      }
+    });
+
+    if (isDepartmentEmpty) {
+      return false;
+    }
+    return valid;
+  }
+
   @override
   void initState() {
     firstNameController.text = widget.rowValues[1];
     lastNameController.text = widget.rowValues[2];
-    departmentController.text = widget.rowValues[3];
+    departmentValue = widget.rowValues[3];
     emailAddressController.text = widget.rowValues[4];
     profID = int.parse(widget.rowValues[0]);
     super.initState();
@@ -80,10 +106,17 @@ class _EditInstructorRowPageState extends State<EditInstructorRowPage> {
 
                             const SizedBox(height: 10),
 
-                            TextInput(
-                              controller: departmentController,
-                              label: "Department:",
-                              isRequired: true,
+                            CustomDropdownMenu(
+                              listChoices: listOfDepartments, 
+                              selectedValue: departmentValue, 
+                              label: "Department:", 
+                              onTap: (index) {
+                                setState(() {
+                                  departmentValue = listOfDepartments[index];
+                                  isDepartmentEmpty = false;
+                                });
+                              },
+                              isError: isDepartmentEmpty,
                             ),
 
                             const SizedBox(height: 10),
@@ -125,13 +158,13 @@ class _EditInstructorRowPageState extends State<EditInstructorRowPage> {
                   children: [
                     BottomButton(
                       onPressed: () {
-                        showModalBottomSheet(
-                          context: context, 
-                          builder: (context) {
-                            return CustomBottomSheet(
-                              subtitle: "Changing the information at the database.",
-                              submitFunc: () async {
-                                if (_formKey.currentState!.validate()) {
+                        if (validate()) {
+                          showModalBottomSheet(
+                            context: context, 
+                            builder: (context) {
+                              return CustomBottomSheet(
+                                subtitle: "Changing the information at the database.",
+                                submitFunc: () async {
                                   // Show circular progress indicator
                                   showDialog(
                                     context: context,
@@ -150,7 +183,7 @@ class _EditInstructorRowPageState extends State<EditInstructorRowPage> {
                                       .update({
                                         'prof_fname': firstNameController.text,
                                         'prof_lname': lastNameController.text,
-                                        'department': departmentController.text,
+                                        'department': departmentValue,
                                         'email': emailAddressController.text,
                                       })
                                       .eq('prof_id', profID);
@@ -159,11 +192,11 @@ class _EditInstructorRowPageState extends State<EditInstructorRowPage> {
                                     Navigator.pop(context);
                                     Navigator.pop(context);
                                   }
-                                }
-                              },
-                            );
-                          }
-                        );
+                                },
+                              );
+                            }
+                          );
+                        }
                       },
                       text: "Save",
                     ),
